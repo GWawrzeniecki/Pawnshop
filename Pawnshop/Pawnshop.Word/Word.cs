@@ -1,10 +1,13 @@
 ﻿using System;
 namespace Pawnshop.Word
 {
-    public class MyClass
+    public static class Word
     {
-        public MyClass()
+        static Word()
         {
+
         }
+
+
     }
 }
