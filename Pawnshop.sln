@@ -3,15 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pawnshop.DAL", "Pawnshop\Pawnshop.DAL\Pawnshop.DAL.csproj", "{CEDC6591-80BD-4289-AAD3-D8DD433ECE66}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pawnshop.TestingApp", "Pawnshop\Pawnshop.TestingApp\Pawnshop.TestingApp.csproj", "{6CA9BCBB-8A0F-4B27-93E3-95550CB29226}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pawnshop.Allegro", "Pawnshop\Pawnshop.Allegro\Pawnshop.Allegro.csproj", "{B3583BE2-182C-4CE8-A28E-D5759A93249D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pawnshop.Word", "Pawnshop\Pawnshop.Word\Pawnshop.Word.csproj", "{70C5C535-87E5-49B3-9812-298724CDE80C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pawnshop.Utilities", "Pawnshop\Pawnshop.Utilities\Pawnshop.Utilities.csproj", "{B898D7E6-DB65-4E81-B61F-D24F0223F4E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,26 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CEDC6591-80BD-4289-AAD3-D8DD433ECE66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CEDC6591-80BD-4289-AAD3-D8DD433ECE66}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CEDC6591-80BD-4289-AAD3-D8DD433ECE66}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CEDC6591-80BD-4289-AAD3-D8DD433ECE66}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CA9BCBB-8A0F-4B27-93E3-95550CB29226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6CA9BCBB-8A0F-4B27-93E3-95550CB29226}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CA9BCBB-8A0F-4B27-93E3-95550CB29226}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CA9BCBB-8A0F-4B27-93E3-95550CB29226}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3583BE2-182C-4CE8-A28E-D5759A93249D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3583BE2-182C-4CE8-A28E-D5759A93249D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3583BE2-182C-4CE8-A28E-D5759A93249D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3583BE2-182C-4CE8-A28E-D5759A93249D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70C5C535-87E5-49B3-9812-298724CDE80C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70C5C535-87E5-49B3-9812-298724CDE80C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70C5C535-87E5-49B3-9812-298724CDE80C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70C5C535-87E5-49B3-9812-298724CDE80C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B898D7E6-DB65-4E81-B61F-D24F0223F4E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B898D7E6-DB65-4E81-B61F-D24F0223F4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B898D7E6-DB65-4E81-B61F-D24F0223F4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B898D7E6-DB65-4E81-B61F-D24F0223F4E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
