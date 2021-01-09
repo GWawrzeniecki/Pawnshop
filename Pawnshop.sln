@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pawnshop.TestingApp", "Pawnshop\Pawnshop.TestingApp\Pawnshop.TestingApp.csproj", "{6CA9BCBB-8A0F-4B27-93E3-95550CB29226}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop", "Pawnshop\PawnShop\PawnShop.csproj", "{247E3123-CF58-41BA-B1DF-0FA17AF0B64F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnShop", "Pawnshop\PawnShop\PawnShop.csproj", "{247E3123-CF58-41BA-B1DF-0FA17AF0B64F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Core", "PawnShop.Core\PawnShop.Core.csproj", "{CC2DB7B8-C91C-4AB1-8AC7-95D69E440BE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{32393005-C24E-464A-AC8E-A44B41CF446D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Modules.Login", "Modules\PawnShop.Modules.Login\PawnShop.Modules.Login.csproj", "{50E287D0-47AF-4E06-9472-7F446FBF5CCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnShop.CoreViews", "PawnShop.CoreViews\PawnShop.CoreViews.csproj", "{059438E3-EB1E-40F6-A136-C0353AE36188}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,17 +19,28 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6CA9BCBB-8A0F-4B27-93E3-95550CB29226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CA9BCBB-8A0F-4B27-93E3-95550CB29226}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CA9BCBB-8A0F-4B27-93E3-95550CB29226}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CA9BCBB-8A0F-4B27-93E3-95550CB29226}.Release|Any CPU.Build.0 = Release|Any CPU
 		{247E3123-CF58-41BA-B1DF-0FA17AF0B64F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{247E3123-CF58-41BA-B1DF-0FA17AF0B64F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{247E3123-CF58-41BA-B1DF-0FA17AF0B64F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{247E3123-CF58-41BA-B1DF-0FA17AF0B64F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC2DB7B8-C91C-4AB1-8AC7-95D69E440BE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC2DB7B8-C91C-4AB1-8AC7-95D69E440BE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC2DB7B8-C91C-4AB1-8AC7-95D69E440BE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC2DB7B8-C91C-4AB1-8AC7-95D69E440BE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50E287D0-47AF-4E06-9472-7F446FBF5CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E287D0-47AF-4E06-9472-7F446FBF5CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50E287D0-47AF-4E06-9472-7F446FBF5CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50E287D0-47AF-4E06-9472-7F446FBF5CCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{059438E3-EB1E-40F6-A136-C0353AE36188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{059438E3-EB1E-40F6-A136-C0353AE36188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{059438E3-EB1E-40F6-A136-C0353AE36188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{059438E3-EB1E-40F6-A136-C0353AE36188}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{50E287D0-47AF-4E06-9472-7F446FBF5CCA} = {32393005-C24E-464A-AC8E-A44B41CF446D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5606074-19E1-41E2-9357-80CDE5DA40C1}

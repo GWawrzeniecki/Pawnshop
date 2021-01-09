@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="PawnShop.Modules.Login.Dialogs.LoginDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+
+
+
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
+            <Setter Property="ResizeMode" Value="NoResize"/>
+            <Setter Property="ShowInTaskbar" Value="True"/>
+            <Setter Property="Width" Value="450"/>
+            <Setter Property="Height" Value="600"/>
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+
+
+    <StackPanel Orientation="Vertical">
+        <Image  Source="/PawnShop.Modules.Login;component/Logo/test_logo.jpg" Height="150"  Margin="10 30 10 20" HorizontalAlignment="Center"/>
+        <TextBlock Text="Pawn Shop" Margin="0 0 0 50" HorizontalAlignment="Center" FontSize="45" />
+
+
+       
+        <Grid Margin="100 0 100 20">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Użytkownik" Grid.Row="0" Grid.Column="1"/>
+            <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" Margin="0 4 2 0" />
+            <TextBox  Grid.Row="1" Grid.Column="1" />
+        </Grid>
+
+
+        
+        <Grid Margin="100 0 100 60">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Hasło" Grid.Row="0" Grid.Column="1"/>
+            <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Lock" Margin="0 4 2 0" />
+            <PasswordBox  Grid.Row="1" Grid.Column="1" />
+        </Grid>
+
+      
+
+        <Button Content="Zaloguj" Command="{Binding LoginCommand}" Margin="150 0 150 0" Height="50"/>
+    </StackPanel>
+</UserControl>

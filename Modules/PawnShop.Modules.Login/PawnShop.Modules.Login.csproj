@@ -1,18 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyName>PawnShop</AssemblyName>
+    <AssemblyName>PawnShop.Modules.Login</AssemblyName>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Logo\test_logo.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.3" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
-    <PackageReference Include="Prism.DryIoc" Version="8.0.0.1909" />
+    <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Modules\PawnShop.Modules.Login\PawnShop.Modules.Login.csproj" />
-    <ProjectReference Include="..\..\PawnShop.CoreViews\PawnShop.CoreViews.csproj" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logo\test_logo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 </Project>

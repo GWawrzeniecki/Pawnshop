@@ -1,10 +1,38 @@
-﻿<Window x:Class="PawnShop.Views.MainWindow"
+﻿<mah:MetroWindow x:Class="PawnShop.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="350" Width="525" >
-    <Grid>
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
-    </Grid>
-</Window>
+        Title="{Binding Title}" Height="350" Width="525" 
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+
+
+
+    <DockPanel>
+         <!--Top Taskbar--> 
+        <ContentControl DockPanel.Dock="Top" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.TopTaskBarRegion}"   />
+
+         <!--Menu--> 
+        <mah:HamburgerMenu DockPanel.Dock="Left" ItemTemplate="{StaticResource HamburgerMenuItem}" >
+
+             <!--Menu items-->
+            <mah:HamburgerMenu.ItemsSource>
+                <mah:HamburgerMenuItemCollection prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.MenuRegion}" />
+            </mah:HamburgerMenu.ItemsSource>
+
+            <mah:HamburgerMenu.Content>
+                <Grid>
+                     <!--Main Content-->
+                    <ContentControl prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ContentRegion}" />
+                </Grid>
+            </mah:HamburgerMenu.Content>
+        </mah:HamburgerMenu>
+
+         <!--Bottom info line--> 
+        <StackPanel DockPanel.Dock="Bottom" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.BottomInfoLineRegion}"/>
+        
+
+    </DockPanel>
+</mah:MetroWindow>
+
