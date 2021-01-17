@@ -3,11 +3,11 @@
 namespace PawnShop.CoreViews.Views
 {
     /// <summary>
-    /// Interaction logic for LogoutIconTaskBar
+    /// Interaction logic for NotificationsIconTaskBar
     /// </summary>
-    public partial class LogoutIconTaskBar : UserControl
+    public partial class NotificationsIcon : UserControl
     {
-        public LogoutIconTaskBar()
+        public NotificationsIcon()
         {
             InitializeComponent();
         }

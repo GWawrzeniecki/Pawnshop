@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{3239
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Modules.Login", "Modules\PawnShop.Modules.Login\PawnShop.Modules.Login.csproj", "{50E287D0-47AF-4E06-9472-7F446FBF5CCA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.CoreViews", "PawnShop.CoreViews\PawnShop.CoreViews.csproj", "{059438E3-EB1E-40F6-A136-C0353AE36188}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Controls", "PawnShop.CoreViews\PawnShop.Controls.csproj", "{059438E3-EB1E-40F6-A136-C0353AE36188}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing", "Testing\Testing.csproj", "{9B2210E2-29BE-4466-9F8B-06568FFFE95A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnShop.Services", "PawnShop.Services\PawnShop.Services.csproj", "{A88F8F29-3F47-456D-983E-40719376553F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Services", "PawnShop.Services\PawnShop.Services.csproj", "{A88F8F29-3F47-456D-983E-40719376553F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

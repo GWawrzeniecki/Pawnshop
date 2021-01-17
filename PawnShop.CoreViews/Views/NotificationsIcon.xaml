@@ -1,13 +1,11 @@
-﻿<UserControl x:Class="PawnShop.CoreViews.Views.LogoutIconTaskBar"
+﻿<UserControl x:Class="PawnShop.CoreViews.Views.NotificationsIcon"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              prism:ViewModelLocator.AutoWireViewModel="True">
 
-
-
-    <Button  Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding LogoutCommand}">
-        <iconPacks:PackIconMaterial Kind="Power"  />
+    <Button  Background="{x:Null}" BorderBrush="{x:Null}" >
+        <iconPacks:PackIconMaterial Kind="Bell"  />
     </Button>
 
 

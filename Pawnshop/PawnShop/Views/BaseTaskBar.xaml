@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             xmlns:localViews="clr-namespace:PawnShop.CoreViews.Views;assembly=PawnShop.CoreViews"
+             xmlns:controls="clr-namespace:PawnShop.CoreViews.Views;assembly=PawnShop.Controls"
              >
 
 
@@ -17,8 +17,8 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <localViews:NotificationsIconTaskBar Grid.Column="2"/>
-        <localViews:LogoutIconTaskBar Grid.Column="3"/>
+        <controls:NotificationsIcon Grid.Column="2"/>
+        <controls:LogoutIcon Grid.Column="3"/>
         
     </Grid>
 </UserControl>

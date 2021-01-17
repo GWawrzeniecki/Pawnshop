@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace PawnShop.CoreViews.ViewModels
 {
-    public class NotificationsIconTaskBarViewModel : BindableBase
+    public class NotificationsIconViewModel : BindableBase
     {
-        public NotificationsIconTaskBarViewModel()
+        public NotificationsIconViewModel()
         {
 
         }

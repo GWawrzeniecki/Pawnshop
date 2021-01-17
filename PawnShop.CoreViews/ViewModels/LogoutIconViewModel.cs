@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace PawnShop.CoreViews.ViewModels
 {
-    public class LogoutIconTaskBarViewModel : BindableBase
+    public class LogoutIconViewModel : BindableBase
     {
         #region private members
         private DelegateCommand<string> _logoutCommand;
@@ -27,7 +27,7 @@ _logoutCommand ??= new DelegateCommand<string>(Logout);
 
         #region constructor
 
-        public LogoutIconTaskBarViewModel(IDialogService dialogService)
+        public LogoutIconViewModel(IDialogService dialogService)
         {
             this._dialogService = dialogService;
         }
