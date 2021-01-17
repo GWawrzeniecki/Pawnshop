@@ -39,6 +39,7 @@ namespace PawnShop.Services
                HashAlgorithmName.SHA512);
 
             var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
+
             GetSecret("PepperAesKey", out string AesPepperKey);
             var encryptedKey = Encrypt(AesPepperKey, key);
             return $"{Iterations}.{Convert.ToBase64String(salt)}.{encryptedKey}";

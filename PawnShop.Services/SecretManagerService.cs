@@ -12,6 +12,10 @@ namespace PawnShop.Services
         {
             var config = new ConfigurationBuilder().AddUserSecrets<T>().Build();
             var secretProvider = config.Providers.First();
+
+            if (secretProvider == null)
+                throw new NullReferenceException("secret Provider was null");
+
             return secretProvider.TryGet(key, out value);
         }
     }
