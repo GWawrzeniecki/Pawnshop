@@ -35,8 +35,7 @@ namespace PawnShop.Services
             using var algorithm = new Rfc2898DeriveBytes(
                password,
                salt,
-               Iterations,
-               HashAlgorithmName.SHA512);
+               Iterations);
 
             var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
 
@@ -68,8 +67,7 @@ namespace PawnShop.Services
             using var algorithm = new Rfc2898DeriveBytes(
               password,
               salt,
-              iterations,
-              HashAlgorithmName.SHA512);
+              iterations);
             var keyToCheck = algorithm.GetBytes(KeySize);
 
             var verified = keyToCheck.SequenceEqual(key);
