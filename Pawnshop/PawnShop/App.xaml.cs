@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using PawnShop.Core.Dialogs;
 using PawnShop.Services;
+using PawnShop.Services.DataService;
 
 namespace PawnShop
 {
@@ -32,8 +33,9 @@ namespace PawnShop
         {
             containerRegistry.RegisterSingleton<IApllicationCommands, ApplicationCommands>();
             containerRegistry.RegisterSingleton<ISecretManagerService, SecretManagerService>();
-            containerRegistry.RegisterSingleton<IHashService, HashService>();
+            containerRegistry.RegisterSingleton<IHashService, HashService>();      
             containerRegistry.RegisterSingleton<IAesService, AesService>();
+            containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
         }

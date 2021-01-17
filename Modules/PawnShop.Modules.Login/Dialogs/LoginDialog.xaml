@@ -2,7 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             prism:ViewModelLocator.AutoWireViewModel="True">
+             prism:ViewModelLocator.AutoWireViewModel="True"
+            xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+             
 
 
 
@@ -57,7 +59,7 @@
 
             <TextBlock Text="Hasło" Grid.Row="0" Grid.Column="1"/>
             <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Lock" Margin="0 4 2 0" />
-            <PasswordBox x:Name="passwordBox"  Grid.Row="1" Grid.Column="1" />
+            <PasswordBox Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}"  mah:PasswordBoxHelper.CapsLockWarningToolTip="CapsLock jest włączony"  x:Name="passwordBox"  Grid.Row="1" Grid.Column="1" />
         </Grid>
 
       

@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Services", "PawnSh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Controls", "PawnShop.Controls\PawnShop.Controls.csproj", "{05E43616-3CD4-457C-96B5-F8447CCBBC46}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.DataAccess", "PawnShop.DataAccess\PawnShop.DataAccess.csproj", "{D56E67AF-80C6-4517-A031-30561680A85B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{05E43616-3CD4-457C-96B5-F8447CCBBC46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05E43616-3CD4-457C-96B5-F8447CCBBC46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05E43616-3CD4-457C-96B5-F8447CCBBC46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D56E67AF-80C6-4517-A031-30561680A85B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D56E67AF-80C6-4517-A031-30561680A85B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D56E67AF-80C6-4517-A031-30561680A85B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D56E67AF-80C6-4517-A031-30561680A85B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
