@@ -1,5 +1,4 @@
-﻿
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Modularity;
 
 
@@ -14,7 +13,7 @@ namespace PawnShop.Modules.Login
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+          
         }
     }
 }

@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>PawnShop.Modules.Login</AssemblyName>
+    <UserSecretsId>ec9b738c-72ae-4a87-bb2f-9a102490bfc8</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Logo\test_logo.jpg" />
@@ -18,6 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
+    <ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Logo\test_logo.jpg">

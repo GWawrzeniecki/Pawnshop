@@ -57,11 +57,11 @@
 
             <TextBlock Text="Hasło" Grid.Row="0" Grid.Column="1"/>
             <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Lock" Margin="0 4 2 0" />
-            <PasswordBox  Grid.Row="1" Grid.Column="1" />
+            <PasswordBox x:Name="passwordBox"  Grid.Row="1" Grid.Column="1" />
         </Grid>
 
       
 
-        <Button Content="Zaloguj" Command="{Binding LoginCommand}" Margin="150 0 150 0" Height="50"/>
+        <Button Content="Zaloguj" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}" Margin="150 0 150 0" Height="50"/>
     </StackPanel>
 </UserControl>

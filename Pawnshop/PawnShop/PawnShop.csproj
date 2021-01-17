@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>PawnShop</AssemblyName>
+    <UserSecretsId>a35924ef-7185-4373-9104-ffef1b6a7636</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.3" />
@@ -14,5 +15,6 @@
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Login\PawnShop.Modules.Login.csproj" />
     <ProjectReference Include="..\..\PawnShop.CoreViews\PawnShop.CoreViews.csproj" />
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
+    <ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
   </ItemGroup>
 </Project>

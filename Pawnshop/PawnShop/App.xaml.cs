@@ -10,6 +10,7 @@ using Prism.Services.Dialogs;
 using System.Windows;
 using System.Windows.Controls;
 using PawnShop.Core.Dialogs;
+using PawnShop.Services;
 
 namespace PawnShop
 {
@@ -30,6 +31,9 @@ namespace PawnShop
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IApllicationCommands, ApplicationCommands>();
+            containerRegistry.RegisterSingleton<ISecretManagerService, SecretManagerService>();
+            containerRegistry.RegisterSingleton<IHashService, HashService>();
+            containerRegistry.RegisterSingleton<IAesService, AesService>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
         }
@@ -50,6 +54,7 @@ namespace PawnShop
 
         protected override void OnInitialized()
         {
+            #region Login
             var dialogService = Container.Resolve<IDialogService>();
 
             dialogService.ShowLogInDialog(c =>
@@ -59,11 +64,12 @@ namespace PawnShop
                 else
                     Application.Current.Shutdown();
             });
+            #endregion
 
+            #region registering views
             var regionManager = Container.Resolve<IRegionManager>();
             regionManager.RegisterViewWithRegion(RegionNames.TopTaskBarRegion, typeof(BaseTaskBar));
-
-
+            #endregion
 
         }
     }

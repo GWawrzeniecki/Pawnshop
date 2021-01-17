@@ -1,9 +1,11 @@
-﻿using Prism.Commands;
+﻿using PawnShop.Services;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace PawnShop.Modules.Login.Dialogs
 {
@@ -11,7 +13,8 @@ namespace PawnShop.Modules.Login.Dialogs
     {
 
         #region private members
-        private DelegateCommand _loginCommand;
+        private DelegateCommand<PasswordBox> _loginCommand;
+        private readonly IHashService _hashService;
         #endregion
 
         #region public members
@@ -20,13 +23,13 @@ namespace PawnShop.Modules.Login.Dialogs
         #endregion
 
         #region public properties
-        public DelegateCommand LoginCommand => _loginCommand ??= new DelegateCommand(LogIn);
+        public DelegateCommand<PasswordBox> LoginCommand => _loginCommand ??= new DelegateCommand<PasswordBox>(Login);
         #endregion
 
         #region constructor
-        public LoginDialogViewModel()
+        public LoginDialogViewModel(IHashService hashService)
         {
-            
+            this._hashService = hashService;
         }
 
 
@@ -51,9 +54,14 @@ namespace PawnShop.Modules.Login.Dialogs
 
         #endregion
 
-        #region private methods
-        private void LogIn()
+        #region command methods
+        private void Login(PasswordBox passwordBox) // wiem, ze to psuje pattern MVVM ale ze wzgledow bezpieczenstwa nie robie Dependency property, to do check Mahapps PassswordBox implementation
         {
+            
+            var hash = _hashService.Hash(passwordBox.Password);
+
+            var test = _hashService.Check(hash, passwordBox.Password);
+
             RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
         }
         #endregion
