@@ -12,6 +12,8 @@ using System.Windows.Controls;
 using PawnShop.Core.Dialogs;
 using PawnShop.Services;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
+using PawnShop.Services.Implementations;
 
 namespace PawnShop
 {

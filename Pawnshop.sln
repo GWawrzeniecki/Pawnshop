@@ -11,13 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{3239
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Modules.Login", "Modules\PawnShop.Modules.Login\PawnShop.Modules.Login.csproj", "{50E287D0-47AF-4E06-9472-7F446FBF5CCA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing", "Testing\Testing.csproj", "{9B2210E2-29BE-4466-9F8B-06568FFFE95A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Services", "PawnShop.Services\PawnShop.Services.csproj", "{A88F8F29-3F47-456D-983E-40719376553F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Controls", "PawnShop.Controls\PawnShop.Controls.csproj", "{05E43616-3CD4-457C-96B5-F8447CCBBC46}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.DataAccess", "PawnShop.DataAccess\PawnShop.DataAccess.csproj", "{D56E67AF-80C6-4517-A031-30561680A85B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{14851750-CF6C-4140-80B7-B379E64E2363}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{50E287D0-47AF-4E06-9472-7F446FBF5CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50E287D0-47AF-4E06-9472-7F446FBF5CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50E287D0-47AF-4E06-9472-7F446FBF5CCA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B2210E2-29BE-4466-9F8B-06568FFFE95A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B2210E2-29BE-4466-9F8B-06568FFFE95A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B2210E2-29BE-4466-9F8B-06568FFFE95A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B2210E2-29BE-4466-9F8B-06568FFFE95A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A88F8F29-3F47-456D-983E-40719376553F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A88F8F29-3F47-456D-983E-40719376553F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A88F8F29-3F47-456D-983E-40719376553F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,6 +49,10 @@ Global
 		{D56E67AF-80C6-4517-A031-30561680A85B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D56E67AF-80C6-4517-A031-30561680A85B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D56E67AF-80C6-4517-A031-30561680A85B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14851750-CF6C-4140-80B7-B379E64E2363}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14851750-CF6C-4140-80B7-B379E64E2363}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14851750-CF6C-4140-80B7-B379E64E2363}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14851750-CF6C-4140-80B7-B379E64E2363}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

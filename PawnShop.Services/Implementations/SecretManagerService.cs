@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+using PawnShop.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PawnShop.Services
+namespace PawnShop.Services.Implementations
 {
     public class SecretManagerService : ISecretManagerService
     {
@@ -14,7 +15,7 @@ namespace PawnShop.Services
             var secretProvider = config.Providers.First();
 
             if (secretProvider == null)
-                throw new NullReferenceException("secret Provider was null");
+                throw new NullReferenceException($"Couldn't find secretProvider for {nameof(SecretManagerService)}.");
 
             return secretProvider.TryGet(key, out value);
         }

@@ -15,9 +15,9 @@ namespace PawnShop.ViewModels
         #region private members
 
         private string _title = "Prism Application";
-        private DelegateCommand<string> _navigateCommand;      
+        private DelegateCommand<string> _navigateCommand;
         private readonly IRegionManager _regionManager;
-     
+
 
         #endregion
 
@@ -33,7 +33,7 @@ namespace PawnShop.ViewModels
         public DelegateCommand<string> NavigateCommand =>
 _navigateCommand ??= new DelegateCommand<string>(ExecuteNavigateCommand);
 
-       
+
 
 
 
@@ -45,7 +45,7 @@ _navigateCommand ??= new DelegateCommand<string>(ExecuteNavigateCommand);
         {
             applicationCommands.NavigateCommand.RegisterCommand(NavigateCommand);
             this._regionManager = regionManager;
-         
+
         }
 
         #endregion
@@ -55,13 +55,14 @@ _navigateCommand ??= new DelegateCommand<string>(ExecuteNavigateCommand);
         private void ExecuteNavigateCommand(string navigationPath)
         {
             if (string.IsNullOrEmpty(navigationPath))
-                throw new ArgumentNullException();
+                throw new ArgumentException($"'{nameof(navigationPath)}' cannot be null or empty.", nameof(navigationPath));
+
 
             _regionManager.RequestNavigate(RegionNames.ContentRegion, navigationPath);
         }
 
 
-        
+
 
 
         #endregion

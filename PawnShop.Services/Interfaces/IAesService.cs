@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PawnShop.Services
+namespace PawnShop.Services.Interfaces
 {
     public interface IAesService
     {

@@ -4,8 +4,8 @@ using System.Text;
 
 namespace PawnShop.Services
 {
-    public interface ILoginService
+    public static class Constants
     {
-       
+        public const string PepperAesKeySecret = "PepperAesKey";
     }
 }

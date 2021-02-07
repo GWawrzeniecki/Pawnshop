@@ -4,7 +4,7 @@
              xmlns:prism="http://prismlibrary.com/" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              prism:ViewModelLocator.AutoWireViewModel="True"
             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
-             
+
 
 
 
@@ -25,7 +25,7 @@
         <TextBlock Text="Pawn Shop" Margin="0 0 0 50" HorizontalAlignment="Center" FontSize="45" />
 
 
-       
+
         <Grid Margin="100 0 100 20">
 
             <Grid.ColumnDefinitions>
@@ -38,13 +38,13 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Użytkownik" Grid.Row="0" Grid.Column="1"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Użytkownik" />
             <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" Margin="0 4 2 0" />
-            <TextBox  Grid.Row="1" Grid.Column="1" />
+            <TextBox  Grid.Row="1" Grid.Column="1" mah:TextBoxHelper.HasText="{Binding UserNameHasText, Mode=TwoWay}"/>
         </Grid>
 
 
-        
+
         <Grid Margin="100 0 100 60">
 
             <Grid.ColumnDefinitions>
@@ -57,13 +57,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Hasło" Grid.Row="0" Grid.Column="1"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Hasło" />
             <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Lock" Margin="0 4 2 0" />
-            <PasswordBox Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}"  mah:PasswordBoxHelper.CapsLockWarningToolTip="CapsLock jest włączony"  x:Name="passwordBox"  Grid.Row="1" Grid.Column="1" />
+            <PasswordBox Grid.Row="1" Grid.Column="1" Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}" mah:TextBoxHelper.HasText="{Binding PasswordBoxHasText, Mode=TwoWay}" x:Name="passwordBox"  mah:PasswordBoxHelper.CapsLockWarningToolTip="CapsLock jest włączony"  />
         </Grid>
 
-      
-
         <Button Content="Zaloguj" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}" Margin="150 0 150 0" Height="50"/>
+        
     </StackPanel>
 </UserControl>

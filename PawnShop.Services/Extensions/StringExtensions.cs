@@ -10,14 +10,14 @@ namespace PawnShop.Services.Extensions
     {
         public static IEnumerable<byte> HexStringToByte(this string value)
         {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-
+            if (string.IsNullOrEmpty(value))      
+                throw new ArgumentException($"'{nameof(value)}' cannot be null or empty.", nameof(value));
+          
             if (value.Split(' ').Count() < 0)
-                throw new FormatException("Hex values should be separated by space separator");
+                throw new FormatException("Hex values should be separated by space separator.");
 
             if (value.Split(' ').Any(hex => !int.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out int result)))
-                throw new FormatException("Provided key was not in hex format");
+                throw new FormatException("Provided value was not in hex format.");
 
             return value
                 .Split(' ')

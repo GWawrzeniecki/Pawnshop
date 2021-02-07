@@ -1,4 +1,5 @@
 ﻿using PawnShop.Services;
+using PawnShop.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace PawnShop.Services
+namespace PawnShop.Services.Implementations
 {
     public sealed class HashService : IHashService
     {
@@ -31,6 +32,9 @@ namespace PawnShop.Services
 
         public string Hash(string password)
         {
+            if (string.IsNullOrEmpty(password))
+                throw new ArgumentException($"'{nameof(password)}' cannot be null or empty.", nameof(password));
+
             var salt = GenerateSalt();
             using var algorithm = new Rfc2898DeriveBytes(
                password,
@@ -39,7 +43,8 @@ namespace PawnShop.Services
 
             var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
 
-            GetSecret("PepperAesKey", out string AesPepperKey);
+            GetSecret(Constants.PepperAesKeySecret, out string AesPepperKey);
+
             var encryptedKey = Encrypt(AesPepperKey, key);
             return $"{Iterations}.{Convert.ToBase64String(salt)}.{encryptedKey}";
         }
@@ -51,16 +56,17 @@ namespace PawnShop.Services
             var parts = hash.Split('.', 3);
 
             if (parts.Length != 3)
-            {
-                throw new FormatException("Invalid hash format");
-            }
+                throw new FormatException($"Parameter {nameof(hash)} has invalid format.");
+
 
             var iterations = Convert.ToInt32(parts[0]);
             var salt = Convert.FromBase64String(parts[1]);
             var key = Convert.FromBase64String(parts[2]);
 
 
-            GetSecret("PepperAesKey", out string AesPepperKey);
+            GetSecret(Constants.PepperAesKeySecret, out string AesPepperKey);
+
+
             var decryptedKey = Decrypt(AesPepperKey, Convert.ToBase64String(key));
             key = Convert.FromBase64String(decryptedKey);
 
@@ -86,20 +92,18 @@ namespace PawnShop.Services
             return salt;
         }
 
-        private bool GetSecret(string key, out string value)
+        private void GetSecret(string key, out string value)
         {
-            return _secretManagerService.GetValue<HashService>(key, out value);
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace", nameof(key));
+
+            if (!_secretManagerService.GetValue<HashService>(key, out value))
+                throw new Exception($"Couldn't find {key}.");
         }
 
-        private string Encrypt(string key, string valueToEncrypt)
-        {
-            return _aesService.EncryptString(key, valueToEncrypt);
-        }
+        private string Encrypt(string key, string valueToEncrypt) => _aesService.EncryptString(key, valueToEncrypt);
 
-        private string Decrypt(string key, string valueToDecrypt)
-        {
-            return _aesService.DecryptString(key, valueToDecrypt);
-        }
+        private string Decrypt(string key, string valueToDecrypt) => _aesService.DecryptString(key, valueToDecrypt);
 
         #endregion
     }

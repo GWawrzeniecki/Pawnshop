@@ -4,14 +4,26 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
 using PawnShop.Services.Extensions;
+using PawnShop.Services.Interfaces;
 
-namespace PawnShop.Services
+namespace PawnShop.Services.Implementations
 {
     public class AesService : IAesService
     {
 
+        #region public methods
         public string EncryptString(string key, string plainText)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentException($"'{nameof(key)}' cannot be null or empty.", nameof(key));
+            }
+
+            if (string.IsNullOrEmpty(plainText))
+            {
+                throw new ArgumentException($"'{nameof(plainText)}' cannot be null or empty.", nameof(plainText));
+            }
+
             byte[] iv = new byte[16];
             byte[] array;
 
@@ -20,7 +32,7 @@ namespace PawnShop.Services
 
                 aes.Key = key.HexStringToByte().ToArray();
                 aes.IV = iv;
-                
+
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
                 using MemoryStream memoryStream = new MemoryStream();
@@ -38,6 +50,16 @@ namespace PawnShop.Services
 
         public string DecryptString(string key, string cipherText)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentException($"'{nameof(key)}' cannot be null or empty.", nameof(key));
+            }
+
+            if (string.IsNullOrEmpty(cipherText))
+            {
+                throw new ArgumentException($"'{nameof(cipherText)}' cannot be null or empty.", nameof(cipherText));
+            }
+
             byte[] iv = new byte[16];
             byte[] buffer = Convert.FromBase64String(cipherText);
 
@@ -51,5 +73,6 @@ namespace PawnShop.Services
             using StreamReader streamReader = new StreamReader(cryptoStream);
             return streamReader.ReadToEnd();
         }
+        #endregion
     }
 }
