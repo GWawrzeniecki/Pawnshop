@@ -1,38 +1,36 @@
-﻿using PawnShop.Services;
-using PawnShop.Services.DataService;
+﻿using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Controls;
 
 namespace PawnShop.Modules.Login.Dialogs
 {
     public class LoginDialogViewModel : BindableBase, IDialogAware
     {
-
         #region private members
+
         private bool _userNameHasText;
         private bool _passwordBoxHasText;
         private DelegateCommand<PasswordBox> _loginCommand;
         private readonly IHashService _hashService;
         private readonly IUnitOfWork _unitOfWork;
-        #endregion
+
+        #endregion private members
 
         #region public members
+
         public string Title => "Logowanie";
+
         public event Action<IDialogResult> RequestClose;
-        #endregion
+
+        #endregion public members
 
         #region public properties
+
         public DelegateCommand<PasswordBox> LoginCommand => _loginCommand ??= new DelegateCommand<PasswordBox>(Login, CanLogin);
-
-      
-
-       
 
         public bool UserNameHasText
         {
@@ -45,9 +43,11 @@ namespace PawnShop.Modules.Login.Dialogs
             get { return _passwordBoxHasText; }
             set { SetProperty(ref _passwordBoxHasText, value); }
         }
-        #endregion
+
+        #endregion public properties
 
         #region constructor
+
         public LoginDialogViewModel(IHashService hashService, IUnitOfWork unitOfWork)
         {
             this._hashService = hashService;
@@ -55,11 +55,10 @@ namespace PawnShop.Modules.Login.Dialogs
             LoginCommand.ObservesProperty(() => UserNameHasText).ObservesProperty(() => PasswordBoxHasText);
         }
 
-
-        #endregion
-
+        #endregion constructor
 
         #region iDialogAware
+
         public bool CanCloseDialog()
         {
             return true;
@@ -67,15 +66,13 @@ namespace PawnShop.Modules.Login.Dialogs
 
         public void OnDialogClosed()
         {
-
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-
         }
 
-        #endregion
+        #endregion iDialogAware
 
         #region command methods
 
@@ -86,29 +83,23 @@ namespace PawnShop.Modules.Login.Dialogs
 
         private void Login(PasswordBox passwordBox) // wiem, ze to psuje pattern MVVM ale ze wzgledow bezpieczenstwa nie robie Dependency property, to do check Mahapps PassswordBox implementation
         {
-
             try
             {
                 TryToLogin(passwordBox);
             }
             catch (Exception e)
             {
-
             }
         }
-
-
 
         private void TryToLogin(PasswordBox passwordBox)
         {
             var hash = _hashService.Hash(passwordBox.Password);
             var test = _hashService.Check(hash, passwordBox.Password);
 
-
-
             RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
         }
 
-        #endregion
+        #endregion command methods
     }
 }

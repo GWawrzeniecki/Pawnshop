@@ -1,32 +1,31 @@
-﻿using PawnShop.Services;
-using PawnShop.Services.Interfaces;
+﻿using PawnShop.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace PawnShop.Services.Implementations
 {
     public sealed class HashService : IHashService
     {
         #region private members
-        private const int SaltSize = 16; // 128 bit 
+
+        private const int SaltSize = 16; // 128 bit
         private const int KeySize = 32; // 256 bit
         private const int Iterations = 10000;
         private readonly ISecretManagerService _secretManagerService;
         private readonly IAesService _aesService;
-        #endregion
 
+        #endregion private members
 
         #region constructor
+
         public HashService(ISecretManagerService secretManagerService, IAesService aesService)
         {
             this._secretManagerService = secretManagerService;
             this._aesService = aesService;
         }
-        #endregion
+
+        #endregion constructor
 
         #region public methods
 
@@ -49,8 +48,6 @@ namespace PawnShop.Services.Implementations
             return $"{Iterations}.{Convert.ToBase64String(salt)}.{encryptedKey}";
         }
 
-
-
         public bool Check(string hash, string password)
         {
             var parts = hash.Split('.', 3);
@@ -58,14 +55,11 @@ namespace PawnShop.Services.Implementations
             if (parts.Length != 3)
                 throw new FormatException($"Parameter {nameof(hash)} has invalid format.");
 
-
             var iterations = Convert.ToInt32(parts[0]);
             var salt = Convert.FromBase64String(parts[1]);
             var key = Convert.FromBase64String(parts[2]);
 
-
             GetSecret(Constants.PepperAesKeySecret, out string AesPepperKey);
-
 
             var decryptedKey = Decrypt(AesPepperKey, Convert.ToBase64String(key));
             key = Convert.FromBase64String(decryptedKey);
@@ -80,7 +74,8 @@ namespace PawnShop.Services.Implementations
 
             return verified;
         }
-        #endregion
+
+        #endregion public methods
 
         #region private methods
 
@@ -105,6 +100,6 @@ namespace PawnShop.Services.Implementations
 
         private string Decrypt(string key, string valueToDecrypt) => _aesService.DecryptString(key, valueToDecrypt);
 
-        #endregion
+        #endregion private methods
     }
 }

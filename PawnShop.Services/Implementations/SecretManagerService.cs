@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PawnShop.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PawnShop.Services.Implementations
 {

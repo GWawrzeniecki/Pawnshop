@@ -1,6 +1,5 @@
 ﻿using MahApps.Metro.Controls;
 using Prism.Services.Dialogs;
-using System.Windows;
 
 namespace PawnShop.Views
 {
@@ -16,5 +15,4 @@ namespace PawnShop.Views
 
         public IDialogResult Result { get; set; }
     }
-
 }

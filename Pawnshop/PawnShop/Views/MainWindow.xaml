@@ -3,18 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="350" Width="525" 
+        Title="{Binding Title}" Height="350" Width="525"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
-
-
     <DockPanel>
-         <!--Top Taskbar--> 
-        <ContentControl DockPanel.Dock="Top" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.TopTaskBarRegion}"   />
+         <!--Top Taskbar-->
+        <ContentControl DockPanel.Dock="Top" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.TopTaskBarRegion}" />
 
-         <!--Menu--> 
-        <mah:HamburgerMenu DockPanel.Dock="Left" ItemTemplate="{StaticResource HamburgerMenuItem}" >
+         <!--Menu-->
+        <mah:HamburgerMenu DockPanel.Dock="Left" ItemTemplate="{StaticResource HamburgerMenuItem}">
 
              <!--Menu items-->
             <mah:HamburgerMenu.ItemsSource>
@@ -29,10 +27,7 @@
             </mah:HamburgerMenu.Content>
         </mah:HamburgerMenu>
 
-         <!--Bottom info line--> 
-        <StackPanel DockPanel.Dock="Bottom" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.BottomInfoLineRegion}"/>
-        
-
+         <!--Bottom info line-->
+        <StackPanel DockPanel.Dock="Bottom" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.BottomInfoLineRegion}" />
     </DockPanel>
 </mah:MetroWindow>
-

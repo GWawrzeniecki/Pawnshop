@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                    >
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--  This is the template for all menu items. In this sample we use the glyph items.  -->
     <DataTemplate x:Key="HamburgerMenuItem" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
@@ -48,5 +47,4 @@
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
-
 </ResourceDictionary>

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using System.Globalization;
+using System.Linq;
 
 namespace PawnShop.Services.Extensions
 {
@@ -10,9 +9,9 @@ namespace PawnShop.Services.Extensions
     {
         public static IEnumerable<byte> HexStringToByte(this string value)
         {
-            if (string.IsNullOrEmpty(value))      
+            if (string.IsNullOrEmpty(value))
                 throw new ArgumentException($"'{nameof(value)}' cannot be null or empty.", nameof(value));
-          
+
             if (value.Split(' ').Count() < 0)
                 throw new FormatException("Hex values should be separated by space separator.");
 

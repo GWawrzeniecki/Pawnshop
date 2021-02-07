@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PawnShop.Services
+﻿namespace PawnShop.Services
 {
     public static class Constants
     {

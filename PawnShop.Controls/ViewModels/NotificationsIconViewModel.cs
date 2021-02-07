@@ -1,8 +1,4 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Prism.Mvvm;
 
 namespace PawnShop.CoreViews.ViewModels
 {
@@ -10,7 +6,6 @@ namespace PawnShop.CoreViews.ViewModels
     {
         public NotificationsIconViewModel()
         {
-
         }
     }
 }

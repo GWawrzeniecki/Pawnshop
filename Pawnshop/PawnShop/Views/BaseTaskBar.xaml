@@ -3,22 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             xmlns:controls="clr-namespace:PawnShop.CoreViews.Views;assembly=PawnShop.Controls"
-             >
-
-
-
+             xmlns:controls="clr-namespace:PawnShop.CoreViews.Views;assembly=PawnShop.Controls">
 
     <Grid Margin="2">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <controls:NotificationsIcon Grid.Column="2"/>
-        <controls:LogoutIcon Grid.Column="3"/>
-        
+        <controls:NotificationsIcon Grid.Column="2" />
+        <controls:LogoutIcon Grid.Column="3" />
     </Grid>
 </UserControl>

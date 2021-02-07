@@ -1,7 +1,11 @@
 ﻿using MahApps.Metro.Controls;
 using PawnShop.Core;
+using PawnShop.Core.Dialogs;
 using PawnShop.Core.Regions;
 using PawnShop.Modules.Login.Dialogs;
+using PawnShop.Services.DataService;
+using PawnShop.Services.Implementations;
+using PawnShop.Services.Interfaces;
 using PawnShop.Views;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -9,11 +13,6 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System.Windows;
 using System.Windows.Controls;
-using PawnShop.Core.Dialogs;
-using PawnShop.Services;
-using PawnShop.Services.DataService;
-using PawnShop.Services.Interfaces;
-using PawnShop.Services.Implementations;
 
 namespace PawnShop
 {
@@ -24,8 +23,8 @@ namespace PawnShop
     {
         public App()
         {
-
         }
+
         protected override Window CreateShell()
         {
             return Container.Resolve<MainWindow>();
@@ -35,7 +34,7 @@ namespace PawnShop
         {
             containerRegistry.RegisterSingleton<IApllicationCommands, ApplicationCommands>();
             containerRegistry.RegisterSingleton<ISecretManagerService, SecretManagerService>();
-            containerRegistry.RegisterSingleton<IHashService, HashService>();      
+            containerRegistry.RegisterSingleton<IHashService, HashService>();
             containerRegistry.RegisterSingleton<IAesService, AesService>();
             containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
@@ -48,7 +47,6 @@ namespace PawnShop
 
             regionAdapterMappings.RegisterMapping<StackPanel>(Container.Resolve<StackPanelRegionAdapter>());
             regionAdapterMappings.RegisterMapping<HamburgerMenuItemCollection>(Container.Resolve<HamburgerMenuItemCollectionRegionAdapter>());
-
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
@@ -59,6 +57,7 @@ namespace PawnShop
         protected override void OnInitialized()
         {
             #region Login
+
             var dialogService = Container.Resolve<IDialogService>();
 
             dialogService.ShowLogInDialog(c =>
@@ -68,13 +67,15 @@ namespace PawnShop
                 else
                     Application.Current.Shutdown();
             });
-            #endregion
+
+            #endregion Login
 
             #region registering views
+
             var regionManager = Container.Resolve<IRegionManager>();
             regionManager.RegisterViewWithRegion(RegionNames.TopTaskBarRegion, typeof(BaseTaskBar));
-            #endregion
 
+            #endregion registering views
         }
     }
 }

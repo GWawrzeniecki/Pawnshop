@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PawnShop.Core.Regions
+﻿namespace PawnShop.Core.Regions
 {
     public static class RegionNames
     {

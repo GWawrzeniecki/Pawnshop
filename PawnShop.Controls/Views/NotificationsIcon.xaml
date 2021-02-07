@@ -4,9 +4,7 @@
              xmlns:prism="http://prismlibrary.com/" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <Button  Background="{x:Null}" BorderBrush="{x:Null}" >
-        <iconPacks:PackIconMaterial Kind="Bell"  />
+    <Button  Background="{x:Null}" BorderBrush="{x:Null}">
+        <iconPacks:PackIconMaterial Kind="Bell" />
     </Button>
-
-
 </UserControl>

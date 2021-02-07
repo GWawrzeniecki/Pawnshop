@@ -2,9 +2,6 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 
 namespace PawnShop.CoreViews.ViewModels
@@ -12,18 +9,18 @@ namespace PawnShop.CoreViews.ViewModels
     public class LogoutIconViewModel : BindableBase
     {
         #region private members
+
         private DelegateCommand<string> _logoutCommand;
         private readonly IDialogService _dialogService;
-        #endregion
+
+        #endregion private members
 
         #region public properties
 
         public DelegateCommand<string> LogoutCommand =>
 _logoutCommand ??= new DelegateCommand<string>(Logout);
 
-       
-        #endregion
-
+        #endregion public properties
 
         #region constructor
 
@@ -32,10 +29,10 @@ _logoutCommand ??= new DelegateCommand<string>(Logout);
             this._dialogService = dialogService;
         }
 
-        #endregion
-
+        #endregion constructor
 
         #region command methods
+
         private void Logout(string obj)
         {
             Application.Current.MainWindow.Hide();
@@ -48,8 +45,7 @@ _logoutCommand ??= new DelegateCommand<string>(Logout);
                     Application.Current.Shutdown(1);
             });
         }
-        #endregion
 
-
+        #endregion command methods
     }
 }
