@@ -9,7 +9,6 @@ namespace PawnShop.EF.Data
     {
         public PawnshopContext()
         {
-           
         }
 
         public PawnshopContext(DbContextOptions<PawnshopContext> options)

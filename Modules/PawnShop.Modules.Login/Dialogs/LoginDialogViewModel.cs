@@ -4,16 +4,24 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Security;
 using System.Windows.Controls;
 
 namespace PawnShop.Modules.Login.Dialogs
 {
-    public class LoginDialogViewModel : BindableBase, IDialogAware
+    public class LoginDialogViewModel : BindableBase, IDialogAware, INotifyDataErrorInfo
     {
         #region private members
 
+        protected readonly Dictionary<string, List<string>> _errorsByPropertyName = new Dictionary<string, List<string>>();
         private bool _userNameHasText;
         private bool _passwordBoxHasText;
+        private bool _passwordTag;
+        private string _userName;
         private DelegateCommand<PasswordBox> _loginCommand;
         private readonly IHashService _hashService;
         private readonly IUnitOfWork _unitOfWork;
@@ -23,8 +31,11 @@ namespace PawnShop.Modules.Login.Dialogs
         #region public members
 
         public string Title => "Logowanie";
+        public bool HasErrors => _errorsByPropertyName.Any();
 
         public event Action<IDialogResult> RequestClose;
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
         #endregion public members
 
@@ -42,6 +53,18 @@ namespace PawnShop.Modules.Login.Dialogs
         {
             get { return _passwordBoxHasText; }
             set { SetProperty(ref _passwordBoxHasText, value); }
+        }
+
+        public string UserName
+        {
+            get { return _userName; }
+            set { SetProperty(ref _userName, value); }
+        }
+
+        public bool PasswordTag
+        {
+            get { return _passwordTag; }
+            set { SetProperty(ref _passwordTag, value); }
         }
 
         #endregion public properties
@@ -76,30 +99,89 @@ namespace PawnShop.Modules.Login.Dialogs
 
         #region command methods
 
-        private bool CanLogin(PasswordBox arg)
-        {
-            return UserNameHasText && PasswordBoxHasText;
-        }
-
-        private void Login(PasswordBox passwordBox) // wiem, ze to psuje pattern MVVM ale ze wzgledow bezpieczenstwa nie robie Dependency property, to do check Mahapps PassswordBox implementation
+        private void Login(PasswordBox passwordBox)
         {
             try
             {
-                TryToLogin(passwordBox);
+                var pwd = passwordBox.SecurePassword.Copy();
+                pwd.MakeReadOnly();
+                TryToLogin(UserName, pwd);
             }
             catch (Exception e)
             {
             }
-        }
-
-        private void TryToLogin(PasswordBox passwordBox)
-        {
-            var hash = _hashService.Hash(passwordBox.Password);
-            var test = _hashService.Check(hash, passwordBox.Password);
-
-            RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+            finally
+            {
+            }
         }
 
         #endregion command methods
+
+        #region private methods
+
+        private bool CanLogin(PasswordBox passwordBox)
+        {
+            return UserNameHasText && PasswordBoxHasText;
+        }
+
+        private void TryToLogin(string userName, SecureString password)
+        {
+            var passwordHash = _hashService.Hash(password);
+            var isValidPassword = _hashService.Check(passwordHash, password);
+
+            isValidPassword = false;
+
+            if (!isValidPassword)
+                AddError(nameof(PasswordTag), "Login lub hasło jest nieprawidłowe.");
+            else
+                ClearError(nameof(PasswordTag), "Login lub hasło jest nieprawidłowe.");
+
+            //RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+        }
+
+        #endregion private methods
+
+        #region INotifyDataError
+
+        public IEnumerable GetErrors(string propertyName)
+        {
+            return _errorsByPropertyName.ContainsKey(propertyName) ?
+            _errorsByPropertyName[propertyName] : null;
+        }
+
+        protected void OnErrorsChanged(string propertyName)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+        }
+
+        protected void AddError(string propertyName, string error)
+        {
+            if (!_errorsByPropertyName.ContainsKey(propertyName))
+                _errorsByPropertyName[propertyName] = new List<string>();
+
+            if (!_errorsByPropertyName[propertyName].Contains(error))
+            {
+                _errorsByPropertyName[propertyName].Add(error);
+                OnErrorsChanged(propertyName);
+            }
+        }
+
+        protected void ClearError(string propertyName, string error)
+        {
+            if (_errorsByPropertyName.ContainsKey(propertyName))
+            {
+                var list = _errorsByPropertyName[propertyName];
+                list.Remove(error);
+
+                if (list.Count == 0)
+                {
+                    _errorsByPropertyName.Remove(propertyName);
+                }
+
+                OnErrorsChanged(propertyName);
+            }
+        }
+
+        #endregion INotifyDataError
     }
 }

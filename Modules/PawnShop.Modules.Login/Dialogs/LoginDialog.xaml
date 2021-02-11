@@ -1,9 +1,10 @@
 ﻿<UserControl x:Class="PawnShop.Modules.Login.Dialogs.LoginDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:prism="http://prismlibrary.com/"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             prism:ViewModelLocator.AutoWireViewModel="True"
-            xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+             prism:ViewModelLocator.AutoWireViewModel="True">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
@@ -33,7 +34,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="1" Text="Użytkownik" />
             <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" Margin="0 4 2 0" />
-            <TextBox  Grid.Row="1" Grid.Column="1" mah:TextBoxHelper.HasText="{Binding UserNameHasText, Mode=TwoWay}" />
+            <TextBox  Grid.Row="1" Grid.Column="1" mah:TextBoxHelper.HasText="{Binding UserNameHasText, Mode=TwoWay}" Text="{Binding UserName}" />
         </Grid>
 
         <Grid Margin="100 0 100 60">
@@ -49,8 +50,9 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="1" Text="Hasło" />
-            <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Lock" Margin="0 4 2 0" />
-            <PasswordBox Grid.Row="1" Grid.Column="1" Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}" mah:TextBoxHelper.HasText="{Binding PasswordBoxHasText, Mode=TwoWay}" x:Name="passwordBox"  mah:PasswordBoxHelper.CapsLockWarningToolTip="CapsLock jest włączony" />
+            <iconPacks:PackIconMaterial  Grid.Row="1" Grid.Column="0" Kind="Lock" Margin="0 4 2 0" />
+
+            <PasswordBox Grid.Row="1" Grid.Column="1" Tag="{Binding PasswordTag, ValidatesOnDataErrors=True}" Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}" mah:TextBoxHelper.HasText="{Binding PasswordBoxHasText, Mode=TwoWay}"  mah:PasswordBoxHelper.CapsLockWarningToolTip="CapsLock jest włączony" x:Name="passwordBox" />
         </Grid>
 
         <Button Content="Zaloguj" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}" Margin="150 0 150 0" Height="50" />

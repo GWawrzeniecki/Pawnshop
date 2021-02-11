@@ -1,9 +1,11 @@
-﻿namespace PawnShop.Services.Interfaces
+﻿using System.Security;
+
+namespace PawnShop.Services.Interfaces
 {
     public interface IHashService
     {
-        string Hash(string password);
+        string Hash(SecureString password);
 
-        bool Check(string hash, string password);
+        bool Check(string hash, SecureString password);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using PawnShop.Services.Interfaces;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Security.Cryptography;
 
 namespace PawnShop.Services.Implementations
@@ -29,18 +31,14 @@ namespace PawnShop.Services.Implementations
 
         #region public methods
 
-        public string Hash(string password)
+        public string Hash(SecureString password)
         {
-            if (string.IsNullOrEmpty(password))
+            if (password == null || password.Length == 0)
                 throw new ArgumentException($"'{nameof(password)}' cannot be null or empty.", nameof(password));
 
             var salt = GenerateSalt();
-            using var algorithm = new Rfc2898DeriveBytes(
-               password,
-               salt,
-               Iterations);
 
-            var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
+            var key = Convert.ToBase64String(DeriveKey(password, salt, Iterations, KeySize));
 
             GetSecret(Constants.PepperAesKeySecret, out string AesPepperKey);
 
@@ -48,14 +46,14 @@ namespace PawnShop.Services.Implementations
             return $"{Iterations}.{Convert.ToBase64String(salt)}.{encryptedKey}";
         }
 
-        public bool Check(string hash, string password)
+        public bool Check(string hash, SecureString password)
         {
             var parts = hash.Split('.', 3);
 
             if (parts.Length != 3)
                 throw new FormatException($"Parameter {nameof(hash)} has invalid format.");
 
-            var iterations = Convert.ToInt32(parts[0]);
+            var iterations = Convert.ToInt32(parts[0]); // Try parse
             var salt = Convert.FromBase64String(parts[1]);
             var key = Convert.FromBase64String(parts[2]);
 
@@ -64,11 +62,7 @@ namespace PawnShop.Services.Implementations
             var decryptedKey = Decrypt(AesPepperKey, Convert.ToBase64String(key));
             key = Convert.FromBase64String(decryptedKey);
 
-            using var algorithm = new Rfc2898DeriveBytes(
-              password,
-              salt,
-              iterations);
-            var keyToCheck = algorithm.GetBytes(KeySize);
+            var keyToCheck = DeriveKey(password, salt, iterations, KeySize);
 
             var verified = keyToCheck.SequenceEqual(key);
 
@@ -78,6 +72,37 @@ namespace PawnShop.Services.Implementations
         #endregion public methods
 
         #region private methods
+
+        private byte[] DeriveKey(SecureString password, byte[] salt, int iterations, int keyByteLength)
+        {
+            IntPtr ptr = Marshal.SecureStringToBSTR(password);
+            byte[] passwordByteArray = null;
+            try
+            {
+                int length = Marshal.ReadInt32(ptr, -4);
+                passwordByteArray = new byte[length];
+                GCHandle handle = GCHandle.Alloc(passwordByteArray, GCHandleType.Pinned);
+                try
+                {
+                    for (int i = 0; i < length; i++)
+                    {
+                        passwordByteArray[i] = Marshal.ReadByte(ptr, i);
+                    }
+
+                    using var rfc2898 = new Rfc2898DeriveBytes(passwordByteArray, salt, iterations);
+                    return rfc2898.GetBytes(keyByteLength);
+                }
+                finally
+                {
+                    Array.Clear(passwordByteArray, 0, passwordByteArray.Length);
+                    handle.Free();
+                }
+            }
+            finally
+            {
+                Marshal.ZeroFreeBSTR(ptr);
+            }
+        }
 
         private byte[] GenerateSalt()
         {
