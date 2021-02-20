@@ -1,4 +1,5 @@
-﻿using PawnShop.Services.DataService;
+﻿using PawnShop.Core.Dialogs;
+using PawnShop.Modules.Login.Extensions;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -9,22 +10,24 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Security;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace PawnShop.Modules.Login.Dialogs
+namespace PawnShop.Modules.Login.ViewModels
 {
     public class LoginDialogViewModel : BindableBase, IDialogAware, INotifyDataErrorInfo
     {
         #region private members
 
         protected readonly Dictionary<string, List<string>> _errorsByPropertyName = new Dictionary<string, List<string>>();
+        private readonly ILoginService _loginService;
+        private readonly IDialogService _dialogService;
+        private readonly IUIService _uiService;
         private bool _userNameHasText;
         private bool _passwordBoxHasText;
         private bool _passwordTag;
         private string _userName;
         private DelegateCommand<PasswordBox> _loginCommand;
-        private readonly IHashService _hashService;
-        private readonly IUnitOfWork _unitOfWork;
 
         #endregion private members
 
@@ -41,7 +44,7 @@ namespace PawnShop.Modules.Login.Dialogs
 
         #region public properties
 
-        public DelegateCommand<PasswordBox> LoginCommand => _loginCommand ??= new DelegateCommand<PasswordBox>(Login, CanLogin);
+        public DelegateCommand<PasswordBox> LoginCommand => _loginCommand ??= new DelegateCommand<PasswordBox>(LoginAsync, CanLogin);
 
         public bool UserNameHasText
         {
@@ -71,11 +74,12 @@ namespace PawnShop.Modules.Login.Dialogs
 
         #region constructor
 
-        public LoginDialogViewModel(IHashService hashService, IUnitOfWork unitOfWork)
+        public LoginDialogViewModel(ILoginService loginService, IDialogService dialogService, IUIService uService)
         {
-            this._hashService = hashService;
-            this._unitOfWork = unitOfWork;
             LoginCommand.ObservesProperty(() => UserNameHasText).ObservesProperty(() => PasswordBoxHasText);
+            this._loginService = loginService;
+            this._dialogService = dialogService;
+            this._uiService = uService;
         }
 
         #endregion constructor
@@ -99,16 +103,18 @@ namespace PawnShop.Modules.Login.Dialogs
 
         #region command methods
 
-        private void Login(PasswordBox passwordBox)
+        private async void LoginAsync(PasswordBox passwordBox)
         {
             try
             {
-                var pwd = passwordBox.SecurePassword.Copy();
-                pwd.MakeReadOnly();
-                TryToLogin(UserName, pwd);
+                var password = passwordBox.GetReadOnlyCopy();
+                _uiService.SetMouseBusyCursor();
+                await TryToLoginAsync(UserName, password);
+                _uiService.ResetMouseCursor();
             }
             catch (Exception e)
             {
+                _dialogService.ShowNotificationDialog($"Wystąpił błąd podczas logowania.{Environment.NewLine}Błąd: {e.Message}", null);
             }
             finally
             {
@@ -124,19 +130,19 @@ namespace PawnShop.Modules.Login.Dialogs
             return UserNameHasText && PasswordBoxHasText;
         }
 
-        private void TryToLogin(string userName, SecureString password)
+        private async Task TryToLoginAsync(string userName, SecureString password)
         {
-            var passwordHash = _hashService.Hash(password);
-            var isValidPassword = _hashService.Check(passwordHash, password);
-
-            isValidPassword = false;
+            var isValidPassword = await _loginService.LoginAsync(userName, password);
 
             if (!isValidPassword)
+            {
                 AddError(nameof(PasswordTag), "Login lub hasło jest nieprawidłowe.");
+            }
             else
+            {
                 ClearError(nameof(PasswordTag), "Login lub hasło jest nieprawidłowe.");
-
-            //RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+                RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+            }
         }
 
         #endregion private methods

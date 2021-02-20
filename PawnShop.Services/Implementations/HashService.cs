@@ -13,7 +13,6 @@ namespace PawnShop.Services.Implementations
 
         private const int SaltSize = 16; // 128 bit
         private const int KeySize = 32; // 256 bit
-        private const int Iterations = 10000;
         private readonly ISecretManagerService _secretManagerService;
         private readonly IAesService _aesService;
 
@@ -38,30 +37,39 @@ namespace PawnShop.Services.Implementations
 
             var salt = GenerateSalt();
 
-            var key = Convert.ToBase64String(DeriveKey(password, salt, Iterations, KeySize));
+            GetSecret(Constants.IterationsKeySecret, out string Iterations);
+            var iterations = int.Parse(Iterations);
+
+            var key = Convert.ToBase64String(DeriveKey(password, salt, iterations, KeySize));
 
             GetSecret(Constants.PepperAesKeySecret, out string AesPepperKey);
 
             var encryptedKey = Encrypt(AesPepperKey, key);
-            return $"{Iterations}.{Convert.ToBase64String(salt)}.{encryptedKey}";
+            return $"{Convert.ToBase64String(salt)}.{encryptedKey}";
         }
 
         public bool Check(string hash, SecureString password)
         {
-            var parts = hash.Split('.', 3);
+            if (string.IsNullOrWhiteSpace(hash))
+                throw new ArgumentException($"'{nameof(hash)}' cannot be null or whitespace", nameof(hash));
 
-            if (parts.Length != 3)
+            if (password == null || password.Length == 0)
+                throw new ArgumentException($"'{nameof(password)}' cannot be null or empty.", nameof(password));
+
+            var parts = hash.Split('.', 2);
+
+            if (parts.Length != 2)
                 throw new FormatException($"Parameter {nameof(hash)} has invalid format.");
 
-            var iterations = Convert.ToInt32(parts[0]); // Try parse
-            var salt = Convert.FromBase64String(parts[1]);
-            var key = Convert.FromBase64String(parts[2]);
+            var salt = Convert.FromBase64String(parts[0]);
+            var key = Convert.FromBase64String(parts[1]);
 
             GetSecret(Constants.PepperAesKeySecret, out string AesPepperKey);
 
             var decryptedKey = Decrypt(AesPepperKey, Convert.ToBase64String(key));
             key = Convert.FromBase64String(decryptedKey);
-
+            GetSecret(Constants.IterationsKeySecret, out string Iterations);
+            var iterations = int.Parse(Iterations);
             var keyToCheck = DeriveKey(password, salt, iterations, KeySize);
 
             var verified = keyToCheck.SequenceEqual(key);

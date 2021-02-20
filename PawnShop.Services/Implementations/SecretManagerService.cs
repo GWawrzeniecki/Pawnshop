@@ -9,6 +9,9 @@ namespace PawnShop.Services.Implementations
     {
         public bool GetValue<T>(string key, out string value) where T : class
         {
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace", nameof(key));
+
             var config = new ConfigurationBuilder().AddUserSecrets<T>().Build();
             var secretProvider = config.Providers.First();
 

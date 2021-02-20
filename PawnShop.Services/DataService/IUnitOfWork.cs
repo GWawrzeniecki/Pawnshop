@@ -1,4 +1,4 @@
-﻿using PawnShop.EF.Models;
+﻿using PawnShop.DataAccess.Models;
 
 namespace PawnShop.Services.DataService
 {

@@ -2,7 +2,11 @@
 using PawnShop.Core;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Regions;
-using PawnShop.Modules.Login.Dialogs;
+using PawnShop.Dialogs.Views;
+using PawnShop.Dialogs.ViewsModels;
+using PawnShop.Modules.Login;
+using PawnShop.Modules.Login.ViewModels;
+using PawnShop.Modules.Login.Views;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Implementations;
 using PawnShop.Services.Interfaces;
@@ -33,12 +37,11 @@ namespace PawnShop
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IApllicationCommands, ApplicationCommands>();
-            containerRegistry.RegisterSingleton<ISecretManagerService, SecretManagerService>();
-            containerRegistry.RegisterSingleton<IHashService, HashService>();
-            containerRegistry.RegisterSingleton<IAesService, AesService>();
             containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
-            containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
+            containerRegistry.RegisterSingleton<IUIService, UIService>();
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
+            containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
+            containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();
         }
 
         protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
@@ -52,6 +55,7 @@ namespace PawnShop
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             base.ConfigureModuleCatalog(moduleCatalog);
+            moduleCatalog.AddModule<LoginModule>();
         }
 
         protected override void OnInitialized()
@@ -60,7 +64,7 @@ namespace PawnShop
 
             var dialogService = Container.Resolve<IDialogService>();
 
-            dialogService.ShowLogInDialog(c =>
+            dialogService.ShowLoginDialog(c =>
             {
                 if (c.Result == ButtonResult.OK)
                     base.OnInitialized();

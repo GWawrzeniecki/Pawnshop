@@ -1,6 +1,6 @@
 ﻿#nullable disable
 
-namespace PawnShop.EF.Models
+namespace PawnShop.DataAccess.Models
 {
     public partial class Link
     {

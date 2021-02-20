@@ -37,7 +37,7 @@ _logoutCommand ??= new DelegateCommand<string>(Logout);
         {
             Application.Current.MainWindow.Hide();
 
-            _dialogService.ShowLogInDialog(c =>
+            _dialogService.ShowLoginDialog(c =>
             {
                 if (c.Result == ButtonResult.OK)
                     Application.Current.MainWindow.Show();

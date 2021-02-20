@@ -25,8 +25,7 @@ namespace PawnShop.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
-        public DelegateCommand<string> NavigateCommand =>
-_navigateCommand ??= new DelegateCommand<string>(ExecuteNavigateCommand);
+        public DelegateCommand<string> NavigateCommand => _navigateCommand ??= new DelegateCommand<string>(ExecuteNavigateCommand);
 
         #endregion public properties
 

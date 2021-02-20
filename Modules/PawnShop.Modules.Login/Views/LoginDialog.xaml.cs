@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace PawnShop.Modules.Login.Dialogs
+namespace PawnShop.Modules.Login.Views
 {
     /// <summary>
     /// Interaction logic for LoginDialog

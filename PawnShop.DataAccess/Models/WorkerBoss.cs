@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace PawnShop.EF.Models
+namespace PawnShop.DataAccess.Models
 {
     public partial class WorkerBoss
     {
@@ -22,8 +22,7 @@ namespace PawnShop.EF.Models
         public int? GrantedBonus { get; set; }
         public string Pesel { get; set; }
         public string Login { get; set; }
-        public byte[] Hash { get; set; }
-        public byte[] Salt { get; set; }
+        public string Hash { get; set; }
 
         public virtual Privilege Privilege { get; set; }
         public virtual Person WorkerBossNavigation { get; set; }

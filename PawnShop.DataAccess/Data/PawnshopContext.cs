@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PawnShop.EF.Models;
+using PawnShop.DataAccess.Models;
 
 #nullable disable
 
-namespace PawnShop.EF.Data
+namespace PawnShop.DataAccess.Data
 {
     public partial class PawnshopContext : DbContext
     {
@@ -57,7 +57,7 @@ namespace PawnShop.EF.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=Kogut-Desktop;Initial Catalog=Pawnshop;Integrated Security=True;trustServerCertificate=true"); // czytanie z app.configa badz z secretu
+                optionsBuilder.UseSqlServer("Data Source=Kogut-Desktop\\Sqlexpress;Initial Catalog=Pawnshop;Integrated Security=True;trustServerCertificate=true");
             }
         }
 
@@ -85,9 +85,7 @@ namespace PawnShop.EF.Data
 
                 entity.Property(e => e.AddressId).HasColumnName("AddressID");
 
-                entity.Property(e => e.ApartmentNumber)
-                    .IsRequired()
-                    .HasMaxLength(10);
+                entity.Property(e => e.ApartmentNumber).HasMaxLength(10);
 
                 entity.Property(e => e.CityId).HasColumnName("CityID");
 
@@ -122,9 +120,7 @@ namespace PawnShop.EF.Data
             {
                 entity.ToTable("City", "Pawnshop");
 
-                entity.Property(e => e.CityId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CityID");
+                entity.Property(e => e.CityId).HasColumnName("CityID");
 
                 entity.Property(e => e.City1)
                     .IsRequired()
@@ -730,9 +726,7 @@ namespace PawnShop.EF.Data
             {
                 entity.ToTable("Privilege", "Pawnshop");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
             });
 
             modelBuilder.Entity<Sale>(entity =>
@@ -814,11 +808,13 @@ namespace PawnShop.EF.Data
                     .ValueGeneratedNever()
                     .HasColumnName("WorkerBossID");
 
-                entity.Property(e => e.DatePhysicalCheckUp).HasColumnType("datetime");
+                entity.Property(e => e.DatePhysicalCheckUp).HasColumnType("date");
 
-                entity.Property(e => e.Hash).IsRequired();
+                entity.Property(e => e.Hash)
+                    .IsRequired()
+                    .HasMaxLength(89);
 
-                entity.Property(e => e.HireDate).HasColumnType("datetime");
+                entity.Property(e => e.HireDate).HasColumnType("date");
 
                 entity.Property(e => e.Login)
                     .IsRequired()
@@ -829,10 +825,6 @@ namespace PawnShop.EF.Data
                     .HasMaxLength(11);
 
                 entity.Property(e => e.PrivilegeId).HasColumnName("PrivilegeID");
-
-                entity.Property(e => e.Salt)
-                    .IsRequired()
-                    .HasMaxLength(16);
 
                 entity.Property(e => e.WorkerBossTypeId).HasColumnName("WorkerBossTypeID");
 
@@ -883,9 +875,7 @@ namespace PawnShop.EF.Data
             {
                 entity.ToTable("WorkerBossType", "Pawnshop");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Type)
                     .IsRequired()

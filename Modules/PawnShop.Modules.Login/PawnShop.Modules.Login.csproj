@@ -14,10 +14,6 @@
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-    <Folder Include="Views\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
     <ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
   </ItemGroup>
