@@ -10,7 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PawnShop.Business\PawnShop.Business.csproj" />
+    <ProjectReference Include="..\PawnShop.Core\PawnShop.Core.csproj" />
     <ProjectReference Include="..\PawnShop.DataAccess\PawnShop.DataAccess.csproj" />
+    <ProjectReference Include="..\PawnShop.Exceptions\PawnShop.Exceptions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

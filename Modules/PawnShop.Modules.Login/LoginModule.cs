@@ -18,5 +18,7 @@ namespace PawnShop.Modules.Login
             containerRegistry.RegisterSingleton<IAesService, AesService>();
             containerRegistry.RegisterSingleton<ILoginService, LoginService>();
         }
+
+       
     }
 }

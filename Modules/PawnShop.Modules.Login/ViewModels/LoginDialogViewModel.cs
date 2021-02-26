@@ -1,6 +1,8 @@
 ﻿using PawnShop.Core.Dialogs;
+using PawnShop.Business.Models;
 using PawnShop.Modules.Login.Extensions;
 using PawnShop.Services.Interfaces;
+using PawnShop.Exceptions.DBExceptions;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -28,7 +30,7 @@ namespace PawnShop.Modules.Login.ViewModels
         private bool _passwordTag;
         private string _userName;
         private DelegateCommand<PasswordBox> _loginCommand;
-
+        private readonly string _loginError = "Login lub hasło jest nieprawidłowe.";
         #endregion private members
 
         #region public members
@@ -70,6 +72,9 @@ namespace PawnShop.Modules.Login.ViewModels
             set { SetProperty(ref _passwordTag, value); }
         }
 
+
+
+
         #endregion public properties
 
         #region constructor
@@ -107,18 +112,31 @@ namespace PawnShop.Modules.Login.ViewModels
         {
             try
             {
+                AutoLoginAdmin(passwordBox);
                 var password = passwordBox.GetReadOnlyCopy();
                 _uiService.SetMouseBusyCursor();
                 await TryToLoginAsync(UserName, password);
                 _uiService.ResetMouseCursor();
             }
+            catch (LoadingStartupDataException e)
+            {
+                _uiService.ResetMouseCursor();
+                _dialogService.ShowNotificationDialog("Błąd", $"Wystąpił błąd podczas ładowania danych niezbędnych do działania aplikacji.{Environment.NewLine}Błąd: {e.InnerException.Message}", null);
+            }
+            catch (LoginException e)
+            {
+                _uiService.ResetMouseCursor();
+                _dialogService.ShowNotificationDialog("Błąd", $"Wystąpił błąd podczas logowania.{Environment.NewLine}Błąd: {e.InnerException.Message}", null);
+            }
             catch (Exception e)
             {
                 _uiService.ResetMouseCursor();
-                _dialogService.ShowNotificationDialog("Błąd logowania", $"Wystąpił błąd podczas logowania.{Environment.NewLine}Błąd: {e.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd", $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
             }
 
         }
+
+
 
         #endregion command methods
 
@@ -126,25 +144,50 @@ namespace PawnShop.Modules.Login.ViewModels
 
         private bool CanLogin(PasswordBox passwordBox)
         {
-            return UserNameHasText && PasswordBoxHasText;
+            //return UserNameHasText && PasswordBoxHasText;
+            return true; // For fast login while developing
         }
 
         private async Task TryToLoginAsync(string userName, SecureString password)
         {
-            var isValidPassword = await _loginService.LoginAsync(userName, password);
+            (bool success, WorkerBoss loggedUser) = await _loginService.LoginAsync(userName, password);
+            ValidateLogin(success);
 
-            if (!isValidPassword)
-            {
-                AddError(nameof(PasswordTag), "Login lub hasło jest nieprawidłowe.");
-            }
-            else
-            {
-                ClearError(nameof(PasswordTag), "Login lub hasło jest nieprawidłowe.");
-                RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
-            }
+            if (!success)
+                return;
+
+            await _loginService.LoadStartupData(loggedUser);
+            CloseDialog(ButtonResult.OK);
+        }
+
+
+
+        private void CloseDialog(ButtonResult buttonResult) => RequestClose?.Invoke(new DialogResult(buttonResult));
+
+        private void AutoLoginAdmin(PasswordBox passwordBox)
+        {
+            UserName = "grzegorz.wawrzeniecki";
+            passwordBox.Password = "testtesttest";
         }
 
         #endregion private methods
+
+        #region validation Methods
+
+        public void ValidateLogin(bool isValidPassword)
+        {
+            if (!isValidPassword)
+            {
+                AddError(nameof(PasswordTag), _loginError);
+            }
+            else
+            {
+                ClearError(nameof(PasswordTag), _loginError);
+
+            }
+        }
+
+        #endregion
 
         #region INotifyDataError
 

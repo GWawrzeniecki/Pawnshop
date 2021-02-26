@@ -2,8 +2,11 @@
 using PawnShop.Core;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Regions;
+using PawnShop.Core.SharedVariables;
 using PawnShop.Dialogs.Views;
 using PawnShop.Dialogs.ViewsModels;
+using PawnShop.Modules.Home;
+using PawnShop.Modules.Home.Views;
 using PawnShop.Modules.Login;
 using PawnShop.Modules.Login.ViewModels;
 using PawnShop.Modules.Login.Views;
@@ -39,6 +42,7 @@ namespace PawnShop
             containerRegistry.RegisterSingleton<IApllicationCommands, ApplicationCommands>();
             containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
             containerRegistry.RegisterSingleton<IUIService, UIService>();
+            containerRegistry.RegisterSingleton<ISessionContext, SessionContext>();
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();
@@ -56,6 +60,8 @@ namespace PawnShop
         {
             base.ConfigureModuleCatalog(moduleCatalog);
             moduleCatalog.AddModule<LoginModule>();
+            moduleCatalog.AddModule<HomeModule>(InitializationMode.OnDemand);
+
         }
 
         protected override void OnInitialized()
@@ -78,7 +84,8 @@ namespace PawnShop
 
             var regionManager = Container.Resolve<IRegionManager>();
             regionManager.RegisterViewWithRegion(RegionNames.TopTaskBarRegion, typeof(BaseTaskBar));
-
+            regionManager.RegisterViewWithRegion(RegionNames.BottomInfoLineRegion, typeof(BottomInfoLine));
+            regionManager.RegisterViewWithRegion(RegionNames.ContentRegion, typeof(ViewA));
             #endregion registering views
         }
     }

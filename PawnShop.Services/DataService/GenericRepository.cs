@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PawnShop.DataAccess.Data;
+using PawnShop.Business.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,6 +78,11 @@ namespace PawnShop.Services.DataService
         public virtual TEntity GetByID(object id)
         {
             return dbSet.Find(id);
+        }
+
+        public virtual async Task<TEntity> GetByIDAsync(object id)
+        {
+            return await dbSet.FindAsync(id);
         }
 
         public virtual void Insert(TEntity entity)

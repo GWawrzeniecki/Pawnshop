@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PawnShop.DataAccess.Models;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using PawnShop.Business.Models;
 
 #nullable disable
 
-namespace PawnShop.DataAccess.Data
+namespace PawnShop.Business.Data
 {
     public partial class PawnshopContext : DbContext
     {
@@ -377,7 +379,9 @@ namespace PawnShop.DataAccess.Data
 
                 entity.Property(e => e.Income).HasColumnType("decimal(10, 2)");
 
-                entity.Property(e => e.MoneyBalanceId).HasColumnName("MoneyBalanceID");
+                entity.Property(e => e.MoneyBalanceId)
+                    .HasColumnType("date")
+                    .HasColumnName("MoneyBalanceID");
 
                 entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
 
@@ -618,19 +622,16 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<MoneyBalance>(entity =>
             {
+                entity.HasKey(e => e.TodayDate)
+                    .HasName("MoneyBalance_pk");
+
                 entity.ToTable("MoneyBalance", "Pawnshop");
 
-                entity.Property(e => e.MoneyBalanceId).HasColumnName("MoneyBalanceID");
-
-                entity.Property(e => e.MoneyBalanceAwork)
-                    .HasColumnType("decimal(10, 2)")
-                    .HasColumnName("MoneyBalanceAWork");
-
-                entity.Property(e => e.MoneyBalanceBwork)
-                    .HasColumnType("decimal(10, 2)")
-                    .HasColumnName("MoneyBalanceBWork");
-
                 entity.Property(e => e.TodayDate).HasColumnType("date");
+
+                entity.Property(e => e.MoneyBalance1)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("MoneyBalance");
             });
 
             modelBuilder.Entity<Payment>(entity =>

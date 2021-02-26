@@ -11,7 +11,7 @@ namespace PawnShop.ViewModels
     {
         #region private members
 
-        private string _title = "Prism Application";
+        private string _title = "Pawn shop";
         private DelegateCommand<string> _navigateCommand;
         private readonly IRegionManager _regionManager;
 
