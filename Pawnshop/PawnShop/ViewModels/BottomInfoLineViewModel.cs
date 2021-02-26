@@ -44,7 +44,7 @@ namespace PawnShop.ViewModels
             set { SetProperty(ref _sessionContext, value); }
         }
 
-        public string FullName => $"{SessionContext.LoggedPerson.FirstName} {SessionContext.LoggedPerson.LastName}";
+        public string FullName => $"{SessionContext.LoggedPerson?.FirstName} {SessionContext.LoggedPerson?.LastName}"; // to do ..
 
         #endregion
 
