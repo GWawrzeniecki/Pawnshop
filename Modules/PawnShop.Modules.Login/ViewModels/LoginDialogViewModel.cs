@@ -114,11 +114,10 @@ namespace PawnShop.Modules.Login.ViewModels
             }
             catch (Exception e)
             {
-                _dialogService.ShowNotificationDialog($"Wystąpił błąd podczas logowania.{Environment.NewLine}Błąd: {e.Message}", null);
+                _uiService.ResetMouseCursor();
+                _dialogService.ShowNotificationDialog("Błąd logowania", $"Wystąpił błąd podczas logowania.{Environment.NewLine}Błąd: {e.Message}", null);
             }
-            finally
-            {
-            }
+
         }
 
         #endregion command methods

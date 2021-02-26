@@ -10,9 +10,12 @@ namespace PawnShop.Core.Dialogs
             dialogService.ShowDialog(DialogNames.LoginDialog, callBack);
         }
 
-        public static void ShowNotificationDialog(this IDialogService dialogService, string message, Action<IDialogResult> callBack)
+        public static void ShowNotificationDialog(this IDialogService dialogService, string title, string message, Action<IDialogResult> callBack)
         {
-            dialogService.ShowDialog(DialogNames.NotificationDialog, new DialogParameters($"message={message}"), callBack);
+            var dialogParameters = new DialogParameters();
+            dialogParameters.Add("title", title);
+            dialogParameters.Add("message", message);
+            dialogService.ShowDialog(DialogNames.NotificationDialog, dialogParameters, callBack);
         }
     }
 }

@@ -13,8 +13,7 @@ namespace PawnShop.Dialogs.ViewsModels
 
         private DelegateCommand<string> _closeDialogCommand;
 
-        public DelegateCommand<string> CloseDialogCommand =>
-            _closeDialogCommand ?? (_closeDialogCommand = new DelegateCommand<string>(CloseDialog));
+        public DelegateCommand<string> CloseDialogCommand => _closeDialogCommand ?? (_closeDialogCommand = new DelegateCommand<string>(CloseDialog));
 
         private string _message;
 
@@ -62,6 +61,7 @@ namespace PawnShop.Dialogs.ViewsModels
 
         public virtual void OnDialogOpened(IDialogParameters parameters)
         {
+            Title = parameters.GetValue<string>("title");
             Message = parameters.GetValue<string>("message");
         }
     }
