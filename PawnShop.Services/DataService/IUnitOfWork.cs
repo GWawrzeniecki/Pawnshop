@@ -9,6 +9,5 @@ namespace PawnShop.Services.DataService
         public GenericRepository<Person> PersonRepository { get; }
 
         public MoneyBalanceRepository MoneyBalanceRepository { get; }
-
     }
 }

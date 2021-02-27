@@ -1,8 +1,6 @@
-﻿using PawnShop.Core.Dialogs;
+﻿using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
-using Prism.Services.Dialogs;
-using System.Windows;
 
 namespace PawnShop.CoreViews.ViewModels
 {
@@ -10,40 +8,33 @@ namespace PawnShop.CoreViews.ViewModels
     {
         #region private members
 
-        private DelegateCommand<string> _logoutCommand;
-        private readonly IDialogService _dialogService;
+        private DelegateCommand _logoutCommand;
+
+        private readonly ILoginService _loginService;
 
         #endregion private members
 
         #region public properties
 
-        public DelegateCommand<string> LogoutCommand =>
-_logoutCommand ??= new DelegateCommand<string>(Logout);
+        public DelegateCommand LogoutCommand =>
+_logoutCommand ??= new DelegateCommand(Logout);
 
         #endregion public properties
 
         #region constructor
 
-        public LogoutIconViewModel(IDialogService dialogService)
+        public LogoutIconViewModel(ILoginService loginService)
         {
-            this._dialogService = dialogService;
+            this._loginService = loginService;
         }
 
         #endregion constructor
 
         #region command methods
 
-        private void Logout(string obj)
+        private void Logout()
         {
-            Application.Current.MainWindow.Hide();
-
-            _dialogService.ShowLoginDialog(c =>
-            {
-                if (c.Result == ButtonResult.OK)
-                    Application.Current.MainWindow.Show();
-                else
-                    Application.Current.Shutdown(1);
-            });
+            _loginService.ShowLogoutDialog();
         }
 
         #endregion command methods

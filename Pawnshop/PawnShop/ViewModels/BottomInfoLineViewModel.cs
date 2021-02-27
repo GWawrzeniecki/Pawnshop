@@ -1,24 +1,22 @@
 ﻿using PawnShop.Core.SharedVariables;
-using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Threading;
 
 namespace PawnShop.ViewModels
 {
     public class BottomInfoLineViewModel : BindableBase  // To do bindeableBase w/wo session context
     {
-
         #region private methods
 
-        DispatcherTimer _dispatcherTimer;
+        private DispatcherTimer _dispatcherTimer;
         private DateTime _actualDateTime;
         private ISessionContext _sessionContext;
-        #endregion
+
+        #endregion private methods
 
         #region constructor
+
         public BottomInfoLineViewModel(ISessionContext sessionContext)
         {
             _dispatcherTimer = new DispatcherTimer();
@@ -26,10 +24,9 @@ namespace PawnShop.ViewModels
             SessionContext = sessionContext;
         }
 
-        #endregion
+        #endregion constructor
 
         #region public properties
-
 
         public DateTime ActualDateTime
         {
@@ -37,17 +34,15 @@ namespace PawnShop.ViewModels
             set { SetProperty(ref _actualDateTime, value); }
         }
 
-
         public ISessionContext SessionContext
         {
             get { return _sessionContext; }
             set { SetProperty(ref _sessionContext, value); }
         }
 
-        public string FullName => $"{SessionContext.LoggedPerson?.FirstName} {SessionContext.LoggedPerson?.LastName}"; // to do ..
+        public string FullName => $"{SessionContext.LoggedPerson.FirstName} {SessionContext.LoggedPerson.LastName}";
 
-        #endregion
-
+        #endregion public properties
 
         #region private methods
 
@@ -58,7 +53,7 @@ namespace PawnShop.ViewModels
             _dispatcherTimer.Start();
         }
 
-        #endregion
+        #endregion private methods
 
         #region dispatcher event
 
@@ -67,8 +62,6 @@ namespace PawnShop.ViewModels
             ActualDateTime = DateTime.Now;
         }
 
-        #endregion
-
-
+        #endregion dispatcher event
     }
 }

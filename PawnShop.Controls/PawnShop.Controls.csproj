@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PawnShop.Core\PawnShop.Core.csproj" />
+    <ProjectReference Include="..\PawnShop.Services\PawnShop.Services.csproj" />
   </ItemGroup>
 
 </Project>

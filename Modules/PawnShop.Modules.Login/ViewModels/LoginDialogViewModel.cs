@@ -1,8 +1,8 @@
-﻿using PawnShop.Core.Dialogs;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
+using PawnShop.Core.Dialogs;
+using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Login.Extensions;
 using PawnShop.Services.Interfaces;
-using PawnShop.Exceptions.DBExceptions;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -31,6 +31,7 @@ namespace PawnShop.Modules.Login.ViewModels
         private string _userName;
         private DelegateCommand<PasswordBox> _loginCommand;
         private readonly string _loginError = "Login lub hasło jest nieprawidłowe.";
+
         #endregion private members
 
         #region public members
@@ -71,9 +72,6 @@ namespace PawnShop.Modules.Login.ViewModels
             get { return _passwordTag; }
             set { SetProperty(ref _passwordTag, value); }
         }
-
-
-
 
         #endregion public properties
 
@@ -133,10 +131,7 @@ namespace PawnShop.Modules.Login.ViewModels
                 _uiService.ResetMouseCursor();
                 _dialogService.ShowNotificationDialog("Błąd", $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
             }
-
         }
-
-
 
         #endregion command methods
 
@@ -160,8 +155,6 @@ namespace PawnShop.Modules.Login.ViewModels
             CloseDialog(ButtonResult.OK);
         }
 
-
-
         private void CloseDialog(ButtonResult buttonResult) => RequestClose?.Invoke(new DialogResult(buttonResult));
 
         private void AutoLoginAdmin(PasswordBox passwordBox)
@@ -183,11 +176,10 @@ namespace PawnShop.Modules.Login.ViewModels
             else
             {
                 ClearError(nameof(PasswordTag), _loginError);
-
             }
         }
 
-        #endregion
+        #endregion validation Methods
 
         #region INotifyDataError
 

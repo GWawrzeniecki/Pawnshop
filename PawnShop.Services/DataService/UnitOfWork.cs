@@ -15,6 +15,10 @@ namespace PawnShop.Services.DataService
 
         #endregion private members
 
+        private void test()
+        {
+        }
+
         #region public properties
 
         public GenericRepository<WorkerBoss> WorkerBossRepository

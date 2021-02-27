@@ -6,8 +6,14 @@ namespace PawnShop.Services.Interfaces
 {
     public interface ILoginService
     {
-        public Task<(bool success ,WorkerBoss loggedUser)> LoginAsync(string userName, SecureString password);
+        public enum LoginResult { Success, Fail };
+
+        public Task<(bool success, WorkerBoss loggedUser)> LoginAsync(string userName, SecureString password);
+
         public Task LoadStartupData(WorkerBoss loggedUser);
 
+        public LoginResult ShowLoginDialog();
+
+        public void ShowLogoutDialog();
     }
 }

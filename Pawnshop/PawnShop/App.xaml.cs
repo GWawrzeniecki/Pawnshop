@@ -1,6 +1,5 @@
 ﻿using MahApps.Metro.Controls;
 using PawnShop.Core;
-using PawnShop.Core.Dialogs;
 using PawnShop.Core.Regions;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Dialogs.Views;
@@ -17,7 +16,6 @@ using PawnShop.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
-using Prism.Services.Dialogs;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -61,32 +59,30 @@ namespace PawnShop
             base.ConfigureModuleCatalog(moduleCatalog);
             moduleCatalog.AddModule<LoginModule>();
             moduleCatalog.AddModule<HomeModule>(InitializationMode.OnDemand);
-
         }
 
         protected override void OnInitialized()
         {
             #region Login
 
-            var dialogService = Container.Resolve<IDialogService>();
+            var loginService = Container.Resolve<ILoginService>();
+            var result = loginService.ShowLoginDialog();
 
-            dialogService.ShowLoginDialog(c =>
+            if (result == ILoginService.LoginResult.Success)
             {
-                if (c.Result == ButtonResult.OK)
-                    base.OnInitialized();
-                else
-                    Application.Current.Shutdown();
-            });
+                base.OnInitialized();
+
+                #region registering views
+
+                var regionManager = Container.Resolve<IRegionManager>();
+                regionManager.RegisterViewWithRegion(RegionNames.TopTaskBarRegion, typeof(BaseTaskBar));
+                regionManager.RegisterViewWithRegion(RegionNames.BottomInfoLineRegion, typeof(BottomInfoLine));
+                regionManager.RegisterViewWithRegion(RegionNames.ContentRegion, typeof(ViewA));
+
+                #endregion registering views
+            }
 
             #endregion Login
-
-            #region registering views
-
-            var regionManager = Container.Resolve<IRegionManager>();
-            regionManager.RegisterViewWithRegion(RegionNames.TopTaskBarRegion, typeof(BaseTaskBar));
-            regionManager.RegisterViewWithRegion(RegionNames.BottomInfoLineRegion, typeof(BottomInfoLine));
-            regionManager.RegisterViewWithRegion(RegionNames.ContentRegion, typeof(ViewA));
-            #endregion registering views
         }
     }
 }

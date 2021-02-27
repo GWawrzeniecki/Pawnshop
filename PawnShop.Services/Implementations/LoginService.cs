@@ -1,13 +1,16 @@
 ﻿using PawnShop.Business.Models;
+using PawnShop.Core.Dialogs;
 using PawnShop.Core.SharedVariables;
+using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
-using PawnShop.Exceptions.DBExceptions;
+using Prism.Services.Dialogs;
 using System;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
-
+using System.Windows;
+using static PawnShop.Services.Interfaces.ILoginService;
 
 namespace PawnShop.Services.Implementations
 {
@@ -18,19 +21,19 @@ namespace PawnShop.Services.Implementations
         private readonly IHashService _hashService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISessionContext _sessionContext;
+        private readonly IDialogService _dialogService;
 
         #endregion private members
 
         #region constructor
 
-        public LoginService(IHashService hashService, IUnitOfWork unitOfWork, ISessionContext sessionContext)
+        public LoginService(IHashService hashService, IUnitOfWork unitOfWork, ISessionContext sessionContext, IDialogService dialogService)
         {
             this._hashService = hashService;
             this._unitOfWork = unitOfWork;
             this._sessionContext = sessionContext;
+            this._dialogService = dialogService;
         }
-
-
 
         #endregion constructor
 
@@ -48,7 +51,6 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-
         public async Task LoadStartupData(WorkerBoss loggedUser)
         {
             try
@@ -61,11 +63,43 @@ namespace PawnShop.Services.Implementations
             }
         }
 
+        public LoginResult ShowLoginDialog()
+        {
+            LoginResult loginResult = LoginResult.Fail;
+
+            _dialogService.ShowLoginDialog(c =>
+            {
+                switch (c.Result)
+                {
+                    case ButtonResult.OK:
+                        loginResult = LoginResult.Success;
+                        break;
+
+                    default:
+                        Application.Current.Shutdown();
+                        break;
+                }
+            });
+
+            return loginResult;
+        }
+
+        public void ShowLogoutDialog()
+        {
+            Application.Current.MainWindow.Hide();
+
+            _dialogService.ShowLoginDialog(c =>
+            {
+                if (c.Result == ButtonResult.OK)
+                    Application.Current.MainWindow.Show();
+                else
+                    Application.Current.Shutdown(1);
+            });
+        }
 
         #endregion public methods
 
         #region private method
-
 
         private async Task<(bool success, WorkerBoss loggedUser)> TryLoginAsync(string login, SecureString password)
         {
@@ -75,7 +109,6 @@ namespace PawnShop.Services.Implementations
             if (password == null || password.Length == 0)
                 throw new ArgumentException($"'{nameof(password)}' cannot be null or empty.", nameof(password));
 
-          
             var (success, workerBoss) = await TryGetWorkerBossAsync(login);
 
             if (!success)
