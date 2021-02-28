@@ -21,6 +21,4 @@
                                Text="{Binding Label}" />
         </Grid>
     </DataTemplate>
-
-   
 </ResourceDictionary>

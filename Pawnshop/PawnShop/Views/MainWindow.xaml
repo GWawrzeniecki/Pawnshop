@@ -16,14 +16,14 @@
         <ContentControl DockPanel.Dock="Bottom" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.BottomInfoLineRegion}" />
 
         <!--Menu-->
-        <mah:HamburgerMenu SelectedIndex="0" 
-                           OpenPaneLength="150" 
-                           CompactPaneLength="50" 
-                           IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"  
-                           DockPanel.Dock="Left" 
-                           ItemTemplate="{StaticResource MenuItemTemplate}" 
-                           OptionsItemTemplate="{StaticResource MenuItemTemplate}"   
-                           Style="{StaticResource MahApps.Styles.HamburgerMenu.Ripple}" >
+        <mah:HamburgerMenu SelectedIndex="0"
+                           OpenPaneLength="150"
+                           CompactPaneLength="50"
+                           IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
+                           DockPanel.Dock="Left"
+                           ItemTemplate="{StaticResource MenuItemTemplate}"
+                           OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+                           Style="{StaticResource MahApps.Styles.HamburgerMenu.Ripple}">
 
             <!--Menu items-->
             <mah:HamburgerMenu.ItemsSource>

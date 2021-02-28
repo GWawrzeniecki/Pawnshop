@@ -4,6 +4,7 @@ using PawnShop.Core.Regions;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Dialogs.Views;
 using PawnShop.Dialogs.ViewsModels;
+using PawnShop.Modules.Contract;
 using PawnShop.Modules.Home;
 using PawnShop.Modules.Home.Views;
 using PawnShop.Modules.Login;
@@ -58,7 +59,8 @@ namespace PawnShop
         {
             base.ConfigureModuleCatalog(moduleCatalog);
             moduleCatalog.AddModule<LoginModule>();
-            moduleCatalog.AddModule<HomeModule>();
+            moduleCatalog.AddModule<HomeModule>(InitializationMode.OnDemand);
+            moduleCatalog.AddModule<ContractModule>(InitializationMode.OnDemand);
         }
 
         protected override void OnInitialized()
@@ -66,11 +68,19 @@ namespace PawnShop
             #region Login
 
             var loginService = Container.Resolve<ILoginService>();
+            var moduleManager = Container.Resolve<IModuleManager>();
             var result = loginService.ShowLoginDialog();
 
             if (result == ILoginService.LoginResult.Success)
             {
                 base.OnInitialized();
+
+                #region loading modules
+
+                moduleManager.LoadModule<HomeModule>();
+                moduleManager.LoadModule<ContractModule>();
+
+                #endregion loading modules
 
                 #region registering views
 

@@ -1,11 +1,9 @@
 ﻿using PawnShop.Core.Regions;
 using PawnShop.Modules.Home.MenuItem;
 using PawnShop.Modules.Home.ViewModels;
-using PawnShop.Modules.Home.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
-using static PawnShop.Modules.Home.Views.Home;
 
 namespace PawnShop.Modules.Home
 {

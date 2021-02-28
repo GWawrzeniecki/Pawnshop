@@ -7,4 +7,11 @@
   <ItemGroup>
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\PawnShop.Business\PawnShop.Business.csproj" />
+    <ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />
+    <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
+    <ProjectReference Include="..\..\PawnShop.Exceptions\PawnShop.Exceptions.csproj" />
+    <ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
+  </ItemGroup>
 </Project>

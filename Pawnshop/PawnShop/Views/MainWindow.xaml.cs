@@ -12,7 +12,7 @@ namespace PawnShop.Views
         public MainWindow(IRegionManager regionManager)
         {
             InitializeComponent();
-            RegionManager.SetRegionName(this.contentRegionControl, RegionNames.ContentRegion); //lazily created control 
+            RegionManager.SetRegionName(this.contentRegionControl, RegionNames.ContentRegion); //lazily created control
             RegionManager.SetRegionManager(this.contentRegionControl, regionManager);
         }
     }

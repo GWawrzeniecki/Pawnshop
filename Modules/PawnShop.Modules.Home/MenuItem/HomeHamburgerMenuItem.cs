@@ -1,32 +1,43 @@
 ﻿using MahApps.Metro.IconPacks;
 using PawnShop.Core;
-using PawnShop.Core.HamburgerMenu;
+using PawnShop.Core.HamburgerMenu.Implementations;
 using Prism.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PawnShop.Modules.Home.MenuItem
 {
     public class HomeHamburgerMenuItem : HamburgerMenuItemBase
     {
-        public override string DefaultNavigationPath => "Home";
+        #region private members
 
+        private readonly IApllicationCommands _applicationCommands;
 
-        private readonly IApllicationCommands applicationCommands;
+        #endregion private members
 
+        #region public properties
+
+        public override string DefaultNavigationPath => nameof(Views.Home);
+
+        #endregion public properties
+
+        #region constructr
 
         public HomeHamburgerMenuItem(IApllicationCommands applicationCommands)
         {
-            this.applicationCommands = applicationCommands;
+            this._applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);
-            Label = "Home";
+            Label = nameof(Views.Home);
             Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Home };
         }
 
+        #endregion constructr
+
+        #region private methods
+
         private void Navigate()
         {
-            applicationCommands.NavigateCommand.Execute(DefaultNavigationPath);
+            _applicationCommands.NavigateCommand.Execute(DefaultNavigationPath);
         }
+
+        #endregion private methods
     }
 }

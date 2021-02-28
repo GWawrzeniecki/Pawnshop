@@ -4,7 +4,6 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
-using System.Collections.Generic;
 
 namespace PawnShop.ViewModels
 {
@@ -33,9 +32,6 @@ namespace PawnShop.ViewModels
             set { SetProperty(ref _isPaneOpen, value); }
         }
 
-
-
-
         public DelegateCommand<string> NavigateCommand => _navigateCommand ??= new DelegateCommand<string>(ExecuteNavigateCommand);
 
         #endregion public properties
@@ -46,9 +42,7 @@ namespace PawnShop.ViewModels
         {
             applicationCommands.NavigateCommand.RegisterCommand(NavigateCommand);
             this._regionManager = regionManager;
-
         }
-
 
         #endregion constructors
 
@@ -61,9 +55,6 @@ namespace PawnShop.ViewModels
 
             _regionManager.RequestNavigate(RegionNames.ContentRegion, navigationPath);
         }
-
-
-
 
         #endregion private methods
     }
