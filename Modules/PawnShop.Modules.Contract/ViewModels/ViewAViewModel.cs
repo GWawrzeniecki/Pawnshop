@@ -1,11 +1,16 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PawnShop.Modules.Home.ViewModels
+namespace PawnShop.Modules.Contract.ViewModels
 {
     public class ViewAViewModel : BindableBase
     {
         private string _message;
-
         public string Message
         {
             get { return _message; }

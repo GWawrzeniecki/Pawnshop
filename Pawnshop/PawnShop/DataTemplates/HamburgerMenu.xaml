@@ -2,49 +2,25 @@
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!--  This is the template for all menu items. In this sample we use the glyph items.  -->
-    <DataTemplate x:Key="HamburgerMenuItem" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
-        <DockPanel Height="48" LastChildFill="True">
-            <Grid x:Name="IconPart"
-              Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}"
-              DockPanel.Dock="Left">
-                <Image Margin="12"
-                 HorizontalAlignment="Center"
-                 VerticalAlignment="Center"
-                 Source="{Binding Glyph}" />
-            </Grid>
-            <TextBlock x:Name="TextPart"
-                   VerticalAlignment="Center"
-                   FontSize="16"
-                   Text="{Binding Label}" />
-        </DockPanel>
-        <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:HamburgerMenu}}, Path=PanePlacement}" Value="Right">
-                <Setter TargetName="IconPart" Property="DockPanel.Dock" Value="Right" />
-                <Setter TargetName="TextPart" Property="Margin" Value="8 0 0 0" />
-            </DataTrigger>
-        </DataTemplate.Triggers>
+    <!--  This is the template for the menu items.  -->
+    <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type mah:HamburgerMenuIconItem}">
+        <Grid Height="48">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <ContentControl Grid.Column="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="{Binding Icon}"
+                                    Focusable="False"
+                                    IsTabStop="False" />
+            <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Text="{Binding Label}" />
+        </Grid>
     </DataTemplate>
 
-    <!--  This is the template for the option menu item  -->
-    <DataTemplate x:Key="HamburgerOptionsMenuItem" DataType="{x:Type mah:HamburgerMenuIconItem}">
-        <DockPanel Height="48" LastChildFill="True">
-            <ContentControl x:Name="IconPart"
-                        Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}"
-                        Content="{Binding Icon}"
-                        DockPanel.Dock="Left"
-                        Focusable="False"
-                        IsTabStop="False" />
-            <TextBlock x:Name="TextPart"
-                   VerticalAlignment="Center"
-                   FontSize="16"
-                   Text="{Binding Label}" />
-        </DockPanel>
-        <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:HamburgerMenu}}, Path=PanePlacement}" Value="Right">
-                <Setter TargetName="IconPart" Property="DockPanel.Dock" Value="Right" />
-                <Setter TargetName="TextPart" Property="Margin" Value="8 0 0 0" />
-            </DataTrigger>
-        </DataTemplate.Triggers>
-    </DataTemplate>
+   
 </ResourceDictionary>

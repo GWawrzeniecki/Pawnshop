@@ -2,12 +2,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyName>PawnShop.Modules.Home</AssemblyName>
+    <AssemblyName>PawnShop.Modules.Contract</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PawnShop.Core\PawnShop.Core.csproj" />
   </ItemGroup>
 </Project>

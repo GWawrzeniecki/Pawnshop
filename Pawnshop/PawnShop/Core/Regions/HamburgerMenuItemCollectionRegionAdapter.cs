@@ -15,7 +15,7 @@ namespace PawnShop.Core.Regions
             {
                 if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
                 {
-                    foreach (HamburgerMenuGlyphItem element in e.NewItems)
+                    foreach (HamburgerMenuIconItem element in e.NewItems)
                     {
                         regionTarget.Add(element);
                     }

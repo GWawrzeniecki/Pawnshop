@@ -3,11 +3,11 @@
 namespace PawnShop.Modules.Home.Views
 {
     /// <summary>
-    /// Interaction logic for ViewA.xaml
+    /// Interaction logic for Home
     /// </summary>
-    public partial class ViewA : UserControl
+    public partial class Home : UserControl
     {
-        public ViewA()
+        public Home()
         {
             InitializeComponent();
         }

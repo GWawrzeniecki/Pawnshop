@@ -58,7 +58,7 @@ namespace PawnShop
         {
             base.ConfigureModuleCatalog(moduleCatalog);
             moduleCatalog.AddModule<LoginModule>();
-            moduleCatalog.AddModule<HomeModule>(InitializationMode.OnDemand);
+            moduleCatalog.AddModule<HomeModule>();
         }
 
         protected override void OnInitialized()
@@ -77,7 +77,7 @@ namespace PawnShop
                 var regionManager = Container.Resolve<IRegionManager>();
                 regionManager.RegisterViewWithRegion(RegionNames.TopTaskBarRegion, typeof(BaseTaskBar));
                 regionManager.RegisterViewWithRegion(RegionNames.BottomInfoLineRegion, typeof(BottomInfoLine));
-                regionManager.RegisterViewWithRegion(RegionNames.ContentRegion, typeof(ViewA));
+                regionManager.RegisterViewWithRegion(RegionNames.ContentRegion, typeof(Home));
 
                 #endregion registering views
             }
