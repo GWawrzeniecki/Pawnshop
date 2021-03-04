@@ -2,6 +2,7 @@
 using PawnShop.Core;
 using PawnShop.Core.Regions;
 using PawnShop.Core.SharedVariables;
+using PawnShop.Core.Taskbar;
 using PawnShop.Dialogs.Views;
 using PawnShop.Dialogs.ViewsModels;
 using PawnShop.Modules.Contract;
@@ -63,6 +64,12 @@ namespace PawnShop
             moduleCatalog.AddModule<ContractModule>(InitializationMode.OnDemand);
         }
 
+        protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
+        {
+            regionBehaviors.AddIfMissing(UserControlRegionBehavior.BehaviorKey, typeof(UserControlRegionBehavior));
+            base.ConfigureDefaultRegionBehaviors(regionBehaviors);
+        }
+
         protected override void OnInitialized()
         {
             #region Login
@@ -85,8 +92,7 @@ namespace PawnShop
                 #region registering views
 
                 var regionManager = Container.Resolve<IRegionManager>();
-                regionManager.RegisterViewWithRegion(RegionNames.TopTaskBarRegion, typeof(BaseTaskBar));
-                regionManager.RegisterViewWithRegion(RegionNames.BottomInfoLineRegion, typeof(BottomInfoLine));
+                regionManager.RegisterViewWithRegion(RegionNames.BottomInfoLineRegion, typeof(BottomInfoLine)); // to chyba tez
                 regionManager.RegisterViewWithRegion(RegionNames.ContentRegion, typeof(Home));
 
                 #endregion registering views

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace PawnShop.CoreViews.Views
+namespace PawnShop.Controls.Icons.Views
 {
     /// <summary>
     /// Interaction logic for NotificationsIconTaskBar

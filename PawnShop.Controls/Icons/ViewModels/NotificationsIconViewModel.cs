@@ -1,6 +1,6 @@
 ﻿using Prism.Mvvm;
 
-namespace PawnShop.CoreViews.ViewModels
+namespace PawnShop.Controls.Icons.ViewModels
 {
     public class NotificationsIconViewModel : BindableBase
     {

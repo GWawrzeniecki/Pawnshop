@@ -16,4 +16,10 @@
     <ProjectReference Include="..\PawnShop.Services\PawnShop.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="BaseTaskbar\Views\BaseTaskBar.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>

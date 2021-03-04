@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PawnShop.CoreViews.Views.NotificationsIcon"
+﻿<UserControl x:Class="PawnShop.Controls.Icons.Views.NotificationsIcon"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"

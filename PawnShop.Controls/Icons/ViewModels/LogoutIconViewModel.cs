@@ -2,7 +2,7 @@
 using Prism.Commands;
 using Prism.Mvvm;
 
-namespace PawnShop.CoreViews.ViewModels
+namespace PawnShop.Controls.Icons.ViewModels
 {
     public class LogoutIconViewModel : BindableBase
     {

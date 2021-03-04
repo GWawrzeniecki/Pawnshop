@@ -1,6 +1,6 @@
 ﻿using Prism.Mvvm;
 
-namespace PawnShop.ViewModels
+namespace PawnShop.Controls.BaseTaskbar.ViewModels
 {
     public class BaseTaskBarViewModel : BindableBase
     {

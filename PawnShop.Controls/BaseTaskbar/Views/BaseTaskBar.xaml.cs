@@ -1,10 +1,12 @@
-﻿using System.Windows.Controls;
+﻿using PawnShop.Core.Taskbar;
+using System.Windows.Controls;
 
-namespace PawnShop.Views
+namespace PawnShop.Controls.BaseTaskbar.Views
 {
     /// <summary>
     /// Interaction logic for BaseTaskBar
     /// </summary>
+
     public partial class BaseTaskBar : UserControl
     {
         public BaseTaskBar()
