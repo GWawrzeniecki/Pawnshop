@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="PawnShop.Controls.BaseTaskbar.Views.BaseTaskBar"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:icons="clr-namespace:PawnShop.Controls.Icons.Views"
              prism:ViewModelLocator.AutoWireViewModel="True">
 

@@ -36,7 +36,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="1" Text="Użytkownik" />
             <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" Margin="0 4 2 0" />
-            <TextBox Grid.Row="1" Grid.Column="1" TabIndex="1" mah:TextBoxHelper.HasText="{Binding UserNameHasText, Mode=TwoWay}" Text="{Binding UserName}" />
+            <TextBox  Grid.Row="1" Grid.Column="1" TabIndex="1" mah:TextBoxHelper.HasText="{Binding UserNameHasText, Mode=TwoWay}" Text="{Binding UserName}" />
         </Grid>
 
         <Grid Margin="100 0 100 60">

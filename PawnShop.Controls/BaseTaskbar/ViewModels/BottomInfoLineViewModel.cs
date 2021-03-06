@@ -3,7 +3,7 @@ using Prism.Mvvm;
 using System;
 using System.Windows.Threading;
 
-namespace PawnShop.ViewModels
+namespace PawnShop.Controls.BaseTaskbar.ViewModels
 {
     public class BottomInfoLineViewModel : BindableBase  // To do bindeableBase w/wo session context
     {

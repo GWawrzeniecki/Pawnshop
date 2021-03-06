@@ -17,8 +17,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="BaseTaskbar\Views\BottomInfoLine.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="BaseTaskbar\Views\BaseTaskBar.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="BaseTaskbar\Views\BottomInfoLine.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 

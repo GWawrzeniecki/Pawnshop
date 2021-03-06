@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace PawnShop.Views
+namespace PawnShop.Controls.BaseTaskbar.Views
 {
     /// <summary>
     /// Interaction logic for BottomInfoLine

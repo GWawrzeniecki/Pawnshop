@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using PawnShop.Controls.BaseTaskbar.Views;
 using PawnShop.Core;
 using PawnShop.Core.Regions;
 using PawnShop.Core.SharedVariables;
@@ -66,7 +67,7 @@ namespace PawnShop
 
         protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
         {
-            regionBehaviors.AddIfMissing(UserControlRegionBehavior.BehaviorKey, typeof(UserControlRegionBehavior));
+            regionBehaviors.AddIfMissing(DependentViewRegionBehavior.BehaviorKey, typeof(DependentViewRegionBehavior));
             base.ConfigureDefaultRegionBehaviors(regionBehaviors);
         }
 
@@ -92,7 +93,7 @@ namespace PawnShop
                 #region registering views
 
                 var regionManager = Container.Resolve<IRegionManager>();
-                regionManager.RegisterViewWithRegion(RegionNames.BottomInfoLineRegion, typeof(BottomInfoLine)); // to chyba tez
+                regionManager.RegisterViewWithRegion(RegionNames.BottomInfoLineRegion, typeof(BottomInfoLine));
                 regionManager.RegisterViewWithRegion(RegionNames.ContentRegion, typeof(Home));
 
                 #endregion registering views

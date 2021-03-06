@@ -7,8 +7,8 @@ namespace PawnShop.Modules.Contract.Views
     /// <summary>
     /// Interaction logic for Contract
     /// </summary>
-    [UserControl(typeof(ContractTaskbar))]
-    public partial class Contract : UserControl
+    [DependentView(typeof(ContractTaskbar), "TopTaskBarRegion")]
+    public partial class Contract : UserControl, ISupportDataContext
     {
         public Contract()
         {
