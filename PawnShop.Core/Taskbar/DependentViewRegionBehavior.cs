@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace PawnShop.Core.Taskbar
 {
@@ -86,7 +87,37 @@ namespace PawnShop.Core.Taskbar
 
         private bool ShouldKeepAlive(object oldView)
         {
+            IRegionMemberLifetime regionMemberLifetime = GetItemOrContextLifetime(oldView);
+            if (regionMemberLifetime != null)
+                return regionMemberLifetime.KeepAlive;
+
+            RegionMemberLifetimeAttribute regionMemberLifetimeAttribute = GetItemOrContentLifetimeAttribute(oldView);
+            if (regionMemberLifetimeAttribute != null)
+                return regionMemberLifetimeAttribute.KeepAlive;
+
             return true;
+        }
+
+        private IRegionMemberLifetime GetItemOrContextLifetime(object oldView)
+        {
+            if (oldView is IRegionMemberLifetime regionMemberLifetime)
+                return regionMemberLifetime;
+            else if (oldView is FrameworkElement frameworkElement)
+                return frameworkElement.DataContext as IRegionMemberLifetime;
+            else
+                return null;
+        }
+
+        private RegionMemberLifetimeAttribute GetItemOrContentLifetimeAttribute(object oldView)
+        {
+            var lifeAttribute = GetCustomAttributes<RegionMemberLifetimeAttribute>(oldView.GetType()).FirstOrDefault();
+            if (lifeAttribute != null)
+                return lifeAttribute;
+
+            if (oldView is FrameworkElement frameworkElement && frameworkElement.DataContext != null)
+                return GetCustomAttributes<RegionMemberLifetimeAttribute>(frameworkElement.DataContext.GetType()).FirstOrDefault();
+
+            return null;
         }
 
         #endregion helper methods
