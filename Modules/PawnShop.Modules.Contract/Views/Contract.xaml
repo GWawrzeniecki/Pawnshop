@@ -1,21 +1,133 @@
 ﻿<UserControl x:Class="PawnShop.Modules.Contract.Views.Contract"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
+
+    <Grid Margin="10 0 10 0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <!-- TextBoxes and buttons-->
+        <GroupBox
+            Grid.Row="0"
+            Grid.Column="0"
+            Header="Kryteria wyświetlania danych"
+            Margin="0 0 0 20">
+            <Grid>
+
+                <Grid.Resources>
+                    <Thickness x:Key="ControlMargin">5</Thickness>
+                </Grid.Resources>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <!-- firs row-->
+                <TextBox
+                    Margin="{StaticResource ControlMargin}"
+            Grid.Row="0"
+            Grid.Column="0"
+            mah:TextBoxHelper.Watermark="Nr: umowy"
+            mah:TextBoxHelper.ClearTextButton="True"
+            mah:TextBoxHelper.UseFloatingWatermark="True">
+                </TextBox>
+
+                <TextBox
+                    Margin="{StaticResource ControlMargin}"
+            Grid.Row="0"
+            Grid.Column="1"
+            mah:TextBoxHelper.Watermark="Klient"
+            mah:TextBoxHelper.ClearTextButton="True"
+            mah:TextBoxHelper.UseFloatingWatermark="True">
+                </TextBox>
+
+                <DatePicker
+                    Margin="{StaticResource ControlMargin}"
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            mah:TextBoxHelper.ClearTextButton="True"
+                            mah:TextBoxHelper.UseFloatingWatermark="True"
+                            mah:TextBoxHelper.Watermark="Od daty:" />
+
+                <DatePicker
+                    Margin="{StaticResource ControlMargin}"
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            mah:TextBoxHelper.ClearTextButton="True"
+                            mah:TextBoxHelper.UseFloatingWatermark="True"
+                            mah:TextBoxHelper.Watermark="Do daty:" />
+
+                <mah:DropDownButton
+                    Margin="{StaticResource ControlMargin}"
+                    Grid.Row="0"
+                    Grid.Column="4"
+                    Content="Opcje dat">
+                </mah:DropDownButton>
+                <!-- Second row-->
+
+                <ComboBox
+                    Margin="{StaticResource ControlMargin}"
+                              Grid.Row="1"
+                    Grid.Column="0"
+                              mah:TextBoxHelper.ClearTextButton="True"
+                              mah:TextBoxHelper.Watermark="Status umowy:">
+                </ComboBox>
+
+                <TextBox
+                    Margin="{StaticResource ControlMargin}"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                  mah:TextBoxHelper.ClearTextButton="True"
+                              mah:TextBoxHelper.Watermark="Kwota:">
+                </TextBox>
+
+                <ComboBox
+                    Margin="{StaticResource ControlMargin}"
+                              Grid.Row="1"
+                    Grid.Column="2"
+                              mah:TextBoxHelper.ClearTextButton="True"
+                              mah:TextBoxHelper.Watermark="Czas trwania umowy:">
+                </ComboBox>
+
+                <Button
+                    Margin="{StaticResource ControlMargin}"
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Content="Odśwież">
+                </Button>
+
+                <mah:DropDownButton
+                    Margin="{StaticResource ControlMargin}"
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    Content="Opcje odświeżania">
+                </mah:DropDownButton>
+            </Grid>
+        </GroupBox>
+        <!-- DataGrid-->
+        <GroupBox
+            Grid.Row="1"
+            Grid.Column="0"
+            Header="Lista umów">
+
+            <DataGrid ItemsSource="{Binding Contracts}" AutoGenerateColumns="True">
+            </DataGrid>
+        </GroupBox>
     </Grid>
 </UserControl>

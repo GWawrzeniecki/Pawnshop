@@ -31,12 +31,17 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Użytkownik" />
             <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" Margin="0 4 2 0" />
-            <TextBox  Grid.Row="1" Grid.Column="1" TabIndex="1" mah:TextBoxHelper.HasText="{Binding UserNameHasText, Mode=TwoWay}" Text="{Binding UserName}" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                TabIndex="1"
+                mah:TextBoxHelper.HasText="{Binding UserNameHasText, Mode=TwoWay}"
+                Text="{Binding UserName}"
+                mah:TextBoxHelper.Watermark="Użytkownik">
+            </TextBox>
         </Grid>
 
         <Grid Margin="100 0 100 60">
@@ -48,13 +53,20 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Hasło" />
             <iconPacks:PackIconMaterial  Grid.Row="1" Grid.Column="0" Kind="Lock" Margin="0 4 2 0" />
 
-            <PasswordBox Grid.Row="1" Grid.Column="1" TabIndex="2" Tag="{Binding PasswordTag, ValidatesOnDataErrors=True}" Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}" mah:TextBoxHelper.HasText="{Binding PasswordBoxHasText, Mode=TwoWay}"  mah:PasswordBoxHelper.CapsLockWarningToolTip="CapsLock jest włączony" x:Name="passwordBox">
+            <PasswordBox
+                Grid.Row="1"
+                Grid.Column="1"
+                TabIndex="2"
+                Tag="{Binding PasswordTag, ValidatesOnDataErrors=True}"
+                Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}"
+                mah:TextBoxHelper.HasText="{Binding PasswordBoxHasText, Mode=TwoWay}"
+                mah:PasswordBoxHelper.CapsLockWarningToolTip="CapsLock jest włączony"
+                mah:TextBoxHelper.Watermark="Hasło"
+                x:Name="passwordBox">
                 <PasswordBox.InputBindings>
                     <KeyBinding Key="Return" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}" />
                 </PasswordBox.InputBindings>

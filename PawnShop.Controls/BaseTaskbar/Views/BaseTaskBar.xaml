@@ -5,7 +5,7 @@
              xmlns:icons="clr-namespace:PawnShop.Controls.Icons.Views"
              prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <Grid Margin="2">
+    <Grid Margin="2 8 2 8">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
