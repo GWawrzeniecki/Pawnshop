@@ -27,6 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Modules.Contract",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Modules.Home", "Modules\PawnShop.Modules.Home\PawnShop.Modules.Home.csproj", "{AA05DAB1-841E-42C1-A843-5C53115BB2A0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleDB", "SampleDB", "{88BCD88E-BAF1-4E71-95AD-73CC2DA56412}"
+	ProjectSection(SolutionItems) = preProject
+		SampleDB\09.03.2021.bak = SampleDB\09.03.2021.bak
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
