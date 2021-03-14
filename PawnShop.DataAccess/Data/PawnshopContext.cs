@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using PawnShop.Business.Models;
 
 #nullable disable
 
-namespace PawnShop.Business.Data
+namespace PawnShop.DataAccess.Data
 {
     public partial class PawnshopContext : DbContext
     {
@@ -21,10 +23,10 @@ namespace PawnShop.Business.Data
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Contract> Contracts { get; set; }
-        public virtual DbSet<ContractClientRenew> ContractClientRenews { get; set; }
         public virtual DbSet<ContractItem> ContractItems { get; set; }
         public virtual DbSet<ContractItemCategory> ContractItemCategories { get; set; }
         public virtual DbSet<ContractItemState> ContractItemStates { get; set; }
+        public virtual DbSet<ContractRenew> ContractRenews { get; set; }
         public virtual DbSet<ContractState> ContractStates { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<DealDocument> DealDocuments { get; set; }
@@ -173,6 +175,9 @@ namespace PawnShop.Business.Data
 
                 entity.ToTable("Contract", "Pawnshop");
 
+                entity.HasIndex(e => e.DealDocumentId, "DealDocumentUniqueContract")
+                    .IsUnique();
+
                 entity.Property(e => e.ContractNumberId)
                     .HasMaxLength(10)
                     .HasColumnName("ContractNumberID");
@@ -182,6 +187,8 @@ namespace PawnShop.Business.Data
                 entity.Property(e => e.BuyBackId).HasColumnName("BuyBackID");
 
                 entity.Property(e => e.ContractStateId).HasColumnName("ContractStateID");
+
+                entity.Property(e => e.DealDocumentId).HasColumnName("DealDocumentID");
 
                 entity.Property(e => e.DealMakerId).HasColumnName("DealMakerID");
 
@@ -202,6 +209,12 @@ namespace PawnShop.Business.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Contract_ContractState");
 
+                entity.HasOne(d => d.DealDocument)
+                    .WithOne(p => p.Contract)
+                    .HasForeignKey<Contract>(d => d.DealDocumentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Contract_DealDocument");
+
                 entity.HasOne(d => d.DealMaker)
                     .WithMany(p => p.ContractDealMakers)
                     .HasForeignKey(d => d.DealMakerId)
@@ -219,41 +232,6 @@ namespace PawnShop.Business.Data
                     .HasForeignKey(d => d.WorkerBossId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Contract_WorkerBoss");
-            });
-
-            modelBuilder.Entity<ContractClientRenew>(entity =>
-            {
-                entity.HasKey(e => e.RenewContractId)
-                    .HasName("ContractClientRenew_pk");
-
-                entity.ToTable("ContractClientRenew", "Pawnshop");
-
-                entity.Property(e => e.RenewContractId).HasColumnName("RenewContractID");
-
-                entity.Property(e => e.ClientId).HasColumnName("ClientID");
-
-                entity.Property(e => e.ContractNumberId)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .HasColumnName("ContractNumberID");
-
-                entity.Property(e => e.DealDocumentId).HasColumnName("DealDocumentID");
-
-                entity.HasOne(d => d.Client)
-                    .WithMany(p => p.ContractClientRenews)
-                    .HasForeignKey(d => d.ClientId)
-                    .HasConstraintName("ContractClientRenew_Client");
-
-                entity.HasOne(d => d.ContractNumber)
-                    .WithMany(p => p.ContractClientRenews)
-                    .HasForeignKey(d => d.ContractNumberId)
-                    .HasConstraintName("ContractClientRenew_Contract");
-
-                entity.HasOne(d => d.DealDocument)
-                    .WithMany(p => p.ContractClientRenews)
-                    .HasForeignKey(d => d.DealDocumentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("ContractClientRenew_DealDocument");
             });
 
             modelBuilder.Entity<ContractItem>(entity =>
@@ -337,13 +315,61 @@ namespace PawnShop.Business.Data
                     .HasMaxLength(30);
             });
 
+            modelBuilder.Entity<ContractRenew>(entity =>
+            {
+                entity.HasKey(e => new { e.RenewContractId, e.DealDocumentId })
+                    .HasName("ContractRenew_pk");
+
+                entity.ToTable("ContractRenew", "Pawnshop");
+
+                entity.HasIndex(e => e.DealDocumentId, "DealDocumentUniqueRenew")
+                    .IsUnique();
+
+                entity.Property(e => e.RenewContractId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("RenewContractID");
+
+                entity.Property(e => e.DealDocumentId).HasColumnName("DealDocumentID");
+
+                entity.Property(e => e.ClientId).HasColumnName("ClientID");
+
+                entity.Property(e => e.ContractNumberId)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .HasColumnName("ContractNumberID");
+
+                entity.Property(e => e.LendingRateId).HasColumnName("LendingRateID");
+
+                entity.Property(e => e.StartDate).HasColumnType("date");
+
+                entity.HasOne(d => d.Client)
+                    .WithMany(p => p.ContractRenews)
+                    .HasForeignKey(d => d.ClientId)
+                    .HasConstraintName("ContractClientRenew_Client");
+
+                entity.HasOne(d => d.ContractNumber)
+                    .WithMany(p => p.ContractRenews)
+                    .HasForeignKey(d => d.ContractNumberId)
+                    .HasConstraintName("ContractClientRenew_Contract");
+
+                entity.HasOne(d => d.DealDocument)
+                    .WithOne(p => p.ContractRenew)
+                    .HasForeignKey<ContractRenew>(d => d.DealDocumentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ContractClientRenew_DealDocument");
+
+                entity.HasOne(d => d.LendingRate)
+                    .WithMany(p => p.ContractRenews)
+                    .HasForeignKey(d => d.LendingRateId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ContractClientRenew_LendingRate");
+            });
+
             modelBuilder.Entity<ContractState>(entity =>
             {
                 entity.ToTable("ContractState", "Pawnshop");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.State)
                     .IsRequired()
@@ -366,12 +392,10 @@ namespace PawnShop.Business.Data
             {
                 entity.ToTable("DealDocument", "Pawnshop");
 
-                entity.Property(e => e.DealDocumentId).HasColumnName("DealDocumentID");
+                entity.HasIndex(e => e.PaymentId, "PaymentIDUnique")
+                    .IsUnique();
 
-                entity.Property(e => e.ContractNumberId)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .HasColumnName("ContractNumberID");
+                entity.Property(e => e.DealDocumentId).HasColumnName("DealDocumentID");
 
                 entity.Property(e => e.Cost).HasColumnType("decimal(10, 2)");
 
@@ -387,12 +411,6 @@ namespace PawnShop.Business.Data
 
                 entity.Property(e => e.RepaymentCapital).HasColumnType("decimal(10, 2)");
 
-                entity.HasOne(d => d.ContractNumber)
-                    .WithMany(p => p.DealDocuments)
-                    .HasForeignKey(d => d.ContractNumberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("DealDocument_Contract");
-
                 entity.HasOne(d => d.MoneyBalance)
                     .WithMany(p => p.DealDocuments)
                     .HasForeignKey(d => d.MoneyBalanceId)
@@ -400,8 +418,8 @@ namespace PawnShop.Business.Data
                     .HasConstraintName("DealDocument_MoneyBalance");
 
                 entity.HasOne(d => d.Payment)
-                    .WithMany(p => p.DealDocuments)
-                    .HasForeignKey(d => d.PaymentId)
+                    .WithOne(p => p.DealDocument)
+                    .HasForeignKey<DealDocument>(d => d.PaymentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("DealDocument_Payment");
             });
@@ -558,9 +576,7 @@ namespace PawnShop.Business.Data
             {
                 entity.ToTable("LendingRate", "Pawnshop");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
             });
 
             modelBuilder.Entity<Link>(entity =>
@@ -663,9 +679,7 @@ namespace PawnShop.Business.Data
             {
                 entity.ToTable("PaymentType", "Pawnshop");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Type)
                     .IsRequired()

@@ -13,6 +13,10 @@
                 <!--HamburgerMenu-->
                 <ResourceDictionary Source="DataTemplates/HamburgerMenu.xaml" />
                 <ResourceDictionary Source="Styles/HamburgerMenu.xaml" />
+                <!--Fonts-->
+                <ResourceDictionary Source="Styles/Fonts.xaml"/>
+                <!--Buttons-->
+                <ResourceDictionary Source="Styles/Buttons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PawnShop.Business.Data;
+using PawnShop.DataAccess.Data;
 using PawnShop.Business.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using static PawnShop.Services.Constants;
 
 namespace PawnShop.Services.DataService.Repositories
 {
@@ -16,7 +17,7 @@ namespace PawnShop.Services.DataService.Repositories
             _context = context;
         }
 
-        public async Task CreateTodayMoneyBalance() => await _context.Database.ExecuteSqlRawAsync($"Exec [Pawnshop].[{_getTodayMoneyBalanceProcedureName}]");
+        public async Task CreateTodayMoneyBalance() => await _context.Database.ExecuteSqlRawAsync($"Exec [{DBSchemaName}].[{_getTodayMoneyBalanceProcedureName}]");
 
         public async Task<MoneyBalance> GetTodayMoneyBalanceAsync()
         {

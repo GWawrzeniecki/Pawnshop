@@ -4,5 +4,6 @@
     {
         public const string PepperAesKeySecret = "PepperAesKey";
         public const string IterationsKeySecret = "Iterations";
+        public const string DBSchemaName = "Pawnshop";
     }
 }

@@ -59,7 +59,19 @@ namespace PawnShop.Services.Implementations
             }
             catch (Exception e)
             {
-                throw new LoadingStartupDataException("Wystąpił problem podczas ładowania danych aplikacji.", e);
+                throw new LoadingStartupDataException("Wystąpił błąd podczas ładowania danych niezbędnych do działania aplikacji.", e);
+            }
+        }
+
+        public async Task UpdateContractStates()
+        {
+            try
+            {
+                await TryToUpdateContractStates();
+            }
+            catch (Exception e)
+            {
+                throw new UpdatingContractStatesException("Wystąpił problem podczas aktualizacji stanów umów.", e);
             }
         }
 
@@ -96,6 +108,10 @@ namespace PawnShop.Services.Implementations
                     Application.Current.Shutdown(1);
             });
         }
+
+       
+
+
 
         #endregion public methods
 
@@ -134,6 +150,11 @@ namespace PawnShop.Services.Implementations
             var todayMoneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
             _sessionContext.LoggedPerson = loggedPerson;
             _sessionContext.TodayMoneyBalance = todayMoneyBalance;
+        }
+
+        private async Task TryToUpdateContractStates()
+        {
+            await _unitOfWork.ContractRepository.UpdateContractStates();
         }
 
         #endregion private method

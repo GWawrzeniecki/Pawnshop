@@ -16,10 +16,4 @@
     <ProjectReference Include="..\PawnShop.Exceptions\PawnShop.Exceptions.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="PresentationCore">
-      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\3.1.0\ref\netcoreapp3.1\PresentationCore.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

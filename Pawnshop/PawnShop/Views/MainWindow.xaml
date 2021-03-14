@@ -8,6 +8,12 @@
                  Title="{Binding Title}" MinWidth="1280" MinHeight="800"
                  WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+        </Style>
+    </Window.Resources>
+
     <DockPanel LastChildFill="True">
         <!--Top Taskbar-->
         <ContentControl DockPanel.Dock="Top" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.TopTaskBarRegion}" />

@@ -10,8 +10,8 @@ namespace PawnShop.Business.Models
         public Client()
         {
             ContractBuyBacks = new HashSet<Contract>();
-            ContractClientRenews = new HashSet<ContractClientRenew>();
             ContractDealMakers = new HashSet<Contract>();
+            ContractRenews = new HashSet<ContractRenew>();
             Payments = new HashSet<Payment>();
         }
 
@@ -22,8 +22,8 @@ namespace PawnShop.Business.Models
 
         public virtual Person ClientNavigation { get; set; }
         public virtual ICollection<Contract> ContractBuyBacks { get; set; }
-        public virtual ICollection<ContractClientRenew> ContractClientRenews { get; set; }
         public virtual ICollection<Contract> ContractDealMakers { get; set; }
+        public virtual ICollection<ContractRenew> ContractRenews { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
     }
 }

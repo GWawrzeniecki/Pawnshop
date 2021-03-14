@@ -113,24 +113,40 @@ namespace PawnShop.Modules.Login.ViewModels
                 AutoLoginAdmin(passwordBox);
                 var password = passwordBox.GetReadOnlyCopy();
                 _uiService.SetMouseBusyCursor();
-                await TryToLoginAsync(UserName, password);
+                var (success, loggedUser) = await TryToLoginAsync(UserName, password);
+                if (success)
+                    await TryToStartStartupProcedures(loggedUser);
                 _uiService.ResetMouseCursor();
+                CloseDialogWithSuccess();          
             }
-            catch (LoadingStartupDataException e)
+
+            catch (LoginException loginException)
             {
                 _uiService.ResetMouseCursor();
-                _dialogService.ShowNotificationDialog("Błąd", $"Wystąpił błąd podczas ładowania danych niezbędnych do działania aplikacji.{Environment.NewLine}Błąd: {e.InnerException.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd", $"{loginException.Message}{Environment.NewLine}Błąd: {loginException.InnerException.Message}", null);
             }
-            catch (LoginException e)
+            catch (LoadingStartupDataException loadingStartupDataException)
             {
                 _uiService.ResetMouseCursor();
-                _dialogService.ShowNotificationDialog("Błąd", $"Wystąpił błąd podczas logowania.{Environment.NewLine}Błąd: {e.InnerException.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd", $"{loadingStartupDataException.Message}{Environment.NewLine}Błąd: {loadingStartupDataException.InnerException.Message}", null);
+            }
+            catch (UpdatingContractStatesException updatingContractException)
+            {
+                _uiService.ResetMouseCursor();
+                _dialogService.ShowNotificationDialog("Błąd", $"{updatingContractException.Message}{Environment.NewLine}Błąd: {updatingContractException.InnerException.Message}", null);
             }
             catch (Exception e)
             {
                 _uiService.ResetMouseCursor();
                 _dialogService.ShowNotificationDialog("Błąd", $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
             }
+        }
+
+      
+        private async Task TryToStartStartupProcedures(WorkerBoss loggedUser)
+        {
+            await _loginService.LoadStartupData(loggedUser);
+            await _loginService.UpdateContractStates();
         }
 
         #endregion command methods
@@ -143,16 +159,15 @@ namespace PawnShop.Modules.Login.ViewModels
             return true; // For fast login while developing
         }
 
-        private async Task TryToLoginAsync(string userName, SecureString password)
+        private async Task<(bool, WorkerBoss)> TryToLoginAsync(string userName, SecureString password)
         {
             (bool success, WorkerBoss loggedUser) = await _loginService.LoginAsync(userName, password);
             ValidateLogin(success);
 
-            if (!success)
-                return;
+            return (success, loggedUser);
 
-            await _loginService.LoadStartupData(loggedUser);
-            CloseDialog(ButtonResult.OK);
+
+
         }
 
         private void CloseDialog(ButtonResult buttonResult) => RequestClose?.Invoke(new DialogResult(buttonResult));
@@ -162,6 +177,12 @@ namespace PawnShop.Modules.Login.ViewModels
             UserName = "grzegorz.wawrzeniecki";
             passwordBox.Password = "testtesttest";
         }
+
+        private void CloseDialogWithSuccess()
+        {
+            CloseDialog(ButtonResult.OK);
+        }
+
 
         #endregion private methods
 

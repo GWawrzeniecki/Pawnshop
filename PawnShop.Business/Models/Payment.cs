@@ -7,11 +7,6 @@ namespace PawnShop.Business.Models
 {
     public partial class Payment
     {
-        public Payment()
-        {
-            DealDocuments = new HashSet<DealDocument>();
-        }
-
         public int PaymentId { get; set; }
         public int PaymentTypeId { get; set; }
         public decimal Amount { get; set; }
@@ -20,6 +15,6 @@ namespace PawnShop.Business.Models
 
         public virtual Client Client { get; set; }
         public virtual PaymentType PaymentType { get; set; }
-        public virtual ICollection<DealDocument> DealDocuments { get; set; }
+        public virtual DealDocument DealDocument { get; set; }
     }
 }

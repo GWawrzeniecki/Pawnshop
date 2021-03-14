@@ -5,7 +5,7 @@
              xmlns:icons="clr-namespace:PawnShop.Controls.Icons.Views;assembly=PawnShop.Controls"
              prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <Grid Margin="100 8 0 8">
+    <Grid Margin="115 10 0 10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
@@ -15,7 +15,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Button Content="Utwórz umowę" Grid.Column="0" Margin="0 0 20 0" />
+        <Button Content="Utwórz umowę" Grid.Column="0" Margin="0 0 20 0" Style="{StaticResource MahApps.Styles.Button.Flat}" />
         <Button Content="Przedłuż umowę" Grid.Column="1" Margin="0 0 20 0" />
         <Button Content="Wykup umowę" Grid.Column="2" Margin="0 0 20 0" />
         <icons:NotificationsIcon Grid.Column="4" />

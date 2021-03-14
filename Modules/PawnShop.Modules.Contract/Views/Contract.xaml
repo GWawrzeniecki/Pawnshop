@@ -19,18 +19,18 @@
             Grid.Row="0"
             Grid.Column="0"
             Header="Kryteria wyświetlania danych"
-            Margin="0 0 0 20">
+            Margin="0 0 0 15">
             <Grid>
 
                 <Grid.Resources>
-                    <Thickness x:Key="ControlMargin">5</Thickness>
+                    <Thickness x:Key="ControlMargin">5 5 15 5</Thickness>
                 </Grid.Resources>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
@@ -74,10 +74,10 @@
                             mah:TextBoxHelper.Watermark="Do daty:" />
 
                 <mah:DropDownButton
-                    Margin="{StaticResource ControlMargin}"
+                   Margin="15 5 15 5"
                     Grid.Row="0"
                     Grid.Column="4"
-                    Content="Opcje dat">
+                    Content="Opcje dat" MinHeight="26">
                 </mah:DropDownButton>
                 <!-- Second row-->
 
@@ -86,7 +86,14 @@
                               Grid.Row="1"
                     Grid.Column="0"
                               mah:TextBoxHelper.ClearTextButton="True"
-                              mah:TextBoxHelper.Watermark="Status umowy:">
+                              mah:TextBoxHelper.Watermark="Status umowy:"
+                               ItemsSource="{Binding ContractStates}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding State}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
                 </ComboBox>
 
                 <TextBox
@@ -100,9 +107,16 @@
                 <ComboBox
                     Margin="{StaticResource ControlMargin}"
                               Grid.Row="1"
-                    Grid.Column="2"
+                              Grid.Column="2"
                               mah:TextBoxHelper.ClearTextButton="True"
-                              mah:TextBoxHelper.Watermark="Czas trwania umowy:">
+                              mah:TextBoxHelper.Watermark="Czas trwania umowy:"
+                                ItemsSource="{Binding LendingRates}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Days}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
                 </ComboBox>
 
                 <Button
@@ -113,7 +127,7 @@
                 </Button>
 
                 <mah:DropDownButton
-                    Margin="{StaticResource ControlMargin}"
+                    Margin="15 5 15 5"
                     Grid.Row="1"
                     Grid.Column="4"
                     Content="Opcje odświeżania">
@@ -126,7 +140,17 @@
             Grid.Column="0"
             Header="Lista umów">
 
-            <DataGrid ItemsSource="{Binding Contracts}" AutoGenerateColumns="True">
+            <DataGrid ItemsSource="{Binding Contracts}" AutoGenerateColumns="False" >
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Numer umowy" Binding="{Binding ContractNumberID}" />
+                    <DataGridTextColumn Header="Stan umowy" Binding="{Binding ContractState.State}" />
+                    <DataGridTextColumn Header="Kwota" Binding="{Binding AmountContract}" />
+                    <DataGridTextColumn Header="Data założenia umowy" Binding="{Binding StartDate}" />
+                    <DataGridTextColumn Header="Czas trwania umowy" Binding="{Binding LendingRate.Days}" />
+                    <DataGridTextColumn Header="Klient" Binding="{Binding DealMaker.ClientNavigation.FullName}" />
+                </DataGrid.Columns>
+
             </DataGrid>
         </GroupBox>
     </Grid>

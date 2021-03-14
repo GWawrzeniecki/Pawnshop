@@ -23,5 +23,7 @@ namespace PawnShop.Business.Models
         public virtual Client Client { get; set; }
         public virtual WorkerBoss WorkerBoss { get; set; }
         public virtual ICollection<PersonWorkplace> PersonWorkplaces { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
     }
 }

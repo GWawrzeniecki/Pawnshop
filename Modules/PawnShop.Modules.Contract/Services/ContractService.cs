@@ -1,0 +1,90 @@
+﻿using PawnShop.Business.Models;
+using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Services.DataService;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PawnShop.Modules.Contract.Services
+{
+    public class ContractService : IContractService
+    {
+        #region private members
+        private readonly IUnitOfWork _unitOfWork;
+        #endregion
+
+        #region constructor
+        public ContractService(IUnitOfWork unitOfWork)
+        {
+            this._unitOfWork = unitOfWork;
+        }
+
+
+        #endregion
+
+
+        #region IContractService interface
+        public async Task<IList<ContractState>> LoadContractStates()
+        {
+            try
+            {
+                return await TryToLoadContractStates();
+            }
+            catch (Exception e)
+            {
+                throw new LoadingContractStatesException("Wystąpił problem podczas ładowania rodzajów stanów umowy.", e);
+            }
+        }
+
+
+
+        public async Task<IList<LendingRate>> LoadLendingRates()
+        {
+            try
+            {
+                return await TryToLoadLendingRate();
+            }
+            catch (Exception e)
+            {
+                throw new LoadingLendingRatesException("Wystąpił problem podczas ładowania rodzajów czasu trwania umowy.", e);
+            }
+        }
+
+        public async Task<IList<Business.Models.Contract>> LoadContracts()
+        {
+            try
+            {
+                return await TryToLoadContracts();
+            }
+            catch (Exception e)
+            {
+                throw new LoadingLendingRatesException("Wystąpił problem podczas ładowania rodzajów czasu trwania umowy.", e);
+            }
+        }
+
+
+
+        #endregion
+
+        #region private methods
+        private async Task<IList<ContractState>> TryToLoadContractStates()
+        {
+            return (await _unitOfWork.ContractStateRepository.GetAsync()).ToList();
+
+        }
+
+        private async Task<IList<LendingRate>> TryToLoadLendingRate()
+        {
+            return (await _unitOfWork.LendingRateRepository.GetAsync()).ToList();
+        }
+
+        private async Task<IList<Business.Models.Contract>> TryToLoadContracts()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+}

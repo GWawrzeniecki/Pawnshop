@@ -7,13 +7,7 @@ namespace PawnShop.Business.Models
 {
     public partial class DealDocument
     {
-        public DealDocument()
-        {
-            ContractClientRenews = new HashSet<ContractClientRenew>();
-        }
-
         public int DealDocumentId { get; set; }
-        public string ContractNumberId { get; set; }
         public DateTime MoneyBalanceId { get; set; }
         public int PaymentId { get; set; }
         public decimal? Cost { get; set; }
@@ -21,9 +15,9 @@ namespace PawnShop.Business.Models
         public decimal? RepaymentCapital { get; set; }
         public decimal? Profit { get; set; }
 
-        public virtual Contract ContractNumber { get; set; }
         public virtual MoneyBalance MoneyBalance { get; set; }
         public virtual Payment Payment { get; set; }
-        public virtual ICollection<ContractClientRenew> ContractClientRenews { get; set; }
+        public virtual Contract Contract { get; set; }
+        public virtual ContractRenew ContractRenew { get; set; }
     }
 }
