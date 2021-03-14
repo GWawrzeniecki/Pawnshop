@@ -27,19 +27,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Modules.Contract",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Modules.Home", "Modules\PawnShop.Modules.Home\PawnShop.Modules.Home.csproj", "{AA05DAB1-841E-42C1-A843-5C53115BB2A0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{88BCD88E-BAF1-4E71-95AD-73CC2DA56412}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleDB", "SampleDB", "{3E138AE5-2663-4C10-80EB-86138BF06E91}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\iCloudDrive\Documents\Inżynierka\DB\Backups\14.03.2021.bak = ..\..\..\..\iCloudDrive\Documents\Inżynierka\DB\Backups\14.03.2021.bak
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Procedures", "Procedures", "{4DA96579-613B-4897-9398-320758285421}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\iCloudDrive\Documents\Inżynierka\DB\Procedures\CreateTodayMoneyBalance.sql = ..\..\..\..\iCloudDrive\Documents\Inżynierka\DB\Procedures\CreateTodayMoneyBalance.sql
-		..\..\..\..\iCloudDrive\Documents\Inżynierka\DB\Procedures\UpdateContractStates.sql = ..\..\..\..\iCloudDrive\Documents\Inżynierka\DB\Procedures\UpdateContractStates.sql
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,8 +85,6 @@ Global
 		{50E287D0-47AF-4E06-9472-7F446FBF5CCA} = {32393005-C24E-464A-AC8E-A44B41CF446D}
 		{BB61FB7A-C7C5-411D-8688-3D63F32D3CF1} = {32393005-C24E-464A-AC8E-A44B41CF446D}
 		{AA05DAB1-841E-42C1-A843-5C53115BB2A0} = {32393005-C24E-464A-AC8E-A44B41CF446D}
-		{3E138AE5-2663-4C10-80EB-86138BF06E91} = {88BCD88E-BAF1-4E71-95AD-73CC2DA56412}
-		{4DA96579-613B-4897-9398-320758285421} = {88BCD88E-BAF1-4E71-95AD-73CC2DA56412}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5606074-19E1-41E2-9357-80CDE5DA40C1}
