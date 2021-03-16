@@ -19,16 +19,16 @@ namespace PawnShop.Dialogs.ViewsModels
 
         public string Message
         {
-            get { return _message; }
-            set { SetProperty(ref _message, value); }
+            get => _message;
+            set => SetProperty(ref _message, value);
         }
 
         private string _title = "Notification";
 
         public string Title
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get => _title;
+            set => SetProperty(ref _title, value);
         }
 
         public event Action<IDialogResult> RequestClose;

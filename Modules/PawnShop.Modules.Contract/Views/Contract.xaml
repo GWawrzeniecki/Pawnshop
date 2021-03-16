@@ -63,7 +63,8 @@
                             Grid.Column="2"
                             mah:TextBoxHelper.ClearTextButton="True"
                             mah:TextBoxHelper.UseFloatingWatermark="True"
-                            mah:TextBoxHelper.Watermark="Od daty:" />
+                            mah:TextBoxHelper.Watermark="Od daty:"
+                            SelectedDate="{Binding FromDate, Mode=TwoWay}" />
 
                 <DatePicker
                     Margin="{StaticResource ControlMargin}"
@@ -71,13 +72,22 @@
                             Grid.Column="3"
                             mah:TextBoxHelper.ClearTextButton="True"
                             mah:TextBoxHelper.UseFloatingWatermark="True"
-                            mah:TextBoxHelper.Watermark="Do daty:" />
+                            mah:TextBoxHelper.Watermark="Do daty:"
+                            SelectedDate="{Binding ToDate, Mode=TwoWay}" />
 
                 <mah:DropDownButton
                    Margin="15 5 15 5"
                     Grid.Row="0"
                     Grid.Column="4"
-                    Content="Opcje dat" MinHeight="26">
+                    Content="Opcje dat" MinHeight="26"
+                   ItemsSource="{Binding DateSearchOptions}"
+                   DisplayMemberPath="Name">
+                    <mah:DropDownButton.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
+                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:DropDownButton}}, Path=DataContext.DateSearchOptionCommand}" />
+                            <Setter Property="CommandParameter" Value="{Binding SearchOption}" />
+                        </Style>
+                    </mah:DropDownButton.ItemContainerStyle>
                 </mah:DropDownButton>
                 <!-- Second row-->
 
@@ -87,13 +97,13 @@
                     Grid.Column="0"
                               mah:TextBoxHelper.ClearTextButton="True"
                               mah:TextBoxHelper.Watermark="Status umowy:"
+                            mah:TextBoxHelper.UseFloatingWatermark="True"
                                ItemsSource="{Binding ContractStates}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding State}"/>
+                            <TextBlock Text="{Binding State}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
-
                 </ComboBox>
 
                 <TextBox
@@ -110,13 +120,13 @@
                               Grid.Column="2"
                               mah:TextBoxHelper.ClearTextButton="True"
                               mah:TextBoxHelper.Watermark="Czas trwania umowy:"
+                              mah:TextBoxHelper.UseFloatingWatermark="True"
                                 ItemsSource="{Binding LendingRates}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Days}"/>
+                            <TextBlock Text="{Binding Days}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
-
                 </ComboBox>
 
                 <Button
@@ -140,17 +150,21 @@
             Grid.Column="0"
             Header="Lista umów">
 
-            <DataGrid ItemsSource="{Binding Contracts}" AutoGenerateColumns="False" >
+            <DataGrid
+                ItemsSource="{Binding Contracts}"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                IsReadOnly="True">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Numer umowy" Binding="{Binding ContractNumberID}" />
+                    <DataGridTextColumn Header="Numer umowy" Binding="{Binding ContractNumberId}" />
                     <DataGridTextColumn Header="Stan umowy" Binding="{Binding ContractState.State}" />
                     <DataGridTextColumn Header="Kwota" Binding="{Binding AmountContract}" />
                     <DataGridTextColumn Header="Data założenia umowy" Binding="{Binding StartDate}" />
                     <DataGridTextColumn Header="Czas trwania umowy" Binding="{Binding LendingRate.Days}" />
                     <DataGridTextColumn Header="Klient" Binding="{Binding DealMaker.ClientNavigation.FullName}" />
                 </DataGrid.Columns>
-
             </DataGrid>
         </GroupBox>
     </Grid>

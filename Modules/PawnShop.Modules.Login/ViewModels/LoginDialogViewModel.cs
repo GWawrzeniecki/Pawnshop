@@ -36,7 +36,7 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #region public members
 
-        public string Title => "Logowanie";
+        public string Title => "Lombard \"VIP\"";
         public bool HasErrors => _errorsByPropertyName.Any();
 
         public event Action<IDialogResult> RequestClose;
@@ -51,26 +51,26 @@ namespace PawnShop.Modules.Login.ViewModels
 
         public bool UserNameHasText
         {
-            get { return _userNameHasText; }
-            set { SetProperty(ref _userNameHasText, value); }
+            get => _userNameHasText;
+            set => SetProperty(ref _userNameHasText, value);
         }
 
         public bool PasswordBoxHasText
         {
-            get { return _passwordBoxHasText; }
-            set { SetProperty(ref _passwordBoxHasText, value); }
+            get => _passwordBoxHasText;
+            set => SetProperty(ref _passwordBoxHasText, value);
         }
 
         public string UserName
         {
-            get { return _userName; }
-            set { SetProperty(ref _userName, value); }
+            get => _userName;
+            set => SetProperty(ref _userName, value);
         }
 
         public bool PasswordTag
         {
-            get { return _passwordTag; }
-            set { SetProperty(ref _passwordTag, value); }
+            get => _passwordTag;
+            set => SetProperty(ref _passwordTag, value);
         }
 
         #endregion public properties
@@ -117,9 +117,8 @@ namespace PawnShop.Modules.Login.ViewModels
                 if (success)
                     await TryToStartStartupProcedures(loggedUser);
                 _uiService.ResetMouseCursor();
-                CloseDialogWithSuccess();          
+                CloseDialogWithSuccess();
             }
-
             catch (LoginException loginException)
             {
                 _uiService.ResetMouseCursor();
@@ -142,7 +141,6 @@ namespace PawnShop.Modules.Login.ViewModels
             }
         }
 
-      
         private async Task TryToStartStartupProcedures(WorkerBoss loggedUser)
         {
             await _loginService.LoadStartupData(loggedUser);
@@ -165,9 +163,6 @@ namespace PawnShop.Modules.Login.ViewModels
             ValidateLogin(success);
 
             return (success, loggedUser);
-
-
-
         }
 
         private void CloseDialog(ButtonResult buttonResult) => RequestClose?.Invoke(new DialogResult(buttonResult));
@@ -182,7 +177,6 @@ namespace PawnShop.Modules.Login.ViewModels
         {
             CloseDialog(ButtonResult.OK);
         }
-
 
         #endregion private methods
 

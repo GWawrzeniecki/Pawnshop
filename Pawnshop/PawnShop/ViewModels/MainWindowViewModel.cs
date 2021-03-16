@@ -11,7 +11,7 @@ namespace PawnShop.ViewModels
     {
         #region private members
 
-        private string _title = "Pawn shop";
+        private string _title = "Lombard \"VIP\"";
         private DelegateCommand<string> _navigateCommand;
         private readonly IRegionManager _regionManager;
         private bool _isPaneOpen;
@@ -22,14 +22,14 @@ namespace PawnShop.ViewModels
 
         public string Title
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get => _title;
+            set => SetProperty(ref _title, value);
         }
 
         public bool IsPaneOpen
         {
-            get { return _isPaneOpen; }
-            set { SetProperty(ref _isPaneOpen, value); }
+            get => _isPaneOpen;
+            set => SetProperty(ref _isPaneOpen, value);
         }
 
         public DelegateCommand<string> NavigateCommand => _navigateCommand ??= new DelegateCommand<string>(ExecuteNavigateCommand);

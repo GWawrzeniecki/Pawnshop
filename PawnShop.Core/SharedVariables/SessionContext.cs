@@ -16,14 +16,14 @@ namespace PawnShop.Core.SharedVariables
 
         public Person LoggedPerson
         {
-            get { return _loggedPerson; }
-            set { SetProperty(ref _loggedPerson, value); }
+            get => _loggedPerson;
+            set => SetProperty(ref _loggedPerson, value);
         }
 
         public MoneyBalance TodayMoneyBalance
         {
-            get { return _moneyBalance; }
-            set { SetProperty(ref _moneyBalance, value); }
+            get => _moneyBalance;
+            set => SetProperty(ref _moneyBalance, value);
         }
 
         #endregion public properties

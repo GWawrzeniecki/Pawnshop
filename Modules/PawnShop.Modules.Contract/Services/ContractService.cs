@@ -82,7 +82,9 @@ namespace PawnShop.Modules.Contract.Services
 
         private async Task<IList<Business.Models.Contract>> TryToLoadContracts()
         {
-            throw new NotImplementedException();
+            
+            return await _unitOfWork.ContractRepository.GetTopContractsAsync(100);
+                
         }
 
         #endregion

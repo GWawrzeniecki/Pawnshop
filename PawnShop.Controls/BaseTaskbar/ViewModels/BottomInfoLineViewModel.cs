@@ -30,14 +30,14 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
 
         public DateTime ActualDateTime
         {
-            get { return _actualDateTime; }
-            set { SetProperty(ref _actualDateTime, value); }
+            get => _actualDateTime;
+            set => SetProperty(ref _actualDateTime, value);
         }
 
         public ISessionContext SessionContext
         {
-            get { return _sessionContext; }
-            set { SetProperty(ref _sessionContext, value); }
+            get => _sessionContext;
+            set => SetProperty(ref _sessionContext, value);
         }
 
         public string FullName => $"{SessionContext.LoggedPerson.FirstName} {SessionContext.LoggedPerson.LastName}";

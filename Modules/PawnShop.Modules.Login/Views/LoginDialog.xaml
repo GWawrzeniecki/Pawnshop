@@ -20,7 +20,7 @@
 
     <StackPanel Orientation="Vertical">
         <Image  Source="/PawnShop.Modules.Login;component/Logo/test_logo.jpg" Height="150"  Margin="10 30 10 20" HorizontalAlignment="Center" />
-        <TextBlock Text="Pawn shop" Margin="0 0 0 50" HorizontalAlignment="Center" FontSize="45" />
+        <TextBlock Text="Lombard &quot;VIP&quot;" Margin="0 0 0 50" HorizontalAlignment="Center" FontSize="45" />
 
         <Grid Margin="100 0 100 20">
 
