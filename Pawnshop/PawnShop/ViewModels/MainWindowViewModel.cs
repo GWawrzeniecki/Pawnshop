@@ -38,7 +38,7 @@ namespace PawnShop.ViewModels
 
         #region constructors
 
-        public MainWindowViewModel(IRegionManager regionManager, IApllicationCommands applicationCommands)
+        public MainWindowViewModel(IRegionManager regionManager, IApplicationCommands applicationCommands)
         {
             applicationCommands.NavigateCommand.RegisterCommand(NavigateCommand);
             this._regionManager = regionManager;

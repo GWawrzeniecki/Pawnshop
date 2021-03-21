@@ -1,6 +1,7 @@
 ﻿using PawnShop.Business.Models;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
+using PawnShop.Services.DataService.QueryDataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,11 +61,22 @@ namespace PawnShop.Modules.Contract.Services
             }
             catch (Exception e)
             {
-                throw new LoadingLendingRatesException("Wystąpił problem podczas ładowania rodzajów czasu trwania umowy.", e);
+                throw new LoadingContractsException("Wystąpił problem podczas ładowania umów.", e);
             }
         }
 
 
+        public async Task<IList<Business.Models.Contract>> GetContracts(ContractQueryData queryData, int count)
+        {
+            try
+            {
+                return await TryToGetContracts(queryData, count);
+            }
+            catch (Exception e)
+            {
+                throw new LoadingContractsException("Wystąpił problem podczas wyszukiwania umów.", e);
+            }
+        }
 
         #endregion
 
@@ -82,10 +94,16 @@ namespace PawnShop.Modules.Contract.Services
 
         private async Task<IList<Business.Models.Contract>> TryToLoadContracts()
         {
-            
+
             return await _unitOfWork.ContractRepository.GetTopContractsAsync(100);
-                
+
         }
+
+        public async Task<IList<Business.Models.Contract>> TryToGetContracts(ContractQueryData queryData, int count)
+        {
+            return await _unitOfWork.ContractRepository.GetContracts(queryData, count);
+        }
+
 
         #endregion
     }

@@ -9,7 +9,7 @@ namespace PawnShop.Modules.Home.MenuItem
     {
         #region private members
 
-        private readonly IApllicationCommands _applicationCommands;
+        private readonly IApplicationCommands _applicationCommands;
 
         #endregion private members
 
@@ -21,7 +21,7 @@ namespace PawnShop.Modules.Home.MenuItem
 
         #region constructr
 
-        public HomeHamburgerMenuItem(IApllicationCommands applicationCommands)
+        public HomeHamburgerMenuItem(IApplicationCommands applicationCommands)
         {
             this._applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);

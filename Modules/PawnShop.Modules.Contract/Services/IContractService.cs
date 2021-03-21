@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using PawnShop.Services.DataService.QueryDataModels;
 
 namespace PawnShop.Modules.Contract.Services
 {
@@ -11,6 +12,6 @@ namespace PawnShop.Modules.Contract.Services
         Task<IList<LendingRate>> LoadLendingRates();
         Task<IList<ContractState>> LoadContractStates();
         Task<IList<Business.Models.Contract>> LoadContracts();
-
+        Task<IList<Business.Models.Contract>> GetContracts(ContractQueryData queryData, int count);
     }
 }

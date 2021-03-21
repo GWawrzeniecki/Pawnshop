@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using PawnShop.Business.Models;
+
+namespace PawnShop.Services.DataService.QueryDataModels
+{
+
+    public class ContractQueryData
+    {
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public string ContractNumber { get; set; }
+        public string Client { get; set; }
+        public ContractState ContractState { get; set; }
+        public string ContractAmount { get; set; }
+        public LendingRate LendingRate { get; set; }
+
+    }
+}

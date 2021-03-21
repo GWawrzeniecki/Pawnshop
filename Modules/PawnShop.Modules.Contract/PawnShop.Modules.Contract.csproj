@@ -5,6 +5,7 @@
     <AssemblyName>PawnShop.Modules.Contract</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.5.3" />
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
   </ItemGroup>
   <ItemGroup>

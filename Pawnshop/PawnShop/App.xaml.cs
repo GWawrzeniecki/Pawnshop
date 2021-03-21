@@ -40,7 +40,7 @@ namespace PawnShop
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IApllicationCommands, ApplicationCommands>();
+            containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
             containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
             containerRegistry.RegisterSingleton<IUIService, UIService>();
             containerRegistry.RegisterSingleton<ISessionContext, SessionContext>();

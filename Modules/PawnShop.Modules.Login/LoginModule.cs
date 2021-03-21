@@ -1,4 +1,5 @@
-﻿using PawnShop.Services.Implementations;
+﻿using PawnShop.Modules.Login.Validators;
+using PawnShop.Services.Implementations;
 using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -17,6 +18,8 @@ namespace PawnShop.Modules.Login
             containerRegistry.RegisterSingleton<IHashService, HashService>();
             containerRegistry.RegisterSingleton<IAesService, AesService>();
             containerRegistry.RegisterSingleton<ILoginService, LoginService>();
+            containerRegistry.RegisterSingleton<LoginDialogValidator>();
+
         }
     }
 }

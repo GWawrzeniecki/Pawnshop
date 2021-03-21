@@ -7,11 +7,11 @@ namespace PawnShop.Modules.Contract.MenuItem
 {
     public class ContractHamburgerMenuItem : HamburgerMenuItemBase
     {
-        private readonly IApllicationCommands _applicationCommands;
+        private readonly IApplicationCommands _applicationCommands;
 
         public override string DefaultNavigationPath => nameof(Views.Contract);
 
-        public ContractHamburgerMenuItem(IApllicationCommands applicationCommands)
+        public ContractHamburgerMenuItem(IApplicationCommands applicationCommands)
         {
             this._applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);

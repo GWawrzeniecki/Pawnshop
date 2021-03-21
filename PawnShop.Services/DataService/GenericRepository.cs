@@ -29,6 +29,7 @@ namespace PawnShop.Services.DataService
             if (filter != null)
             {
                 query = query.Where(filter);
+                             
             }
 
             foreach (var includeProperty in includeProperties.Split

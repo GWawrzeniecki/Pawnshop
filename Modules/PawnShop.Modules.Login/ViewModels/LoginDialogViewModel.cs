@@ -14,40 +14,49 @@ using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using PawnShop.Core;
+using PawnShop.Modules.Login.Validators;
 
 namespace PawnShop.Modules.Login.ViewModels
 {
-    public class LoginDialogViewModel : BindableBase, IDialogAware, INotifyDataErrorInfo
+    public class LoginDialogViewModel : ViewModelBase<LoginDialogViewModel>, IDialogAware
     {
         #region private members
 
-        protected readonly Dictionary<string, List<string>> _errorsByPropertyName = new Dictionary<string, List<string>>();
+
         private readonly ILoginService _loginService;
         private readonly IDialogService _dialogService;
         private readonly IUIService _uiService;
+        private readonly LoginDialogValidator _loginDialogValidator;
         private bool _userNameHasText;
         private bool _passwordBoxHasText;
         private bool _passwordTag;
         private string _userName;
         private DelegateCommand<PasswordBox> _loginCommand;
-        private readonly string _loginError = "Login lub hasło jest nieprawidłowe.";
+
 
         #endregion private members
 
         #region public members
 
         public string Title => "Lombard \"VIP\"";
-        public bool HasErrors => _errorsByPropertyName.Any();
+
 
         public event Action<IDialogResult> RequestClose;
 
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
 
         #endregion public members
 
-        #region public properties
+        #region commands
 
         public DelegateCommand<PasswordBox> LoginCommand => _loginCommand ??= new DelegateCommand<PasswordBox>(LoginAsync, CanLogin);
+
+        #endregion
+
+        #region public properties
+
+     
 
         public bool UserNameHasText
         {
@@ -77,12 +86,14 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #region constructor
 
-        public LoginDialogViewModel(ILoginService loginService, IDialogService dialogService, IUIService uService)
+        public LoginDialogViewModel(ILoginService loginService, IDialogService dialogService, IUIService uService, LoginDialogValidator loginDialogValidator) : base(loginDialogValidator)
         {
             LoginCommand.ObservesProperty(() => UserNameHasText).ObservesProperty(() => PasswordBoxHasText);
             this._loginService = loginService;
             this._dialogService = dialogService;
             this._uiService = uService;
+            _loginDialogValidator = loginDialogValidator;
+            PasswordTag = true;
         }
 
         #endregion constructor
@@ -115,9 +126,13 @@ namespace PawnShop.Modules.Login.ViewModels
                 _uiService.SetMouseBusyCursor();
                 var (success, loggedUser) = await TryToLoginAsync(UserName, password);
                 if (success)
+                {
                     await TryToStartStartupProcedures(loggedUser);
+                    CloseDialogWithSuccess();
+                }
+
                 _uiService.ResetMouseCursor();
-                CloseDialogWithSuccess();
+
             }
             catch (LoginException loginException)
             {
@@ -160,7 +175,7 @@ namespace PawnShop.Modules.Login.ViewModels
         private async Task<(bool, WorkerBoss)> TryToLoginAsync(string userName, SecureString password)
         {
             (bool success, WorkerBoss loggedUser) = await _loginService.LoginAsync(userName, password);
-            ValidateLogin(success);
+            PasswordTag = success;
 
             return (success, loggedUser);
         }
@@ -180,63 +195,14 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #endregion private methods
 
-        #region validation Methods
 
-        public void ValidateLogin(bool isValidPassword)
+        #region viewModelBase
+
+        protected override LoginDialogViewModel GetInstance()
         {
-            if (!isValidPassword)
-            {
-                AddError(nameof(PasswordTag), _loginError);
-            }
-            else
-            {
-                ClearError(nameof(PasswordTag), _loginError);
-            }
+            return this;
         }
 
-        #endregion validation Methods
-
-        #region INotifyDataError
-
-        public IEnumerable GetErrors(string propertyName)
-        {
-            return _errorsByPropertyName.ContainsKey(propertyName) ?
-            _errorsByPropertyName[propertyName] : null;
-        }
-
-        protected void OnErrorsChanged(string propertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-        }
-
-        protected void AddError(string propertyName, string error)
-        {
-            if (!_errorsByPropertyName.ContainsKey(propertyName))
-                _errorsByPropertyName[propertyName] = new List<string>();
-
-            if (!_errorsByPropertyName[propertyName].Contains(error))
-            {
-                _errorsByPropertyName[propertyName].Add(error);
-                OnErrorsChanged(propertyName);
-            }
-        }
-
-        protected void ClearError(string propertyName, string error)
-        {
-            if (_errorsByPropertyName.ContainsKey(propertyName))
-            {
-                var list = _errorsByPropertyName[propertyName];
-                list.Remove(error);
-
-                if (list.Count == 0)
-                {
-                    _errorsByPropertyName.Remove(propertyName);
-                }
-
-                OnErrorsChanged(propertyName);
-            }
-        }
-
-        #endregion INotifyDataError
+        #endregion
     }
 }

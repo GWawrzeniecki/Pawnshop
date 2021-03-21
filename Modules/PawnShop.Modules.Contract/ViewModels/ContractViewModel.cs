@@ -1,55 +1,68 @@
-﻿using Prism.Mvvm;
-using System.Collections.Generic;
-using PawnShop.Business.Models;
-using System;
-using PawnShop.Exceptions.DBExceptions;
-using PawnShop.Modules.Contract.Services;
-using System.Threading.Tasks;
-using Prism.Services.Dialogs;
+﻿using PawnShop.Business.Models;
+using PawnShop.Core;
 using PawnShop.Core.Dialogs;
-using System.Linq;
+using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Enums;
 using PawnShop.Modules.Contract.Extensions;
 using PawnShop.Modules.Contract.Models.DropDownButtonModels;
+using PawnShop.Modules.Contract.Services;
+using PawnShop.Services.DataService.QueryDataModels;
 using Prism.Commands;
+using Prism.Services.Dialogs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using PawnShop.Modules.Contract.Validators;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
-    public class ContractViewModel : BindableBase
+    public class ContractViewModel : ViewModelBase<ContractViewModel>
     {
         #region private members
-        private List<Business.Models.Contract> _contracts;
+
+        private IList<Business.Models.Contract> _contracts;
         private readonly IContractService _contractService;
         private readonly IDialogService _dialogService;
+        private readonly ValidatorBase<ContractViewModel> _contractValidator;
         private IList<LendingRate> _lendingRates;
         private IList<ContractState> _contractStates;
         private IList<DateSearchOption> _dateSearchOptions;
         private DelegateCommand<object> _dateSearchOptionCommand;
+        private DelegateCommand<object> _refreshButtonCommand;
+        private IList<RefreshButtonOption> _refreshButtonOptions;
         private DateTime? _fromDate;
         private DateTime? _toDate;
-        #endregion
+        private string _contractNumber;
+        private ContractState _contractState;
+        private string _client;
+        private string _contractAmount;
+        private LendingRate _lendingRate;
+        private DelegateCommand _refreshCommand;
 
+        #endregion private members
 
         #region constructor
-        public ContractViewModel(IContractService contractService, IDialogService dialogService)
+
+        public ContractViewModel(IContractService contractService, IDialogService dialogService, ContractValidator contractValidator) : base(contractValidator)
         {
             Contracts = new List<Business.Models.Contract>();
             this._contractService = contractService;
             this._dialogService = dialogService;
+            _contractValidator = contractValidator;
             LoadStartupData();
+            
         }
 
-
-        #endregion
-
+        #endregion constructor
 
         #region properties
-        public List<Business.Models.Contract> Contracts
+
+        public IList<Business.Models.Contract> Contracts
         {
             get => _contracts;
             set => SetProperty(ref _contracts, value);
         }
-
 
         public IList<LendingRate> LendingRates
         {
@@ -57,13 +70,11 @@ namespace PawnShop.Modules.Contract.ViewModels
             set => SetProperty(ref _lendingRates, value);
         }
 
-
         public IList<ContractState> ContractStates
         {
             get => _contractStates;
             set => SetProperty(ref _contractStates, value);
         }
-
 
         public IList<DateSearchOption> DateSearchOptions
         {
@@ -71,6 +82,11 @@ namespace PawnShop.Modules.Contract.ViewModels
             set => SetProperty(ref _dateSearchOptions, value);
         }
 
+        public IList<RefreshButtonOption> RefreshButtonOptions
+        {
+            get => _refreshButtonOptions;
+            set => SetProperty(ref _refreshButtonOptions, value);
+        }
 
         public DateTime? FromDate
         {
@@ -78,23 +94,51 @@ namespace PawnShop.Modules.Contract.ViewModels
             set => SetProperty(ref _fromDate, value);
         }
 
-
         public DateTime? ToDate
         {
             get => _toDate;
             set => SetProperty(ref _toDate, value);
         }
 
-        #endregion
+        public string ContractNumber
+        {
+            get => _contractNumber;
+            set => SetProperty(ref _contractNumber, value);
+        }
 
+        public ContractState ContractState
+        {
+            get => _contractState;
+            set => SetProperty(ref _contractState, value);
+        }
 
-        #region comands
+        public string Client
+        {
+            get => _client;
+            set => SetProperty(ref _client, value);
+        }
+
+        public string ContractAmount
+        {
+            get => _contractAmount;
+            set => SetProperty(ref _contractAmount, value);
+        }
+
+        public LendingRate LendingRate
+        {
+            get => _lendingRate;
+            set => SetProperty(ref _lendingRate, value);
+        }
+
+        #endregion properties
+
+        #region commands
 
         public DelegateCommand<object> DateSearchOptionCommand => _dateSearchOptionCommand ??= new DelegateCommand<object>(SetSearchOption);
+        public DelegateCommand<object> RefreshButtonOptionCommand => _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
+        public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
 
-
-
-        #endregion
+        #endregion commands
 
         #region private methods
 
@@ -106,6 +150,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 await TryToLoadLendingRate();
                 await TryToLoadContracts();
                 LoadDateSearchOptions();
+                LoadRefreshButtonOptions();
             }
             catch (LoadingContractStatesException loadingContractStateException)
             {
@@ -115,13 +160,15 @@ namespace PawnShop.Modules.Contract.ViewModels
             {
                 _dialogService.ShowNotificationDialog("Błąd", $"{laodingLendingRateException.Message}{Environment.NewLine}Błąd: {laodingLendingRateException.InnerException?.Message}", null);
             }
+            catch (LoadingContractsException loadingContractsException)
+            {
+                _dialogService.ShowNotificationDialog("Błąd", $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}", null);
+            }
             catch (Exception e)
             {
                 _dialogService.ShowNotificationDialog("Błąd", $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
             }
         }
-
-
 
         private async Task TryToLoadContractStates()
         {
@@ -130,9 +177,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private async Task TryToLoadLendingRate()
         {
-
             LendingRates = await _contractService.LoadLendingRates();
-
         }
 
         private async Task TryToLoadContracts()
@@ -156,10 +201,16 @@ namespace PawnShop.Modules.Contract.ViewModels
                 new DateSearchOption {Name = "Poprzedni kwartał", SearchOption = SearchOptions.PastQuarter},
                 new DateSearchOption {Name = "Bieżący rok", SearchOption = SearchOptions.CurrentYear},
                 new DateSearchOption {Name = "Poprzedni rok", SearchOption = SearchOptions.PastYear},
-
             };
+        }
 
-
+        private void LoadRefreshButtonOptions()
+        {
+            RefreshButtonOptions = new List<RefreshButtonOption>
+            {
+                new RefreshButtonOption {Name = "Wyczyść filtr", RefreshOption = RefreshOptions.Clean},
+                new RefreshButtonOption {Name = "Wyczyść filtr i odśwież", RefreshOption = RefreshOptions.CleanAndRefresh}
+            };
         }
 
         private void SetSearchOption(object searchOption)
@@ -170,35 +221,130 @@ namespace PawnShop.Modules.Contract.ViewModels
                     FromDate = null;
                     ToDate = null;
                     break;
+
                 case SearchOptions.Today:
                     FromDate = DateTime.Today;
                     ToDate = DateTime.Today;
                     break;
+
                 case SearchOptions.Yesterday:
                     FromDate = DateTime.Today.Yesterday();
                     ToDate = DateTime.Today.Yesterday();
                     break;
+
                 case SearchOptions.CurrentWeek:
                     FromDate = DateTime.Today.Monday();
                     ToDate = DateTime.Today.Sunday();
                     break;
+
                 case SearchOptions.PastWeek:
+                    FromDate = DateTime.Today.PastMonday();
+                    ToDate = DateTime.Today.PastSunday();
                     break;
+
                 case SearchOptions.CurrentMonth:
+                    FromDate = DateTime.Today.BeginningOfCurrentMonth();
+                    ToDate = DateTime.Today.EndOfCurrentMonth();
                     break;
+
                 case SearchOptions.PastMonth:
+                    FromDate = DateTime.Today.BeginningOfPastMonth();
+                    ToDate = DateTime.Today.EndOfPastMonth();
                     break;
+
                 case SearchOptions.CurrentQuarter:
+                    FromDate = DateTime.Today.BeginningOfCurrentQuarter();
+                    ToDate = DateTime.Today.EndOfCurrentQuarter();
                     break;
+
                 case SearchOptions.PastQuarter:
+                    FromDate = DateTime.Today.BeginningOfPastQuarter();
+                    ToDate = DateTime.Today.EndOfPastQuarter();
                     break;
+
                 case SearchOptions.CurrentYear:
+                    FromDate = DateTime.Today.BeginningOfCurrentYear();
+                    ToDate = DateTime.Today.EndOfCurrentYear();
                     break;
+
                 case SearchOptions.PastYear:
+                    FromDate = DateTime.Today.BeginningOfPastYear();
+                    ToDate = DateTime.Today.EndOfPastYear();
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(searchOption), searchOption, null);
             }
+        }
+
+        private void SetRefreshButtonOption(object refreshOption)
+        {
+            switch (refreshOption)
+            {
+                case RefreshOptions.Clean:
+                    CleanSearchProperties();
+                    break;
+
+                case RefreshOptions.CleanAndRefresh:
+                    CleanSearchProperties();
+                    RefreshCommand.Execute();
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(refreshOption), refreshOption, null);
+            }
+        }
+
+        private void CleanSearchProperties()
+        {
+            FromDate = null;
+            ToDate = null;
+            ContractNumber = string.Empty;
+            ContractState = null;
+            Client = string.Empty;
+            ContractAmount = string.Empty;
+            LendingRate = null;
+        }
+
+        private async void RefreshDataGrid()
+        {
+            try
+            {
+                var queryData = new ContractQueryData
+                {
+                    FromDate = FromDate,
+                    ToDate = ToDate,
+                    Client = Client,
+                    ContractAmount = ContractAmount,
+                    ContractNumber = ContractNumber,
+                    ContractState = ContractState,
+                    LendingRate = LendingRate
+                };
+
+                await TryToRefreshDataGrid(queryData);
+            }
+            catch (LoadingContractsException loadingContractsException)
+            {
+                _dialogService.ShowNotificationDialog("Błąd", $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}", null);
+            }
+            catch (Exception e)
+            {
+                _dialogService.ShowNotificationDialog("Błąd", $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
+            }
+        }
+
+        private async Task TryToRefreshDataGrid(ContractQueryData queryData)
+        {
+            Contracts = await _contractService.GetContracts(queryData, 100);
+        }
+
+        #endregion private methods
+
+        #region  viewModelBase
+
+        protected override ContractViewModel GetInstance()
+        {
+            return this;
         }
 
         #endregion

@@ -2,12 +2,12 @@
 
 namespace PawnShop.Core
 {
-    public interface IApllicationCommands
+    public interface IApplicationCommands
     {
         CompositeCommand NavigateCommand { get; }
     }
 
-    public class ApplicationCommands : IApllicationCommands
+    public class ApplicationCommands : IApplicationCommands
     {
         public CompositeCommand NavigateCommand { get; } = new CompositeCommand();
     }
