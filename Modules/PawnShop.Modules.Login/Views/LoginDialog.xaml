@@ -5,7 +5,9 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              prism:ViewModelLocator.AutoWireViewModel="True"
-              xmlns:li="http://github.com/zeluisping/loadingIndicators/xaml/controls">
+              xmlns:li="http://github.com/zeluisping/loadingIndicators/xaml/controls"
+             
+             >
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
@@ -33,9 +35,9 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="Account" Margin="0 4 2 0" />
+            <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="Account" Margin="0 4 2 0" />
             <TextBox
-                Grid.Row="1"
+                Grid.Row="0"
                 Grid.Column="1"
                 TabIndex="1"
                 mah:TextBoxHelper.HasText="{Binding UserNameHasText, Mode=TwoWay}"
@@ -55,10 +57,10 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <iconPacks:PackIconMaterial  Grid.Row="1" Grid.Column="0" Kind="Lock" Margin="0 4 2 0" />
+            <iconPacks:PackIconMaterial  Grid.Row="0" Grid.Column="0" Kind="Lock" Margin="0 4 2 0" />
 
             <PasswordBox
-                Grid.Row="1"
+                Grid.Row="0"
                 Grid.Column="1"
                 TabIndex="2"
                 Tag="{Binding PasswordTag, ValidatesOnDataErrors=True}"

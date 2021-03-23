@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using PawnShop.Modules.Contract.Validators;
 
 namespace PawnShop.Modules.Contract.ViewModels
@@ -37,6 +38,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private ContractState _contractState;
         private string _client;
         private string _contractAmount;
+        private Key _updateSourceOnKey;
         private LendingRate _lendingRate;
         private DelegateCommand _refreshCommand;
 
@@ -51,7 +53,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             this._dialogService = dialogService;
             _contractValidator = contractValidator;
             LoadStartupData();
-            
+
         }
 
         #endregion constructor
@@ -130,6 +132,14 @@ namespace PawnShop.Modules.Contract.ViewModels
             set => SetProperty(ref _lendingRate, value);
         }
 
+        
+        //public Key UpdateSourceOnKey
+
+        //{
+        //    get => _updateSourceOnKey;
+        //    set => SetProperty(ref _updateSourceOnKey, value);
+        //}
+
         #endregion properties
 
         #region commands
@@ -146,6 +156,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             try
             {
+
+
                 await TryToLoadContractStates();
                 await TryToLoadLendingRate();
                 await TryToLoadContracts();
@@ -310,6 +322,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             try
             {
+
                 var queryData = new ContractQueryData
                 {
                     FromDate = FromDate,

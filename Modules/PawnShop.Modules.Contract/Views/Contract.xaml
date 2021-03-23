@@ -46,14 +46,11 @@
             mah:TextBoxHelper.Watermark="Nr: umowy"
             mah:TextBoxHelper.ClearTextButton="True"
             mah:TextBoxHelper.UseFloatingWatermark="True"
-                    Text="{Binding ContractNumber,Mode=TwoWay,ValidatesOnDataErrors=True}">
+                    Text="{Binding ContractNumber,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}">
 
                     <TextBox.InputBindings>
-                        <KeyBinding Key="Return" Command="{Binding RefreshCommand}"/>
-                            
-                       
+                        <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
                     </TextBox.InputBindings>
-
                 </TextBox>
 
                 <TextBox
@@ -63,8 +60,12 @@
             mah:TextBoxHelper.Watermark="Klient"
             mah:TextBoxHelper.ClearTextButton="True"
             mah:TextBoxHelper.UseFloatingWatermark="True"
-                    Text="{Binding Client,Mode=TwoWay}"
-                    >
+
+                    Text="{Binding Client,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}">
+
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
+                    </TextBox.InputBindings>
                 </TextBox>
 
                 <DatePicker
@@ -94,7 +95,7 @@
                    DisplayMemberPath="Name">
                     <mah:DropDownButton.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
-                            <Setter  Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
+                            <Setter  Property="FontSize" Value="{StaticResource FontSizeSmall}" />
                             <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:DropDownButton}}, Path=DataContext.DateSearchOptionCommand}" />
                             <Setter Property="CommandParameter" Value="{Binding SearchOption}" />
                         </Style>
@@ -110,8 +111,7 @@
                               mah:TextBoxHelper.Watermark="Status umowy:"
                             mah:TextBoxHelper.UseFloatingWatermark="True"
                                ItemsSource="{Binding ContractStates}"
-                    SelectedItem="{Binding ContractState,Mode=TwoWay}"
-                    >
+                    SelectedItem="{Binding ContractState,Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding State}" />
@@ -125,8 +125,10 @@
                     Grid.Column="1"
                   mah:TextBoxHelper.ClearTextButton="True"
                               mah:TextBoxHelper.Watermark="Kwota:"
-                    Text="{Binding ContractAmount,Mode=TwoWay, ValidatesOnDataErrors=True}"
-                    >
+                    Text="{Binding ContractAmount,Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
+                    </TextBox.InputBindings>
                 </TextBox>
 
                 <ComboBox
@@ -137,8 +139,7 @@
                               mah:TextBoxHelper.Watermark="Czas trwania umowy:"
                               mah:TextBoxHelper.UseFloatingWatermark="True"
                                 ItemsSource="{Binding LendingRates}"
-                    SelectedItem="{Binding LendingRate,Mode=TwoWay}"
-                    >
+                    SelectedItem="{Binding LendingRate,Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Days}" />
@@ -160,12 +161,11 @@
                     Grid.Column="4"
                     Content="Opcje odświeżania"
                     ItemsSource="{Binding RefreshButtonOptions}"
-                    DisplayMemberPath="Name"
-                     >
+                    DisplayMemberPath="Name">
 
                     <mah:DropDownButton.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
-                            <Setter  Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
+                            <Setter  Property="FontSize" Value="{StaticResource FontSizeSmall}" />
                             <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:DropDownButton}}, Path=DataContext.RefreshButtonOptionCommand}" />
                             <Setter Property="CommandParameter" Value="{Binding RefreshOption}" />
                         </Style>
