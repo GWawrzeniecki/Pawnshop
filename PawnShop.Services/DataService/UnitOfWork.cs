@@ -1,5 +1,5 @@
-﻿using PawnShop.DataAccess.Data;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
+using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.Repositories;
 
 namespace PawnShop.Services.DataService
@@ -17,8 +17,6 @@ namespace PawnShop.Services.DataService
         private ContractRepository _contractRepository;
 
         #endregion private members
-
-
 
         #region public properties
 

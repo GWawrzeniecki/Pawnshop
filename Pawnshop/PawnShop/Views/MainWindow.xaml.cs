@@ -1,5 +1,4 @@
 ﻿using MahApps.Metro.Controls;
-using PawnShop.Core.Regions;
 using Prism.Regions;
 
 namespace PawnShop.Views
@@ -12,8 +11,8 @@ namespace PawnShop.Views
         public MainWindow(IRegionManager regionManager)
         {
             InitializeComponent();
-            RegionManager.SetRegionName(this.contentRegionControl, RegionNames.ContentRegion); //lazily created control
-            RegionManager.SetRegionManager(this.contentRegionControl, regionManager);
+            RegionManager.SetRegionManager(this.HamburgerMenuItemCollection, regionManager);
+            RegionManager.SetRegionManager(this.ContentRegionControl, regionManager);
         }
     }
 }

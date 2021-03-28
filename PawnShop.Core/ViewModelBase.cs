@@ -1,10 +1,9 @@
-﻿using Prism.Mvvm;
+﻿using FluentValidation;
+using FluentValidation.Internal;
+using Prism.Mvvm;
 using System;
 using System.ComponentModel;
 using System.Linq;
-using FluentValidation;
-using FluentValidation.Internal;
-using PawnShop.Business.Models;
 
 namespace PawnShop.Core
 {
@@ -26,9 +25,10 @@ namespace PawnShop.Core
         #endregion constructor
 
         #region Protected methods
+
         protected abstract T GetInstance();
 
-        #endregion
+        #endregion Protected methods
 
         #region IDataErrorInfo
 

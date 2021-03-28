@@ -16,8 +16,11 @@ namespace PawnShop.Modules.Contract.Extensions
         }
 
         public static DateTime PastMonday(this DateTime dateTime) => dateTime.Monday().AddDays(-7);
+
         public static DateTime PastSunday(this DateTime dateTime) => dateTime.Sunday().AddDays(-7);
+
         public static DateTime BeginningOfCurrentMonth(this DateTime dateTime) => dateTime.AddDays(-(DateTime.Today.Day - 1));
+
         public static DateTime EndOfCurrentMonth(this DateTime dateTime) =>
             dateTime.BeginningOfCurrentMonth().AddDays(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month) - 1);
 
@@ -59,7 +62,5 @@ namespace PawnShop.Modules.Contract.Extensions
 
         public static DateTime EndOfPastYear(this DateTime dateTime) =>
             dateTime.EndOfCurrentYear().AddYears(-1);
-
-
     }
 }

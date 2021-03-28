@@ -33,13 +33,13 @@
 
             <!--Menu items-->
             <mah:HamburgerMenu.ItemsSource>
-                <mah:HamburgerMenuItemCollection prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.MenuRegion}" />
+                <mah:HamburgerMenuItemCollection x:Name="HamburgerMenuItemCollection" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.MenuRegion}" />
             </mah:HamburgerMenu.ItemsSource>
 
             <mah:HamburgerMenu.Content>
                 <Grid>
                     <!--Main Content-->
-                    <ContentControl x:Name="contentRegionControl" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ContentRegion}" />
+                    <ContentControl x:Name="ContentRegionControl" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ContentRegion}" />
                 </Grid>
             </mah:HamburgerMenu.Content>
         </mah:HamburgerMenu>

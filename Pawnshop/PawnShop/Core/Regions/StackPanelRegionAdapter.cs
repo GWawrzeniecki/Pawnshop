@@ -14,19 +14,26 @@ namespace PawnShop.Core.Regions
         {
             region.Views.CollectionChanged += (s, e) =>
             {
-                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                switch (e.Action)
                 {
-                    foreach (FrameworkElement item in e.NewItems)
-                    {
-                        regionTarget.Children.Add(item);
-                    }
-                }
-                else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-                {
-                    foreach (FrameworkElement item in e.OldItems)
-                    {
-                        regionTarget.Children.Remove(item);
-                    }
+                    case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                        {
+                            foreach (FrameworkElement item in e.NewItems)
+                            {
+                                regionTarget.Children.Add(item);
+                            }
+
+                            break;
+                        }
+                    case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                        {
+                            foreach (FrameworkElement item in e.OldItems)
+                            {
+                                regionTarget.Children.Remove(item);
+                            }
+
+                            break;
+                        }
                 }
             };
         }

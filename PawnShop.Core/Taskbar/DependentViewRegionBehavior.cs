@@ -56,7 +56,7 @@ namespace PawnShop.Core.Taskbar
                             _dependentViewCache.Add(view, dependentViewInfos);
                     }
 
-                    dependentViewInfos.ForEach(dependentViewInfo => Region.RegionManager.Regions[dependentViewInfo.TaregetRegionName].Add(dependentViewInfo.View));
+                    dependentViewInfos.ForEach(dependentViewInfo => Region.RegionManager.Regions[dependentViewInfo.TargetRegionName].Add(dependentViewInfo.View));
                 }
             }
             else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
@@ -65,7 +65,7 @@ namespace PawnShop.Core.Taskbar
                 {
                     if (_dependentViewCache.ContainsKey(oldView))
                     {
-                        _dependentViewCache[oldView].ForEach(dependentViewInfo => Region.RegionManager.Regions[dependentViewInfo.TaregetRegionName].Remove(dependentViewInfo.View));
+                        _dependentViewCache[oldView].ForEach(dependentViewInfo => Region.RegionManager.Regions[dependentViewInfo.TargetRegionName].Remove(dependentViewInfo.View));
 
                         if (!ShouldKeepAlive(oldView))
                             _dependentViewCache.Remove(oldView);
@@ -80,7 +80,7 @@ namespace PawnShop.Core.Taskbar
 
         private DependentViewInfo CreateDependentViewInfo(DependentViewAttribute att)
         {
-            return new DependentViewInfo { TaregetRegionName = att.TargetRegionName, View = Activator.CreateInstance(att.Type) };
+            return new DependentViewInfo { TargetRegionName = att.TargetRegionName, View = Activator.CreateInstance(att.Type) };
         }
 
         private IEnumerable<T> GetCustomAttributes<T>(Type type) => type.GetCustomAttributes(typeof(T), true).OfType<T>();

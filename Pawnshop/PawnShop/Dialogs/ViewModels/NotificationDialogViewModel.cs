@@ -7,23 +7,21 @@ namespace PawnShop.Dialogs.ViewsModels
 {
     public class NotificationDialogViewModel : BindableBase, IDialogAware
     {
+        private DelegateCommand<string> _closeDialogCommand;
+        private string _message;
+        private string _title = "Notification";
+
         public NotificationDialogViewModel()
         {
         }
 
-        private DelegateCommand<string> _closeDialogCommand;
-
-        public DelegateCommand<string> CloseDialogCommand => _closeDialogCommand ?? (_closeDialogCommand = new DelegateCommand<string>(CloseDialog));
-
-        private string _message;
+        public DelegateCommand<string> CloseDialogCommand => _closeDialogCommand ??= new DelegateCommand<string>(CloseDialog);
 
         public string Message
         {
             get => _message;
             set => SetProperty(ref _message, value);
         }
-
-        private string _title = "Notification";
 
         public string Title
         {
@@ -35,12 +33,12 @@ namespace PawnShop.Dialogs.ViewsModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            ButtonResult result = ButtonResult.None;
-
-            if (parameter?.ToLower() == "true")
-                result = ButtonResult.OK;
-            else if (parameter?.ToLower() == "false")
-                result = ButtonResult.Cancel;
+            var result = parameter?.ToLower() switch
+            {
+                "true" => ButtonResult.OK,
+                "false" => ButtonResult.Cancel,
+                _ => ButtonResult.None
+            };
 
             RaiseRequestClose(new DialogResult(result));
         }

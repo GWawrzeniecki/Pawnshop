@@ -2,13 +2,13 @@
 using PawnShop.Controls.BaseTaskbar.Views;
 using PawnShop.Core;
 using PawnShop.Core.Regions;
+using PawnShop.Core.ScopedRegion;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Core.Taskbar;
 using PawnShop.Dialogs.Views;
 using PawnShop.Dialogs.ViewsModels;
 using PawnShop.Modules.Contract;
 using PawnShop.Modules.Home;
-using PawnShop.Modules.Home.Views;
 using PawnShop.Modules.Login;
 using PawnShop.Modules.Login.ViewModels;
 using PawnShop.Modules.Login.Views;
@@ -43,6 +43,7 @@ namespace PawnShop
             containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
             containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
             containerRegistry.RegisterSingleton<IUIService, UIService>();
+            containerRegistry.RegisterSingleton<IShellService, ShellService>();
             containerRegistry.RegisterSingleton<ISessionContext, SessionContext>();
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
@@ -68,6 +69,10 @@ namespace PawnShop
         protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
         {
             regionBehaviors.AddIfMissing(DependentViewRegionBehavior.BehaviorKey, typeof(DependentViewRegionBehavior));
+            regionBehaviors.AddIfMissing(RegionManagerAwareBehavior.BehaviorKey, typeof(RegionManagerAwareBehavior));
+
+            //regionBehaviors.AddIfMissing("A", typeof(CustomAutoPopulateRegionBehaviour));
+
             base.ConfigureDefaultRegionBehaviors(regionBehaviors);
         }
 
@@ -94,7 +99,6 @@ namespace PawnShop
 
                 var regionManager = Container.Resolve<IRegionManager>();
                 regionManager.RegisterViewWithRegion(RegionNames.BottomInfoLineRegion, typeof(BottomInfoLine));
-                regionManager.RegisterViewWithRegion(RegionNames.ContentRegion, typeof(Home));
 
                 #endregion registering views
             }

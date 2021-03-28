@@ -11,7 +11,9 @@ namespace PawnShop.Services.Interfaces
         public Task<(bool success, WorkerBoss loggedUser)> LoginAsync(string userName, SecureString password);
 
         public Task LoadStartupData(WorkerBoss loggedUser);
+
         public Task UpdateContractStates();
+
         public LoginResult ShowLoginDialog();
 
         public void ShowLogoutDialog();

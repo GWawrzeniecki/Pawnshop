@@ -3,6 +3,6 @@
     internal class DependentViewInfo
     {
         public object View { get; set; }
-        public string TaregetRegionName { get; set; }
+        public string TargetRegionName { get; set; }
     }
 }

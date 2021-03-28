@@ -1,21 +1,16 @@
 ﻿using PawnShop.Business.Models;
+using PawnShop.Core;
 using PawnShop.Core.Dialogs;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Login.Extensions;
+using PawnShop.Modules.Login.Validators;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using PawnShop.Core;
-using PawnShop.Modules.Login.Validators;
 
 namespace PawnShop.Modules.Login.ViewModels
 {
@@ -23,17 +18,14 @@ namespace PawnShop.Modules.Login.ViewModels
     {
         #region private members
 
-
         private readonly ILoginService _loginService;
         private readonly IDialogService _dialogService;
         private readonly IUIService _uiService;
-        private readonly LoginDialogValidator _loginDialogValidator;
         private bool _userNameHasText;
         private bool _passwordBoxHasText;
         private bool _passwordTag;
         private string _userName;
         private DelegateCommand<PasswordBox> _loginCommand;
-
 
         #endregion private members
 
@@ -41,10 +33,7 @@ namespace PawnShop.Modules.Login.ViewModels
 
         public string Title => "Lombard \"VIP\"";
 
-
         public event Action<IDialogResult> RequestClose;
-
-
 
         #endregion public members
 
@@ -52,11 +41,9 @@ namespace PawnShop.Modules.Login.ViewModels
 
         public DelegateCommand<PasswordBox> LoginCommand => _loginCommand ??= new DelegateCommand<PasswordBox>(LoginAsync, CanLogin);
 
-        #endregion
+        #endregion commands
 
         #region public properties
-
-     
 
         public bool UserNameHasText
         {
@@ -92,7 +79,6 @@ namespace PawnShop.Modules.Login.ViewModels
             this._loginService = loginService;
             this._dialogService = dialogService;
             this._uiService = uService;
-            _loginDialogValidator = loginDialogValidator;
             PasswordTag = true;
         }
 
@@ -132,7 +118,6 @@ namespace PawnShop.Modules.Login.ViewModels
                 }
 
                 _uiService.ResetMouseCursor();
-
             }
             catch (LoginException loginException)
             {
@@ -195,7 +180,6 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #endregion private methods
 
-
         #region viewModelBase
 
         protected override LoginDialogViewModel GetInstance()
@@ -203,6 +187,6 @@ namespace PawnShop.Modules.Login.ViewModels
             return this;
         }
 
-        #endregion
+        #endregion viewModelBase
     }
 }

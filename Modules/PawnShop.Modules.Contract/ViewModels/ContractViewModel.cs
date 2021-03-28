@@ -1,20 +1,26 @@
 ﻿using PawnShop.Business.Models;
 using PawnShop.Core;
 using PawnShop.Core.Dialogs;
+using PawnShop.Core.Regions;
+using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Enums;
 using PawnShop.Modules.Contract.Extensions;
+using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.Models.DropDownButtonModels;
 using PawnShop.Modules.Contract.Services;
+using PawnShop.Modules.Contract.Validators;
+using PawnShop.Modules.Contract.Views;
+using PawnShop.Modules.Contract.Windows.Views;
 using PawnShop.Services.DataService.QueryDataModels;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using PawnShop.Modules.Contract.Validators;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
@@ -25,7 +31,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         private IList<Business.Models.Contract> _contracts;
         private readonly IContractService _contractService;
         private readonly IDialogService _dialogService;
-        private readonly ValidatorBase<ContractViewModel> _contractValidator;
+        private readonly IShellService _shellService;
+        private readonly IContainerProvider _containerProvider;
         private IList<LendingRate> _lendingRates;
         private IList<ContractState> _contractStates;
         private IList<DateSearchOption> _dateSearchOptions;
@@ -38,22 +45,22 @@ namespace PawnShop.Modules.Contract.ViewModels
         private ContractState _contractState;
         private string _client;
         private string _contractAmount;
-        private Key _updateSourceOnKey;
         private LendingRate _lendingRate;
         private DelegateCommand _refreshCommand;
+        private DelegateCommand _createContractCommand;
 
         #endregion private members
 
         #region constructor
 
-        public ContractViewModel(IContractService contractService, IDialogService dialogService, ContractValidator contractValidator) : base(contractValidator)
+        public ContractViewModel(IContractService contractService, IDialogService dialogService, IShellService shellService, IContainerProvider containerProvider, ContractValidator contractValidator) : base(contractValidator)
         {
             Contracts = new List<Business.Models.Contract>();
             this._contractService = contractService;
             this._dialogService = dialogService;
-            _contractValidator = contractValidator;
+            _shellService = shellService;
+            _containerProvider = containerProvider;
             LoadStartupData();
-
         }
 
         #endregion constructor
@@ -132,14 +139,6 @@ namespace PawnShop.Modules.Contract.ViewModels
             set => SetProperty(ref _lendingRate, value);
         }
 
-        
-        //public Key UpdateSourceOnKey
-
-        //{
-        //    get => _updateSourceOnKey;
-        //    set => SetProperty(ref _updateSourceOnKey, value);
-        //}
-
         #endregion properties
 
         #region commands
@@ -147,6 +146,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         public DelegateCommand<object> DateSearchOptionCommand => _dateSearchOptionCommand ??= new DelegateCommand<object>(SetSearchOption);
         public DelegateCommand<object> RefreshButtonOptionCommand => _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
         public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
+        public DelegateCommand CreateContractCommand => _createContractCommand ??= new DelegateCommand(CreateContract);
 
         #endregion commands
 
@@ -156,8 +156,6 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             try
             {
-
-
                 await TryToLoadContractStates();
                 await TryToLoadLendingRate();
                 await TryToLoadContracts();
@@ -322,7 +320,6 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             try
             {
-
                 var queryData = new ContractQueryData
                 {
                     FromDate = FromDate,
@@ -351,16 +348,23 @@ namespace PawnShop.Modules.Contract.ViewModels
             Contracts = await _contractService.GetContracts(queryData, 100);
         }
 
+        private void CreateContract()
+        {
+            var scopedRegion = _shellService.ShowShell<CreateContractWindow>(nameof(ClientData));
+            var clientDataHamburgerMenuItem = _containerProvider.Resolve<ClientDataHamburgerMenuItem>();
+            RegionManagerAware.SetRegionManagerAware(clientDataHamburgerMenuItem, scopedRegion);
+            scopedRegion.Regions[RegionNames.MenuRegion].Add(clientDataHamburgerMenuItem);
+        }
+
         #endregion private methods
 
-        #region  viewModelBase
+        #region viewModelBase
 
         protected override ContractViewModel GetInstance()
         {
             return this;
         }
 
-        #endregion
-
+        #endregion viewModelBase
     }
 }

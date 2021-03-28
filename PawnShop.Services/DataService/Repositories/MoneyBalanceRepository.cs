@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PawnShop.DataAccess.Data;
 using PawnShop.Business.Models;
+using PawnShop.DataAccess.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using static PawnShop.Services.Constants;

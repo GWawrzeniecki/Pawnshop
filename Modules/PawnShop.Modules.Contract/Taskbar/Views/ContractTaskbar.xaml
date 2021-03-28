@@ -15,7 +15,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Button Content="Utwórz umowę" Grid.Column="0" Margin="0 0 20 0" Style="{StaticResource MahApps.Styles.Button.Flat}" />
+        <Button Content="Utwórz umowę" Grid.Column="0" Margin="0 0 20 0" Command="{Binding CreateContractCommand}" />
         <Button Content="Przedłuż umowę" Grid.Column="1" Margin="0 0 20 0" />
         <Button Content="Wykup umowę" Grid.Column="2" Margin="0 0 20 0" />
         <icons:NotificationsIcon Grid.Column="4" />

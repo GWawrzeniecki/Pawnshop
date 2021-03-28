@@ -5,7 +5,6 @@ using PawnShop.Services.DataService.QueryDataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Contract.Services
@@ -13,20 +12,22 @@ namespace PawnShop.Modules.Contract.Services
     public class ContractService : IContractService
     {
         #region private members
+
         private readonly IUnitOfWork _unitOfWork;
-        #endregion
+
+        #endregion private members
 
         #region constructor
+
         public ContractService(IUnitOfWork unitOfWork)
         {
             this._unitOfWork = unitOfWork;
         }
 
-
-        #endregion
-
+        #endregion constructor
 
         #region IContractService interface
+
         public async Task<IList<ContractState>> LoadContractStates()
         {
             try
@@ -38,8 +39,6 @@ namespace PawnShop.Modules.Contract.Services
                 throw new LoadingContractStatesException("Wystąpił problem podczas ładowania rodzajów stanów umowy.", e);
             }
         }
-
-
 
         public async Task<IList<LendingRate>> LoadLendingRates()
         {
@@ -65,7 +64,6 @@ namespace PawnShop.Modules.Contract.Services
             }
         }
 
-
         public async Task<IList<Business.Models.Contract>> GetContracts(ContractQueryData queryData, int count)
         {
             try
@@ -78,13 +76,13 @@ namespace PawnShop.Modules.Contract.Services
             }
         }
 
-        #endregion
+        #endregion IContractService interface
 
         #region private methods
+
         private async Task<IList<ContractState>> TryToLoadContractStates()
         {
             return (await _unitOfWork.ContractStateRepository.GetAsync()).ToList();
-
         }
 
         private async Task<IList<LendingRate>> TryToLoadLendingRate()
@@ -94,9 +92,7 @@ namespace PawnShop.Modules.Contract.Services
 
         private async Task<IList<Business.Models.Contract>> TryToLoadContracts()
         {
-
             return await _unitOfWork.ContractRepository.GetTopContractsAsync(100);
-
         }
 
         public async Task<IList<Business.Models.Contract>> TryToGetContracts(ContractQueryData queryData, int count)
@@ -104,7 +100,6 @@ namespace PawnShop.Modules.Contract.Services
             return await _unitOfWork.ContractRepository.GetContracts(queryData, count);
         }
 
-
-        #endregion
+        #endregion private methods
     }
 }

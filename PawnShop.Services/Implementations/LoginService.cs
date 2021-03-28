@@ -109,10 +109,6 @@ namespace PawnShop.Services.Implementations
             });
         }
 
-       
-
-
-
         #endregion public methods
 
         #region private method

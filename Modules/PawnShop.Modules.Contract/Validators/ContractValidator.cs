@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentValidation;
+﻿using FluentValidation;
 using PawnShop.Core;
 using PawnShop.Modules.Contract.ViewModels;
 
@@ -16,7 +13,6 @@ namespace PawnShop.Modules.Contract.Validators
                 .When(contract => !string.IsNullOrEmpty(contract.ContractNumber))
                 .WithMessage("Nieprawidłowy format numeru umowy.");
 
-
             RuleFor(contract => contract.ContractAmount)
                 .Matches("^[0-9]+$")
                 .When(contract => !string.IsNullOrEmpty(contract.ContractAmount))
@@ -25,7 +21,7 @@ namespace PawnShop.Modules.Contract.Validators
             RuleFor(contract => contract.Client)
                 .Matches("^[a-zA-Z]+([ ]?[a-zA-Z])*$")
                 .When(contract => !string.IsNullOrEmpty(contract.Client))
-                .WithMessage("Nieprawidłowe nazwa klienta");
+                .WithMessage("Nieprawidłowa nazwa klienta.");
         }
     }
 }
