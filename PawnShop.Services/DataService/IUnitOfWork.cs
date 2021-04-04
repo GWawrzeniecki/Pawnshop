@@ -12,5 +12,6 @@ namespace PawnShop.Services.DataService
         public ContractRepository ContractRepository { get; }
         public GenericRepository<LendingRate> LendingRateRepository { get; }
         public GenericRepository<ContractState> ContractStateRepository { get; }
+        public ClientRepository ClientRepository { get; }
     }
 }

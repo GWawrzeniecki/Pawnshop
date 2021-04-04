@@ -5,27 +5,30 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
                  prism:ViewModelLocator.AutoWireViewModel="True"
-             Title="{Binding Tittle}">
-    <Grid>
+                 Title="{Binding Tittle}">
+    <DockPanel LastChildFill="True">
+
         <mah:HamburgerMenu SelectedIndex="0"
-                          OpenPaneLength="150"
-                          CompactPaneLength="50"
-                          DockPanel.Dock="Left"
-                          ItemTemplate="{StaticResource MenuItemTemplate}"
-                          OptionsItemTemplate="{StaticResource MenuItemTemplate}"
-                          Style="{StaticResource MahApps.Styles.HamburgerMenu.Ripple}">
+                           OpenPaneLength="150"
+                           CompactPaneLength="50"
+                           DockPanel.Dock="Left"
+                           ItemTemplate="{StaticResource MenuItemTemplate}"
+                           OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+                           Style="{StaticResource MahApps.Styles.HamburgerMenu.Ripple}">
 
             <!--Menu items-->
             <mah:HamburgerMenu.ItemsSource>
-                <mah:HamburgerMenuItemCollection x:Name="HamburgerMenuItemCollection" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.MenuRegion}" />
+                <mah:HamburgerMenuItemCollection x:Name="HamburgerMenuItemCollection"
+                                                 prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.MenuRegion}" />
             </mah:HamburgerMenu.ItemsSource>
 
             <mah:HamburgerMenu.Content>
                 <Grid>
                     <!--Main Content-->
-                    <ContentControl x:Name="CreateContractContentControl"  prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ContentRegion}" />
+                    <ContentControl x:Name="CreateContractContentControl"
+                                    prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ContentRegion}" />
                 </Grid>
             </mah:HamburgerMenu.Content>
         </mah:HamburgerMenu>
-    </Grid>
+    </DockPanel>
 </mah:MetroWindow>

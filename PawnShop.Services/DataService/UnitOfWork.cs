@@ -8,13 +8,14 @@ namespace PawnShop.Services.DataService
     {
         #region private members
 
-        private PawnshopContext _context = new PawnshopContext();
+        private readonly PawnshopContext _context = new PawnshopContext();
         private GenericRepository<WorkerBoss> _workerBossRepository;
         private GenericRepository<Person> _personRepository;
         private MoneyBalanceRepository _moneyBalanceRepository;
         private GenericRepository<LendingRate> _lendingRateRepository;
         private GenericRepository<ContractState> _contractStateRepository;
         private ContractRepository _contractRepository;
+        private ClientRepository _clientRepository;
 
         #endregion private members
 
@@ -24,10 +25,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                if (this._workerBossRepository == null)
-                {
-                    this._workerBossRepository = new GenericRepository<WorkerBoss>(_context);
-                }
+                this._workerBossRepository ??= new GenericRepository<WorkerBoss>(_context);
                 return _workerBossRepository;
             }
         }
@@ -36,10 +34,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                if (this._personRepository == null)
-                {
-                    this._personRepository = new GenericRepository<Person>(_context);
-                }
+                this._personRepository ??= new GenericRepository<Person>(_context);
                 return _personRepository;
             }
         }
@@ -48,10 +43,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                if (this._moneyBalanceRepository == null)
-                {
-                    this._moneyBalanceRepository = new MoneyBalanceRepository(_context);
-                }
+                this._moneyBalanceRepository ??= new MoneyBalanceRepository(_context);
                 return _moneyBalanceRepository;
             }
         }
@@ -60,10 +52,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                if (this._contractRepository == null)
-                {
-                    this._contractRepository = new ContractRepository(_context);
-                }
+                this._contractRepository ??= new ContractRepository(_context);
                 return _contractRepository;
             }
         }
@@ -72,10 +61,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                if (this._lendingRateRepository == null)
-                {
-                    this._lendingRateRepository = new GenericRepository<LendingRate>(_context);
-                }
+                this._lendingRateRepository ??= new GenericRepository<LendingRate>(_context);
                 return _lendingRateRepository;
             }
         }
@@ -84,11 +70,17 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                if (this._contractStateRepository == null)
-                {
-                    this._contractStateRepository = new GenericRepository<ContractState>(_context);
-                }
+                this._contractStateRepository ??= new GenericRepository<ContractState>(_context);
                 return _contractStateRepository;
+            }
+        }
+
+        public ClientRepository ClientRepository
+        {
+            get
+            {
+                this._clientRepository ??= new ClientRepository(_context);
+                return _clientRepository;
             }
         }
 

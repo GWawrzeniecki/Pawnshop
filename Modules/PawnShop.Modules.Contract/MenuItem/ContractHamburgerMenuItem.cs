@@ -9,15 +9,15 @@ namespace PawnShop.Modules.Contract.MenuItem
     {
         private readonly IApplicationCommands _applicationCommands;
 
-        public override string DefaultNavigationPath => nameof(Views.Contract);
-
         public ContractHamburgerMenuItem(IApplicationCommands applicationCommands)
         {
-            this._applicationCommands = applicationCommands;
+            _applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);
             Label = "Umowy";
-            Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FileDocumentEditOutline };
+            Icon = new PackIconMaterial {Kind = PackIconMaterialKind.FileDocumentEditOutline};
         }
+
+        public override string DefaultNavigationPath => nameof(Views.Contract);
 
         private void Navigate()
         {

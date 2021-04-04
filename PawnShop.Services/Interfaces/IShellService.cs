@@ -5,6 +5,6 @@ namespace PawnShop.Services.Interfaces
 {
     public interface IShellService
     {
-        IRegionManager ShowShell<T>(string viewName) where T : Window;
+        void ShowShell<T>(string viewName) where T : Window;
     }
 }

@@ -3,7 +3,136 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
-            <TextBlock>CLIENT</TextBlock>
+    <Grid Margin="10 10 10 0">
+
+        <Grid.Resources>
+            <Thickness x:Key="ControlMargin">5 5 15 5</Thickness>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <GroupBox
+            Grid.Row="0"
+            Grid.Column="0"
+            Header="Wyszukaj klienta"
+            Margin="0 0 0 15">
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <ComboBox
+                    Margin="15 5 15 5"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    MinHeight="26"
+                    ItemsSource="{Binding ClientSearchOptions}"
+                    SelectedItem="{Binding SelectedClientSearchOption}"
+                    DisplayMemberPath="Name" />
+
+                <ComboBox
+                    x:Name="ClientSearchComboBox"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="{StaticResource ControlMargin}"
+                    IsTextSearchEnabled="True"
+                    IsEditable="True"
+                    TextSearch.TextPath="ClientNavigation.FullName"
+
+                    SelectedItem="{Binding SelectedClient}"
+                    ItemsSource="{Binding SearchedClients}"
+                    Text="{Binding ClientSearchComboBoxText, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding ClientNavigation.FirstName}" />
+                                <TextBlock Text=" " />
+                                <TextBlock Text="{Binding ClientNavigation.LastName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Button Grid.Row="0"
+                        Grid.Column="2"
+                        Content="Szukaj"
+                        Margin="{StaticResource ControlMargin}"
+                        Command="{Binding SearchClientCommand}"
+                        CommandParameter="{Binding ElementName=ClientSearchComboBox, Path=Text}" />
+                <Button Grid.Row="0"
+                        Grid.Column="3"
+                        Content="Dodaj nowego klienta"
+                        Margin="{StaticResource ControlMargin}" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox
+            Grid.Row="1"
+            Grid.Column="0"
+            Header="Dane klienta"
+            Margin="0 0 0 15">
+
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+                        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Imię oraz nazwisko:" />
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Adres:" />
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="Data urodzenia:" />
+                <TextBlock Grid.Column="0" Grid.Row="3" Text="Pesel:" />
+                <TextBlock Grid.Column="0" Grid.Row="4" Text="Dowód osobisty:" />
+
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedClient.ClientNavigation.FullName}" />
+                <TextBlock Grid.Column="1" Grid.Row="1">
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.Street}" />
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.HouseNumber}" />
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.ApartamentNumber}" />
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.PostCode}" />
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.City.City1}" />
+                </TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="2"
+                           Text="{Binding SelectedClient.ClientNavigation.BirthDate, StringFormat=d}" />
+                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding SelectedClient.Pesel}" />
+                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding SelectedClient.IdcardNumber}" />
+
+                <Button Grid.Row="3" Grid.Column="3" Content="Edytuj dane klienta"
+                        Margin="{StaticResource ControlMargin}" />
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>

@@ -1,7 +1,7 @@
-﻿using PawnShop.Business.Models;
-using PawnShop.Services.DataService.QueryDataModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using PawnShop.Business.Models;
+using PawnShop.Services.DataService.QueryDataModels;
 
 namespace PawnShop.Modules.Contract.Services
 {
@@ -14,5 +14,9 @@ namespace PawnShop.Modules.Contract.Services
         Task<IList<Business.Models.Contract>> LoadContracts();
 
         Task<IList<Business.Models.Contract>> GetContracts(ContractQueryData queryData, int count);
+
+        Task<IList<Client>> GetClientBySurname(string surname);
+
+        Task<IList<Client>> GetClientByPesel(string pesel);
     }
 }

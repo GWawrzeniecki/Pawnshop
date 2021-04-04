@@ -1,12 +1,13 @@
-﻿using PawnShop.Business.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using PawnShop.Business.Models;
 using PawnShop.Core;
 using PawnShop.Core.Dialogs;
-using PawnShop.Core.Regions;
-using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Enums;
 using PawnShop.Modules.Contract.Extensions;
-using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.Models.DropDownButtonModels;
 using PawnShop.Modules.Contract.Services;
 using PawnShop.Modules.Contract.Validators;
@@ -17,15 +18,36 @@ using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
     public class ContractViewModel : ViewModelBase<ContractViewModel>
     {
+        #region constructor
+
+        public ContractViewModel(IContractService contractService, IDialogService dialogService,
+            IShellService shellService, IContainerProvider containerProvider, ContractValidator contractValidator) :
+            base(contractValidator)
+        {
+            Contracts = new List<Business.Models.Contract>();
+            _contractService = contractService;
+            _dialogService = dialogService;
+            _shellService = shellService;
+            _containerProvider = containerProvider;
+            LoadStartupData();
+        }
+
+        #endregion constructor
+
+        #region viewModelBase
+
+        protected override ContractViewModel GetInstance()
+        {
+            return this;
+        }
+
+        #endregion viewModelBase
+
         #region private members
 
         private IList<Business.Models.Contract> _contracts;
@@ -50,20 +72,6 @@ namespace PawnShop.Modules.Contract.ViewModels
         private DelegateCommand _createContractCommand;
 
         #endregion private members
-
-        #region constructor
-
-        public ContractViewModel(IContractService contractService, IDialogService dialogService, IShellService shellService, IContainerProvider containerProvider, ContractValidator contractValidator) : base(contractValidator)
-        {
-            Contracts = new List<Business.Models.Contract>();
-            this._contractService = contractService;
-            this._dialogService = dialogService;
-            _shellService = shellService;
-            _containerProvider = containerProvider;
-            LoadStartupData();
-        }
-
-        #endregion constructor
 
         #region properties
 
@@ -143,8 +151,12 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region commands
 
-        public DelegateCommand<object> DateSearchOptionCommand => _dateSearchOptionCommand ??= new DelegateCommand<object>(SetSearchOption);
-        public DelegateCommand<object> RefreshButtonOptionCommand => _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
+        public DelegateCommand<object> DateSearchOptionCommand =>
+            _dateSearchOptionCommand ??= new DelegateCommand<object>(SetSearchOption);
+
+        public DelegateCommand<object> RefreshButtonOptionCommand =>
+            _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
+
         public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
         public DelegateCommand CreateContractCommand => _createContractCommand ??= new DelegateCommand(CreateContract);
 
@@ -164,19 +176,26 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (LoadingContractStatesException loadingContractStateException)
             {
-                _dialogService.ShowNotificationDialog("Błąd", $"{loadingContractStateException.Message}{Environment.NewLine}Błąd: {loadingContractStateException.InnerException?.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd",
+                    $"{loadingContractStateException.Message}{Environment.NewLine}Błąd: {loadingContractStateException.InnerException?.Message}",
+                    null);
             }
             catch (LoadingLendingRatesException laodingLendingRateException)
             {
-                _dialogService.ShowNotificationDialog("Błąd", $"{laodingLendingRateException.Message}{Environment.NewLine}Błąd: {laodingLendingRateException.InnerException?.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd",
+                    $"{laodingLendingRateException.Message}{Environment.NewLine}Błąd: {laodingLendingRateException.InnerException?.Message}",
+                    null);
             }
             catch (LoadingContractsException loadingContractsException)
             {
-                _dialogService.ShowNotificationDialog("Błąd", $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd",
+                    $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
+                    null);
             }
             catch (Exception e)
             {
-                _dialogService.ShowNotificationDialog("Błąd", $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd",
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
             }
         }
 
@@ -210,7 +229,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 new DateSearchOption {Name = "Bieżący kwartał", SearchOption = SearchOptions.CurrentQuarter},
                 new DateSearchOption {Name = "Poprzedni kwartał", SearchOption = SearchOptions.PastQuarter},
                 new DateSearchOption {Name = "Bieżący rok", SearchOption = SearchOptions.CurrentYear},
-                new DateSearchOption {Name = "Poprzedni rok", SearchOption = SearchOptions.PastYear},
+                new DateSearchOption {Name = "Poprzedni rok", SearchOption = SearchOptions.PastYear}
             };
         }
 
@@ -219,7 +238,8 @@ namespace PawnShop.Modules.Contract.ViewModels
             RefreshButtonOptions = new List<RefreshButtonOption>
             {
                 new RefreshButtonOption {Name = "Wyczyść filtr", RefreshOption = RefreshOptions.Clean},
-                new RefreshButtonOption {Name = "Wyczyść filtr i odśwież", RefreshOption = RefreshOptions.CleanAndRefresh}
+                new RefreshButtonOption
+                    {Name = "Wyczyść filtr i odśwież", RefreshOption = RefreshOptions.CleanAndRefresh}
             };
         }
 
@@ -335,11 +355,14 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (LoadingContractsException loadingContractsException)
             {
-                _dialogService.ShowNotificationDialog("Błąd", $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd",
+                    $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
+                    null);
             }
             catch (Exception e)
             {
-                _dialogService.ShowNotificationDialog("Błąd", $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd",
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
             }
         }
 
@@ -350,21 +373,9 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private void CreateContract()
         {
-            var scopedRegion = _shellService.ShowShell<CreateContractWindow>(nameof(ClientData));
-            var clientDataHamburgerMenuItem = _containerProvider.Resolve<ClientDataHamburgerMenuItem>();
-            RegionManagerAware.SetRegionManagerAware(clientDataHamburgerMenuItem, scopedRegion);
-            scopedRegion.Regions[RegionNames.MenuRegion].Add(clientDataHamburgerMenuItem);
+            _shellService.ShowShell<CreateContractWindow>(nameof(ClientData));
         }
 
         #endregion private methods
-
-        #region viewModelBase
-
-        protected override ContractViewModel GetInstance()
-        {
-            return this;
-        }
-
-        #endregion viewModelBase
     }
 }

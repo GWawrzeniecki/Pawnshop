@@ -123,20 +123,14 @@ namespace PawnShop.Services.Implementations
 
             var (success, workerBoss) = await TryGetWorkerBossAsync(login);
 
-            if (!success)
-                return (false, null);
-
-            return (_hashService.Check(workerBoss.Hash, password), workerBoss);
+            return !success ? (false, null) : (_hashService.Check(workerBoss.Hash, password), workerBoss);
         }
 
         private async Task<(bool success, WorkerBoss workerBoss)> TryGetWorkerBossAsync(string login)
         {
             var workerBoss = (await _unitOfWork.WorkerBossRepository.GetAsync(filter: p => p.Login.Equals(login))).FirstOrDefault();
 
-            if (workerBoss == null)
-                return (false, workerBoss);
-
-            return (true, workerBoss);
+            return workerBoss == null ? (false, null) : (true, workerBoss);
         }
 
         private async Task TryLoadStartupData(WorkerBoss loggedUser)

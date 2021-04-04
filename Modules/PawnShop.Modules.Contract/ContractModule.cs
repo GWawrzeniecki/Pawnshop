@@ -3,6 +3,7 @@ using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.Services;
 using PawnShop.Modules.Contract.Validators;
 using PawnShop.Modules.Contract.ViewModels;
+using PawnShop.Modules.Contract.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -26,7 +27,8 @@ namespace PawnShop.Modules.Contract
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<Views.Contract, ContractViewModel>();
-            containerRegistry.RegisterForNavigation<Views.ClientData, ClientDataViewModel>();
+            containerRegistry.RegisterForNavigation<ClientData, ClientDataViewModel>();
+            containerRegistry.RegisterForNavigation<ContractData, ContractDataViewModel>();
 
             containerRegistry.RegisterSingleton<ContractValidator>();
             containerRegistry.RegisterSingleton<CreateContractValidator>();

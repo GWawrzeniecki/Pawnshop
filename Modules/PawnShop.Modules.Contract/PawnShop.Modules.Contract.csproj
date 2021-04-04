@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <AssemblyName>PawnShop.Modules.Contract</AssemblyName>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="9.5.3" />
-    <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\PawnShop.Business\PawnShop.Business.csproj" />
-    <ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />
-    <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
-    <ProjectReference Include="..\..\PawnShop.Exceptions\PawnShop.Exceptions.csproj" />
-    <ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<AssemblyName>PawnShop.Modules.Contract</AssemblyName>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="9.5.3" />
+		<PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\PawnShop.Business\PawnShop.Business.csproj" />
+		<ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />
+		<ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
+		<ProjectReference Include="..\..\PawnShop.Exceptions\PawnShop.Exceptions.csproj" />
+		<ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
+	</ItemGroup>
 </Project>

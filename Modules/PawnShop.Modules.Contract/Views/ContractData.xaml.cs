@@ -3,11 +3,11 @@
 namespace PawnShop.Modules.Contract.Views
 {
     /// <summary>
-    ///     Interaction logic for ClientData
+    ///     Interaction logic for ContractData
     /// </summary>
-    public partial class ClientData : UserControl
+    public partial class ContractData : UserControl
     {
-        public ClientData()
+        public ContractData()
         {
             InitializeComponent();
         }

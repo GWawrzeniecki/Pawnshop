@@ -71,7 +71,7 @@ namespace PawnShop
             regionBehaviors.AddIfMissing(DependentViewRegionBehavior.BehaviorKey, typeof(DependentViewRegionBehavior));
             regionBehaviors.AddIfMissing(RegionManagerAwareBehavior.BehaviorKey, typeof(RegionManagerAwareBehavior));
 
-            //regionBehaviors.AddIfMissing("A", typeof(CustomAutoPopulateRegionBehaviour));
+           
 
             base.ConfigureDefaultRegionBehaviors(regionBehaviors);
         }
@@ -98,7 +98,8 @@ namespace PawnShop
                 #region registering views
 
                 var regionManager = Container.Resolve<IRegionManager>();
-                regionManager.RegisterViewWithRegion(RegionNames.BottomInfoLineRegion, typeof(BottomInfoLine));
+                var bottomInfoLine = Container.Resolve<BottomInfoLine>();
+                regionManager.Regions[RegionNames.BottomInfoLineRegion].Add(bottomInfoLine);
 
                 #endregion registering views
             }

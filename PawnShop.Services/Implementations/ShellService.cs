@@ -18,18 +18,18 @@ namespace PawnShop.Services.Implementations
             _regionManager = regionManager;
         }
 
-        public IRegionManager ShowShell<T>(string viewName) where T : Window
+        public void ShowShell<T>(string viewName) where T : Window
         {
             var scopedRegion = _regionManager.CreateRegionManager();
-            var shell = _container.Resolve<T>((typeof(IRegionManager), scopedRegion));
-            //var shell = _container.Resolve<T>();
+            var shell = _container.Resolve<T>((typeof(IRegionManager), scopedRegion), (typeof(IContainerProvider), _container));
+
             RegionManager.SetRegionManager(shell, scopedRegion);
             RegionManagerAware.SetRegionManagerAware(shell, scopedRegion);
 
             scopedRegion.RequestNavigate(RegionNames.ContentRegion, viewName);
 
             shell.Show();
-            return scopedRegion;
+           
         }
     }
 }

@@ -126,7 +126,7 @@ namespace PawnShop.Services.Implementations
                 throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace", nameof(key));
 
             if (!_secretManagerService.GetValue<HashService>(key, out value))
-                throw new Exception($"Couldn't find {key}.");
+                throw new Exception($"Couldn't find {key} secret key.");
         }
 
         private string Encrypt(string key, string valueToEncrypt) => _aesService.EncryptString(key, valueToEncrypt);

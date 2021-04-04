@@ -1,11 +1,11 @@
-﻿using PawnShop.Business.Models;
-using PawnShop.Exceptions.DBExceptions;
-using PawnShop.Services.DataService;
-using PawnShop.Services.DataService.QueryDataModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PawnShop.Business.Models;
+using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Services.DataService;
+using PawnShop.Services.DataService.QueryDataModels;
 
 namespace PawnShop.Modules.Contract.Services
 {
@@ -21,7 +21,7 @@ namespace PawnShop.Modules.Contract.Services
 
         public ContractService(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         #endregion constructor
@@ -36,7 +36,8 @@ namespace PawnShop.Modules.Contract.Services
             }
             catch (Exception e)
             {
-                throw new LoadingContractStatesException("Wystąpił problem podczas ładowania rodzajów stanów umowy.", e);
+                throw new LoadingContractStatesException("Wystąpił problem podczas ładowania rodzajów stanów umowy.",
+                    e);
             }
         }
 
@@ -48,7 +49,8 @@ namespace PawnShop.Modules.Contract.Services
             }
             catch (Exception e)
             {
-                throw new LoadingLendingRatesException("Wystąpił problem podczas ładowania rodzajów czasu trwania umowy.", e);
+                throw new LoadingLendingRatesException(
+                    "Wystąpił problem podczas ładowania rodzajów czasu trwania umowy.", e);
             }
         }
 
@@ -76,6 +78,30 @@ namespace PawnShop.Modules.Contract.Services
             }
         }
 
+        public async Task<IList<Client>> GetClientBySurname(string surname)
+        {
+            try
+            {
+                return await TryToGetClientBySurname(surname);
+            }
+            catch (Exception e)
+            {
+                throw new SearchClientsException("Wystąpił problem podczas wyszukiwania klientów po nazwisku.", e);
+            }
+        }
+
+        public async Task<IList<Client>> GetClientByPesel(string pesel)
+        {
+            try
+            {
+                return await TryToGetClientByPesel(pesel);
+            }
+            catch (Exception e)
+            {
+                throw new SearchClientsException("Wystąpił problem podczas wyszukiwania klientów po numerze pesel.", e);
+            }
+        }
+
         #endregion IContractService interface
 
         #region private methods
@@ -98,6 +124,16 @@ namespace PawnShop.Modules.Contract.Services
         public async Task<IList<Business.Models.Contract>> TryToGetContracts(ContractQueryData queryData, int count)
         {
             return await _unitOfWork.ContractRepository.GetContracts(queryData, count);
+        }
+
+        private async Task<IList<Client>> TryToGetClientBySurname(string surname)
+        {
+            return await _unitOfWork.ClientRepository.GetClientBySurname(surname);
+        }
+
+        private async Task<IList<Client>> TryToGetClientByPesel(string pesel)
+        {
+            return await _unitOfWork.ClientRepository.GetClientByPesel(pesel);
         }
 
         #endregion private methods

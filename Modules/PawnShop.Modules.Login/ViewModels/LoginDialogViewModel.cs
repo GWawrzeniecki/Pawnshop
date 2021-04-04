@@ -8,9 +8,11 @@ using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using System;
+using System.Runtime.CompilerServices;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using Microsoft.Xaml.Behaviors.Layout;
 
 namespace PawnShop.Modules.Login.ViewModels
 {
@@ -26,6 +28,7 @@ namespace PawnShop.Modules.Login.ViewModels
         private bool _passwordTag;
         private string _userName;
         private DelegateCommand<PasswordBox> _loginCommand;
+        private bool _loginButtonIsBusy;
 
         #endregion private members
 
@@ -107,6 +110,7 @@ namespace PawnShop.Modules.Login.ViewModels
         {
             try
             {
+                _loginButtonIsBusy = true;
                 AutoLoginAdmin(passwordBox);
                 var password = passwordBox.GetReadOnlyCopy();
                 _uiService.SetMouseBusyCursor();
@@ -122,22 +126,33 @@ namespace PawnShop.Modules.Login.ViewModels
             catch (LoginException loginException)
             {
                 _uiService.ResetMouseCursor();
-                _dialogService.ShowNotificationDialog("Błąd", $"{loginException.Message}{Environment.NewLine}Błąd: {loginException.InnerException.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd",
+                    $"{loginException.Message}{Environment.NewLine}Błąd: {loginException.InnerException.Message}",
+                    null);
             }
             catch (LoadingStartupDataException loadingStartupDataException)
             {
                 _uiService.ResetMouseCursor();
-                _dialogService.ShowNotificationDialog("Błąd", $"{loadingStartupDataException.Message}{Environment.NewLine}Błąd: {loadingStartupDataException.InnerException.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd",
+                    $"{loadingStartupDataException.Message}{Environment.NewLine}Błąd: {loadingStartupDataException.InnerException.Message}",
+                    null);
             }
             catch (UpdatingContractStatesException updatingContractException)
             {
                 _uiService.ResetMouseCursor();
-                _dialogService.ShowNotificationDialog("Błąd", $"{updatingContractException.Message}{Environment.NewLine}Błąd: {updatingContractException.InnerException.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd",
+                    $"{updatingContractException.Message}{Environment.NewLine}Błąd: {updatingContractException.InnerException.Message}",
+                    null);
             }
             catch (Exception e)
             {
                 _uiService.ResetMouseCursor();
-                _dialogService.ShowNotificationDialog("Błąd", $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
+                _dialogService.ShowNotificationDialog("Błąd",
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
+            }
+            finally
+            {
+                _loginButtonIsBusy = false;
             }
         }
 
@@ -153,8 +168,8 @@ namespace PawnShop.Modules.Login.ViewModels
 
         private bool CanLogin(PasswordBox passwordBox)
         {
-            //return UserNameHasText && PasswordBoxHasText;
-            return true; // For fast login while developing
+            //return UserNameHasText && PasswordBoxHasText && !_loginButtonIsBusy;
+            return true && !_loginButtonIsBusy; // For fast login while developing
         }
 
         private async Task<(bool, WorkerBoss)> TryToLoginAsync(string userName, SecureString password)
