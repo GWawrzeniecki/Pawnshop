@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
+using PawnShop.Core.Regions;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.Models.DropDownButtonModels;
 using PawnShop.Modules.Contract.Services;
+using PawnShop.Modules.Contract.Views;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -35,10 +39,19 @@ namespace PawnShop.Modules.Contract.ViewModels
                 new DelegateCommand<string>(SearchClient, CanExecuteSearchClient).ObservesProperty(() =>
                     ClientSearchComboBoxText);
 
+        public DelegateCommand GoForwardCommand =>
+            _goForwardCommand ??= new DelegateCommand(GoForward);
+
+
+
         #endregion Commands
+
+
+        #region  IConfirmNavigatonRequest
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            _journal = navigationContext.NavigationService.Journal;
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -54,6 +67,9 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             continuationCallback(true);
         }
+
+        #endregion
+
 
         #region IRegionManagerAware
 
@@ -84,6 +100,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         private DelegateCommand<string> _searchClientCommand;
         private string _clientSearchComboBoxText;
         private Client _selectedClient;
+        private IRegionNavigationJournal _journal;
+        private DelegateCommand _goForwardCommand;
 
         #endregion privateMembers
 
@@ -159,6 +177,18 @@ namespace PawnShop.Modules.Contract.ViewModels
         private bool CanExecuteSearchClient(string arg)
         {
             return !string.IsNullOrEmpty(arg) && !string.IsNullOrWhiteSpace(arg) && SelectedClientSearchOption != null;
+        }
+
+        private void GoForward()
+        {
+            if (_journal != null && _journal.CanGoForward)
+                _journal.GoForward();
+            else
+            {
+                RegionManager.RequestNavigate(RegionNames.ContentRegion,nameof(ContractData)); //hmi icon isnt changing TO DO
+                //var view = RegionManager.Regions[RegionNames.MenuRegion].GetView(nameof(ContractDataHamburgerMenuItem));
+                //RegionManager.Regions[RegionNames.MenuRegion].Activate(view); trying to navigate via hmi to get icon selected 
+            }
         }
 
         #endregion commandMethods

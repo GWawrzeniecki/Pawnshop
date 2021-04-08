@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <GroupBox
@@ -121,7 +122,7 @@
                 <TextBlock Grid.Column="1" Grid.Row="1">
                     <Run Text="{Binding SelectedClient.ClientNavigation.Address.Street}" />
                     <Run Text="{Binding SelectedClient.ClientNavigation.Address.HouseNumber}" />
-                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.ApartamentNumber}" />
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.ApartmentNumber}" />
                     <Run Text="{Binding SelectedClient.ClientNavigation.Address.PostCode}" />
                     <Run Text="{Binding SelectedClient.ClientNavigation.Address.City.City1}" />
                 </TextBlock>
@@ -134,5 +135,32 @@
                         Margin="{StaticResource ControlMargin}" />
             </Grid>
         </GroupBox>
-    </Grid>
+
+        <Grid Grid.Row="2" 
+              Grid.Column="0"
+              Margin="0 0 0 15" >
+
+<Grid.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
+        <Setter Property="Margin" Value="5 0 15 0"/>
+    </Style>
+</Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="1" Content="Wstecz"  />
+            <Button Grid.Column="2" Content="Dalej" Command="{Binding GoForwardCommand}" />
+            <Button Grid.Column="3" Content="Anuluj" Command="{Binding CancelCommand}" />
+        </Grid>
+
+    </Grid >
 </UserControl>
