@@ -40,7 +40,15 @@
                                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </Grid>
                     </Grid>
+
+
+
                     <ControlTemplate.Triggers>
+
+
+                      
+                      
+
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.SelectedBackgroundBrush), Mode=OneWay}" />
                             <Setter TargetName="ContentPresenter" Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ItemHelper.SelectedForegroundBrush), Mode=OneWay}" />

@@ -1,4 +1,5 @@
-﻿using PawnShop.Business.Models;
+﻿using System.Threading.Tasks;
+using PawnShop.Business.Models;
 using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.Repositories;
 
@@ -85,5 +86,18 @@ namespace PawnShop.Services.DataService
         }
 
         #endregion public properties
+
+        #region  public Methods
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+        #endregion
     }
 }

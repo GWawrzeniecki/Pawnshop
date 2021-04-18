@@ -4,6 +4,7 @@
                  xmlns:prism="http://prismlibrary.com/"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
+                 xmlns:controls="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
                  prism:ViewModelLocator.AutoWireViewModel="True"
                  Title="{Binding Title}" MinWidth="1280" MinHeight="800"
                  WindowStartupLocation="CenterScreen" WindowState="Maximized">
@@ -14,6 +15,8 @@
         </Style>
     </Window.Resources>
 
+    
+
     <DockPanel LastChildFill="True">
         <!--Top Taskbar-->
         <ContentControl DockPanel.Dock="Top" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.TopTaskBarRegion}" />
@@ -22,7 +25,7 @@
         <ContentControl DockPanel.Dock="Bottom" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.BottomInfoLineRegion}" />
 
         <!--Menu-->
-        <mah:HamburgerMenu SelectedIndex="0"
+        <mah:HamburgerMenu SelectedIndex="1"
                            OpenPaneLength="150"
                            CompactPaneLength="50"
                            IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
@@ -39,7 +42,8 @@
             <mah:HamburgerMenu.Content>
                 <Grid>
                     <!--Main Content-->
-                    <ContentControl x:Name="ContentRegionControl" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ContentRegion}" />
+                   
+                    <ContentControl  x:Name="ContentRegionControl" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ContentRegion}" />
                 </Grid>
             </mah:HamburgerMenu.Content>
         </mah:HamburgerMenu>

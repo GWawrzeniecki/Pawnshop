@@ -84,25 +84,23 @@ namespace PawnShop
             var moduleManager = Container.Resolve<IModuleManager>();
             var result = loginService.ShowLoginDialog();
 
-            if (result == ILoginService.LoginResult.Success)
-            {
-                base.OnInitialized();
+            if (result != ILoginService.LoginResult.Success) return;
+            base.OnInitialized();
 
-                #region loading modules
+            #region loading modules
 
-                moduleManager.LoadModule<HomeModule>();
-                moduleManager.LoadModule<ContractModule>();
+            moduleManager.LoadModule<HomeModule>();
+            moduleManager.LoadModule<ContractModule>();
 
-                #endregion loading modules
+            #endregion loading modules
 
-                #region registering views
+            #region registering views
 
-                var regionManager = Container.Resolve<IRegionManager>();
-                var bottomInfoLine = Container.Resolve<BottomInfoLine>();
-                regionManager.Regions[RegionNames.BottomInfoLineRegion].Add(bottomInfoLine);
+            var regionManager = Container.Resolve<IRegionManager>();
+            var bottomInfoLine = Container.Resolve<BottomInfoLine>();
+            regionManager.Regions[RegionNames.BottomInfoLineRegion].Add(bottomInfoLine);
 
-                #endregion registering views
-            }
+            #endregion registering views
 
             #endregion Login
         }

@@ -6,6 +6,9 @@
     <AssemblyName>PawnShop</AssemblyName>
     <UserSecretsId>a35924ef-7185-4373-9104-ffef1b6a7636</UserSecretsId>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.4" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />

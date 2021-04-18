@@ -1,5 +1,9 @@
-﻿using MahApps.Metro.Controls;
+﻿using System.Windows;
+using MahApps.Metro.Controls;
+
+using PawnShop.Core.Dialogs;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 
 namespace PawnShop.Views
 {
@@ -8,11 +12,17 @@ namespace PawnShop.Views
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        public MainWindow(IRegionManager regionManager)
+        private readonly IDialogService _dialogService;
+
+        public MainWindow(IRegionManager regionManager, IDialogService dialogService)
         {
+            _dialogService = dialogService;
             InitializeComponent();
             RegionManager.SetRegionManager(this.HamburgerMenuItemCollection, regionManager);
             RegionManager.SetRegionManager(this.ContentRegionControl, regionManager);
+            
         }
+
+       
     }
 }

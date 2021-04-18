@@ -1,31 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
-using PawnShop.Core.Regions;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
-using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.Models.DropDownButtonModels;
 using PawnShop.Modules.Contract.Services;
-using PawnShop.Modules.Contract.Views;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using PawnShop.Modules.Contract.Windows.Views;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
-    public class ClientDataViewModel : BindableBase, IRegionManagerAware, IConfirmNavigationRequest
+    public class ClientDataViewModel : BindableBase, IRegionManagerAware
     {
         #region constructor
 
-        public ClientDataViewModel(IContractService contractService, IDialogService dialogService)
+        public ClientDataViewModel(IContractService contractService, IDialogService dialogService, IShellService shellService, IContainerProvider containerProvider)
         {
             _contractService = contractService;
             _dialogService = dialogService;
+            _shellService = shellService;
+            _containerProvider = containerProvider;
 
             LoadClientSearchOptions();
         }
@@ -39,37 +40,18 @@ namespace PawnShop.Modules.Contract.ViewModels
                 new DelegateCommand<string>(SearchClient, CanExecuteSearchClient).ObservesProperty(() =>
                     ClientSearchComboBoxText);
 
-        public DelegateCommand GoForwardCommand =>
-            _goForwardCommand ??= new DelegateCommand(GoForward);
+        public DelegateCommand CancelCommand =>
+            _cancelCommand ??= new DelegateCommand(Cancel);
+
+        public DelegateCommand AddClientCommand =>
+            _addClientCommand ??= new DelegateCommand(AddClient);
+
+        public DelegateCommand<Client> EditClientCommand =>
+            _editClientCommand ??= new DelegateCommand<Client>(EditClient);
 
 
 
         #endregion Commands
-
-
-        #region  IConfirmNavigatonRequest
-
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            _journal = navigationContext.NavigationService.Journal;
-        }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return true;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-        }
-
-        public void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
-        {
-            continuationCallback(true);
-        }
-
-        #endregion
-
 
         #region IRegionManagerAware
 
@@ -94,14 +76,17 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private readonly IContractService _contractService;
         private readonly IDialogService _dialogService;
+        private readonly IShellService _shellService;
+        private readonly IContainerProvider _containerProvider;
         private IList<ClientSearchOption> _clientSearchOptions;
         private ClientSearchOption _selectedClientSearchOption;
         private IList<Client> _searchedClients;
         private DelegateCommand<string> _searchClientCommand;
         private string _clientSearchComboBoxText;
         private Client _selectedClient;
-        private IRegionNavigationJournal _journal;
-        private DelegateCommand _goForwardCommand;
+        private DelegateCommand _cancelCommand;
+        private DelegateCommand _addClientCommand;
+        private DelegateCommand<Client> _editClientCommand;
 
         #endregion privateMembers
 
@@ -179,16 +164,25 @@ namespace PawnShop.Modules.Contract.ViewModels
             return !string.IsNullOrEmpty(arg) && !string.IsNullOrWhiteSpace(arg) && SelectedClientSearchOption != null;
         }
 
-        private void GoForward()
+        private void Cancel()
         {
-            if (_journal != null && _journal.CanGoForward)
-                _journal.GoForward();
-            else
+            _shellService.CloseShell<CreateContractWindow>();
+        }
+
+        private void AddClient()
+        {
+            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", dialogResult =>
             {
-                RegionManager.RequestNavigate(RegionNames.ContentRegion,nameof(ContractData)); //hmi icon isnt changing TO DO
-                //var view = RegionManager.Regions[RegionNames.MenuRegion].GetView(nameof(ContractDataHamburgerMenuItem));
-                //RegionManager.Regions[RegionNames.MenuRegion].Activate(view); trying to navigate via hmi to get icon selected 
-            }
+
+            });
+        }
+
+        private void EditClient(Client client)
+        {
+            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", dialogResult =>
+            {
+
+            }, client);
         }
 
         #endregion commandMethods

@@ -1,5 +1,6 @@
 ﻿using Prism.Services.Dialogs;
 using System;
+using PawnShop.Business.Models;
 
 namespace PawnShop.Core.Dialogs
 {
@@ -16,6 +17,14 @@ namespace PawnShop.Core.Dialogs
             dialogParameters.Add("title", title);
             dialogParameters.Add("message", message);
             dialogService.ShowDialog(DialogNames.NotificationDialog, dialogParameters, callBack);
+        }
+
+        public static void ShowAddClientDialog(this IDialogService dialogService, string title, Action<IDialogResult> callBack, Client client = null)
+        {
+            var dialogParameters = new DialogParameters();
+            dialogParameters.Add("title", title);
+            dialogParameters.Add("client", client);
+            dialogService.Show(DialogNames.AddClientDialog, dialogParameters, callBack);
         }
     }
 }

@@ -8,13 +8,17 @@
                  Title="{Binding Tittle}">
     <DockPanel LastChildFill="True">
 
-        <mah:HamburgerMenu SelectedIndex="0"
-                           OpenPaneLength="150"
-                           CompactPaneLength="50"
-                           DockPanel.Dock="Left"
-                           ItemTemplate="{StaticResource MenuItemTemplate}"
-                           OptionsItemTemplate="{StaticResource MenuItemTemplate}"
-                           Style="{StaticResource MahApps.Styles.HamburgerMenu.Ripple}">
+        <mah:HamburgerMenu
+            x:Name="HamburgerMenu"
+            SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}"
+            
+            SelectedItem="{Binding SelectedItem,Mode=TwoWay}"
+            OpenPaneLength="150"
+            CompactPaneLength="50"
+            DockPanel.Dock="Left"
+            ItemTemplate="{StaticResource MenuItemTemplate}"
+            OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+            Style="{StaticResource MahApps.Styles.HamburgerMenu.Ripple}">
 
             <!--Menu items-->
             <mah:HamburgerMenu.ItemsSource>

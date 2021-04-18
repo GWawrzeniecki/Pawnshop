@@ -37,5 +37,12 @@ namespace PawnShop.Services.DataService.Repositories
                 .Where(client => client.Pesel.Equals(pesel))
                 .ToListAsync();
         }
+
+        public async Task<Client> CreateClientAsync(Client client)
+        {
+            await _context.Clients.AddAsync(client);
+            await _context.SaveChangesAsync();
+            return client;
+        }
     }
 }

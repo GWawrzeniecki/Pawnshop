@@ -1,4 +1,6 @@
 ﻿using PawnShop.Core.Regions;
+using PawnShop.Modules.Contract.Dialogs.ViewModels;
+using PawnShop.Modules.Contract.Dialogs.Views;
 using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.Services;
 using PawnShop.Modules.Contract.Validators;
@@ -22,6 +24,7 @@ namespace PawnShop.Modules.Contract
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager.Regions[RegionNames.MenuRegion].Add(containerProvider.Resolve<ContractHamburgerMenuItem>());
+        
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
@@ -29,10 +32,12 @@ namespace PawnShop.Modules.Contract
             containerRegistry.RegisterForNavigation<Views.Contract, ContractViewModel>();
             containerRegistry.RegisterForNavigation<ClientData, ClientDataViewModel>();
             containerRegistry.RegisterForNavigation<ContractData, ContractDataViewModel>();
-
+            containerRegistry.RegisterSingleton<ClientData>();
+            containerRegistry.RegisterSingleton<ContractDataHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<ContractValidator>();
             containerRegistry.RegisterSingleton<CreateContractValidator>();
             containerRegistry.RegisterSingleton<IContractService, ContractService>();
+            containerRegistry.RegisterDialog<AddClientDialog,AddClientDialogViewModel>();
         }
     }
 }

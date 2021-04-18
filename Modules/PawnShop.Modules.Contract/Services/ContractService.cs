@@ -102,6 +102,11 @@ namespace PawnShop.Modules.Contract.Services
             }
         }
 
+        //public Task<Client> CreateClient(Client client)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         #endregion IContractService interface
 
         #region private methods
@@ -135,6 +140,12 @@ namespace PawnShop.Modules.Contract.Services
         {
             return await _unitOfWork.ClientRepository.GetClientByPesel(pesel);
         }
+
+        //private async Task<Client> TryToCreateClient(Client client)
+        //{
+        //    return await _unitOfWork.ClientRepository.GetClientByPesel(pesel);
+        //}
+
 
         #endregion private methods
     }

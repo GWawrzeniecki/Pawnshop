@@ -19,12 +19,13 @@ namespace PawnShop.Modules.Home
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager.Regions[RegionNames.MenuRegion].Add(containerProvider.Resolve<HomeHamburgerMenuItem>());
-            //_regionManager.RequestNavigate(RegionNames.ContentRegion, nameof(Views.Home)); we can delete this , upper line automatically navigates
+            
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<Views.Home, HomeViewModel>();
+            containerRegistry.RegisterSingleton<HomeHamburgerMenuItem>();
         }
     }
 }

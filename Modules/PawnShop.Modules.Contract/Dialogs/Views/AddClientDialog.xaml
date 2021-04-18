@@ -1,0 +1,194 @@
+﻿<UserControl x:Class="PawnShop.Modules.Contract.Dialogs.Views.AddClientDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:views="clr-namespace:PawnShop.Modules.Contract.Windows.Views"
+             xmlns:menuItem="clr-namespace:PawnShop.Modules.Contract.MenuItem">
+
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
+            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="ShowInTaskbar" Value="True" />
+            <Setter Property="Width" Value="700" />
+            <Setter Property="Height" Value="500" />
+            <Setter Property="Title" Value="{Binding Title}" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+    <Grid Margin="10 10 10 0">
+
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="5 5 15 5" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+                <Setter Property="Padding" Value="5" />
+            </Style>
+
+
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="5 5 15 5" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+                <Setter Property="Padding" Value="5" />
+            </Style>
+
+            <Style TargetType="DatePicker" BasedOn="{StaticResource MahApps.Styles.DatePicker}">
+                <Setter Property="Margin" Value="5 5 15 5" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+                <Setter Property="Padding" Value="5" />
+            </Style>
+
+        </Grid.Resources>
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+
+        </Grid.RowDefinitions>
+
+
+        <GroupBox Grid.Row="0" Header="Dane klienta" Margin="0 0 0 15">
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+
+                </Grid.RowDefinitions>
+
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Imię:" />
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Nazwisko:" />
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="Ulica:" />
+                <TextBlock Grid.Column="0" Grid.Row="3" Text="Numer domu:" />
+                <TextBlock Grid.Column="2" Grid.Row="3" Text="Numer lokalu:" Margin="0 5 15 5" />
+
+                <TextBlock Grid.Column="0" Grid.Row="4" Text="Miejscowość:" />
+                <TextBlock Grid.Column="2" Grid.Row="4" Text="Kod pocztowy:" Margin="0 5 15 5" />
+
+                <TextBlock Grid.Column="0" Grid.Row="5" Text="Data urodzenia:" />
+                <TextBlock Grid.Column="0" Grid.Row="6" Text="Pesel:" />
+                <TextBlock Grid.Column="0" Grid.Row="7" Text="Numer dowodu:" />
+                <TextBlock Grid.Column="2" Grid.Row="7" Text="Termin ważności:" Margin="0 5 15 5" />
+
+
+                <TextBox
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="3"
+                    Text="{Binding Client.ClientNavigation.FirstName,Mode=TwoWay}" />
+                <TextBox
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    Text="{Binding Client.ClientNavigation.LastName,Mode=TwoWay}" />
+                <TextBox
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    Text="{Binding Client.ClientNavigation.Address.Street,Mode=TwoWay}" />
+
+
+                <TextBox
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Text="{Binding Client.ClientNavigation.Address.HouseNumber,Mode=TwoWay}" />
+                <TextBox
+                    Grid.Column="3"
+                    Grid.Row="3"
+                    Text="{Binding Client.ClientNavigation.Address.ApartmentNumber,Mode=TwoWay}" />
+
+                <TextBox
+                    Grid.Column="1"
+                    Grid.Row="4"
+                    Text="{Binding Client.ClientNavigation.Address.City.City1 ,Mode=TwoWay}" />
+                <TextBox
+                    Grid.Column="3"
+                    Grid.Row="4"
+                    Text="{Binding Client.ClientNavigation.Address.PostCode ,Mode=TwoWay}" />
+
+                <DatePicker
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="5"
+                    mah:TextBoxHelper.Watermark="Wybierz datę"
+                    mah:TextBoxHelper.ClearTextButton="True"
+                    SelectedDate="{Binding Client.ClientNavigation.BirthDate, Mode=TwoWay}" />
+                <TextBox
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="6"
+                    Text="{Binding Client.ClientNavigation.Pesel ,Mode=TwoWay}" />
+                <TextBox
+                    Grid.Column="1"
+                    Grid.Row="7"
+                    Text="{Binding Client.ClientNavigation.IdcardNumber ,Mode=TwoWay}" />
+                <DatePicker
+                    Grid.Column="3"
+                    Grid.Row="7"
+                    mah:TextBoxHelper.Watermark="Wybierz datę"
+                    mah:TextBoxHelper.ClearTextButton="True"
+                    SelectedDate="{Binding Client.ClientNavigation.ValidityDateIdcard, Mode=TwoWay}" />
+
+
+            </Grid>
+
+
+        </GroupBox>
+
+
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              Margin="0 0 0 15">
+
+            <Grid.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
+                    <Setter Property="Margin" Value="5 0 15 0" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+
+            <Button 
+                Grid.Column="2" 
+                Content="Utwórz" 
+                Command="{Binding CreateClientCommand}"
+                />
+            <Button 
+                Grid.Column="3" 
+                Content="Anuluj" 
+                Command="{Binding CancelCommand}" />
+
+        </Grid>
+
+    </Grid>
+
+
+</UserControl>

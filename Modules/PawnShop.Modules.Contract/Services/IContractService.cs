@@ -18,5 +18,6 @@ namespace PawnShop.Modules.Contract.Services
         Task<IList<Client>> GetClientBySurname(string surname);
 
         Task<IList<Client>> GetClientByPesel(string pesel);
+        //Task<Client> CreateClient(Client client);
     }
 }
