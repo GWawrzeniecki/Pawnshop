@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core;
 using PawnShop.Core.Dialogs;
@@ -176,26 +177,27 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (LoadingContractStatesException loadingContractStateException)
             {
-                _dialogService.ShowNotificationDialog("Błąd",
+                MaterialMessageBox.ShowError(
                     $"{loadingContractStateException.Message}{Environment.NewLine}Błąd: {loadingContractStateException.InnerException?.Message}",
-                    null);
+                    "Błąd");
             }
             catch (LoadingLendingRatesException laodingLendingRateException)
             {
-                _dialogService.ShowNotificationDialog("Błąd",
+                MaterialMessageBox.ShowError(
                     $"{laodingLendingRateException.Message}{Environment.NewLine}Błąd: {laodingLendingRateException.InnerException?.Message}",
-                    null);
+                    "Błąd");
             }
             catch (LoadingContractsException loadingContractsException)
             {
-                _dialogService.ShowNotificationDialog("Błąd",
+                MaterialMessageBox.ShowError(
                     $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
-                    null);
+                    "Błąd");
             }
             catch (Exception e)
             {
-                _dialogService.ShowNotificationDialog("Błąd",
-                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
             }
         }
 
@@ -355,14 +357,15 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (LoadingContractsException loadingContractsException)
             {
-                _dialogService.ShowNotificationDialog("Błąd",
+                MaterialMessageBox.ShowError(
                     $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
-                    null);
+                    "Błąd");
             }
             catch (Exception e)
             {
-                _dialogService.ShowNotificationDialog("Błąd",
-                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
             }
         }
 

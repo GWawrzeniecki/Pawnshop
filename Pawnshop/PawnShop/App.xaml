@@ -8,7 +8,7 @@
                 <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <!-- Theme setting -->
+                <!-- MahApps.Metro Theme setting -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
                 <!--HamburgerMenu-->
                 <ResourceDictionary Source="DataTemplates/HamburgerMenu.xaml" />
@@ -18,6 +18,11 @@
                 <!--Buttons-->
                 <ResourceDictionary Source="Styles/Buttons.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+
+           
+
+
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

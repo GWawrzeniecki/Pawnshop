@@ -46,6 +46,7 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     MinHeight="26"
+                    SelectedIndex="0"
                     ItemsSource="{Binding ClientSearchOptions}"
                     SelectedItem="{Binding SelectedClientSearchOption}"
                     DisplayMemberPath="Name" />
@@ -58,10 +59,9 @@
                     IsTextSearchEnabled="True"
                     IsEditable="True"
                     TextSearch.TextPath="ClientNavigation.FullName"
-
                     SelectedItem="{Binding SelectedClient}"
                     ItemsSource="{Binding SearchedClients}"
-                    Text="{Binding ClientSearchComboBoxText, Mode=TwoWay}">
+                    Text="{Binding ClientSearchComboBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=300}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -71,6 +71,10 @@
                             </StackPanel>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
+
+                    <ComboBox.InputBindings>
+                        <KeyBinding Key="Return" Command="{Binding SearchClientCommand}" CommandParameter="{Binding ElementName=ClientSearchComboBox, Path=Text}" />
+                    </ComboBox.InputBindings>
                 </ComboBox>
 
                 <Button Grid.Row="0"

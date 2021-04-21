@@ -11,7 +11,8 @@
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="FluentValidation" Version="9.5.3" />
+		<PackageReference Include="FluentValidation" Version="10.0.4" />
+		<PackageReference Include="MaterialMessageBox" Version="4.0.2" />
 		<PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
 	</ItemGroup>
 	<ItemGroup>

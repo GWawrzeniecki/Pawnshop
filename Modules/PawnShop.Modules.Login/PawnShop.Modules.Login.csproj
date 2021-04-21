@@ -10,9 +10,10 @@
     <None Remove="Logo\test_logo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="9.5.3" />
-    <PackageReference Include="MahApps.Metro" Version="2.4.4" />
+    <PackageReference Include="FluentValidation" Version="10.0.4" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.5" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
+    <PackageReference Include="MaterialMessageBox" Version="4.0.2" />
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
   </ItemGroup>
   <ItemGroup>

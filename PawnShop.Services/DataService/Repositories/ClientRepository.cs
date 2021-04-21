@@ -44,5 +44,11 @@ namespace PawnShop.Services.DataService.Repositories
             await _context.SaveChangesAsync();
             return client;
         }
+
+        public async Task<Client> UpdateClientAsync(Client client)
+        {
+            await _context.SaveChangesAsync();
+            return client;
+        }
     }
 }

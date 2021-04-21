@@ -4,10 +4,11 @@
                  xmlns:prism="http://prismlibrary.com/"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
-                 xmlns:controls="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
                  prism:ViewModelLocator.AutoWireViewModel="True"
                  Title="{Binding Title}" MinWidth="1280" MinHeight="800"
-                 WindowStartupLocation="CenterScreen" WindowState="Maximized">
+                 WindowStartupLocation="CenterScreen" WindowState="Maximized"
+                 
+                 >
 
     <Window.Resources>
         <Style TargetType="TextBlock">

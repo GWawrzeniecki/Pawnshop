@@ -12,7 +12,10 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using BespokeFusion;
+using PawnShop.Core.Enums;
 using PawnShop.Modules.Contract.Windows.Views;
 
 namespace PawnShop.Modules.Contract.ViewModels
@@ -21,7 +24,8 @@ namespace PawnShop.Modules.Contract.ViewModels
     {
         #region constructor
 
-        public ClientDataViewModel(IContractService contractService, IDialogService dialogService, IShellService shellService, IContainerProvider containerProvider)
+        public ClientDataViewModel(IContractService contractService, IDialogService dialogService,
+            IShellService shellService, IContainerProvider containerProvider)
         {
             _contractService = contractService;
             _dialogService = dialogService;
@@ -48,8 +52,6 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public DelegateCommand<Client> EditClientCommand =>
             _editClientCommand ??= new DelegateCommand<Client>(EditClient);
-
-
 
         #endregion Commands
 
@@ -138,14 +140,15 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (SearchClientsException searchClientsException)
             {
-                _dialogService.ShowNotificationDialog("Błąd",
+                MaterialMessageBox.ShowError(
                     $"{searchClientsException.Message}{Environment.NewLine}Błąd: {searchClientsException.InnerException?.Message}",
-                    null);
+                    "Błąd");
             }
             catch (Exception e)
             {
-                _dialogService.ShowNotificationDialog("Błąd",
-                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}", null);
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
             }
         }
 
@@ -157,9 +160,13 @@ namespace PawnShop.Modules.Contract.ViewModels
                 Enums.ClientSearchOption.Pesel => await _contractService.GetClientByPesel(surname),
                 _ => throw new ArgumentOutOfRangeException(nameof(SelectedClientSearchOption.SearchOption))
             };
+
+            if (SearchedClients?.Count == 1)
+                SelectedClient = SearchedClients.First();
         }
 
         private bool CanExecuteSearchClient(string arg)
+
         {
             return !string.IsNullOrEmpty(arg) && !string.IsNullOrWhiteSpace(arg) && SelectedClientSearchOption != null;
         }
@@ -171,15 +178,17 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private void AddClient()
         {
-            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", dialogResult =>
+            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", ClientMode.CreateClient, dialogResult =>
             {
+                //if(dialogResult == )
+                //if(dialogResult.Result == ButtonResult.OK)
 
             });
         }
 
         private void EditClient(Client client)
         {
-            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", dialogResult =>
+            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", ClientMode.UpdateClient, dialogResult =>
             {
 
             }, client);
