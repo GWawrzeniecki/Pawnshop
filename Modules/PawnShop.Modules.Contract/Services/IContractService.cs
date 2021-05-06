@@ -15,9 +15,7 @@ namespace PawnShop.Modules.Contract.Services
 
         Task<IList<Business.Models.Contract>> GetContracts(ContractQueryData queryData, int count);
 
-        Task<IList<Client>> GetClientBySurname(string surname);
-
-        Task<IList<Client>> GetClientByPesel(string pesel);
-        //Task<Client> CreateClient(Client client);
+      
+     
     }
 }

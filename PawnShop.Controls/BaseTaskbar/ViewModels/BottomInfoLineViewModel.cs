@@ -40,7 +40,7 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
             set => SetProperty(ref _sessionContext, value);
         }
 
-        public string FullName => $"{SessionContext.LoggedPerson.FirstName} {SessionContext.LoggedPerson.LastName}";
+        public string FullName => $"{SessionContext.LoggedPerson?.FirstName} {SessionContext.LoggedPerson?.LastName}";
 
         #endregion public properties
 

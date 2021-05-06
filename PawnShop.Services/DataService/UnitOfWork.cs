@@ -20,6 +20,11 @@ namespace PawnShop.Services.DataService
 
         #endregion private members
 
+        public UnitOfWork()
+        {
+            
+        }
+
         #region public properties
 
         public GenericRepository<WorkerBoss> WorkerBossRepository

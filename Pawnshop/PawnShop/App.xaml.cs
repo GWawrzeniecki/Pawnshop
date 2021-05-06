@@ -21,6 +21,8 @@ using Prism.Modularity;
 using Prism.Regions;
 using System.Windows;
 using System.Windows.Controls;
+using AutoMapper;
+using PawnShop.Mapper.Profiles;
 
 namespace PawnShop
 {
@@ -41,13 +43,29 @@ namespace PawnShop
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
-            containerRegistry.RegisterSingleton<IUnitOfWork, UnitOfWork>();
+            containerRegistry.Register<IUnitOfWork, UnitOfWork>();
             containerRegistry.RegisterSingleton<IUIService, UIService>();
             containerRegistry.RegisterSingleton<IShellService, ShellService>();
             containerRegistry.RegisterSingleton<ISessionContext, SessionContext>();
+            containerRegistry.RegisterSingleton<IValidatorService, ValidatorService>();
+            containerRegistry.RegisterSingleton<IClientService, ClientService>(); // to do to move in future
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();
+            ConfigureMapper(containerRegistry);
+
+
+        }
+
+        private void ConfigureMapper(IContainerRegistry containerRegistry)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<AddClientViewModelToClientProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+
+            containerRegistry.RegisterInstance(typeof(IMapper), mapper);
         }
 
         protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
@@ -71,7 +89,7 @@ namespace PawnShop
             regionBehaviors.AddIfMissing(DependentViewRegionBehavior.BehaviorKey, typeof(DependentViewRegionBehavior));
             regionBehaviors.AddIfMissing(RegionManagerAwareBehavior.BehaviorKey, typeof(RegionManagerAwareBehavior));
 
-           
+
 
             base.ConfigureDefaultRegionBehaviors(regionBehaviors);
         }

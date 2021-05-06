@@ -78,34 +78,9 @@ namespace PawnShop.Modules.Contract.Services
             }
         }
 
-        public async Task<IList<Client>> GetClientBySurname(string surname)
-        {
-            try
-            {
-                return await TryToGetClientBySurname(surname);
-            }
-            catch (Exception e)
-            {
-                throw new SearchClientsException("Wystąpił problem podczas wyszukiwania klientów po nazwisku.", e);
-            }
-        }
 
-        public async Task<IList<Client>> GetClientByPesel(string pesel)
-        {
-            try
-            {
-                return await TryToGetClientByPesel(pesel);
-            }
-            catch (Exception e)
-            {
-                throw new SearchClientsException("Wystąpił problem podczas wyszukiwania klientów po numerze pesel.", e);
-            }
-        }
 
-        //public Task<Client> CreateClient(Client client)
-        //{
-        //    throw new NotImplementedException();
-        //}
+
 
         #endregion IContractService interface
 
@@ -131,20 +106,9 @@ namespace PawnShop.Modules.Contract.Services
             return await _unitOfWork.ContractRepository.GetContracts(queryData, count);
         }
 
-        private async Task<IList<Client>> TryToGetClientBySurname(string surname)
-        {
-            return await _unitOfWork.ClientRepository.GetClientBySurname(surname);
-        }
 
-        private async Task<IList<Client>> TryToGetClientByPesel(string pesel)
-        {
-            return await _unitOfWork.ClientRepository.GetClientByPesel(pesel);
-        }
 
-        //private async Task<Client> TryToCreateClient(Client client)
-        //{
-        //    return await _unitOfWork.ClientRepository.GetClientByPesel(pesel);
-        //}
+
 
 
         #endregion private methods

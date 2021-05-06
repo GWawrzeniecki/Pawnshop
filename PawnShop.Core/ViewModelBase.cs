@@ -36,6 +36,7 @@ namespace PawnShop.Core
         {
             get
             {
+                RaisePropertyChanged(nameof(HasErrors));
                 var prop = new[] { columnName };
                 var context = new ValidationContext<T>(GetInstance(), new PropertyChain(), new MemberNameValidatorSelector(prop));
                 var validationResult = _validator.Validate(context);
@@ -59,6 +60,8 @@ namespace PawnShop.Core
                 return string.Empty;
             }
         }
+
+        public bool HasErrors => !string.IsNullOrEmpty(Error);
 
         #endregion IDataErrorInfo
     }

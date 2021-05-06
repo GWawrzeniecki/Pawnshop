@@ -40,6 +40,42 @@ namespace PawnShop.Services.DataService.Repositories
 
         public async Task<Client> CreateClientAsync(Client client)
         {
+            var country = await _context.Countries.FirstOrDefaultAsync(c =>
+                c.Country1.Equals(client.ClientNavigation.Address.Country.Country1));
+
+
+            var city = await _context.Cities.FirstOrDefaultAsync(c =>
+                c.City1.Equals(client.ClientNavigation.Address.City.City1));
+
+
+            if (city != null && country != null)
+            {
+                client.ClientNavigation.Address.CityId = city.CityId;
+                client.ClientNavigation.Address.City = city;
+                client.ClientNavigation.Address.CountryId = country.CountryId;
+                client.ClientNavigation.Address.Country = country;
+            }
+
+            if (country != null && city == null)
+            {
+                client.ClientNavigation.Address.CountryId = country.CountryId;
+                client.ClientNavigation.Address.Country = country;
+
+                client.ClientNavigation.Address.City.Country = country;
+                client.ClientNavigation.Address.City.CountryId = country.CountryId;
+            }
+
+            if (country == null && city != null)
+            {
+                //the same city another country?
+            }
+
+            if (country == null && city == null)
+            {
+                client.ClientNavigation.Address.City.Country = client.ClientNavigation.Address.Country;
+                client.ClientNavigation.Address.Country.Cities.Add(client.ClientNavigation.Address.City);
+            }
+
             await _context.Clients.AddAsync(client);
             await _context.SaveChangesAsync();
             return client;

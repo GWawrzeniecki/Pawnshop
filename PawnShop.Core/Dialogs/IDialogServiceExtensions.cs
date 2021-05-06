@@ -20,7 +20,15 @@ namespace PawnShop.Core.Dialogs
             dialogService.ShowDialog(DialogNames.NotificationDialog, dialogParameters, callBack);
         }
 
-        public static void ShowAddClientDialog(this IDialogService dialogService, string title, ClientMode mode, Action<IDialogResult> callBack, Client client = null)
+        public static void ShowAddClientDialog(this IDialogService dialogService, string title, ClientMode mode, Action<IDialogResult> callBack)
+        {
+            var dialogParameters = new DialogParameters();
+            dialogParameters.Add("title", title);
+            dialogParameters.Add("mode", mode);
+            dialogService.Show(DialogNames.AddClientDialog, dialogParameters, callBack);
+        }
+
+        public static void ShowAddClientDialog(this IDialogService dialogService, string title, ClientMode mode, Action<IDialogResult> callBack, Client client)
         {
             var dialogParameters = new DialogParameters();
             dialogParameters.Add("title", title);

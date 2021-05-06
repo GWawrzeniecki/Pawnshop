@@ -36,6 +36,7 @@ namespace PawnShop.Modules.Contract
             containerRegistry.RegisterSingleton<ContractDataHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<ContractValidator>();
             containerRegistry.RegisterSingleton<CreateContractValidator>();
+            containerRegistry.RegisterSingleton<AddClientValidator>();
             containerRegistry.RegisterSingleton<IContractService, ContractService>();
             containerRegistry.RegisterDialog<AddClientDialog,AddClientDialogViewModel>();
         }

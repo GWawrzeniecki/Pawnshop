@@ -25,12 +25,13 @@ namespace PawnShop.Modules.Contract.ViewModels
         #region constructor
 
         public ClientDataViewModel(IContractService contractService, IDialogService dialogService,
-            IShellService shellService, IContainerProvider containerProvider)
+            IShellService shellService, IContainerProvider containerProvider, IClientService clientService)
         {
             _contractService = contractService;
             _dialogService = dialogService;
             _shellService = shellService;
             _containerProvider = containerProvider;
+            _clientService = clientService;
 
             LoadClientSearchOptions();
         }
@@ -51,7 +52,10 @@ namespace PawnShop.Modules.Contract.ViewModels
             _addClientCommand ??= new DelegateCommand(AddClient);
 
         public DelegateCommand<Client> EditClientCommand =>
-            _editClientCommand ??= new DelegateCommand<Client>(EditClient);
+            _editClientCommand ??= new DelegateCommand<Client>(EditClient, CanExecuteEditClient).ObservesProperty(() =>
+                 SelectedClient);
+
+
 
         #endregion Commands
 
@@ -80,6 +84,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IDialogService _dialogService;
         private readonly IShellService _shellService;
         private readonly IContainerProvider _containerProvider;
+        private readonly IClientService _clientService;
         private IList<ClientSearchOption> _clientSearchOptions;
         private ClientSearchOption _selectedClientSearchOption;
         private IList<Client> _searchedClients;
@@ -128,6 +133,9 @@ namespace PawnShop.Modules.Contract.ViewModels
             set => SetProperty(ref _clientSearchComboBoxText, value);
         }
 
+
+
+
         #endregion public properties
 
         #region commandMethods
@@ -156,8 +164,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             SearchedClients = SelectedClientSearchOption.SearchOption switch
             {
-                Enums.ClientSearchOption.Surname => await _contractService.GetClientBySurname(surname),
-                Enums.ClientSearchOption.Pesel => await _contractService.GetClientByPesel(surname),
+                Enums.ClientSearchOption.Surname => await _clientService.GetClientBySurname(surname),
+                Enums.ClientSearchOption.Pesel => await _clientService.GetClientByPesel(surname),
                 _ => throw new ArgumentOutOfRangeException(nameof(SelectedClientSearchOption.SearchOption))
             };
 
@@ -180,8 +188,10 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", ClientMode.CreateClient, dialogResult =>
             {
-                //if(dialogResult == )
-                //if(dialogResult.Result == ButtonResult.OK)
+                if (dialogResult.Result == ButtonResult.OK)
+                {
+                    SelectedClient = dialogResult.Parameters.GetValue<Client>("client");
+                }
 
             });
         }
@@ -190,9 +200,14 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", ClientMode.UpdateClient, dialogResult =>
             {
-
+                if (dialogResult.Result == ButtonResult.OK)
+                {
+                    SelectedClient = dialogResult.Parameters.GetValue<Client>("client");
+                }
             }, client);
         }
+
+        private bool CanExecuteEditClient(Client arg) => SelectedClient != null;
 
         #endregion commandMethods
     }
