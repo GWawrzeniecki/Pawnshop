@@ -22,6 +22,8 @@ namespace PawnShop.Modules.Contract.Windows.Views
             
         }
 
+        
+
         public void RegisterViews(IContainerProvider containerProvider, IRegionManager scopedRegionManager)
         {
             var clientDataHamburgerMenuItem = containerProvider.Resolve<ClientDataHamburgerMenuItem>();

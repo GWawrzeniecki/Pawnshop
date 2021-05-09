@@ -190,6 +190,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             {
                 if (dialogResult.Result == ButtonResult.OK)
                 {
+                    SelectedClient = null;
                     SelectedClient = dialogResult.Parameters.GetValue<Client>("client");
                 }
 
@@ -202,6 +203,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             {
                 if (dialogResult.Result == ButtonResult.OK)
                 {
+                    SelectedClient = null;
                     SelectedClient = dialogResult.Parameters.GetValue<Client>("client");
                 }
             }, client);

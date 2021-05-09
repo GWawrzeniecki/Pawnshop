@@ -40,10 +40,10 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         private string _apartmentNumber;
         private string _city;
         private string _postCode;
-        private DateTime _birthDate;
+        private DateTime? _birthDate;
         private string _pesel;
         private string _idCardNumber;
-        private DateTime _validityDateIdCard;
+        private DateTime? _validityDateIdCard;
         private string _country;
 
         #endregion private members
@@ -134,13 +134,13 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             set => SetProperty(ref _postCode, value);
         }
 
-        public DateTime BirthDate
+        public DateTime? BirthDate
         {
             get => _birthDate;
             set => SetProperty(ref _birthDate, value);
         }
 
-        public DateTime ValidityDateIdCard
+        public DateTime? ValidityDateIdCard
         {
             get => _validityDateIdCard;
             set => SetProperty(ref _validityDateIdCard, value);
@@ -299,14 +299,16 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         private async Task TryToCreateClient()
         {
             Client = _mapper.Map(this, Client);
-            await _clientService.CreateClient(Client);
+            Client = await _clientService.CreateClient(Client);
+           
         }
 
 
         private async Task TryToUpdateClient()
         {
             Client = _mapper.Map(this, Client);
-            await _clientService.UpdateClient(Client);
+            Client = await _clientService.UpdateClient(Client);
+           
         }
 
         private bool CanExecuteCreateOrUpdateClient()

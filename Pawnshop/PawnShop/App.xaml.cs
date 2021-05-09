@@ -48,7 +48,7 @@ namespace PawnShop
             containerRegistry.RegisterSingleton<IShellService, ShellService>();
             containerRegistry.RegisterSingleton<ISessionContext, SessionContext>();
             containerRegistry.RegisterSingleton<IValidatorService, ValidatorService>();
-            containerRegistry.RegisterSingleton<IClientService, ClientService>(); // to do to move in future
+            containerRegistry.RegisterSingleton<IClientService, ClientService>(); // to do (maybe) to move in future
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();

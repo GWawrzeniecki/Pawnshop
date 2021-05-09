@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             xmlns:mainWindowViewModel="clr-namespace:PawnShop.Modules.Contract.Windows.ViewModels"
              xmlns:menuItem="clr-namespace:PawnShop.Modules.Contract.MenuItem"
              xmlns:views="clr-namespace:PawnShop.Modules.Contract.Windows.Views">
     <Grid Margin="10 10 10 0">
@@ -61,13 +60,13 @@
                     TextSearch.TextPath="ClientNavigation.FullName"
                     SelectedItem="{Binding SelectedClient}"
                     ItemsSource="{Binding SearchedClients}"
-                    Text="{Binding ClientSearchComboBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=300}">
+                    Text="{Binding ClientSearchComboBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=200}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding ClientNavigation.FirstName}" />
+                                <TextBlock Text="{Binding ClientNavigation.FirstName, Mode=TwoWay}" />
                                 <TextBlock Text=" " />
-                                <TextBlock Text="{Binding ClientNavigation.LastName}" />
+                                <TextBlock Text="{Binding ClientNavigation.LastName, Mode=TwoWay}" />
                             </StackPanel>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
@@ -129,16 +128,16 @@
 
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedClient.ClientNavigation.FullName}" />
                 <TextBlock Grid.Column="1" Grid.Row="1">
-                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.Street}" />
-                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.HouseNumber}" />
-                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.ApartmentNumber}" />
-                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.PostCode}" />
-                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.City.City1}" />
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.Street, Mode=TwoWay}" />
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.HouseNumber, Mode=TwoWay}" />
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.ApartmentNumber, Mode=TwoWay}" />
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.PostCode, Mode=TwoWay }" />
+                    <Run Text="{Binding SelectedClient.ClientNavigation.Address.City.City1, Mode=TwoWay}" />
                 </TextBlock>
                 <TextBlock Grid.Column="1" Grid.Row="2"
                            Text="{Binding SelectedClient.ClientNavigation.BirthDate, StringFormat=d}" />
-                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding SelectedClient.Pesel}" />
-                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding SelectedClient.IdcardNumber}" />
+                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding SelectedClient.Pesel, Mode=TwoWay}" />
+                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding SelectedClient.IdcardNumber, Mode=TwoWay}" />
 
                 <Button 
                     Grid.Row="3" 

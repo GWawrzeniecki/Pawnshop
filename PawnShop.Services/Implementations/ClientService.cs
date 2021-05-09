@@ -58,7 +58,7 @@ namespace PawnShop.Services.Implementations
         {
             try
             {
-                return await TryToCreateClient(client);
+                return await TryToUpdateClient(client);
             }
             catch (Exception e)
             {

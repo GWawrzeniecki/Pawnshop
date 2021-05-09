@@ -15,7 +15,7 @@ namespace PawnShop.Modules.Contract.Services
 
         Task<IList<Business.Models.Contract>> GetContracts(ContractQueryData queryData, int count);
 
-      
-     
+        Task<string> GetNextContractNumber();
+
     }
 }

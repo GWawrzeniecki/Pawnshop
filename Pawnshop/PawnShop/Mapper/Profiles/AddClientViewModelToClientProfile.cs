@@ -26,7 +26,6 @@ namespace PawnShop.Mapper.Profiles
                     opt => opt.MapFrom(source => source.HouseNumber))
                 .ForPath(x => x.ClientNavigation.Address.City.City1, opt => opt.MapFrom(source => source.City))
                 .ForPath(x => x.ClientNavigation.Address.Country.Country1, opt => opt.MapFrom(source => source.Country))
-
                 .ReverseMap();
 
 

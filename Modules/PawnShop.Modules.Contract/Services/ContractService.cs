@@ -79,8 +79,17 @@ namespace PawnShop.Modules.Contract.Services
         }
 
 
-
-
+        public async Task<string> GetNextContractNumber()
+        {
+            try
+            {
+                return await TryToGetNextContractNumber();
+            }
+            catch (Exception e)
+            {
+                throw new GetNextContractNumberException("Wystąpił problem podczas pobierania kolejnego numeru umowy", e);
+            }
+        }
 
         #endregion IContractService interface
 
@@ -106,10 +115,10 @@ namespace PawnShop.Modules.Contract.Services
             return await _unitOfWork.ContractRepository.GetContracts(queryData, count);
         }
 
-
-
-
-
+        public async Task<string> TryToGetNextContractNumber()
+        {
+            return await _unitOfWork.ContractRepository.GetNextContractNumber();
+        }
 
         #endregion private methods
     }

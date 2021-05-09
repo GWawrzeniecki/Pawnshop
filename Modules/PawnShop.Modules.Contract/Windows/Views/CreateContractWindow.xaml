@@ -5,7 +5,14 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
                  prism:ViewModelLocator.AutoWireViewModel="True"
-                 Title="{Binding Tittle}">
+                 Title="{Binding Tittle}" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+        </Style>
+    </Window.Resources>
+
     <DockPanel LastChildFill="True">
 
         <mah:HamburgerMenu

@@ -18,7 +18,7 @@ namespace PawnShop.Modules.Contract.Validators
                 .DependentRules(() =>
                 {
                     RuleFor(view => view.FirstName)
-                        .Matches("^[A-Z]{1}[a-z]+$")
+                        .Matches(@"^\p{Lu}{1}\p{Ll}+$")
                         .WithMessage("Nieprawidłowe imię klienta.");
                 });
 
@@ -28,7 +28,7 @@ namespace PawnShop.Modules.Contract.Validators
                 .DependentRules(() =>
                 {
                     RuleFor(view => view.LastName)
-                        .Matches("^[A-Z]{1}[a-z]+$")
+                        .Matches(@"^\p{Lu}{1}\D+$")
                         .When(view => !string.IsNullOrEmpty(view.LastName))
                         .WithMessage("Nieprawidłowe nazwisko klienta.");
                 });
@@ -39,7 +39,7 @@ namespace PawnShop.Modules.Contract.Validators
                 .DependentRules(() =>
                 {
                     RuleFor(view => view.Street)
-                        .Matches("^[A-Z]{1}[a-z]+$")
+                        .Matches(@"^\p{Lu}{1}\D+$")
                         .When(view => !string.IsNullOrEmpty(view.Street))
                         .WithMessage("Nieprawidłowe nazwa ulicy.");
                 });
@@ -50,7 +50,7 @@ namespace PawnShop.Modules.Contract.Validators
                 .DependentRules(() =>
                 {
                     RuleFor(view => view.City)
-                        .Matches("^[A-Z]{1}[a-z]+$")
+                        .Matches(@"^\p{Lu}{1}\p{Ll}+$")
                         .When(view => !string.IsNullOrEmpty(view.City))
                         .WithMessage("Nieprawidłowa nazwa miejscowości.");
                 });
@@ -60,7 +60,7 @@ namespace PawnShop.Modules.Contract.Validators
                 .DependentRules(() =>
                 {
                     RuleFor(view => view.Country)
-                        .Matches("^[A-Z]{1}[a-z]+$")
+                        .Matches(@"^\p{Lu}{1}\p{Ll}+$")
                         .When(view => !string.IsNullOrEmpty(view.Country))
                         .WithMessage("Nieprawidłowa nazwa kraju.");
                 });

@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using PawnShop.Core.Extensions;
+using PawnShop.Exceptions.DBExceptions;
 using static PawnShop.Services.Constants;
 
 namespace PawnShop.Services.DataService.Repositories
@@ -21,6 +24,36 @@ namespace PawnShop.Services.DataService.Repositories
         }
 
         public async Task UpdateContractStates() => await _context.Database.ExecuteSqlRawAsync($"Exec [{DBSchemaName}].[{_updateContractStatesProcedureName}]");
+
+        public async Task<string> GetNextContractNumber()
+        {
+            //var actualContractNumber = await _context
+            //    .Contracts
+            //    .OrderByDescending(c => Convert.ToInt32(c.ContractNumberId.Substring(c.ContractNumberId.IndexOf("/") + 1)))
+            //    .ThenByDescending(c => Convert.ToInt32(c.ContractNumberId.Substring(0, c.ContractNumberId.IndexOf("/"))))
+            //    .Take(1)
+            //    .ToListAsync();
+
+
+
+            var actualContractNumber = await _context
+                .Contracts
+                .Select(c => new
+                {
+                    ContractNumberID = c.ContractNumberId,
+                    Year = Convert.ToInt32(c.ContractNumberId.Substring(c.ContractNumberId.IndexOf("/") + 1, c.ContractNumberId.Length - c.ContractNumberId.IndexOf("/") + 1)),
+                    Number = Convert.ToInt32(c.ContractNumberId.Substring(0, c.ContractNumberId.IndexOf("/")))
+                })
+                .OrderByDescending(c => c.Year)
+                .ThenByDescending(c => c.Number)
+                .Take(1)
+                .ToListAsync();
+
+            if (actualContractNumber == null || !actualContractNumber.Any())
+                return $"01/{DateTime.Now.Year}";
+
+            return actualContractNumber.First().ContractNumberID.GetNextContractNumber();
+        }
 
         public async Task<IList<Contract>> GetTopContractsAsync(int count)
         {

@@ -16,10 +16,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PawnShop.DataAccess\PawnShop.DataAccess.csproj" />
+    <ProjectReference Include="..\PawnShop.Exceptions\PawnShop.Exceptions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Enums\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>
