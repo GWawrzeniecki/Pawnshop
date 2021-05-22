@@ -25,7 +25,7 @@ namespace PawnShop.Core.Dialogs
             var dialogParameters = new DialogParameters();
             dialogParameters.Add("title", title);
             dialogParameters.Add("mode", mode);
-            dialogService.Show(DialogNames.AddClientDialog, dialogParameters, callBack);
+            dialogService.ShowDialog(DialogNames.AddClientDialog, dialogParameters, callBack);
         }
 
         public static void ShowAddClientDialog(this IDialogService dialogService, string title, ClientMode mode, Action<IDialogResult> callBack, Client client)
@@ -34,7 +34,12 @@ namespace PawnShop.Core.Dialogs
             dialogParameters.Add("title", title);
             dialogParameters.Add("client", client);
             dialogParameters.Add("mode", mode);
-            dialogService.Show(DialogNames.AddClientDialog, dialogParameters, callBack);
+            dialogService.ShowDialog(DialogNames.AddClientDialog, dialogParameters, callBack);
+        }
+
+        public static void ShowAddContractItemDialog(this IDialogService dialogService, Action<IDialogResult> callBack)
+        {
+            dialogService.ShowDialog(DialogNames.AddContractItemDialog, callBack);
         }
     }
 }

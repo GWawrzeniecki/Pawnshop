@@ -13,8 +13,10 @@ namespace PawnShop.Business.Models
         }
 
         public int Id { get; set; }
+        public int MeasureId { get; set; }
         public string Category { get; set; }
 
+        public virtual UnitMeasure Measure { get; set; }
         public virtual ICollection<ContractItem> ContractItems { get; set; }
     }
 }

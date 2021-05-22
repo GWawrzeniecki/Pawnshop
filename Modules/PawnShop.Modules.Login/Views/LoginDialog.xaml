@@ -18,6 +18,21 @@
         </Style>
     </prism:Dialog.WindowStyle>
 
+
+<UserControl.Resources>
+    <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
+        
+        <Setter Property="BorderThickness" Value="0 0 0 1" />
+    </Style>
+
+        <Style x:Key="ModernPasswordBoxLook" TargetType="PasswordBox" BasedOn="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}">
+            <Setter Property="BorderThickness" Value="0 0 0 1" />
+            
+        </Style>
+
+
+    </UserControl.Resources>
+
     <StackPanel Orientation="Vertical">
         <Image  Source="/PawnShop.Modules.Login;component/Logo/test_logo.jpg" Height="150"  Margin="10 30 10 20" HorizontalAlignment="Center" />
         <TextBlock Text="Lombard &quot;VIP&quot;" Margin="0 0 0 50" HorizontalAlignment="Center" FontSize="45" />
@@ -62,7 +77,7 @@
                 Grid.Column="1"
                 TabIndex="2"
                 Tag="{Binding PasswordTag, ValidatesOnDataErrors=True}"
-                Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}"
+                Style= "{StaticResource ModernPasswordBoxLook}"
                 mah:TextBoxHelper.HasText="{Binding PasswordBoxHasText, Mode=TwoWay}"
                 mah:PasswordBoxHelper.CapsLockWarningToolTip="CapsLock jest włączony"
                 mah:TextBoxHelper.Watermark="Hasło"
@@ -71,6 +86,7 @@
                     <KeyBinding Key="Return" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}" />
                 </PasswordBox.InputBindings>
             </PasswordBox>
+            
         </Grid>
 
         <Button Content="Zaloguj" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=passwordBox}" Margin="150 0 150 0" Height="50" />

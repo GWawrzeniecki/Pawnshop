@@ -9,7 +9,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <!-- MahApps.Metro Theme setting -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
                 <!--HamburgerMenu-->
                 <ResourceDictionary Source="DataTemplates/HamburgerMenu.xaml" />
                 <ResourceDictionary Source="Styles/HamburgerMenu.xaml" />
@@ -17,12 +18,11 @@
                 <ResourceDictionary Source="Styles/Fonts.xaml" />
                 <!--Buttons-->
                 <ResourceDictionary Source="Styles/Buttons.xaml" />
+                <!--TextBlocks-->
+                <ResourceDictionary Source="Styles/TextBlocks.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-
-           
-
-
         </ResourceDictionary>
+
+
     </Application.Resources>
 </prism:PrismApplication>

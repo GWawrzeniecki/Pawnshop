@@ -49,12 +49,11 @@ namespace PawnShop
             containerRegistry.RegisterSingleton<ISessionContext, SessionContext>();
             containerRegistry.RegisterSingleton<IValidatorService, ValidatorService>();
             containerRegistry.RegisterSingleton<IClientService, ClientService>(); // to do (maybe) to move in future
+            containerRegistry.RegisterSingleton<IContractItemService, ContractItemService>();
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();
             ConfigureMapper(containerRegistry);
-
-
         }
 
         private void ConfigureMapper(IContainerRegistry containerRegistry)
@@ -62,6 +61,7 @@ namespace PawnShop
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<AddClientViewModelToClientProfile>();
+                cfg.AddProfile<AddContractItemDialogViewModelToContractItemProfile>();
             });
             var mapper = configuration.CreateMapper();
 
@@ -73,7 +73,8 @@ namespace PawnShop
             base.ConfigureRegionAdapterMappings(regionAdapterMappings);
 
             regionAdapterMappings.RegisterMapping<StackPanel>(Container.Resolve<StackPanelRegionAdapter>());
-            regionAdapterMappings.RegisterMapping<HamburgerMenuItemCollection>(Container.Resolve<HamburgerMenuItemCollectionRegionAdapter>());
+            regionAdapterMappings.RegisterMapping<HamburgerMenuItemCollection>(
+                Container.Resolve<HamburgerMenuItemCollectionRegionAdapter>());
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
@@ -88,7 +89,6 @@ namespace PawnShop
         {
             regionBehaviors.AddIfMissing(DependentViewRegionBehavior.BehaviorKey, typeof(DependentViewRegionBehavior));
             regionBehaviors.AddIfMissing(RegionManagerAwareBehavior.BehaviorKey, typeof(RegionManagerAwareBehavior));
-
 
 
             base.ConfigureDefaultRegionBehaviors(regionBehaviors);

@@ -12,7 +12,7 @@ namespace PawnShop.Business.Models
         public string Procesor { get; set; }
         public string Ram { get; set; }
         public string MassStorage { get; set; }
-        public int DriveType { get; set; }
+        public string DriveType { get; set; }
         public string DescriptionKit { get; set; }
 
         public virtual ContractItem ContractItem { get; set; }

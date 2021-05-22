@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using PawnShop.Business.Models;
+using PawnShop.Business.Models;
 
 #nullable disable
 
@@ -40,7 +41,6 @@ namespace PawnShop.DataAccess.Data
         public virtual DbSet<LendingRate> LendingRates { get; set; }
         public virtual DbSet<Link> Links { get; set; }
         public virtual DbSet<LocalSale> LocalSales { get; set; }
-        public virtual DbSet<Measure> Measures { get; set; }
         public virtual DbSet<MoneyBalance> MoneyBalances { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<PaymentType> PaymentTypes { get; set; }
@@ -49,6 +49,7 @@ namespace PawnShop.DataAccess.Data
         public virtual DbSet<Privilege> Privileges { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Telephone> Telephones { get; set; }
+        public virtual DbSet<UnitMeasure> UnitMeasures { get; set; }
         public virtual DbSet<WorkPlace> WorkPlaces { get; set; }
         public virtual DbSet<WorkerBoss> WorkerBosses { get; set; }
         public virtual DbSet<WorkerBossContractItem> WorkerBossContractItems { get; set; }
@@ -59,7 +60,7 @@ namespace PawnShop.DataAccess.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=Kogut-Desktop;Initial Catalog=Pawnshop;Integrated Security=True;trustServerCertificate=true");
+                optionsBuilder.UseSqlServer("Data Source=Kogut-Desktop\\Sqlexpress;Initial Catalog=Pawnshop;Integrated Security=True;trustServerCertificate=true");
             }
         }
 
@@ -255,8 +256,6 @@ namespace PawnShop.DataAccess.Data
 
                 entity.Property(e => e.EstimatedValue).HasColumnType("decimal(10, 2)");
 
-                entity.Property(e => e.MeasureId).HasColumnName("MeasureID");
-
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(30);
@@ -281,34 +280,32 @@ namespace PawnShop.DataAccess.Data
                     .WithMany(p => p.ContractItems)
                     .HasForeignKey(d => d.ContractNumberId)
                     .HasConstraintName("ContractItem_Contract");
-
-                entity.HasOne(d => d.Measure)
-                    .WithMany(p => p.ContractItems)
-                    .HasForeignKey(d => d.MeasureId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("ContractItem_Measure");
             });
 
             modelBuilder.Entity<ContractItemCategory>(entity =>
             {
                 entity.ToTable("ContractItemCategory", "Pawnshop");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Category)
                     .IsRequired()
                     .HasMaxLength(30);
+
+                entity.Property(e => e.MeasureId).HasColumnName("MeasureID");
+
+                entity.HasOne(d => d.Measure)
+                    .WithMany(p => p.ContractItemCategories)
+                    .HasForeignKey(d => d.MeasureId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ContractItemCategory_Measure");
             });
 
             modelBuilder.Entity<ContractItemState>(entity =>
             {
                 entity.ToTable("ContractItemState", "Pawnshop");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.State)
                     .IsRequired()
@@ -511,9 +508,7 @@ namespace PawnShop.DataAccess.Data
             {
                 entity.ToTable("GoldProductType", "Pawnshop");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Type)
                     .IsRequired()
@@ -524,9 +519,7 @@ namespace PawnShop.DataAccess.Data
             {
                 entity.ToTable("GoldTest", "Pawnshop");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.GoldTest1)
                     .IsRequired()
@@ -552,6 +545,10 @@ namespace PawnShop.DataAccess.Data
                 entity.Property(e => e.DescriptionKit)
                     .IsRequired()
                     .HasMaxLength(100);
+
+                entity.Property(e => e.DriveType)
+                    .IsRequired()
+                    .HasMaxLength(10);
 
                 entity.Property(e => e.MassStorage)
                     .IsRequired()
@@ -618,20 +615,6 @@ namespace PawnShop.DataAccess.Data
                     .WithOne(p => p.LocalSale)
                     .HasForeignKey<LocalSale>(d => d.SaleId)
                     .HasConstraintName("LocalInternetSale_Sale");
-            });
-
-            modelBuilder.Entity<Measure>(entity =>
-            {
-                entity.ToTable("Measure", "Pawnshop");
-
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
-
-                entity.Property(e => e.Measure1)
-                    .IsRequired()
-                    .HasMaxLength(5)
-                    .HasColumnName("Measure");
             });
 
             modelBuilder.Entity<MoneyBalance>(entity =>
@@ -796,6 +779,17 @@ namespace PawnShop.DataAccess.Data
                     .WithOne(p => p.Telephone)
                     .HasForeignKey<Telephone>(d => d.ContractitemId)
                     .HasConstraintName("Telephone_ContractItem");
+            });
+
+            modelBuilder.Entity<UnitMeasure>(entity =>
+            {
+                entity.ToTable("UnitMeasure", "Pawnshop");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Measure)
+                    .IsRequired()
+                    .HasMaxLength(5);
             });
 
             modelBuilder.Entity<WorkPlace>(entity =>

@@ -17,7 +17,6 @@ namespace PawnShop.Business.Models
         public string ContractNumberId { get; set; }
         public int CategoryId { get; set; }
         public int ContractItemStateId { get; set; }
-        public int MeasureId { get; set; }
         public string Name { get; set; }
         public int Amount { get; set; }
         public string Description { get; set; }
@@ -27,7 +26,6 @@ namespace PawnShop.Business.Models
         public virtual ContractItemCategory Category { get; set; }
         public virtual ContractItemState ContractItemState { get; set; }
         public virtual Contract ContractNumber { get; set; }
-        public virtual Measure Measure { get; set; }
         public virtual GoldProduct GoldProduct { get; set; }
         public virtual Laptop Laptop { get; set; }
         public virtual Telephone Telephone { get; set; }

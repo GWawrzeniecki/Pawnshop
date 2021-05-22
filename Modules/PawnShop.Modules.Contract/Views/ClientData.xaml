@@ -72,7 +72,8 @@
                     </ComboBox.ItemTemplate>
 
                     <ComboBox.InputBindings>
-                        <KeyBinding Key="Return" Command="{Binding SearchClientCommand}" CommandParameter="{Binding ElementName=ClientSearchComboBox, Path=Text}" />
+                        <KeyBinding Key="Return" Command="{Binding SearchClientCommand}"
+                                    CommandParameter="{Binding ElementName=ClientSearchComboBox, Path=Text}" />
                     </ComboBox.InputBindings>
                 </ComboBox>
 
@@ -85,9 +86,8 @@
                 <Button Grid.Row="0"
                         Grid.Column="3"
                         Content="Dodaj nowego klienta"
-                        Margin="{StaticResource ControlMargin}" 
-                        Command="{Binding AddClientCommand}"
-                        />
+                        Margin="{StaticResource ControlMargin}"
+                        Command="{Binding AddClientCommand}" />
             </Grid>
         </GroupBox>
 
@@ -99,9 +99,9 @@
 
             <Grid>
                 <Grid.Resources>
-                    <Style TargetType="TextBlock">
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                         <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
-                        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+
                     </Style>
                 </Grid.Resources>
 
@@ -139,13 +139,13 @@
                 <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding SelectedClient.Pesel, Mode=TwoWay}" />
                 <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding SelectedClient.IdcardNumber, Mode=TwoWay}" />
 
-                <Button 
-                    Grid.Row="3" 
-                    Grid.Column="3" 
+                <Button
+                    Grid.Row="3"
+                    Grid.Column="3"
                     Content="Edytuj dane klienta"
-                    Margin="{StaticResource ControlMargin}" 
+                    Margin="{StaticResource ControlMargin}"
                     Command="{Binding EditClientCommand}"
-                    CommandParameter="{Binding SelectedClient}"/>
+                    CommandParameter="{Binding SelectedClient}" />
             </Grid>
         </GroupBox>
 
@@ -154,7 +154,7 @@
               Margin="0 0 0 15">
 
             <Grid.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="Margin" Value="5 0 15 0" />
                 </Style>
             </Grid.Resources>
@@ -170,12 +170,10 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Button Grid.Column="1" Content="Wstecz" IsEnabled="False"/>
+            <Button Grid.Column="1" Content="Wstecz" IsEnabled="False" />
             <Button Grid.Column="2" Content="Dalej"
                     Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
-                    CommandParameter="{x:Type menuItem:ContractDataHamburgerMenuItem}"
-                    
-                    />
+                    CommandParameter="{x:Type menuItem:ContractDataHamburgerMenuItem}" />
             <Button Grid.Column="3" Content="Anuluj" Command="{Binding CancelCommand}" />
         </Grid>
 

@@ -39,6 +39,7 @@ namespace PawnShop.Modules.Contract
             containerRegistry.RegisterSingleton<AddClientValidator>();
             containerRegistry.RegisterSingleton<IContractService, ContractService>();
             containerRegistry.RegisterDialog<AddClientDialog, AddClientDialogViewModel>();
+            containerRegistry.RegisterDialog<AddContractItemDialog, AddContractItemDialogViewModel>();
         }
     }
 }

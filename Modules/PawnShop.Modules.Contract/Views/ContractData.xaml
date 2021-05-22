@@ -30,7 +30,15 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="Margin" Value="0 5 0 0" />
+                               
+                            </Style>
+                        </Grid.Resources>
+
+                        <TextBlock
+                            Grid.Column="0">
                             <Run Text="Numer umowy:" />
                             <Run Text="{Binding ContractNumber}" />
                         </TextBlock>
@@ -38,7 +46,7 @@
                         <TextBlock Grid.Column="1">
                             <Run Text="Zawarta dnia:" />
                             <Run
-                                Text="{Binding Path='.', Source={x:Static system:DateTime.Now}, StringFormat=dd.MMM.yyyy}" />
+                                Text="{Binding Path='.', Source={x:Static system:DateTime.Now}, StringFormat=d}" />
                         </TextBlock>
 
 
@@ -65,7 +73,7 @@
 
                 <GroupBox Grid.Row="1" Header="Zakupione Towary" Margin="0 15 0 5">
                     <DataGrid
-                        ItemsSource="{Binding Contracts}"
+                        ItemsSource="{Binding BoughtContractItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
                         CanUserDeleteRows="False"
@@ -88,8 +96,8 @@
                       Margin="0 0 0 5">
 
                     <Grid.Resources>
-                        <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
-                            <Setter Property="Margin" Value="5 0 15 0" />
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Setter Property="Margin" Value="5 5 15 0" />
                         </Style>
                     </Grid.Resources>
 
@@ -107,9 +115,10 @@
                     <TextBlock Grid.Row="0">
                         <Run Text="Aktualna cena odkupu: " />
                         <Run Text="{Binding RePurchasePrice}" />
+                        <Run Text=" PLN"/>
                     </TextBlock>
 
-                    <Button Grid.Column="3" Content="Dodaj towar"  />
+                    <Button Grid.Column="3" Content="Dodaj towar" Command="{Binding AddContractItemCommand }" />
                 </Grid>
 
             </Grid>
@@ -122,7 +131,7 @@
               Margin="0 0 0 15">
 
             <Grid.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="Margin" Value="5 0 15 0" />
                 </Style>
             </Grid.Resources>

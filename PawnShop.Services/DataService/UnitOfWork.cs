@@ -17,12 +17,16 @@ namespace PawnShop.Services.DataService
         private GenericRepository<ContractState> _contractStateRepository;
         private ContractRepository _contractRepository;
         private ClientRepository _clientRepository;
+        private GenericRepository<ContractItem> _contractItemRepository;
+        private GenericRepository<ContractItemCategory> _contractItemCategoryRepository;
+        private GenericRepository<UnitMeasure> _unitMeasureRepository;
+        private GenericRepository<ContractItemState> _contractItemStateRepository;
 
         #endregion private members
 
         public UnitOfWork()
         {
-            
+
         }
 
         #region public properties
@@ -87,6 +91,42 @@ namespace PawnShop.Services.DataService
             {
                 this._clientRepository ??= new ClientRepository(_context);
                 return _clientRepository;
+            }
+        }
+
+        public GenericRepository<ContractItem> ContractItemRepository
+        {
+            get
+            {
+                this._contractItemRepository ??= new GenericRepository<ContractItem>(_context);
+                return _contractItemRepository;
+            }
+        }
+
+        public GenericRepository<ContractItemCategory> ContractItemCategoryRepository
+        {
+            get
+            {
+                this._contractItemCategoryRepository ??= new GenericRepository<ContractItemCategory>(_context);
+                return _contractItemCategoryRepository;
+            }
+        }
+
+        public GenericRepository<UnitMeasure> UnitMeasureRepository
+        {
+            get
+            {
+                this._unitMeasureRepository ??= new GenericRepository<UnitMeasure>(_context);
+                return _unitMeasureRepository;
+            }
+        }
+
+        public GenericRepository<ContractItemState> ContractItemStateRepository
+        {
+            get
+            {
+                this._contractItemStateRepository ??= new GenericRepository<ContractItemState>(_context);
+                return _contractItemStateRepository;
             }
         }
 

@@ -342,7 +342,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             try
             {
-                var queryData = new ContractQueryData
+                var queryData = new ContractQueryData // to do mapping
                 {
                     FromDate = FromDate,
                     ToDate = ToDate,

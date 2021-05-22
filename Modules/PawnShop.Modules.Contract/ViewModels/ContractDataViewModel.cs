@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Core.Dialogs;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Services;
@@ -11,6 +12,7 @@ using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
@@ -21,10 +23,15 @@ namespace PawnShop.Modules.Contract.ViewModels
         private IList<LendingRate> _lendingRates;
         private readonly IContractService _contractService;
         private readonly IShellService _shellService;
+        private readonly IDialogService _dialogService;
         private DelegateCommand _cancelCommand;
         private string _contractNumber;
         private LendingRate _lendingRate;
         private DateTime? _rePurchaseDateTime;
+        private DelegateCommand _addContractItemCommand;
+        private decimal _rePurchasePrice;
+        private IList<ContractItem> _boughtContractItems;
+
         #endregion
 
         #region IRegionManagerAware
@@ -55,7 +62,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             set
             {
                 SetProperty(ref _lendingRate, value);
-                RepurchaseDate  = value == null ? default : DateTime.Today.AddDays(value.Days);
+                RepurchaseDate = value == null ? default : DateTime.Today.AddDays(value.Days);
             }
         }
 
@@ -67,6 +74,19 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
 
+        public decimal RePurchasePrice
+        {
+            get => _rePurchasePrice;
+            set => SetProperty(ref _rePurchasePrice, value);
+        }
+
+
+        public IList<ContractItem> BoughtContractItems
+        {
+            get => _boughtContractItems;
+            set => SetProperty(ref _boughtContractItems, value);
+        }
+
         #endregion
 
 
@@ -75,14 +95,20 @@ namespace PawnShop.Modules.Contract.ViewModels
         public DelegateCommand CancelCommand =>
             _cancelCommand ??= new DelegateCommand(Cancel);
 
+        public DelegateCommand AddContractItemCommand =>
+            _addContractItemCommand ??= new DelegateCommand(AddContractItem);
+
         #endregion Commands
 
         #region constructor
 
-        public ContractDataViewModel(IContractService contractService, IShellService shellService)
+        public ContractDataViewModel(IContractService contractService, IShellService shellService,
+            IDialogService dialogService)
         {
             _contractService = contractService;
             _shellService = shellService;
+            _dialogService = dialogService;
+            BoughtContractItems = new List<ContractItem>();
             LoadStartupData();
         }
 
@@ -93,6 +119,18 @@ namespace PawnShop.Modules.Contract.ViewModels
         private void Cancel()
         {
             _shellService.CloseShell<CreateContractWindow>();
+        }
+
+        private void AddContractItem()
+        {
+            _dialogService.ShowAddContractItemDialog(r =>
+            {
+                if (r.Result == ButtonResult.OK)
+                {
+                    BoughtContractItems.Add(r.Parameters.GetValue<ContractItem>("contractItem"));
+               
+                }
+            });
         }
 
         #endregion
