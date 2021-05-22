@@ -18,8 +18,7 @@
                 <ResourceDictionary Source="Styles/Fonts.xaml" />
                 <!--Buttons-->
                 <ResourceDictionary Source="Styles/Buttons.xaml" />
-                <!--TextBlocks-->
-                <ResourceDictionary Source="Styles/TextBlocks.xaml" />
+               
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

@@ -1,8 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-    <Style x:Name="Test" TargetType="TextBlock" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
-        <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
-    </Style>
-
-</ResourceDictionary>

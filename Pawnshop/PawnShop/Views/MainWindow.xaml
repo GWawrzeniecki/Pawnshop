@@ -8,6 +8,11 @@
                  Title="{Binding Title}" MinWidth="1280" MinHeight="800"
                  WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
+    <Window.Resources>
+        <Style  TargetType="TextBlock" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+            <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+        </Style>
+    </Window.Resources>
 
     <DockPanel LastChildFill="True">
         <!--Top Taskbar-->

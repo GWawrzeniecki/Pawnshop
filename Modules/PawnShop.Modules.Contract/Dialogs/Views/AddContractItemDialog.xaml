@@ -18,7 +18,9 @@
         </Style>
     </prism:Dialog.WindowStyle>
 
+
     <Grid Margin="10 10 10 0">
+
 
         <Grid.Resources>
             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -52,7 +54,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -68,12 +70,13 @@
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" MinHeight="80" />
+                    <RowDefinition Height="80" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" MinHeight="80" />
+                    <RowDefinition Height="80" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Nazwa towaru:" />
@@ -91,10 +94,12 @@
                 <RichTextBox
                     Grid.Row="1"
                     Grid.Column="1"
-                    attachedProperties:RichTextBoxAttachedProperty.Text="{Binding ContractItemDescription}" />
+                  
+                    />
                 <ComboBox
                     Grid.Row="2"
                     Grid.Column="1"
+                    Margin="0 15 50 15"
                     SelectedItem="{Binding SelectedContractItemCategory,Mode=TwoWay}"
                     ItemsSource="{Binding ContractItemCategories}">
                     <ComboBox.ItemTemplate>
@@ -106,6 +111,7 @@
                 <ComboBox
                     Grid.Row="3"
                     Grid.Column="1"
+                    Margin="0 0 50 15"
                     SelectedItem="{Binding SelectedContractItemState,Mode=TwoWay}"
                     ItemsSource="{Binding ContractItemStates}">
                     <ComboBox.ItemTemplate>
@@ -117,12 +123,8 @@
                 <RichTextBox
                     Grid.Row="4"
                     Grid.Column="1"
-                    x:Name="ContractItemTechnicalConditionRichTextBox"
-                    attachedProperties:RichTextBoxAttachedProperty.Text="{Binding ContractItemTechnicalCondition}">
-
-                   
-
-                </RichTextBox>
+                  
+                    x:Name="ContractItemTechnicalConditionRichTextBox" />
                 <Grid Grid.Row="5" Grid.Column="1">
 
                     <Grid.ColumnDefinitions>
