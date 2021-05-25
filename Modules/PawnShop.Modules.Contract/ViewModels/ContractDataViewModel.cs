@@ -128,7 +128,8 @@ namespace PawnShop.Modules.Contract.ViewModels
                 if (r.Result == ButtonResult.OK)
                 {
                     BoughtContractItems.Add(r.Parameters.GetValue<ContractItem>("contractItem"));
-               
+                    BoughtContractItems = new List<ContractItem>(BoughtContractItems);
+                    
                 }
             });
         }

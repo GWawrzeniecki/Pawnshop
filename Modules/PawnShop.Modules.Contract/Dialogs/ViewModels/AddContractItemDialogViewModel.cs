@@ -152,6 +152,8 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             set => SetProperty(ref _selectedContractItemState, value);
         }
 
+       
+
         #endregion
 
         #region commands

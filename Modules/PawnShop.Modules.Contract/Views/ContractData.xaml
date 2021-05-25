@@ -81,7 +81,7 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Lp" Binding="{Binding ContractNumberId}" Width="*" />
-                            <DataGridTextColumn Header="Opis towaru" Binding="{Binding ContractState.State}" Width="4*" />
+                            <DataGridTextColumn Header="Opis towaru" Binding="{Binding Description}" Width="4*" />
                             <DataGridTextColumn Header="J.m" Binding="{Binding AmountContract}" Width="*" />
                             <DataGridTextColumn Header="Ilość" Binding="{Binding StartDate}" Width="*" />
                             <DataGridTextColumn Header="Wartość" Binding="{Binding LendingRate.Days}" Width="*" />

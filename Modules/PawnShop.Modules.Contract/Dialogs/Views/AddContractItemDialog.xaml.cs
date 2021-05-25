@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Controls;
-using PawnShop.Core.Extensions;
-using PawnShop.Modules.Contract.Dialogs.ViewModels;
+﻿using System.Windows.Controls;
 
 namespace PawnShop.Modules.Contract.Dialogs.Views
 {
@@ -13,16 +10,9 @@ namespace PawnShop.Modules.Contract.Dialogs.Views
         public AddContractItemDialog()
         {
             InitializeComponent();
-            //this.ContractItemTechnicalConditionRichTextBox.TextChanged += ContractItemTechnicalConditionRichTextBox_TextChanged;
+            
         }
 
-        private void ContractItemTechnicalConditionRichTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (sender is RichTextBox richTextBox)
-            {
-                ((AddContractItemDialogViewModel) this.DataContext).ContractItemTechnicalCondition =
-                    richTextBox.GetText();
-            }
-        }
+        
     }
 }
