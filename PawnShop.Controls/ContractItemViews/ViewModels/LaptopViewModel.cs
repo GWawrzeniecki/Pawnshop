@@ -20,6 +20,8 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
 
         public LaptopViewModel(LaptopValidator laptopValidator) : base(laptopValidator)
         {
+
+
         }
 
         #endregion
