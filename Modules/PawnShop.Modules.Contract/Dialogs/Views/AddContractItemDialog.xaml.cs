@@ -10,9 +10,9 @@ namespace PawnShop.Modules.Contract.Dialogs.Views
         public AddContractItemDialog()
         {
             InitializeComponent();
-            
+
         }
 
-        
+
     }
 }

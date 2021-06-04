@@ -1,13 +1,12 @@
-﻿using System;
-using PawnShop.Core;
+﻿using PawnShop.Core;
 using PawnShop.Core.HamburgerMenu.Implementations;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Modules.Contract.Validators;
+using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
+using System;
 using System.Collections.Generic;
-using System.Reflection;
-using Prism.Commands;
 
 namespace PawnShop.Modules.Contract.Windows.ViewModels
 {

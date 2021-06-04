@@ -1,6 +1,6 @@
-﻿using PawnShop.Business.Models;
+﻿using BespokeFusion;
+using PawnShop.Business.Models;
 using PawnShop.Core;
-using PawnShop.Core.Dialogs;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Login.Extensions;
 using PawnShop.Modules.Login.Validators;
@@ -8,12 +8,9 @@ using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using System;
-using System.Runtime.CompilerServices;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using BespokeFusion;
-using Microsoft.Xaml.Behaviors.Layout;
 
 namespace PawnShop.Modules.Login.ViewModels
 {

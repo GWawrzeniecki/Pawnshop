@@ -19,7 +19,7 @@ namespace PawnShop.Modules.Home
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager.Regions[RegionNames.MenuRegion].Add(containerProvider.Resolve<HomeHamburgerMenuItem>());
-            
+
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

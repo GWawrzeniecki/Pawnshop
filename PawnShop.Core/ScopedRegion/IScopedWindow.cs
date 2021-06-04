@@ -1,8 +1,5 @@
 ﻿using Prism.Ioc;
 using Prism.Regions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PawnShop.Core.ScopedRegion
 {

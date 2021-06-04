@@ -1,9 +1,12 @@
-﻿using PawnShop.Business.Models;
+﻿using BespokeFusion;
+using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
+using PawnShop.Core.Enums;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Models.DropDownButtonModels;
 using PawnShop.Modules.Contract.Services;
+using PawnShop.Modules.Contract.Windows.Views;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
@@ -14,9 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BespokeFusion;
-using PawnShop.Core.Enums;
-using PawnShop.Modules.Contract.Windows.Views;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
@@ -43,7 +43,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         public DelegateCommand<string> SearchClientCommand =>
             _searchClientCommand ??=
                 new DelegateCommand<string>(SearchClient, CanExecuteSearchClient).ObservesProperty(() =>
-                    ClientSearchComboBoxText);
+                    ClientSearchComboBoxText)
+            .ObservesProperty(() => SelectedClientSearchOption);
 
         public DelegateCommand CancelCommand =>
             _cancelCommand ??= new DelegateCommand(Cancel);
@@ -94,7 +95,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private DelegateCommand _cancelCommand;
         private DelegateCommand _addClientCommand;
         private DelegateCommand<Client> _editClientCommand;
-
+        private bool _ClientSearchComboBoxIsOpen;
         #endregion privateMembers
 
         #region public properties
@@ -108,17 +109,17 @@ namespace PawnShop.Modules.Contract.ViewModels
         public ClientSearchOption SelectedClientSearchOption
         {
             get => _selectedClientSearchOption;
-            set
-            {
-                SetProperty(ref _selectedClientSearchOption, value);
-                SearchClientCommand.RaiseCanExecuteChanged();
-            }
+            set => SetProperty(ref _selectedClientSearchOption, value);
         }
 
         public Client SelectedClient
         {
             get => _selectedClient;
-            set => SetProperty(ref _selectedClient, value);
+            set
+            {
+                SetProperty(ref _selectedClient, value);
+                RaisePropertyChanged(nameof(IsNextButtonEnabled));
+            }
         }
 
         public IList<Client> SearchedClients
@@ -134,6 +135,13 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
 
+        public bool ClientSearchComboBoxIsOpen
+        {
+            get { return _ClientSearchComboBoxIsOpen; }
+            set { SetProperty(ref _ClientSearchComboBoxIsOpen, value); }
+        }
+
+        public bool IsNextButtonEnabled => SelectedClient != null;
 
 
         #endregion public properties
@@ -171,6 +179,8 @@ namespace PawnShop.Modules.Contract.ViewModels
 
             if (SearchedClients?.Count == 1)
                 SelectedClient = SearchedClients.First();
+            else
+                ClientSearchComboBoxIsOpen = true;
         }
 
         private bool CanExecuteSearchClient(string arg)

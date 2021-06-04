@@ -1,26 +1,24 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using AutoMapper;
+﻿using AutoMapper;
 using BespokeFusion;
 using PawnShop.Business.Models;
-using PawnShop.Core.Enums;
+using PawnShop.Core;
 using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Contract.Validators;
 using PawnShop.Services.Interfaces;
+using Prism.Commands;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows.Controls;
 using Laptop = PawnShop.Controls.ContractItemViews.Views.Laptop;
 
 namespace PawnShop.Modules.Contract.Dialogs.ViewModels
 {
-    public class AddContractItemDialogViewModel : BindableBase, IDialogAware
+    public class AddContractItemDialogViewModel : ViewModelBase<AddContractItemDialogViewModel>, IDialogAware
     {
+
         private readonly IContractItemService _contractItemService;
         private readonly IContainerProvider _containerProvider;
         private readonly IMapper _mapper;
@@ -42,22 +40,22 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         private DelegateCommand _addContractItemCommand;
         private IList<ContractItemState> _contractItemStates;
         private ContractItemState _selectedContractItemState;
-        
+
 
         #endregion
 
 
         #region Constructor
 
-        public AddContractItemDialogViewModel(IContractItemService contractItemService,
-            IContainerProvider containerProvider, IMapper mapper)
+        public AddContractItemDialogViewModel(IContractItemService contractItemService, AddContractItemValidator addContractItemValidator,
+            IContainerProvider containerProvider, IMapper mapper) : base(addContractItemValidator)
         {
             _contractItemService = contractItemService;
             _containerProvider = containerProvider;
             _mapper = mapper;
             Title = "Dodanie towaru do umowy";
             LoadStartupData();
-           
+
         }
 
         #endregion
@@ -152,7 +150,7 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             set => SetProperty(ref _selectedContractItemState, value);
         }
 
-       
+
 
         #endregion
 
@@ -166,8 +164,8 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             _addContractItemCommand ??=
                 new DelegateCommand(AddContractItem);
 
-     
-      
+
+
 
         #endregion
 
@@ -191,7 +189,14 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         public event Action<IDialogResult> RequestClose;
 
         #endregion IDialogAware
+        #region viewModelBase
 
+        protected override AddContractItemDialogViewModel GetInstance()
+        {
+            return this;
+        }
+
+        #endregion viewModelBase
 
         #region PrivateMethods
 
@@ -269,10 +274,10 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             var contractItem = new ContractItem();
             contractItem = _mapper.Map(this, contractItem);
             RequestClose?.Invoke(new DialogResult(ButtonResult.OK,
-                new DialogParameters {{"contractItem", contractItem}}));
+                new DialogParameters { { "contractItem", contractItem } }));
         }
 
-       
+
 
 
         #endregion

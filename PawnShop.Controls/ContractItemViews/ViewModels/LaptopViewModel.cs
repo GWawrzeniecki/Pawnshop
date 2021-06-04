@@ -1,9 +1,9 @@
-﻿using PawnShop.Core;
-using Prism.Mvvm;
+﻿using PawnShop.Controls.ContractItemViews.Validators;
+using PawnShop.Core;
 
 namespace PawnShop.Controls.ContractItemViews.ViewModels
 {
-    public class LaptopViewModel : BindableBase
+    public class LaptopViewModel : ViewModelBase<LaptopViewModel>
     {
         #region PrivateMembers
 
@@ -12,11 +12,19 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
         private string _ram;
         private string _driverType;
         private string _massStorage;
+        private string _descriptionKit;
         #endregion
 
-        public LaptopViewModel()
+
+        #region constructor 
+
+        public LaptopViewModel(LaptopValidator laptopValidator) : base(laptopValidator)
         {
         }
+
+        #endregion
+
+        #region public properties
 
         public string Brand
         {
@@ -24,7 +32,7 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
             set => SetProperty(ref _brand, value);
         }
 
-        
+
         public string Processor
         {
             get => _processor;
@@ -37,20 +45,38 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
             set => SetProperty(ref _ram, value);
         }
 
-       
+
         public string DriverType
         {
             get => _driverType;
             set => SetProperty(ref _driverType, value);
         }
 
-       
+
         public string MassStorage
         {
             get => _massStorage;
             set => SetProperty(ref _massStorage, value);
         }
 
+
+        public string DescriptionKit
+        {
+            get { return _descriptionKit; }
+            set { SetProperty(ref _descriptionKit, value); }
+        }
+
+
+        #endregion
+
+        #region viewModelBase
+
+        protected override LaptopViewModel GetInstance()
+        {
+            return this;
+        }
+
+        #endregion viewModelBase
 
     }
 }

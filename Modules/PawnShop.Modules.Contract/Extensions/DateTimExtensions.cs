@@ -11,7 +11,7 @@ namespace PawnShop.Modules.Contract.Extensions
 
         public static DateTime Monday(this DateTime dateTime)
         {
-            return dateTime.AddDays(-(int) DateTime.Now.DayOfWeek);
+            return dateTime.AddDays(-(int)DateTime.Now.DayOfWeek);
         }
 
         public static DateTime Sunday(this DateTime dateTime)

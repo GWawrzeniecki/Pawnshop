@@ -58,6 +58,7 @@
                     IsTextSearchEnabled="True"
                     IsEditable="True"
                     TextSearch.TextPath="ClientNavigation.FullName"
+                    IsDropDownOpen="{Binding ClientSearchComboBoxIsOpen,Mode=TwoWay}"
                     SelectedItem="{Binding SelectedClient}"
                     ItemsSource="{Binding SearchedClients}"
                     Text="{Binding ClientSearchComboBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=200}">
@@ -171,7 +172,7 @@
             </Grid.RowDefinitions>
 
             <Button Grid.Column="1" Content="Wstecz" IsEnabled="False" />
-            <Button Grid.Column="2" Content="Dalej"
+            <Button Grid.Column="2" Content="Dalej" IsEnabled="{Binding IsNextButtonEnabled}"
                     Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
                     CommandParameter="{x:Type menuItem:ContractDataHamburgerMenuItem}" />
             <Button Grid.Column="3" Content="Anuluj" Command="{Binding CancelCommand}" />

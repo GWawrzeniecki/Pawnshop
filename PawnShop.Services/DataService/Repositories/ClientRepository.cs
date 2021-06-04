@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PawnShop.Business.Models;
 using PawnShop.DataAccess.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PawnShop.Services.DataService.Repositories
 {
@@ -122,7 +119,7 @@ namespace PawnShop.Services.DataService.Repositories
                 {
                     client.ClientNavigation.Address.CityId = city.CityId;
                     client.ClientNavigation.Address.City = city;
-                    
+
                 }
                 else
                 {
@@ -135,7 +132,7 @@ namespace PawnShop.Services.DataService.Repositories
 
                     client.ClientNavigation.Address.CityId = 0;
                     client.ClientNavigation.Address.City = newCity;
-                    
+
 
                 }
             }
@@ -157,7 +154,7 @@ namespace PawnShop.Services.DataService.Repositories
                     client.ClientNavigation.Address.City = city;
                     client.ClientNavigation.Address.CountryId = country.CountryId;
                     client.ClientNavigation.Address.Country = country;
-                   
+
                 }
 
                 else if (country != null)

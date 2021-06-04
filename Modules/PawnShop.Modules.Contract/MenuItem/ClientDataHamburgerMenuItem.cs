@@ -14,7 +14,7 @@ namespace PawnShop.Modules.Contract.MenuItem
         {
             Command = new DelegateCommand(Navigate);
             Label = "Dane klienta";
-            Icon = new PackIconMaterial {Kind = PackIconMaterialKind.Account};
+            Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Account };
         }
 
         public override string DefaultNavigationPath => nameof(ClientData);

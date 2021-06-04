@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BespokeFusion;
+﻿using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core;
-using PawnShop.Core.Dialogs;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Enums;
 using PawnShop.Modules.Contract.Extensions;
@@ -19,6 +14,10 @@ using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {

@@ -1,5 +1,4 @@
-﻿using Prism.Regions;
-using System.Windows;
+﻿using System.Windows;
 
 namespace PawnShop.Services.Interfaces
 {

@@ -19,10 +19,10 @@ namespace PawnShop.Modules.Contract.Windows.Views
             RegionManager.SetRegionManager(HamburgerMenuItemCollection, scopedRegionManager);
             RegionManager.SetRegionManager(CreateContractContentControl, scopedRegionManager);
             RegisterViews(containerProvider, scopedRegionManager);
-            
+
         }
 
-        
+
 
         public void RegisterViews(IContainerProvider containerProvider, IRegionManager scopedRegionManager)
         {

@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Services.DataService.Repositories;
+using System.Threading.Tasks;
 
 namespace PawnShop.Services.DataService
 {

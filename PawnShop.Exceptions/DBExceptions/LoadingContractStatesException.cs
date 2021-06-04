@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PawnShop.Exceptions.DBExceptions
 {
-    public class LoadingContractStatesException : Exception 
+    public class LoadingContractStatesException : Exception
     {
         public LoadingContractStatesException()
         {

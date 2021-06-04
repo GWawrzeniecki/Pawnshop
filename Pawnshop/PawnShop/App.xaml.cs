@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using AutoMapper;
+using MahApps.Metro.Controls;
 using PawnShop.Controls.BaseTaskbar.Views;
 using PawnShop.Core;
 using PawnShop.Core.Regions;
@@ -7,6 +8,7 @@ using PawnShop.Core.SharedVariables;
 using PawnShop.Core.Taskbar;
 using PawnShop.Dialogs.Views;
 using PawnShop.Dialogs.ViewsModels;
+using PawnShop.Mapper.Profiles;
 using PawnShop.Modules.Contract;
 using PawnShop.Modules.Home;
 using PawnShop.Modules.Login;
@@ -21,8 +23,6 @@ using Prism.Modularity;
 using Prism.Regions;
 using System.Windows;
 using System.Windows.Controls;
-using AutoMapper;
-using PawnShop.Mapper.Profiles;
 
 namespace PawnShop
 {

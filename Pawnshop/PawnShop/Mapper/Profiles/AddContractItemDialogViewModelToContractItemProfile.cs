@@ -14,7 +14,8 @@ namespace PawnShop.Mapper.Profiles
                 .ForMember(c => c.Category, opt => opt.MapFrom(source => source.SelectedContractItemCategory))
                 .ForMember(c => c.ContractItemState, opt => opt.MapFrom(source => source.SelectedContractItemState))
                 .ForMember(c => c.Description, opt => opt.MapFrom(source => source.ContractItemDescription))
-                .ForMember(c => c.EstimatedValue, opt => opt.MapFrom(source => source.ContractItemEstimatedValue));
+                .ForMember(c => c.EstimatedValue, opt => opt.MapFrom(source => source.ContractItemEstimatedValue))
+                .ForMember(c => c.TechnicalCondition, opt => opt.MapFrom(source => source.ContractItemTechnicalCondition));
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using BespokeFusion;
+﻿using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.ScopedRegion;
@@ -13,6 +10,9 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
@@ -26,7 +26,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IDialogService _dialogService;
         private DelegateCommand _cancelCommand;
         private string _contractNumber;
-        private LendingRate _lendingRate;
+        private LendingRate _selectedLendingRate;
         private DateTime? _rePurchaseDateTime;
         private DelegateCommand _addContractItemCommand;
         private decimal _rePurchasePrice;
@@ -56,13 +56,14 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
 
-        public LendingRate LendingRate
+        public LendingRate SelectedLendingRate
         {
-            get => _lendingRate;
+            get => _selectedLendingRate;
             set
             {
-                SetProperty(ref _lendingRate, value);
+                SetProperty(ref _selectedLendingRate, value);
                 RepurchaseDate = value == null ? default : DateTime.Today.AddDays(value.Days);
+                RaisePropertyChanged(nameof(IsNextButtonEnabled));
             }
         }
 
@@ -87,6 +88,9 @@ namespace PawnShop.Modules.Contract.ViewModels
             set => SetProperty(ref _boughtContractItems, value);
         }
 
+
+        public bool IsNextButtonEnabled => SelectedLendingRate != null && BoughtContractItems.Count > 0;
+
         #endregion
 
 
@@ -110,6 +114,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             _dialogService = dialogService;
             BoughtContractItems = new List<ContractItem>();
             LoadStartupData();
+
         }
 
         #endregion
@@ -129,7 +134,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 {
                     BoughtContractItems.Add(r.Parameters.GetValue<ContractItem>("contractItem"));
                     BoughtContractItems = new List<ContractItem>(BoughtContractItems);
-                    
+                    RaisePropertyChanged(nameof(IsNextButtonEnabled));
                 }
             });
         }

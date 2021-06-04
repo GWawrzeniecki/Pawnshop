@@ -5,7 +5,12 @@
              xmlns:views="clr-namespace:PawnShop.Modules.Contract.Windows.Views"
              xmlns:menuItem="clr-namespace:PawnShop.Modules.Contract.MenuItem"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:converters="clr-namespace:PawnShop.Core.Converters;assembly=PawnShop.Core"
              prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <UserControl.Resources>
+        <converters:AlternationIndexConverter x:Key="AlternationIndexConverter" />
+    </UserControl.Resources>
 
     <Grid Margin="10 10 10 0">
         <Grid.RowDefinitions>
@@ -33,7 +38,7 @@
                         <Grid.Resources>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                                 <Setter Property="Margin" Value="0 5 0 0" />
-                               
+
                             </Style>
                         </Grid.Resources>
 
@@ -54,7 +59,7 @@
                             <TextBlock Text="Ilośc dni: " />
                             <ComboBox
                                 ItemsSource="{Binding LendingRates}"
-                                SelectedItem="{Binding LendingRate,Mode=TwoWay}">
+                                SelectedItem="{Binding SelectedLendingRate,Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Days}" />
@@ -74,19 +79,21 @@
                 <GroupBox Grid.Row="1" Header="Zakupione Towary" Margin="0 15 0 5">
                     <DataGrid
                         ItemsSource="{Binding BoughtContractItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        AlternationCount="{Binding BoughtContractItems.Count}"
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
                         CanUserDeleteRows="False"
                         IsReadOnly="True">
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Lp" Binding="{Binding ContractNumberId}" Width="*" />
-                            <DataGridTextColumn Header="Opis towaru" Binding="{Binding Description}" Width="4*" />
-                            <DataGridTextColumn Header="J.m" Binding="{Binding AmountContract}" Width="*" />
-                            <DataGridTextColumn Header="Ilość" Binding="{Binding StartDate}" Width="*" />
-                            <DataGridTextColumn Header="Wartość" Binding="{Binding LendingRate.Days}" Width="*" />
+                            <DataGridTextColumn Header="Lp" Binding="{Binding AlternationIndex,Converter={StaticResource AlternationIndexConverter}, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Width="*" />
+                            <DataGridTextColumn Header="Nazwa towaru" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="Opis towaru" Binding="{Binding Description,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="3*" />
+                            <DataGridTextColumn Header="J.m" Binding="{Binding Category.Measure.Measure,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="*" />
+                            <DataGridTextColumn Header="Ilość" Binding="{Binding Amount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="*" />
+                            <DataGridTextColumn Header="Wartość" Binding="{Binding EstimatedValue,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="*" />
                             <DataGridTextColumn Header="Uwagi o stanie technicznym ruchomości"
-                                                Binding="{Binding DealMaker.ClientNavigation.FullName}" Width="3*" />
+                                                Binding="{Binding TechnicalCondition,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="3*" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </GroupBox>
@@ -150,7 +157,7 @@
             <Button Grid.Column="1" Content="Wstecz"
                     Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
                     CommandParameter="{x:Type menuItem:ClientDataHamburgerMenuItem}" />
-            <Button Grid.Column="2" Content="Dalej"
+            <Button Grid.Column="2" Content="Dalej" IsEnabled="{Binding IsNextButtonEnabled}"
                     Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
                     CommandParameter="{x:Type menuItem:ContractDataHamburgerMenuItem}" />
             <Button Grid.Column="3" Content="Anuluj" Command="{Binding CancelCommand}" />

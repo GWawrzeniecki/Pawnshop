@@ -56,14 +56,20 @@
 
             <TextBox
                 Grid.Row="0"
-                Grid.Column="1" />
+                Grid.Column="1"
+                Text="{Binding Brand,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
+                />
 
             <TextBox
                 Grid.Row="1"
-                Grid.Column="1" />
+                Grid.Column="1"
+                   Text="{Binding Processor,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
+                />
             <TextBox
                 Grid.Row="2"
-                Grid.Column="1" />
+                Grid.Column="1"
+                   Text="{Binding Ram,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
+                />
 
             <Grid Grid.Row="3" Grid.Column="1">
                 <Grid.ColumnDefinitions>
@@ -76,7 +82,9 @@
 
                 <TextBox
                     Margin="0 5 0 15"
-                    Grid.Column="0" />
+                    Grid.Column="0"
+                       Text="{Binding DriverType,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
+                    />
 
                 <TextBlock
                     Grid.Column="1"
@@ -85,7 +93,7 @@
                 <TextBox
                     Margin="0 5 5 15"
                     Grid.Column="2" 
-                   
+                      Text="{Binding MassStorage,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
                     />
 
                 <TextBlock 
@@ -97,13 +105,16 @@
             </Grid>
 
 
-        
 
-            <RichTextBox
+
+            <TextBox
                 Grid.Row="4"
                 Grid.Column="1"
-
-                Margin="0 0 50 5" />
+                Margin="0 0 50 5"
+                AcceptsReturn="True"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Top"
+                   Text="{Binding DescriptionKit,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"/>
 
 
         </Grid>

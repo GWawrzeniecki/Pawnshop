@@ -1,8 +1,5 @@
-﻿using System.Windows;
-using MahApps.Metro.Controls;
-using PawnShop.Core.Dialogs;
+﻿using MahApps.Metro.Controls;
 using Prism.Regions;
-using Prism.Services.Dialogs;
 
 namespace PawnShop.Views
 {

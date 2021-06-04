@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using PawnShop.Business.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using PawnShop.Business.Models;
 
 #nullable disable

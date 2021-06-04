@@ -1,14 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PawnShop.Business.Models;
+using PawnShop.Core.Extensions;
 using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.QueryDataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using PawnShop.Core.Extensions;
-using PawnShop.Exceptions.DBExceptions;
 using static PawnShop.Services.Constants;
 
 namespace PawnShop.Services.DataService.Repositories

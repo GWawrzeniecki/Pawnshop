@@ -1,12 +1,6 @@
-﻿using PawnShop.Business.Models;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using AutoMapper;
+﻿using AutoMapper;
 using BespokeFusion;
+using PawnShop.Business.Models;
 using PawnShop.Core;
 using PawnShop.Core.Enums;
 using PawnShop.Exceptions.DBExceptions;
@@ -14,6 +8,10 @@ using PawnShop.Modules.Contract.Validators;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
+using Prism.Services.Dialogs;
+using System;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace PawnShop.Modules.Contract.Dialogs.ViewModels
 {
@@ -300,7 +298,7 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         {
             Client = _mapper.Map(this, Client);
             Client = await _clientService.CreateClient(Client);
-           
+
         }
 
 
@@ -308,7 +306,7 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         {
             Client = _mapper.Map(this, Client);
             Client = await _clientService.UpdateClient(Client);
-           
+
         }
 
         private bool CanExecuteCreateOrUpdateClient()

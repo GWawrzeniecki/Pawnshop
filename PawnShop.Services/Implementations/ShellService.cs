@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using PawnShop.Core.Regions;
+﻿using PawnShop.Core.Regions;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Regions;
+using System.Linq;
 using System.Windows;
 
 namespace PawnShop.Services.Implementations
@@ -30,12 +30,12 @@ namespace PawnShop.Services.Implementations
             scopedRegion.RequestNavigate(RegionNames.ContentRegion, viewName);
 
             shell.Show();
-           
+
         }
 
         public void CloseShell<T>() where T : Window
         {
-           Application.Current.Windows.OfType<Window>().FirstOrDefault(window => window.GetType() == typeof(T))?.Close();
+            Application.Current.Windows.OfType<Window>().FirstOrDefault(window => window.GetType() == typeof(T))?.Close();
         }
     }
 }

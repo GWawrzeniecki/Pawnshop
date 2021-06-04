@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using PawnShop.Business.Models;
 
 #nullable disable
 

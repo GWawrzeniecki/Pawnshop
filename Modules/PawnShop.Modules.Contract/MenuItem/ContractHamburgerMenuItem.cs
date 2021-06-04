@@ -14,7 +14,7 @@ namespace PawnShop.Modules.Contract.MenuItem
             _applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);
             Label = "Umowy";
-            Icon = new PackIconMaterial {Kind = PackIconMaterialKind.FileDocumentEditOutline};
+            Icon = new PackIconMaterial { Kind = PackIconMaterialKind.FileDocumentEditOutline };
         }
 
         public override string DefaultNavigationPath => nameof(Views.Contract);

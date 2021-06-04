@@ -11,7 +11,7 @@ namespace PawnShop.Modules.Contract.Validators
 
         public AddClientValidator(IValidatorService validatorService)
         {
-            _validatorService = validatorService;
+
             RuleFor(view => view.FirstName)
                 .NotEmpty()
                 .WithMessage("Pole nie posiada wartości.")
@@ -110,6 +110,7 @@ namespace PawnShop.Modules.Contract.Validators
             RuleFor(view => view.HouseNumber)
                 .NotEmpty()
                 .WithMessage("Pole nie posiada wartości.");
+            this._validatorService = validatorService;
         }
 
         private bool BeAValidIdCard(string arg)

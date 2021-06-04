@@ -1,5 +1,5 @@
-﻿using System;
-using PawnShop.Exceptions.DBExceptions;
+﻿using PawnShop.Exceptions.DBExceptions;
+using System;
 
 namespace PawnShop.Core.Extensions
 {

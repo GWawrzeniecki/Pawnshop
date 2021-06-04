@@ -1,5 +1,5 @@
-﻿using System.Windows.Controls;
-using PawnShop.Core.Taskbar;
+﻿using PawnShop.Core.Taskbar;
+using System.Windows.Controls;
 
 namespace PawnShop.Modules.Contract.Taskbar.Views
 {

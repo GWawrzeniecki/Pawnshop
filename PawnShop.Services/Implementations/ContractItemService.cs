@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PawnShop.Services.Implementations
 {
@@ -32,7 +32,7 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-        
+
 
         public async Task<IList<UnitMeasure>> GetUnitMeasures()
         {
@@ -60,7 +60,7 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-       
+
 
         private async Task<IList<ContractItemCategory>> TryToGetContractItemCategories()
         {

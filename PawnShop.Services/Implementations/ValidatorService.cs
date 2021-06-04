@@ -45,11 +45,12 @@ namespace PawnShop.Services.Implementations
                     }
                 }
 
-                bResult = ((sum % 10) == 0);
+                bResult = (sum % 10) == 0;
             }
-            else return false;
-
-
+            else
+            {
+                return false;
+            }
 
             return bResult;
         }

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using PawnShop.Business.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using PawnShop.Business.Models;
 
 namespace PawnShop.Services.Interfaces
 {
