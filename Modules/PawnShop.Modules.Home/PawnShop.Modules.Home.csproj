@@ -5,7 +5,7 @@
     <AssemblyName>PawnShop.Modules.Home</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />
