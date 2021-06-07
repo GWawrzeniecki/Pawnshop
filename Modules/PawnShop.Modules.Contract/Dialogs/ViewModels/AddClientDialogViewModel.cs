@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BespokeFusion;
 using PawnShop.Business.Models;
-using PawnShop.Core;
 using PawnShop.Core.Enums;
+using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Validators;
 using PawnShop.Services.DataService;

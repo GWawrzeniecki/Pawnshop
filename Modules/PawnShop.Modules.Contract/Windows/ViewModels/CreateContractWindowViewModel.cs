@@ -1,6 +1,6 @@
-﻿using PawnShop.Core;
-using PawnShop.Core.HamburgerMenu.Implementations;
+﻿using PawnShop.Core.HamburgerMenu.Implementations;
 using PawnShop.Core.ScopedRegion;
+using PawnShop.Core.ViewModel.Base;
 using PawnShop.Modules.Contract.Validators;
 using Prism.Commands;
 using Prism.Ioc;

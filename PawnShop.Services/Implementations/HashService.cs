@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
+using static PawnShop.Core.Constants.Constants;
 
 namespace PawnShop.Services.Implementations
 {
@@ -37,12 +38,12 @@ namespace PawnShop.Services.Implementations
 
             var salt = GenerateSalt();
 
-            GetSecret(Constants.IterationsKeySecret, out string Iterations);
+            GetSecret(IterationsKeySecret, out string Iterations);
             var iterations = int.Parse(Iterations);
 
             var key = Convert.ToBase64String(DeriveKey(password, salt, iterations, KeySize));
 
-            GetSecret(Constants.PepperAesKeySecret, out string AesPepperKey);
+            GetSecret(PepperAesKeySecret, out string AesPepperKey);
 
             var encryptedKey = Encrypt(AesPepperKey, key);
             return $"{Convert.ToBase64String(salt)}.{encryptedKey}";
@@ -64,11 +65,11 @@ namespace PawnShop.Services.Implementations
             var salt = Convert.FromBase64String(parts[0]);
             var key = Convert.FromBase64String(parts[1]);
 
-            GetSecret(Constants.PepperAesKeySecret, out string AesPepperKey);
+            GetSecret(PepperAesKeySecret, out string AesPepperKey);
 
             var decryptedKey = Decrypt(AesPepperKey, Convert.ToBase64String(key));
             key = Convert.FromBase64String(decryptedKey);
-            GetSecret(Constants.IterationsKeySecret, out string Iterations);
+            GetSecret(IterationsKeySecret, out string Iterations);
             var iterations = int.Parse(Iterations);
             var keyToCheck = DeriveKey(password, salt, iterations, KeySize);
 

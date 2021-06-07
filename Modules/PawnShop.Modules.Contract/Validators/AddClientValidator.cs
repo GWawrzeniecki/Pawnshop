@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using PawnShop.Core;
 using PawnShop.Modules.Contract.Dialogs.ViewModels;
 using PawnShop.Services.Interfaces;
+using PawnShop.Validator.Base;
 
 namespace PawnShop.Modules.Contract.Validators
 {

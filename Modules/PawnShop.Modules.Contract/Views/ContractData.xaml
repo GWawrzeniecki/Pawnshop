@@ -36,7 +36,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Grid.Resources>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                            <Style TargetType="TextBlock"  BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}">
                                 <Setter Property="Margin" Value="0 5 0 0" />
 
                             </Style>
@@ -106,6 +106,7 @@
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Setter Property="Margin" Value="5 5 15 0" />
                         </Style>
+
                     </Grid.Resources>
 
                     <Grid.ColumnDefinitions>
@@ -119,7 +120,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0">
+                    <TextBlock Grid.Row="0" Style="{StaticResource Pawnshop.Styles.TextBlock.Global}">
                         <Run Text="Aktualna cena odkupu: " />
                         <Run Text="{Binding RePurchasePrice}" />
                         <Run Text=" PLN"/>

@@ -1,17 +1,20 @@
 ﻿using FluentValidation;
 using FluentValidation.Internal;
+using PawnShop.Validator.Base;
+using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.ComponentModel;
 using System.Linq;
 
-namespace PawnShop.Core
+namespace PawnShop.Core.ViewModel.Base
 {
-    public abstract class ViewModelBase<T> : BindableBase, IDataErrorInfo where T : class
+    public abstract class ViewModelBase<T> : BindableBase, IDataErrorInfo, IViewModelBase, IDetailedInformationUserControl where T : class
     {
         #region private members
 
         private readonly ValidatorBase<T> _validator;
+
 
         #endregion private members
 
@@ -21,6 +24,8 @@ namespace PawnShop.Core
         {
             _validator = dialogValidator;
         }
+
+
 
         #endregion constructor
 
@@ -37,6 +42,7 @@ namespace PawnShop.Core
             get
             {
                 RaisePropertyChanged(nameof(HasErrors));
+                DetailedInformationUserControlCommand?.RaiseCanExecuteChanged();
                 var prop = new[] { columnName };
                 var context = new ValidationContext<T>(GetInstance(), new PropertyChain(), new MemberNameValidatorSelector(prop));
                 var validationResult = _validator.Validate(context);
@@ -63,6 +69,15 @@ namespace PawnShop.Core
 
         public bool HasErrors => !string.IsNullOrEmpty(Error);
 
+
+
+
         #endregion IDataErrorInfo
+
+        #region IDetaieldInformationUserControl 
+
+        public DelegateCommand DetailedInformationUserControlCommand { get; set; } // to do maybe change it in future
+
+        #endregion
     }
 }

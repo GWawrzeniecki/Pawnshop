@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BespokeFusion;
 using PawnShop.Business.Models;
-using PawnShop.Core;
+using PawnShop.Controls.ContractItemViews.ViewModels;
+using PawnShop.Core.ViewModel;
+using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Validators;
 using PawnShop.Services.Interfaces;
@@ -40,6 +42,7 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         private DelegateCommand _addContractItemCommand;
         private IList<ContractItemState> _contractItemStates;
         private ContractItemState _selectedContractItemState;
+
 
 
         #endregion
@@ -120,6 +123,7 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             {
                 SetProperty(ref _selectedContractItemCategory, value);
                 SetAdditionalInformationUserControl(value);
+                (AdditionalInformationUserControl.DataContext as IDetailedInformationUserControl).DetailedInformationUserControlCommand = AddContractItemCommand;
             }
         }
 
@@ -136,6 +140,9 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             get => _additionalInformationUserControl;
             set => SetProperty(ref _additionalInformationUserControl, value);
         }
+
+        public bool? DetailedInformationUserControlHasErrors => (GetAdditionalInformationDataContext() as IViewModelBase)?.HasErrors;
+
 
 
         public IList<ContractItemState> ContractItemStates
@@ -162,7 +169,10 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
 
         public DelegateCommand AddContractItemCommand =>
             _addContractItemCommand ??=
-                new DelegateCommand(AddContractItem);
+                new DelegateCommand(AddContractItem, CanExecuteAddContractItem)
+            .ObservesProperty(() => HasErrors);
+
+
 
 
 
@@ -254,10 +264,17 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         {
             AdditionalInformationUserControl = contractItemCategory.Category switch
             {
-                "Laptop" => _containerProvider.Resolve<Laptop>(),
-                _ => AdditionalInformationUserControl
+                Core.Constants.Constants.Laptop => _containerProvider.Resolve<Laptop>(),
+                _ => throw new NotImplementedException(contractItemCategory.Category)
             };
         }
+
+        private object GetAdditionalInformationDataContext()
+        {
+            return AdditionalInformationUserControl?.DataContext;
+        }
+
+
 
         #endregion
 
@@ -273,11 +290,29 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         {
             var contractItem = new ContractItem();
             contractItem = _mapper.Map(this, contractItem);
+
+            object additionalInformationDataContext = GetAdditionalInformationDataContext();
+            object contractItemCategory = null;
+            if (additionalInformationDataContext != null)
+            {
+                switch (additionalInformationDataContext)
+                {
+                    case LaptopViewModel laptopViewModel:
+                        contractItemCategory = _mapper.Map(laptopViewModel, contractItemCategory);
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
             RequestClose?.Invoke(new DialogResult(ButtonResult.OK,
-                new DialogParameters { { "contractItem", contractItem } }));
+                    new DialogParameters { { "contractItem", contractItem
+    }
+    }));
         }
 
-
+        private bool CanExecuteAddContractItem() => !HasErrors && DetailedInformationUserControlHasErrors.HasValue && !DetailedInformationUserControlHasErrors.Value;
 
 
         #endregion

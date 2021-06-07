@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using PawnShop.Core;
 using PawnShop.Modules.Login.ViewModels;
+using PawnShop.Validator.Base;
 
 namespace PawnShop.Modules.Login.Validators
 {

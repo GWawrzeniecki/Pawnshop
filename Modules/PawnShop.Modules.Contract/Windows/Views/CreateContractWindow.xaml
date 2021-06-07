@@ -7,11 +7,7 @@
                  prism:ViewModelLocator.AutoWireViewModel="True" MinWidth="1280" MinHeight="800"
                  Title="{Binding Tittle}" WindowStartupLocation="CenterScreen">
 
-    <Window.Resources>
-        <Style  TargetType="TextBlock" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
-            <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
-        </Style>
-    </Window.Resources>
+    
 
     <DockPanel LastChildFill="True">
 

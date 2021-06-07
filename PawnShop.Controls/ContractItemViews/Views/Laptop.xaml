@@ -19,7 +19,7 @@
         <Grid>
 
             <Grid.Resources>
-                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Style TargetType="TextBlock"  BasedOn="{StaticResource MahApps.Styles.TextBlock}">
                     <Setter Property="Margin" Value="5 5 5 5" />
                     <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
                     <Setter Property="Padding" Value="5" />

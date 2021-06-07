@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using PawnShop.Controls.ContractItemViews.ViewModels;
-using PawnShop.Core;
+using PawnShop.Validator.Base;
 
 namespace PawnShop.Controls.ContractItemViews.Validators
 {

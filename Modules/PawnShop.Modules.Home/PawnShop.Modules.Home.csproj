@@ -10,5 +10,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
+    <ProjectReference Include="..\PawnShop.Modules.Login\PawnShop.Modules.Login.csproj" />
   </ItemGroup>
 </Project>

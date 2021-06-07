@@ -1,5 +1,5 @@
 ﻿using PawnShop.Controls.ContractItemViews.Validators;
-using PawnShop.Core;
+using PawnShop.Core.ViewModel.Base;
 
 namespace PawnShop.Controls.ContractItemViews.ViewModels
 {
@@ -79,6 +79,7 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
         }
 
         #endregion viewModelBase
+
 
     }
 }

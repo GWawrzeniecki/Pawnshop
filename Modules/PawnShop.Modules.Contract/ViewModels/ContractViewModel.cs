@@ -1,6 +1,6 @@
 ﻿using BespokeFusion;
 using PawnShop.Business.Models;
-using PawnShop.Core;
+using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Enums;
 using PawnShop.Modules.Contract.Extensions;

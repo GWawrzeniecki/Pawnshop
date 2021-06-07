@@ -7,7 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static PawnShop.Services.Constants;
+using static PawnShop.Core.Constants.Constants;
+
 
 namespace PawnShop.Services.DataService.Repositories
 {

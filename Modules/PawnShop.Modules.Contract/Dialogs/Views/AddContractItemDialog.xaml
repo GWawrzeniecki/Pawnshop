@@ -1,8 +1,9 @@
-﻿<UserControl x:Class="PawnShop.Modules.Contract.Dialogs.Views.AddContractItemDialog"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="True">
+﻿<UserControl
+    x:Class="PawnShop.Modules.Contract.Dialogs.Views.AddContractItemDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
@@ -16,30 +17,30 @@
     </prism:Dialog.WindowStyle>
 
 
-    <Grid Margin="10 10 10 0">
+    <Grid Margin="10,10,10,0">
 
 
         <Grid.Resources>
-            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                <Setter Property="Margin" Value="5 5 5 5" />
+            <Style BasedOn="{StaticResource MahApps.Styles.TextBlock}" TargetType="TextBlock">
+                <Setter Property="Margin" Value="5,5,5,5" />
                 <Setter Property="Padding" Value="5" />
                 <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
             </Style>
 
 
-            <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
-                <Setter Property="Margin" Value="0 5 50 15" />
+            <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
+                <Setter Property="Margin" Value="0,5,50,15" />
                 <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
                 <Setter Property="VerticalContentAlignment" Value="Center" />
 
             </Style>
 
-            <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
-                <Setter Property="Margin" Value="0 15 50 15" />
+            <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
+                <Setter Property="Margin" Value="0,15,50,15" />
                 <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
             </Style>
 
-            
+
 
         </Grid.Resources>
 
@@ -53,7 +54,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="0" Header="Informacje podstawowe" Margin="0 0 0 15">
+        <GroupBox
+            Grid.Row="0"
+            Margin="0,0,0,15"
+            Header="Informacje podstawowe">
             <Grid>
 
                 <Grid.ColumnDefinitions>
@@ -73,36 +77,58 @@
 
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Nazwa towaru:" />
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Opis towaru:" />
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Kategoria towaru:" />
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Stan towaru:" />
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Stan techniczny:" />
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="J.m:" />
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="Wartość szacunkowa:" Margin="5 0 5 5" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Nazwa towaru:" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Opis towaru:" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="Kategoria towaru:" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Text="Stan towaru:" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Text="Stan techniczny:" />
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Text="J.m:" />
+                <TextBlock
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Margin="5,0,5,5"
+                    Text="Wartość szacunkowa:" />
 
                 <TextBox
                     Grid.Row="0"
                     Grid.Column="1"
-                    Text="{Binding ContractItemName,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}" />
+                    Text="{Binding ContractItemName, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
 
                 <TextBox
-                    AcceptsReturn="True"
-                    VerticalAlignment="Stretch"
-                    VerticalContentAlignment="Top"
-                    Grid.Column="1"
                     Grid.Row="1"
+                    Grid.Column="1"
                     MinWidth="370"
                     MinHeight="80"
-                    Margin="0 0 50 0"
-                    Text="{Binding ContractItemDescription,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}" />
+                    Margin="0,0,50,0"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Top"
+                    AcceptsReturn="True"
+                    Text="{Binding ContractItemDescription, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
 
                 <ComboBox
                     Grid.Row="2"
                     Grid.Column="1"
-                    Margin="0 15 50 15"
-                    SelectedItem="{Binding SelectedContractItemCategory,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
-                    ItemsSource="{Binding ContractItemCategories}">
+                    Margin="0,15,50,15"
+                    ItemsSource="{Binding ContractItemCategories}"
+                    SelectedItem="{Binding SelectedContractItemCategory, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Category}" />
@@ -112,9 +138,9 @@
                 <ComboBox
                     Grid.Row="3"
                     Grid.Column="1"
-                    Margin="0 0 50 15"
-                    SelectedItem="{Binding SelectedContractItemState,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
-                    ItemsSource="{Binding ContractItemStates}">
+                    Margin="0,0,50,15"
+                    ItemsSource="{Binding ContractItemStates}"
+                    SelectedItem="{Binding SelectedContractItemState, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding State}" />
@@ -122,15 +148,15 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 <TextBox
-                    AcceptsReturn="True"
-                    VerticalAlignment="Stretch"
-                    VerticalContentAlignment="Top"
-                    Grid.Column="1"
                     Grid.Row="4"
+                    Grid.Column="1"
                     MinWidth="370"
                     MinHeight="80"
-                    Margin="0 0 50 0"
-                    Text="{Binding ContractItemTechnicalCondition,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}" />
+                    Margin="0,0,50,0"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Top"
+                    AcceptsReturn="True"
+                    Text="{Binding ContractItemTechnicalCondition, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
                 <Grid Grid.Row="5" Grid.Column="1">
 
                     <Grid.ColumnDefinitions>
@@ -140,39 +166,43 @@
                     </Grid.ColumnDefinitions>
                     <ComboBox
                         Grid.Column="0"
-                        Margin="0 15 0 15"
-                        SelectedItem="{Binding SelectedContractItemUnitMeasure,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
-                        ItemsSource="{Binding ContractItemUnitMeasures}">
+                        Margin="0,15,0,15"
+                        ItemsSource="{Binding ContractItemUnitMeasures}"
+                        SelectedItem="{Binding SelectedContractItemUnitMeasure, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Measure}" />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <TextBlock Grid.Column="1" Text="Ilość:" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <TextBlock
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="Ilość:" />
                     <TextBox
                         Grid.Column="2"
-                        Margin="0 15 50 15"
-                        Text="{Binding ContractItemQuantity,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}" />
+                        Margin="0,15,50,15"
+                        Text="{Binding ContractItemQuantity, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
 
 
-                <Grid
-                    Grid.Column="1"
-                    Grid.Row="6">
+                <Grid Grid.Row="6" Grid.Column="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="278*" />
+                        <ColumnDefinition Width="41*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
                     <TextBox
                         Grid.Column="0"
-                        Margin="0 0 5 5"
-                        Text="{Binding ContractItemEstimatedValue,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}" />
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,5,5"
+                        Text="{Binding ContractItemEstimatedValue, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
-                        Grid.Column="1"
-                        Text="PLN"
-                        Margin="5  5 50 5" />
+                        Grid.Column="2"
+                        Margin="5,5,50,5"
+                        Text="PLN" />
 
                 </Grid>
 
@@ -181,7 +211,10 @@
         </GroupBox>
 
 
-        <GroupBox Grid.Row="1" Header="Informacje dodatkowe" Margin="0 0 0 15">
+        <GroupBox
+            Grid.Row="1"
+            Margin="0,0,0,15"
+            Header="Informacje dodatkowe">
 
 
             <ContentControl Content="{Binding AdditionalInformationUserControl}" />
@@ -189,13 +222,14 @@
         </GroupBox>
 
 
-        <Grid Grid.Row="2"
-              Grid.Column="0"
-              Margin="0 0 0 15">
+        <Grid
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="0,0,0,15">
 
             <Grid.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="Margin" Value="5 0 15 0" />
+                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                    <Setter Property="Margin" Value="5,0,15,0" />
                 </Style>
             </Grid.Resources>
 
@@ -213,12 +247,12 @@
 
             <Button
                 Grid.Column="2"
-                Content="Dodaj"
-                Command="{Binding AddContractItemCommand}" />
+                Command="{Binding AddContractItemCommand}"
+                Content="Dodaj" />
             <Button
                 Grid.Column="3"
-                Content="Anuluj"
-                Command="{Binding CancelCommand}" />
+                Command="{Binding CancelCommand}"
+                Content="Anuluj" />
 
         </Grid>
 
