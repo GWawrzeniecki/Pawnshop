@@ -1,7 +1,9 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style TargetType="TextBlock"  x:Key="Pawnshop.Styles.TextBlock.Global" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+    <Style
+        x:Key="Pawnshop.Styles.TextBlock.Global"
+        BasedOn="{StaticResource MahApps.Styles.TextBlock}"
+        TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
     </Style>
 

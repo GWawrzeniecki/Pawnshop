@@ -6,6 +6,8 @@ using PawnShop.Modules.Contract.Services;
 using PawnShop.Modules.Contract.Validators;
 using PawnShop.Modules.Contract.ViewModels;
 using PawnShop.Modules.Contract.Views;
+using PawnShop.Services.Implementations;
+using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -32,13 +34,18 @@ namespace PawnShop.Modules.Contract
             containerRegistry.RegisterForNavigation<Views.Contract, ContractViewModel>();
             containerRegistry.RegisterForNavigation<ClientData, ClientDataViewModel>();
             containerRegistry.RegisterForNavigation<ContractData, ContractDataViewModel>();
+            containerRegistry.RegisterForNavigation<Summary, SummaryViewModel>();
             containerRegistry.RegisterSingleton<ClientDataHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<ContractDataHamburgerMenuItem>();
+            containerRegistry.RegisterSingleton<SummaryHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<ContractValidator>();
             containerRegistry.RegisterSingleton<CreateContractValidator>();
             containerRegistry.RegisterSingleton<AddClientValidator>();
             containerRegistry.RegisterSingleton<AddContractItemValidator>();
             containerRegistry.RegisterSingleton<IContractService, ContractService>();
+            containerRegistry.RegisterSingleton<ICalculateService, CalculateService>();
+            containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();
+            containerRegistry.RegisterSingleton<IPdfService, PdfService>();
             containerRegistry.RegisterDialog<AddClientDialog, AddClientDialogViewModel>();
             containerRegistry.RegisterDialog<AddContractItemDialog, AddContractItemDialogViewModel>();
         }

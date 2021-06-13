@@ -17,23 +17,46 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PawnShop.Core.SharedVariables;
+using PawnShop.Modules.Contract.MenuItem;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
-    public class ClientDataViewModel : BindableBase, IRegionManagerAware
+    public class ClientDataViewModel : BindableBase, IRegionManagerAware, INavigationAware
     {
+        #region privateMembers
+
+        private readonly IContractService _contractService;
+        private readonly IDialogService _dialogService;
+        private readonly IContainerProvider _containerProvider;
+        private readonly ContractDataHamburgerMenuItem _contractDataHamburgerMenuItem;
+        private readonly IClientService _clientService;
+        private readonly ISessionContext _sessionContext;
+        private IList<ClientSearchOption> _clientSearchOptions;
+        private ClientSearchOption _selectedClientSearchOption;
+        private IList<Client> _searchedClients;
+        private DelegateCommand<string> _searchClientCommand;
+        private string _clientSearchComboBoxText;
+        private Client _selectedClient;
+        private DelegateCommand _addClientCommand;
+        private DelegateCommand<Client> _editClientCommand;
+        private bool _clientSearchComboBoxIsOpen;
+
+        #endregion privateMembers
+
         #region constructor
 
         public ClientDataViewModel(IContractService contractService, IDialogService dialogService,
-            IShellService shellService, IContainerProvider containerProvider, IClientService clientService)
+             IContainerProvider containerProvider, IClientService clientService, ISessionContext sessionContext)
         {
             _contractService = contractService;
             _dialogService = dialogService;
-            _shellService = shellService;
             _containerProvider = containerProvider;
             _clientService = clientService;
-
+            _sessionContext = sessionContext;
+            _contractDataHamburgerMenuItem = _containerProvider.Resolve<ContractDataHamburgerMenuItem>();
             LoadClientSearchOptions();
+
         }
 
         #endregion constructor
@@ -45,9 +68,6 @@ namespace PawnShop.Modules.Contract.ViewModels
                 new DelegateCommand<string>(SearchClient, CanExecuteSearchClient).ObservesProperty(() =>
                     ClientSearchComboBoxText)
             .ObservesProperty(() => SelectedClientSearchOption);
-
-        public DelegateCommand CancelCommand =>
-            _cancelCommand ??= new DelegateCommand(Cancel);
 
         public DelegateCommand AddClientCommand =>
             _addClientCommand ??= new DelegateCommand(AddClient);
@@ -79,24 +99,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #endregion privateMethods
 
-        #region privateMembers
 
-        private readonly IContractService _contractService;
-        private readonly IDialogService _dialogService;
-        private readonly IShellService _shellService;
-        private readonly IContainerProvider _containerProvider;
-        private readonly IClientService _clientService;
-        private IList<ClientSearchOption> _clientSearchOptions;
-        private ClientSearchOption _selectedClientSearchOption;
-        private IList<Client> _searchedClients;
-        private DelegateCommand<string> _searchClientCommand;
-        private string _clientSearchComboBoxText;
-        private Client _selectedClient;
-        private DelegateCommand _cancelCommand;
-        private DelegateCommand _addClientCommand;
-        private DelegateCommand<Client> _editClientCommand;
-        private bool _ClientSearchComboBoxIsOpen;
-        #endregion privateMembers
 
         #region public properties
 
@@ -119,6 +122,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             {
                 SetProperty(ref _selectedClient, value);
                 RaisePropertyChanged(nameof(IsNextButtonEnabled));
+                _contractDataHamburgerMenuItem.IsEnabled = IsNextButtonEnabled; // to do interface
             }
         }
 
@@ -137,8 +141,8 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public bool ClientSearchComboBoxIsOpen
         {
-            get { return _ClientSearchComboBoxIsOpen; }
-            set { SetProperty(ref _ClientSearchComboBoxIsOpen, value); }
+            get => _clientSearchComboBoxIsOpen;
+            set => SetProperty(ref _clientSearchComboBoxIsOpen, value);
         }
 
         public bool IsNextButtonEnabled => SelectedClient != null;
@@ -189,10 +193,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             return !string.IsNullOrEmpty(arg) && !string.IsNullOrWhiteSpace(arg) && SelectedClientSearchOption != null;
         }
 
-        private void Cancel()
-        {
-            _shellService.CloseShell<CreateContractWindow>();
-        }
+
 
         private void AddClient()
         {
@@ -222,5 +223,25 @@ namespace PawnShop.Modules.Contract.ViewModels
         private bool CanExecuteEditClient(Client arg) => SelectedClient != null;
 
         #endregion commandMethods
+
+        #region INavigationAware
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            navigationContext.Parameters.Add("DealMaker", SelectedClient);
+        }
+
+        #endregion
+
     }
 }

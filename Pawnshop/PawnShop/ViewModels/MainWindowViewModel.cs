@@ -4,6 +4,11 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
+using System.Windows;
+using BespokeFusion;
+using PawnShop.Core.Constants;
+using PawnShop.Core.SharedVariables;
+using PawnShop.Services.Interfaces;
 
 namespace PawnShop.ViewModels
 {
@@ -14,6 +19,8 @@ namespace PawnShop.ViewModels
         private string _title = "Lombard \"VIP\"";
         private DelegateCommand<string> _navigateCommand;
         private readonly IRegionManager _regionManager;
+        private readonly IConfigData _configData;
+        private readonly IConfigurationService _configurationService;
         private bool _isPaneOpen;
 
         #endregion private members
@@ -38,11 +45,16 @@ namespace PawnShop.ViewModels
 
         #region constructors
 
-        public MainWindowViewModel(IRegionManager regionManager, IApplicationCommands applicationCommands)
+        public MainWindowViewModel(IRegionManager regionManager, IApplicationCommands applicationCommands, IConfigData configData, IConfigurationService configurationService)
         {
             applicationCommands.NavigateCommand.RegisterCommand(NavigateCommand);
             this._regionManager = regionManager;
+            _configData = configData;
+            _configurationService = configurationService;
+            LoadConfigData();
         }
+
+
 
         #endregion constructors
 
@@ -54,6 +66,22 @@ namespace PawnShop.ViewModels
                 throw new ArgumentException($"'{nameof(navigationPath)}' cannot be null or empty.", nameof(navigationPath));
 
             _regionManager.RequestNavigate(RegionNames.ContentRegion, navigationPath);
+        }
+
+        private void LoadConfigData()
+        {
+            try
+            {
+                _configData.VatPercent = _configurationService.GetValue<int>(Constants.VatPercentKey);
+                _configData.DealDocumentPath = _configurationService.GetValue<string>(Constants.DealDocumentPath);
+            }
+            catch (Exception e)
+            {
+                MaterialMessageBox.ShowError(
+                    $"Nie udało się wczytać wartości z pliku konfiguracyjnego.{Environment.NewLine}Błąd: {e.Message}{Environment.NewLine}Aplikacja zostanie wyłączona.{Environment.NewLine}Skontaktuj się z administratorem.",
+                    "Krytyczny błąd");
+                Application.Current.Shutdown();
+            }
         }
 
         #endregion private methods

@@ -251,6 +251,7 @@
                 Content="Wstecz"
                 IsEnabled="False" />
             <Button
+                x:Name="test"
                 Grid.Column="2"
                 Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
                 CommandParameter="{x:Type menuItem:ContractDataHamburgerMenuItem}"
@@ -258,7 +259,7 @@
                 IsEnabled="{Binding IsNextButtonEnabled}" />
             <Button
                 Grid.Column="3"
-                Command="{Binding CancelCommand}"
+                Command="{Binding DataContext.CloseShellCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
                 Content="Anuluj" />
         </Grid>
 

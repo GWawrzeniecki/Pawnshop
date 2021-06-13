@@ -45,8 +45,11 @@ namespace PawnShop.Modules.Contract.Validators
                .WithMessage("Pole nie posiada wartości.");
 
             RuleFor(view => view.ContractItemEstimatedValue)
-              .NotEmpty()
-              .WithMessage("Pole nie posiada wartości.");
+                .NotEmpty()
+                .WithMessage("Pole nie posiada wartości.");
+            //.Must(value => value.ToString().ToCharArray().All(char.IsDigit))
+            //.WithMessage("Należy wpisać kwotę.");
+
 
         }
     }

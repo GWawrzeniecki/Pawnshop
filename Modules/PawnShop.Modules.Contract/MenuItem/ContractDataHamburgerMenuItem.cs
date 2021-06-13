@@ -15,6 +15,7 @@ namespace PawnShop.Modules.Contract.MenuItem
             Command = new DelegateCommand(Navigate);
             Label = "Dane umowy";
             Icon = new PackIconMaterial { Kind = PackIconMaterialKind.FileDocumentEditOutline };
+            IsEnabled = false;
         }
 
         public override string DefaultNavigationPath => nameof(ContractData);

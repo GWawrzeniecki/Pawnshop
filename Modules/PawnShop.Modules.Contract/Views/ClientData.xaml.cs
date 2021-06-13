@@ -10,6 +10,7 @@ namespace PawnShop.Modules.Contract.Views
         public ClientData()
         {
             InitializeComponent();
+            var t = this.test;
         }
     }
 }

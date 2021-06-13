@@ -4,7 +4,6 @@ using PawnShop.Core.Dialogs;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Services;
-using PawnShop.Modules.Contract.Windows.Views;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -12,25 +11,43 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using PawnShop.Modules.Contract.MenuItem;
+using Prism.Ioc;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
-    public class ContractDataViewModel : BindableBase, IRegionManagerAware
+    public class ContractDataViewModel : BindableBase, IRegionManagerAware, INavigationAware
     {
         #region Private members
 
         private IList<LendingRate> _lendingRates;
         private readonly IContractService _contractService;
-        private readonly IShellService _shellService;
         private readonly IDialogService _dialogService;
-        private DelegateCommand _cancelCommand;
+        private readonly ICalculateService _calculateService;
+        private readonly SummaryHamburgerMenuItem _summaryHamburgerMenuItem;
         private string _contractNumber;
         private LendingRate _selectedLendingRate;
         private DateTime? _rePurchaseDateTime;
         private DelegateCommand _addContractItemCommand;
-        private decimal _rePurchasePrice;
         private IList<ContractItem> _boughtContractItems;
+        private Client _dealMaker;
+        #endregion
+
+        #region constructor
+
+        public ContractDataViewModel(IContractService contractService,
+            IDialogService dialogService, ICalculateService calculateService, IContainerProvider containerProvider)
+        {
+            _contractService = contractService;
+            _dialogService = dialogService;
+            _calculateService = calculateService;
+            _summaryHamburgerMenuItem = containerProvider.Resolve<SummaryHamburgerMenuItem>();
+            BoughtContractItems = new List<ContractItem>();
+            LoadStartupData();
+
+        }
 
         #endregion
 
@@ -64,6 +81,10 @@ namespace PawnShop.Modules.Contract.ViewModels
                 SetProperty(ref _selectedLendingRate, value);
                 RepurchaseDate = value == null ? default : DateTime.Today.AddDays(value.Days);
                 RaisePropertyChanged(nameof(IsNextButtonEnabled));
+                RaisePropertyChanged(nameof(RePurchasePrice));
+                AddContractItemCommand.RaiseCanExecuteChanged();
+                _summaryHamburgerMenuItem.IsEnabled = IsNextButtonEnabled;
+
             }
         }
 
@@ -75,17 +96,34 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
 
+
+
+
         public decimal RePurchasePrice
         {
-            get => _rePurchasePrice;
-            set => SetProperty(ref _rePurchasePrice, value);
+            get
+            {
+                if (SelectedLendingRate == null)
+                    return 0;
+                return _calculateService.CalculateContractAmount(BoughtContractItems.Sum(item => item.EstimatedValue),
+                    SelectedLendingRate);
+
+
+            }
         }
+
 
 
         public IList<ContractItem> BoughtContractItems
         {
             get => _boughtContractItems;
-            set => SetProperty(ref _boughtContractItems, value);
+            set
+            {
+                SetProperty(ref _boughtContractItems, value);
+                RaisePropertyChanged(nameof(RePurchasePrice));
+                RaisePropertyChanged(nameof(IsNextButtonEnabled));
+                _summaryHamburgerMenuItem.IsEnabled = IsNextButtonEnabled;
+            }
         }
 
 
@@ -96,46 +134,36 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Commands
 
-        public DelegateCommand CancelCommand =>
-            _cancelCommand ??= new DelegateCommand(Cancel);
+
 
         public DelegateCommand AddContractItemCommand =>
-            _addContractItemCommand ??= new DelegateCommand(AddContractItem);
+            _addContractItemCommand ??= new DelegateCommand(AddContractItem, CanExecuteAddContractItem);
+
+
 
         #endregion Commands
 
-        #region constructor
 
-        public ContractDataViewModel(IContractService contractService, IShellService shellService,
-            IDialogService dialogService)
-        {
-            _contractService = contractService;
-            _shellService = shellService;
-            _dialogService = dialogService;
-            BoughtContractItems = new List<ContractItem>();
-            LoadStartupData();
-
-        }
-
-        #endregion
 
         #region CommandMethods
 
-        private void Cancel()
+
+
+        private bool CanExecuteAddContractItem()
         {
-            _shellService.CloseShell<CreateContractWindow>();
+            return SelectedLendingRate != null;
         }
 
         private void AddContractItem()
         {
             _dialogService.ShowAddContractItemDialog(r =>
             {
-                if (r.Result == ButtonResult.OK)
-                {
-                    BoughtContractItems.Add(r.Parameters.GetValue<ContractItem>("contractItem"));
-                    BoughtContractItems = new List<ContractItem>(BoughtContractItems);
-                    RaisePropertyChanged(nameof(IsNextButtonEnabled));
-                }
+                if (r.Result != ButtonResult.OK) return;
+                BoughtContractItems.Add(r.Parameters.GetValue<ContractItem>("contractItem"));
+                BoughtContractItems = new List<ContractItem>(BoughtContractItems);
+
+
+
             });
         }
 
@@ -151,10 +179,10 @@ namespace PawnShop.Modules.Contract.ViewModels
                 await TryToGetNextContractNumber();
             }
 
-            catch (LoadingLendingRatesException laodingLendingRateException)
+            catch (LoadingLendingRatesException loadingLendingRatesException)
             {
                 MaterialMessageBox.ShowError(
-                    $"{laodingLendingRateException.Message}{Environment.NewLine}Błąd: {laodingLendingRateException.InnerException?.Message}",
+                    $"{loadingLendingRatesException.Message}{Environment.NewLine}Błąd: {loadingLendingRatesException.InnerException?.Message}",
                     "Błąd");
             }
             catch (GetNextContractNumberException getNextContractNumberException)
@@ -173,6 +201,29 @@ namespace PawnShop.Modules.Contract.ViewModels
         private async Task TryToGetNextContractNumber()
         {
             ContractNumber = await _contractService.GetNextContractNumber();
+        }
+
+        #endregion
+
+        #region INavigationAware
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            _dealMaker = navigationContext.Parameters.GetValue<Client>("DealMaker");
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            navigationContext.Parameters.Add("ContractItems", BoughtContractItems);
+            navigationContext.Parameters.Add("LendingRate", SelectedLendingRate);
+            navigationContext.Parameters.Add("StartDate", DateTime.Now);
+            navigationContext.Parameters.Add("ContractNumber", ContractNumber);
+            navigationContext.Parameters.Add("DealMaker", _dealMaker);
         }
 
         #endregion

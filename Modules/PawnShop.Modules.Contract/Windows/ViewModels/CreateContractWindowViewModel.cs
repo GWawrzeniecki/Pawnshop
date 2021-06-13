@@ -7,25 +7,36 @@ using Prism.Ioc;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
+using PawnShop.Modules.Contract.Windows.Views;
+using PawnShop.Services.Interfaces;
 
 namespace PawnShop.Modules.Contract.Windows.ViewModels
 {
     public class CreateContractWindowViewModel : ViewModelBase<CreateContractWindowViewModel>, IRegionManagerAware
     {
+        #region private members
+
+        private string _tittle;
+        private object _selectedItem;
+        private readonly IContainerProvider _containerProvider;
+        private readonly IShellService _shellService;
+        private int _selectedIndex;
+        private IList<HamburgerMenuItemBase> _hamburgerMenuItems;
+        private DelegateCommand<Type> _navigateCommand;
+        private DelegateCommand _closeShellCommand;
+
+        #endregion private members
+
         #region constructor
 
         public CreateContractWindowViewModel(CreateContractValidator dialogValidator,
-            IContainerProvider containerProvider) : base(dialogValidator)
+            IContainerProvider containerProvider, IShellService shellService) : base(dialogValidator)
         {
             _containerProvider = containerProvider;
+            _shellService = shellService;
             Tittle = "Rejestracja nowej umowy";
 
-            //Task.Factory.StartNew(async () =>
-            //{
-            //    await Task.Delay(5000);
-            //    var t = _containerProvider.Resolve<ContractDataHamburgerMenuItem>();
-            //    SelectedItem = t;
-            //}, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+
         }
 
         #endregion constructor
@@ -45,22 +56,18 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
 
         #endregion viewModelBase
 
-        #region private members
 
-        private string _tittle;
-        private object _selectedItem;
-        private readonly IContainerProvider _containerProvider;
-        private int _selectedIndex;
-        private IList<HamburgerMenuItemBase> _hamburgerMenuItems;
-        private DelegateCommand<Type> _navigateCommand;
-
-        #endregion private members
 
         #region Commands
 
         public DelegateCommand<Type> NavigateCommand =>
             _navigateCommand ??=
                 new DelegateCommand<Type>(Navigate);
+
+        public DelegateCommand CloseShellCommand =>
+            _closeShellCommand ??= new DelegateCommand(CloseShell);
+
+
 
         #endregion
 
@@ -99,6 +106,11 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
         {
             var hamburgerMenuItem = _containerProvider.Resolve(type);
             SelectedItem = hamburgerMenuItem;
+        }
+
+        private void CloseShell()
+        {
+            _shellService.CloseShell<CreateContractWindow>();
         }
 
         #endregion

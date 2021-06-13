@@ -138,7 +138,7 @@ namespace PawnShop.Services.Implementations
             var loggedPerson = await _unitOfWork.PersonRepository.GetByIDAsync(loggedUser.WorkerBossId);
             await _unitOfWork.MoneyBalanceRepository.CreateTodayMoneyBalance();
             var todayMoneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
-            _sessionContext.LoggedPerson = loggedPerson;
+            _sessionContext.LoggedPerson = loggedUser;
             _sessionContext.TodayMoneyBalance = todayMoneyBalance;
         }
 

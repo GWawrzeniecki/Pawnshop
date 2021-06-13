@@ -24,4 +24,9 @@
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Home\PawnShop.Modules.Home.csproj" />
     <ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
