@@ -4,6 +4,7 @@ using PawnShop.DataAccess.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace PawnShop.Services.DataService.Repositories
 {
@@ -87,6 +88,8 @@ namespace PawnShop.Services.DataService.Repositories
 
         public async Task<Client> UpdateClientAsync(Client client)
         {
+            //GetModifiedPropertyEntry<Country,PropertyEntry>(x => x.CountryId,)
+
             var modifiedCountryProperty = _context.ChangeTracker
                 .Entries<Country>()
                 .Where(e => e.State == EntityState.Modified)
