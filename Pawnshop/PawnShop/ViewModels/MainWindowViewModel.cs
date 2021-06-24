@@ -1,14 +1,14 @@
-﻿using PawnShop.Core;
+﻿using BespokeFusion;
+using PawnShop.Core;
+using PawnShop.Core.Constants;
 using PawnShop.Core.Regions;
+using PawnShop.Core.SharedVariables;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Windows;
-using BespokeFusion;
-using PawnShop.Core.Constants;
-using PawnShop.Core.SharedVariables;
-using PawnShop.Services.Interfaces;
 
 namespace PawnShop.ViewModels
 {

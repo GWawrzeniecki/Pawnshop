@@ -3,9 +3,11 @@ using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.Services;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -13,8 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PawnShop.Modules.Contract.MenuItem;
-using Prism.Ioc;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing.Printing;
-using System.IO;
-using System.Threading;
-using System.Windows.Controls;
-using iText.Forms;
+﻿using iText.Forms;
 using iText.Kernel.Pdf;
-using iText.Kernel.Pdf.Action;
 using PawnShop.Services.Interfaces;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Windows.Controls;
 
 namespace PawnShop.Services.Implementations
 {

@@ -7,6 +7,6 @@ namespace PawnShop.Core.SharedVariables
         public WorkerBoss LoggedPerson { get; set; }
         public MoneyBalance TodayMoneyBalance { get; set; }
 
-       
+
     }
 }

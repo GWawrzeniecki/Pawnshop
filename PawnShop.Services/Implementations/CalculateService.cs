@@ -1,7 +1,7 @@
-﻿using System;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Services.Interfaces;
+using System;
 
 namespace PawnShop.Services.Implementations
 {

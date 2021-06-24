@@ -4,19 +4,22 @@ using PawnShop.DataAccess.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace PawnShop.Services.DataService.Repositories
 {
     public class ClientRepository : GenericRepository<Client>
     {
+        #region Private members
         private readonly PawnshopContext _context;
-
+        #endregion
+        #region Constructor
         public ClientRepository(PawnshopContext context) : base(context)
         {
             _context = context;
         }
+        #endregion
 
+        #region Public methods
         public async Task<IList<Client>> GetClientBySurname(string surname)
         {
             return await _context.Clients
@@ -88,37 +91,25 @@ namespace PawnShop.Services.DataService.Repositories
 
         public async Task<Client> UpdateClientAsync(Client client)
         {
-            //GetModifiedPropertyEntry<Country,PropertyEntry>(x => x.CountryId,)
-
-            var modifiedCountryProperty = _context.ChangeTracker
-                .Entries<Country>()
-                .Where(e => e.State == EntityState.Modified)
-                .FirstOrDefault(e => e.Entity.CountryId == client.ClientNavigation.Address.CountryId)
-                ?.Properties
-                .FirstOrDefault(prop =>
-                    prop.IsModified &&
-                    prop.Metadata.Name.Equals(nameof(client.ClientNavigation.Address.Country.Country1)));
-
-
-            var modifiedCityProperty = _context.ChangeTracker
-                .Entries<City>()
-                .Where(e => e.State == EntityState.Modified)
-                .FirstOrDefault(e => e.Entity.CityId == client.ClientNavigation.Address.CityId)
-                ?.Properties
-                .FirstOrDefault(prop =>
-                    prop.IsModified && prop.Metadata.Name.Equals(nameof(client.ClientNavigation.Address.City.City1)));
+            var modifiedCountryProperty = GetModifiedPropertyEntry<Country, int>(x => x.CountryId, client.ClientNavigation.Address.CountryId, nameof(client.ClientNavigation.Address.Country.Country1));
+            var modifiedCityProperty = GetModifiedPropertyEntry<City, int>(x => x.CityId, client.ClientNavigation.Address.CityId, nameof(client.ClientNavigation.Address.City.City1));
 
             var modifiedCityValue = modifiedCityProperty?.CurrentValue;
             var modifiedCountryValue = modifiedCountryProperty?.CurrentValue;
 
-            if (modifiedCityValue != null && modifiedCountryValue == null)
+            bool IsNewCityAndOldCountry() => modifiedCityValue != null && modifiedCountryValue == null;
+            bool IsNewCityAndNewCountry() => modifiedCountryValue != null && modifiedCountryValue != null;
+
+            if (IsNewCityAndOldCountry())
             {
                 var city = await _context.Cities.FirstOrDefaultAsync(c =>
                     c.City1.Equals(modifiedCityValue));
 
+                bool IsOldCity() => city != null;
+
                 modifiedCityProperty.IsModified = false;
 
-                if (city != null)
+                if (IsOldCity())
                 {
                     client.ClientNavigation.Address.CityId = city.CityId;
                     client.ClientNavigation.Address.City = city;
@@ -140,7 +131,7 @@ namespace PawnShop.Services.DataService.Repositories
                 }
             }
 
-            else if (modifiedCountryValue != null && modifiedCityValue != null)
+            else if (IsNewCityAndNewCountry())
             {
                 var country = await _context.Countries.FirstOrDefaultAsync(c =>
                     c.Country1.Equals(modifiedCountryValue));
@@ -148,10 +139,12 @@ namespace PawnShop.Services.DataService.Repositories
                 var city = await _context.Cities.FirstOrDefaultAsync(c =>
                     c.City1.Equals(modifiedCityValue));
 
+                bool IsOldCityAndOldCountry() => country != null && city != null;
+
                 modifiedCityProperty.IsModified = false;
                 modifiedCountryProperty.IsModified = false;
 
-                if (city != null && country != null)
+                if (IsOldCityAndOldCountry())
                 {
                     client.ClientNavigation.Address.CityId = city.CityId;
                     client.ClientNavigation.Address.City = city;
@@ -197,5 +190,6 @@ namespace PawnShop.Services.DataService.Repositories
             await _context.SaveChangesAsync();
             return client;
         }
+        #endregion
     }
 }

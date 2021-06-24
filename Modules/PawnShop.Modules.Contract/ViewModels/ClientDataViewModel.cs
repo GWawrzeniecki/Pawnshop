@@ -3,10 +3,11 @@ using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
 using PawnShop.Core.ScopedRegion;
+using PawnShop.Core.SharedVariables;
 using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.Models.DropDownButtonModels;
 using PawnShop.Modules.Contract.Services;
-using PawnShop.Modules.Contract.Windows.Views;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
@@ -17,8 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PawnShop.Core.SharedVariables;
-using PawnShop.Modules.Contract.MenuItem;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {

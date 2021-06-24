@@ -1,9 +1,7 @@
-﻿using System;
+﻿using PawnShop.Services.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using PawnShop.Services.Interfaces;
 using System.Configuration;
-using System.Collections.Specialized;
 
 namespace PawnShop.Services.Implementations
 {

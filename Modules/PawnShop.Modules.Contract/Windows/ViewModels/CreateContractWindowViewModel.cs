@@ -2,13 +2,13 @@
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Modules.Contract.Validators;
+using PawnShop.Modules.Contract.Windows.Views;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
-using PawnShop.Modules.Contract.Windows.Views;
-using PawnShop.Services.Interfaces;
 
 namespace PawnShop.Modules.Contract.Windows.ViewModels
 {
