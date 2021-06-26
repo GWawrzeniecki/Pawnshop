@@ -13,6 +13,7 @@
         //App.cfg key names
         public const string VatPercentKey = "VATPercent";
         public const string DealDocumentPath = "DealDocumentPath";
+        public const string DealDocumentsFolderPath = "DealDocumentsFolderPath";
 
     }
 }

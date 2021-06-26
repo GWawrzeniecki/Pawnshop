@@ -91,6 +91,20 @@ namespace PawnShop.Modules.Contract.Services
             }
         }
 
+        public async Task<PawnShop.Business.Models.Contract> CreateContract(PawnShop.Business.Models.Contract contract)
+        {
+            try
+            {
+                return await TryToCreateContract();
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+
+
         #endregion IContractService interface
 
         #region private methods
@@ -118,6 +132,13 @@ namespace PawnShop.Modules.Contract.Services
         public async Task<string> TryToGetNextContractNumber()
         {
             return await _unitOfWork.ContractRepository.GetNextContractNumber();
+        }
+
+        private async Task<Business.Models.Contract> TryToCreateContract(PawnShop.Business.Models.Contract contract)
+        {
+            await _unitOfWork.ContractRepository.InsertAsync(contract);
+            await _unitOfWork.SaveChangesAsync();
+            return contract;
         }
 
         #endregion private methods

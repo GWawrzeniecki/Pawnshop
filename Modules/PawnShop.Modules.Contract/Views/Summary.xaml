@@ -115,7 +115,7 @@
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
-                            Text="{Binding StorageCost, Mode=OneWay}" />
+                            Text="{Binding NetStorageCost, Mode=OneWay}" />
 
 
 
@@ -170,7 +170,7 @@
                             Grid.Column="0"
                             IsChecked="{Binding IsPrintDealDocument}" />
 
-                        <Grid
+                        <!--<Grid
                             Grid.Row="0"
                             Grid.RowSpan="2"
                             Grid.Column="1"
@@ -199,7 +199,7 @@
 
                             </ComboBox>
 
-                        </Grid>
+                        </Grid>-->
 
 
 

@@ -1,5 +1,7 @@
-﻿using PawnShop.Business.Models;
+﻿using BespokeFusion;
+using PawnShop.Business.Models;
 using PawnShop.Core.SharedVariables;
+using PawnShop.Exceptions;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -81,10 +83,23 @@ namespace PawnShop.Modules.Contract.ViewModels
         #region CommandMethods
         private void CreateContract()
         {
-            //Create contract in DB
-            //print contract
-            PrintDealDocument();
-            //close shell
+            try
+            {
+                TryToCreateContract();
+                //close shell
+            }
+            catch (PrintDealDocumentException printDealDocumentException)
+            {
+                MaterialMessageBox.ShowError(
+                    $"{printDealDocumentException.Message}{Environment.NewLine}Błąd: {printDealDocumentException.InnerException?.Message}",
+                    "Błąd");
+            }
+            catch (Exception e)
+            {
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
+            }
         }
 
 
@@ -95,54 +110,72 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region PrivateMethods
 
-        private void PrintDealDocument()
+        private void TryToCreateContract()
         {
-            var fieldNameFieldValue = new List<(string, string)>();
-            fieldNameFieldValue.Add(("TodayDate", Contract.StartDate.ToShortDateString()));
-            fieldNameFieldValue.Add(("ContractNumber", Contract.ContractNumberId));
-            fieldNameFieldValue.Add(("FirstNameLastName", Contract.DealMaker.ClientNavigation.FullName));
-            fieldNameFieldValue.Add(("Street", Contract.DealMaker.ClientNavigation.Address.Street));
-            fieldNameFieldValue.Add(("City", Contract.DealMaker.ClientNavigation.Address.City.City1));
-            fieldNameFieldValue.Add(("HouseNumber", Contract.DealMaker.ClientNavigation.Address.HouseNumber));
+            //Create contract in DB
+            //print contract
+            if (IsPrintDealDocument)
+                TryToPrintDealDocument();
 
-            if (Contract.DealMaker.ClientNavigation.Address.ApartmentNumber != null)
-                fieldNameFieldValue.Add(("ApartmentNumber", Contract.DealMaker.ClientNavigation.Address.ApartmentNumber));
+        }
 
-            fieldNameFieldValue.Add(("PostCode", Contract.DealMaker.ClientNavigation.Address.PostCode));
-            fieldNameFieldValue.Add(("BirthDate", Contract.DealMaker.ClientNavigation.BirthDate.ToShortDateString()));
-            fieldNameFieldValue.Add(("P1", Contract.DealMaker.Pesel[0].ToString()));
-            fieldNameFieldValue.Add(("P2", Contract.DealMaker.Pesel[1].ToString()));
-            fieldNameFieldValue.Add(("P3", Contract.DealMaker.Pesel[2].ToString()));
-            fieldNameFieldValue.Add(("P4", Contract.DealMaker.Pesel[3].ToString()));
-            fieldNameFieldValue.Add(("P5", Contract.DealMaker.Pesel[4].ToString()));
-            fieldNameFieldValue.Add(("P6", Contract.DealMaker.Pesel[5].ToString()));
-            fieldNameFieldValue.Add(("P7", Contract.DealMaker.Pesel[6].ToString()));
-            fieldNameFieldValue.Add(("P8", Contract.DealMaker.Pesel[7].ToString()));
-            fieldNameFieldValue.Add(("P9", Contract.DealMaker.Pesel[8].ToString()));
-            fieldNameFieldValue.Add(("P10", Contract.DealMaker.Pesel[9].ToString()));
-            fieldNameFieldValue.Add(("P111", Contract.DealMaker.Pesel[10].ToString()));
-            fieldNameFieldValue.Add(("IDCardNumber1", Contract.DealMaker.IdcardNumber[..2]));
-            fieldNameFieldValue.Add(("IDCardNumber2", Contract.DealMaker.IdcardNumber[3..]));
-
-            for (int i = 1; i <= Contract.ContractItems.Count; i++)
+        private void TryToPrintDealDocument()
+        {
+            try
             {
-                fieldNameFieldValue.Add(($"LpRow{i}", i.ToString()));
-                fieldNameFieldValue.Add(($"Description{i}", Contract.ContractItems.ToArray()[i - 1].Description));
-                fieldNameFieldValue.Add(($"JmRow{i}", Contract.ContractItems.ToArray()[i - 1].Category.Measure.Measure));
-                fieldNameFieldValue.Add(($"Quantity{i}", Contract.ContractItems.ToArray()[i - 1].Amount.ToString()));
-                fieldNameFieldValue.Add(($"EstimatedValue{i}", Contract.ContractItems.ToArray()[i - 1].EstimatedValue.ToString()));
-                fieldNameFieldValue.Add(($"Condition{i}", Contract.ContractItems.ToArray()[i - 1].TechnicalCondition));
+                var fieldNameFieldValue = new List<(string, string)>
+                {
+                    ("TodayDate", Contract.StartDate.ToShortDateString()),
+                    ("ContractNumber", Contract.ContractNumberId),
+                    ("FirstNameLastName", Contract.DealMaker.ClientNavigation.FullName),
+                    ("Street", Contract.DealMaker.ClientNavigation.Address.Street),
+                    ("City", Contract.DealMaker.ClientNavigation.Address.City.City1),
+                    ("HouseNumber", Contract.DealMaker.ClientNavigation.Address.HouseNumber),
+                    ("ApartmentNumber", Contract.DealMaker.ClientNavigation.Address.ApartmentNumber),
+                    ("PostCode", Contract.DealMaker.ClientNavigation.Address.PostCode),
+                    ("BirthDate", Contract.DealMaker.ClientNavigation.BirthDate.ToShortDateString()),
+                    ("P1", Contract.DealMaker.Pesel[0].ToString()),
+                    ("P2", Contract.DealMaker.Pesel[1].ToString()),
+                    ("P3", Contract.DealMaker.Pesel[2].ToString()),
+                    ("P4", Contract.DealMaker.Pesel[3].ToString()),
+                    ("P5", Contract.DealMaker.Pesel[4].ToString()),
+                    ("P6", Contract.DealMaker.Pesel[5].ToString()),
+                    ("P7", Contract.DealMaker.Pesel[6].ToString()),
+                    ("P8", Contract.DealMaker.Pesel[7].ToString()),
+                    ("P9", Contract.DealMaker.Pesel[8].ToString()),
+                    ("P10", Contract.DealMaker.Pesel[9].ToString()),
+                    ("P111", Contract.DealMaker.Pesel[10].ToString()),
+                    ("IDCardNumber1", Contract.DealMaker.IdcardNumber[..2]),
+                    ("IDCardNumber2", Contract.DealMaker.IdcardNumber[3..])
+                };
+
+
+
+                for (var i = 1; i <= Contract.ContractItems.Count; i++)
+                {
+                    fieldNameFieldValue.Add(($"LpRow{i}", i.ToString()));
+                    fieldNameFieldValue.Add(($"Description{i}", Contract.ContractItems.ToArray()[i - 1].Description));
+                    fieldNameFieldValue.Add(($"JmRow{i}", Contract.ContractItems.ToArray()[i - 1].Category.Measure.Measure));
+                    fieldNameFieldValue.Add(($"Quantity{i}", Contract.ContractItems.ToArray()[i - 1].Amount.ToString()));
+                    fieldNameFieldValue.Add(($"EstimatedValue{i}", Contract.ContractItems.ToArray()[i - 1].EstimatedValue.ToString()));
+                    fieldNameFieldValue.Add(($"Condition{i}", Contract.ContractItems.ToArray()[i - 1].TechnicalCondition));
+                }
+
+                fieldNameFieldValue.Add(("EstimatedValueSum", SumOfEstimatedValues.ToString()));
+                fieldNameFieldValue.Add(("PCC", PCC.ToString()));
+                fieldNameFieldValue.Add(("RePurchaseDate", Contract.StartDate.AddDays(Contract.LendingRate.Days).ToShortDateString()));
+                fieldNameFieldValue.Add(("RePurchasePrice", RePurchasePrice.ToString()));
+                fieldNameFieldValue.Add(("NetStorageCost", NetStorageCost.ToString()));
+
+                var path = $@"{_configData.DealDocumentsFolderPath}\{Contract.ContractNumberId.Replace('/', '.')}.pdf";
+                _pdfService.FillPdfForm(_configData.DealDocumentPath, path, fieldNameFieldValue.ToArray());
+                _pdfService.PrintPdf(path);
+
             }
-
-            fieldNameFieldValue.Add(("EstimatedValueSum", SumOfEstimatedValues.ToString()));
-            fieldNameFieldValue.Add(("PCC", PCC.ToString()));
-            fieldNameFieldValue.Add(("RePurchaseDate", Contract.StartDate.AddDays(Contract.LendingRate.Days).ToShortDateString()));
-            fieldNameFieldValue.Add(("RePurchasePrice", RePurchasePrice.ToString()));
-            fieldNameFieldValue.Add(("NetStorageCost", NetStorageCost.ToString()));
-
-            var path = $@"C:\Users\Kogut\Documents\PawnShop\DealDocuments\{Contract.ContractNumberId.Replace('/', '.')}.pdf";
-            _pdfService.FillPdfForm(_configData.DealDocumentPath, path, fieldNameFieldValue.ToArray());
-            _pdfService.PrintPdf(path, 1);
+            catch (Exception e)
+            {
+                throw new PrintDealDocumentException("Wystąpił problem podczas drukowania umowy.", e);
+            }
         }
 
         #endregion

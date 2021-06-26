@@ -13,26 +13,28 @@ namespace PawnShop.Services.Implementations
 
         public void FillPdfForm(string pdfPath, string pdfSavePath, (string textFieldName, string textFieldValue)[] replaceValueTuples)
         {
-            if (pdfPath == null) throw new ArgumentNullException(nameof(pdfPath));
-            if (pdfSavePath == null) throw new ArgumentNullException(nameof(pdfSavePath));
-            if (replaceValueTuples == null) throw new ArgumentNullException(nameof(replaceValueTuples));
+            if (string.IsNullOrEmpty(pdfPath)) throw new ArgumentException($"'{nameof(pdfPath)}' cannot be null or empty.", nameof(pdfPath));
+            if (string.IsNullOrEmpty(pdfSavePath)) throw new ArgumentException($"'{nameof(pdfSavePath)}' cannot be null or empty.", nameof(pdfSavePath));
+            if (replaceValueTuples is null) throw new ArgumentNullException(nameof(replaceValueTuples));
 
-            if (!File.Exists(pdfPath)) throw new FileNotFoundException($"Plik: {pdfPath} nie istnieje.");
+            if (!File.Exists(pdfPath)) throw new FileNotFoundException($"Plik: {pdfPath} nie istnieje lub nie maasz do niego uprawnień.");
 
             var pdfDoc = new PdfDocument(new PdfReader(pdfPath), new PdfWriter(pdfSavePath));
             var form = PdfAcroForm.GetAcroForm(pdfDoc, true);
 
-
             foreach (var (textFieldName, textFieldValue) in replaceValueTuples)
             {
-                form.GetField(textFieldName)?.SetValue(textFieldValue);
+                if (textFieldValue != null)
+                    form.GetField(textFieldName)?.SetValue(textFieldValue);
             }
 
             pdfDoc.Close();
         }
 
-        public void PrintPdf(string pdfPath, short copies)
+        public void PrintPdf(string pdfPath)
         {
+            if (string.IsNullOrEmpty(pdfPath)) throw new ArgumentException($"'{nameof(pdfPath)}' cannot be null or empty.", nameof(pdfPath));
+
             var dialog = new PrintDialog();
 
             var result = dialog.ShowDialog();
