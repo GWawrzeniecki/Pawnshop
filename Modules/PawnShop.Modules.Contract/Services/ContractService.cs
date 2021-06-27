@@ -1,6 +1,7 @@
 ﻿using PawnShop.Business.Models;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
+using PawnShop.Services.DataService.InsertModels;
 using PawnShop.Services.DataService.QueryDataModels;
 using System;
 using System.Collections.Generic;
@@ -91,15 +92,16 @@ namespace PawnShop.Modules.Contract.Services
             }
         }
 
-        public async Task<PawnShop.Business.Models.Contract> CreateContract(PawnShop.Business.Models.Contract contract)
+        public async Task<Business.Models.Contract> CreateContract(InsertContract insertContract, string paymentTypeStr, decimal paymentAmount,
+            DateTime paymentDate, decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
         {
             try
             {
-                return await TryToCreateContract();
+                return await TryToCreateContract(insertContract, paymentTypeStr, paymentAmount, paymentDate, cost, income, repaymentCapital, profit);
             }
             catch (Exception e)
             {
-
+                throw new CreateContractException("Wystąpił problem podczas tworzenia umowy.", e);
             }
         }
 
@@ -134,11 +136,11 @@ namespace PawnShop.Modules.Contract.Services
             return await _unitOfWork.ContractRepository.GetNextContractNumber();
         }
 
-        private async Task<Business.Models.Contract> TryToCreateContract(PawnShop.Business.Models.Contract contract)
+        private async Task<Business.Models.Contract> TryToCreateContract(InsertContract insertContract, string paymentTypeStr, decimal paymentAmount,
+            DateTime paymentDate, decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
         {
-            await _unitOfWork.ContractRepository.InsertAsync(contract);
-            await _unitOfWork.SaveChangesAsync();
-            return contract;
+            return await _unitOfWork.ContractRepository.CreateContract(insertContract, paymentTypeStr, paymentAmount, paymentDate, cost, income, repaymentCapital, profit);
+
         }
 
         #endregion private methods

@@ -8,9 +8,9 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
         #region PrivateMembers
 
         private string _brand;
-        private string _processor;
+        private string _procesor;
         private string _ram;
-        private string _driverType;
+        private string _driveType;
         private string _massStorage;
         private string _descriptionKit;
         #endregion
@@ -35,10 +35,10 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
         }
 
 
-        public string Processor
+        public string Procesor
         {
-            get => _processor;
-            set => SetProperty(ref _processor, value);
+            get => _procesor;
+            set => SetProperty(ref _procesor, value);
         }
 
         public string Ram
@@ -48,10 +48,10 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
         }
 
 
-        public string DriverType
+        public string DriveType
         {
-            get => _driverType;
-            set => SetProperty(ref _driverType, value);
+            get => _driveType;
+            set => SetProperty(ref _driveType, value);
         }
 
 

@@ -10,7 +10,7 @@ namespace PawnShop.Business.Models
         public int PaymentTypeId { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
 
         public virtual Client Client { get; set; }
         public virtual PaymentType PaymentType { get; set; }

@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PawnShop.Business.Models;
 using PawnShop.Core.Extensions;
 using PawnShop.DataAccess.Data;
+using PawnShop.Services.DataService.InsertModels;
 using PawnShop.Services.DataService.QueryDataModels;
 using System;
 using System.Collections.Generic;
@@ -15,26 +17,21 @@ namespace PawnShop.Services.DataService.Repositories
     public class ContractRepository : GenericRepository<Contract>
     {
         private readonly PawnshopContext _context;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
         private readonly string _updateContractStatesProcedureName = "UpdateContractStates";
 
-        public ContractRepository(PawnshopContext context) : base(context)
+        public ContractRepository(PawnshopContext context, IUnitOfWork unitOfWork, IMapper mapper) : base(context)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task UpdateContractStates() => await _context.Database.ExecuteSqlRawAsync($"Exec [{DBSchemaName}].[{_updateContractStatesProcedureName}]");
 
         public async Task<string> GetNextContractNumber()
         {
-            //var actualContractNumber = await _context
-            //    .Contracts
-            //    .OrderByDescending(c => Convert.ToInt32(c.ContractNumberId.Substring(c.ContractNumberId.IndexOf("/") + 1)))
-            //    .ThenByDescending(c => Convert.ToInt32(c.ContractNumberId.Substring(0, c.ContractNumberId.IndexOf("/"))))
-            //    .Take(1)
-            //    .ToListAsync();
-
-
-
             var actualContractNumber = await _context
                 .Contracts
                 .Select(c => new
@@ -119,5 +116,27 @@ namespace PawnShop.Services.DataService.Repositories
                 .Take(count)
                 .ToListAsync();
         }
+
+
+
+        public async Task<Contract> CreateContract(InsertContract insertContract, string paymentTypeStr, decimal paymentAmount,
+           DateTime paymentDate, decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
+        {
+            var contract = _mapper.Map<Contract>(insertContract);
+            var paymentType = await _context.PaymentTypes.FirstOrDefaultAsync(p => p.Type.Equals(paymentTypeStr));
+            var contractState =
+                await _context.ContractStates.FirstOrDefaultAsync(c => c.State.Equals(CreatedContractState));
+            var payment = new Payment { PaymentTypeId = paymentType.Id, Amount = paymentAmount, Date = paymentDate };
+            var moneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
+            var dealDocument = new DealDocument { MoneyBalanceId = moneyBalance.TodayDate, Payment = payment, Cost = cost, Income = income, RepaymentCapital = repaymentCapital, Profit = profit };
+            contract.ContractStateId = contractState.Id;
+            contract.DealDocument = dealDocument;
+            await _context.Contracts.AddAsync(contract);
+            await _context.SaveChangesAsync();
+
+            return contract;
+        }
+
+
     }
 }

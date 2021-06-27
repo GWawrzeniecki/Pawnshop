@@ -14,7 +14,7 @@ namespace PawnShop.Controls.ContractItemViews.Validators
                 .MaximumLength(30)
                 .WithMessage("Maksymalnie 30 znaków.");
 
-            RuleFor(view => view.Processor)
+            RuleFor(view => view.Procesor)
                .NotEmpty()
                .WithMessage("Pole nie posiada wartości.")
                .MaximumLength(30)
@@ -26,7 +26,7 @@ namespace PawnShop.Controls.ContractItemViews.Validators
                .MaximumLength(15)
                .WithMessage("Maksymalnie 15 znaków.");
 
-            RuleFor(view => view.DriverType)
+            RuleFor(view => view.DriveType)
                .NotEmpty()
                .WithMessage("Pole nie posiada wartości.")
                .MaximumLength(10)

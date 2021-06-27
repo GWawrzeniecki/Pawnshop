@@ -98,7 +98,7 @@ namespace PawnShop.Services.DataService.Repositories
             var modifiedCountryValue = modifiedCountryProperty?.CurrentValue;
 
             bool IsNewCityAndOldCountry() => modifiedCityValue != null && modifiedCountryValue == null;
-            bool IsNewCityAndNewCountry() => modifiedCountryValue != null && modifiedCountryValue != null;
+            bool IsNewCityAndNewCountry() => modifiedCityValue != null && modifiedCountryValue != null;
 
             if (IsNewCityAndOldCountry())
             {
@@ -117,6 +117,7 @@ namespace PawnShop.Services.DataService.Repositories
                 }
                 else
                 {
+
                     var newCity = new City()
                     {
                         City1 = modifiedCityValue.ToString(),

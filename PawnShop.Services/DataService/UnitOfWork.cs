@@ -1,4 +1,5 @@
-﻿using PawnShop.Business.Models;
+﻿using AutoMapper;
+using PawnShop.Business.Models;
 using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.Repositories;
 using System.Threading.Tasks;
@@ -7,8 +8,10 @@ namespace PawnShop.Services.DataService
 {
     public class UnitOfWork : IUnitOfWork
     {
-        #region private members
 
+
+        #region private members
+        private readonly IMapper _mapper;
         private readonly PawnshopContext _context = new PawnshopContext();
         private GenericRepository<WorkerBoss> _workerBossRepository;
         private GenericRepository<Person> _personRepository;
@@ -21,12 +24,13 @@ namespace PawnShop.Services.DataService
         private GenericRepository<ContractItemCategory> _contractItemCategoryRepository;
         private GenericRepository<UnitMeasure> _unitMeasureRepository;
         private GenericRepository<ContractItemState> _contractItemStateRepository;
+        private GenericRepository<PaymentType> _paymentTypeRepository;
 
         #endregion private members
 
-        public UnitOfWork()
+        public UnitOfWork(IMapper mapper)
         {
-
+            _mapper = mapper;
         }
 
         #region public properties
@@ -62,7 +66,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._contractRepository ??= new ContractRepository(_context);
+                this._contractRepository ??= new ContractRepository(_context, this, _mapper);
                 return _contractRepository;
             }
         }
@@ -127,6 +131,15 @@ namespace PawnShop.Services.DataService
             {
                 this._contractItemStateRepository ??= new GenericRepository<ContractItemState>(_context);
                 return _contractItemStateRepository;
+            }
+        }
+
+        public GenericRepository<PaymentType> PaymentTypeRepository
+        {
+            get
+            {
+                this._paymentTypeRepository ??= new GenericRepository<PaymentType>(_context);
+                return _paymentTypeRepository;
             }
         }
 

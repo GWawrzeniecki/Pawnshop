@@ -1,7 +1,13 @@
-﻿using BespokeFusion;
+﻿using AutoMapper;
+using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Core.Constants;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Exceptions;
+using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Contract.Services;
+using PawnShop.Services.DataService;
+using PawnShop.Services.DataService.InsertModels;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -10,6 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using PawnShop.Modules.Contract.Windows.Views;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
@@ -23,6 +31,10 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IPdfService _pdfService;
         private readonly ISessionContext _sessionContext;
         private readonly IConfigData _configData;
+        private readonly IContractService _contractService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly IShellService _shellService;
         private Business.Models.Contract _contract;
         private bool _isPrintDealDocument;
         private DelegateCommand _createContractCommand;
@@ -31,15 +43,20 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Constructor
 
-        public SummaryViewModel(ICalculateService calculateService, IPdfService pdfService, ISessionContext sessionContext, IConfigData configData)
+        public SummaryViewModel(ICalculateService calculateService, IPdfService pdfService, ISessionContext sessionContext, 
+            IConfigData configData, IContractService contractService, IUnitOfWork unitOfWork, IMapper mapper, IShellService shellService)
         {
             _calculateService = calculateService;
             _pdfService = pdfService;
             _sessionContext = sessionContext;
             _configData = configData;
+            _contractService = contractService;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _shellService = shellService;
             Contract = new Business.Models.Contract();
         }
-
+        #endregion
         #region PublicProperties
 
 
@@ -66,7 +83,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public decimal PCC => SumOfEstimatedValues >= 1000 ? SumOfEstimatedValues * 2 / 100 : 0;
 
-        #endregion
+
 
         #endregion
 
@@ -81,12 +98,22 @@ namespace PawnShop.Modules.Contract.ViewModels
         #endregion
 
         #region CommandMethods
-        private void CreateContract()
+        private async void CreateContract()
         {
             try
             {
-                TryToCreateContract();
-                //close shell
+                var contract = await AddContractToDb();
+                if (IsPrintDealDocument)
+                    PrintDealDocument();
+                MaterialMessageBox.Show($"Pomyślnie utworzono umowę.", "Sukces");
+               _shellService.CloseShell<CreateContractWindow>();
+
+            }
+            catch (CreateContractException createContractException)
+            {
+                MaterialMessageBox.ShowError(
+                    $"{createContractException.Message}{Environment.NewLine}Błąd: {createContractException.InnerException?.Message}",
+                    "Błąd");
             }
             catch (PrintDealDocumentException printDealDocumentException)
             {
@@ -110,16 +137,19 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region PrivateMethods
 
-        private void TryToCreateContract()
-        {
-            //Create contract in DB
-            //print contract
-            if (IsPrintDealDocument)
-                TryToPrintDealDocument();
 
+
+        private async Task<Business.Models.Contract> AddContractToDb()
+        {
+
+
+            var insertContract = _mapper.Map<InsertContract>(Contract);
+
+            return await _contractService.CreateContract(insertContract, Constants.CashPaymentType, RePurchasePrice, DateTime.Now,
+                  RePurchasePrice);
         }
 
-        private void TryToPrintDealDocument()
+        private void PrintDealDocument()
         {
             try
             {
@@ -154,7 +184,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 for (var i = 1; i <= Contract.ContractItems.Count; i++)
                 {
                     fieldNameFieldValue.Add(($"LpRow{i}", i.ToString()));
-                    fieldNameFieldValue.Add(($"Description{i}", Contract.ContractItems.ToArray()[i - 1].Description));
+                    fieldNameFieldValue.Add(($"Description{i}", Contract.ContractItems.ToArray()[i - 1].Name));
                     fieldNameFieldValue.Add(($"JmRow{i}", Contract.ContractItems.ToArray()[i - 1].Category.Measure.Measure));
                     fieldNameFieldValue.Add(($"Quantity{i}", Contract.ContractItems.ToArray()[i - 1].Amount.ToString()));
                     fieldNameFieldValue.Add(($"EstimatedValue{i}", Contract.ContractItems.ToArray()[i - 1].EstimatedValue.ToString()));
@@ -187,11 +217,13 @@ namespace PawnShop.Modules.Contract.ViewModels
 
             Contract.ContractItems = new Collection<ContractItem>(navigationContext.Parameters.GetValue<IList<ContractItem>>("ContractItems"));
             Contract.LendingRate = navigationContext.Parameters.GetValue<LendingRate>("LendingRate");
+            Contract.LendingRateId = Contract.LendingRate.Id;
             Contract.DealMaker = navigationContext.Parameters.GetValue<Client>("DealMaker");
+            Contract.DealMakerId = Contract.DealMaker.ClientId;
             Contract.StartDate = navigationContext.Parameters.GetValue<DateTime>("StartDate");
             Contract.ContractNumberId = navigationContext.Parameters.GetValue<string>("ContractNumber");
             Contract.AmountContract = SumOfEstimatedValues;
-            Contract.WorkerBoss = _sessionContext.LoggedPerson;
+            Contract.WorkerBossId = _sessionContext.LoggedPerson.WorkerBossId;
 
         }
 

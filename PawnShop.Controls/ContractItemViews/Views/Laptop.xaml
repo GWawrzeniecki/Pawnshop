@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="PawnShop.Controls.ContractItemViews.Views.Laptop"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+﻿<UserControl
+    x:Class="PawnShop.Controls.ContractItemViews.Views.Laptop"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
 
     <Grid>
 
@@ -19,15 +20,15 @@
         <Grid>
 
             <Grid.Resources>
-                <Style TargetType="TextBlock"  BasedOn="{StaticResource MahApps.Styles.TextBlock}">
-                    <Setter Property="Margin" Value="5 5 5 5" />
+                <Style BasedOn="{StaticResource MahApps.Styles.TextBlock}" TargetType="TextBlock">
+                    <Setter Property="Margin" Value="5,5,5,5" />
                     <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
                     <Setter Property="Padding" Value="5" />
                 </Style>
 
 
-                <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
-                    <Setter Property="Margin" Value="0 5  50 15" />
+                <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
+                    <Setter Property="Margin" Value="0,5,50,15" />
                     <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                 </Style>
@@ -48,28 +49,40 @@
                 <RowDefinition Height="*" MinHeight="80" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Marka:" />
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Procesor:" />
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Pamięc RAM:" />
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Typ dysku twardego:" />
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="Opis zestawu:" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="Marka:" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="Procesor:" />
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Text="Pamięc RAM:" />
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                Text="Typ dysku twardego:" />
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Text="Opis zestawu:" />
 
             <TextBox
                 Grid.Row="0"
                 Grid.Column="1"
-                Text="{Binding Brand,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
-                />
+                Text="{Binding Brand, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBox
                 Grid.Row="1"
                 Grid.Column="1"
-                   Text="{Binding Processor,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
-                />
+                Text="{Binding Procesor, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox
                 Grid.Row="2"
                 Grid.Column="1"
-                   Text="{Binding Ram,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
-                />
+                Text="{Binding Ram, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
 
             <Grid Grid.Row="3" Grid.Column="1">
                 <Grid.ColumnDefinitions>
@@ -81,26 +94,20 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox
-                    Margin="0 5 0 15"
                     Grid.Column="0"
-                       Text="{Binding DriverType,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
-                    />
+                    Margin="0,5,0,15"
+                    Text="{Binding DriveType, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Column="1" Text="Ilość pamięci:" />
+                <TextBox
+                    Grid.Column="2"
+                    Margin="0,5,5,15"
+                    Text="{Binding MassStorage, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
 
                 <TextBlock
-                    Grid.Column="1"
-                    Text="Ilość pamięci:"
-                  />
-                <TextBox
-                    Margin="0 5 5 15"
-                    Grid.Column="2" 
-                      Text="{Binding MassStorage,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"
-                    />
-
-                <TextBlock 
                     Grid.Column="3"
-                    Text="GB"    
-                    Margin="5 5 50 5"
-                           />
+                    Margin="5,5,50,5"
+                    Text="GB" />
 
             </Grid>
 
@@ -110,11 +117,11 @@
             <TextBox
                 Grid.Row="4"
                 Grid.Column="1"
-                Margin="0 0 50 5"
+                Margin="0,0,50,5"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Top"
                 AcceptsReturn="True"
-                    VerticalAlignment="Stretch"
-                    VerticalContentAlignment="Top"
-                   Text="{Binding DescriptionKit,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding DescriptionKit, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
 
 
         </Grid>

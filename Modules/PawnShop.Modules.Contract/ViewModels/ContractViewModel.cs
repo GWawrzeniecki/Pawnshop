@@ -18,36 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PawnShop.Core.SharedVariables;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
     public class ContractViewModel : ViewModelBase<ContractViewModel>
     {
-        #region constructor
-
-        public ContractViewModel(IContractService contractService, IDialogService dialogService,
-            IShellService shellService, IContainerProvider containerProvider, ContractValidator contractValidator) :
-            base(contractValidator)
-        {
-            Contracts = new List<Business.Models.Contract>();
-            _contractService = contractService;
-            _dialogService = dialogService;
-            _shellService = shellService;
-            _containerProvider = containerProvider;
-            LoadStartupData();
-        }
-
-        #endregion constructor
-
-        #region viewModelBase
-
-        protected override ContractViewModel GetInstance()
-        {
-            return this;
-        }
-
-        #endregion viewModelBase
-
         #region private members
 
         private IList<Business.Models.Contract> _contracts;
@@ -55,6 +31,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IDialogService _dialogService;
         private readonly IShellService _shellService;
         private readonly IContainerProvider _containerProvider;
+        private readonly ISessionContext _sessionContext;
         private IList<LendingRate> _lendingRates;
         private IList<ContractState> _contractStates;
         private IList<DateSearchOption> _dateSearchOptions;
@@ -72,6 +49,34 @@ namespace PawnShop.Modules.Contract.ViewModels
         private DelegateCommand _createContractCommand;
 
         #endregion private members
+
+        #region constructor
+
+        public ContractViewModel(IContractService contractService, IDialogService dialogService,
+            IShellService shellService, IContainerProvider containerProvider, ContractValidator contractValidator, ISessionContext sessionContext) :
+            base(contractValidator)
+        {
+            Contracts = new List<Business.Models.Contract>();
+            _contractService = contractService;
+            _dialogService = dialogService;
+            _shellService = shellService;
+            _containerProvider = containerProvider;
+            _sessionContext = sessionContext;
+            LoadStartupData();
+        }
+
+        #endregion constructor
+
+        #region viewModelBase
+
+        protected override ContractViewModel GetInstance()
+        {
+            return this;
+        }
+
+        #endregion viewModelBase
+
+
 
         #region properties
 
@@ -159,6 +164,9 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
         public DelegateCommand CreateContractCommand => _createContractCommand ??= new DelegateCommand(CreateContract);
+        
+
+       
 
         #endregion commands
 

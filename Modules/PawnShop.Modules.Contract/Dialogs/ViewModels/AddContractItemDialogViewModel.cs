@@ -188,6 +188,7 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
 
         public void OnDialogClosed()
         {
+
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
@@ -290,15 +291,14 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         {
             var contractItem = new ContractItem();
             contractItem = _mapper.Map(this, contractItem);
-
-            object additionalInformationDataContext = GetAdditionalInformationDataContext();
-            object contractItemCategory = null;
+            var additionalInformationDataContext = GetAdditionalInformationDataContext();
             if (additionalInformationDataContext != null)
             {
                 switch (additionalInformationDataContext)
                 {
                     case LaptopViewModel laptopViewModel:
-                        contractItemCategory = _mapper.Map(laptopViewModel, contractItemCategory);
+                        var laptop = _mapper.Map<Business.Models.Laptop>(laptopViewModel);
+                        contractItem.Laptop = laptop;
                         break;
                     default:
                         break;

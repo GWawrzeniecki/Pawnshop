@@ -9,6 +9,7 @@ namespace PawnShop.Core.SharedVariables
 
         private WorkerBoss _loggedPerson;
         private MoneyBalance _moneyBalance;
+        private bool _isOpenCreateContractWindow;
 
 
         #endregion private members
@@ -27,7 +28,7 @@ namespace PawnShop.Core.SharedVariables
             set => SetProperty(ref _moneyBalance, value);
         }
 
-
+       
 
         #endregion public properties
     }

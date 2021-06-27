@@ -5,6 +5,7 @@ using Prism.Ioc;
 using Prism.Regions;
 using System.Linq;
 using System.Windows;
+using PawnShop.Core.SharedVariables;
 
 namespace PawnShop.Services.Implementations
 {
@@ -12,11 +13,13 @@ namespace PawnShop.Services.Implementations
     {
         private readonly IContainerProvider _container;
         private readonly IRegionManager _regionManager;
+        private readonly ISessionContext _sessionContext;
 
-        public ShellService(IContainerProvider container, IRegionManager regionManager)
+        public ShellService(IContainerProvider container, IRegionManager regionManager, ISessionContext sessionContext)
         {
             _container = container;
             _regionManager = regionManager;
+            _sessionContext = sessionContext;
         }
 
         public void ShowShell<T>(string viewName) where T : Window
@@ -35,7 +38,9 @@ namespace PawnShop.Services.Implementations
 
         public void CloseShell<T>() where T : Window
         {
-            Application.Current.Windows.OfType<Window>().FirstOrDefault(window => window.GetType() == typeof(T))?.Close();
+            Application.Current.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive && window.GetType() == typeof(T))?.Close();
         }
+
+       
     }
 }

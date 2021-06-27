@@ -25,5 +25,7 @@ namespace PawnShop.Business.Models
         public virtual ICollection<Contract> ContractDealMakers { get; set; }
         public virtual ICollection<ContractRenew> ContractRenews { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
+
+
     }
 }

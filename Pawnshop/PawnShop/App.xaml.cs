@@ -64,6 +64,9 @@ namespace PawnShop
             {
                 cfg.AddProfile<AddClientViewModelToClientProfile>();
                 cfg.AddProfile<AddContractItemDialogViewModelToContractItemProfile>();
+                cfg.AddProfile<LaptopViewModelToLaptopProfile>();
+                cfg.AddProfile<InsertContractToContractProfile>();
+                cfg.AddProfile<InsertContractItemToContractItemProfile>();
             });
             var mapper = configuration.CreateMapper();
 

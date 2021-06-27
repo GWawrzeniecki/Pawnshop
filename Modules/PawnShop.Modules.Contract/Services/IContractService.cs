@@ -1,5 +1,7 @@
 ﻿using PawnShop.Business.Models;
+using PawnShop.Services.DataService.InsertModels;
 using PawnShop.Services.DataService.QueryDataModels;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,7 +18,8 @@ namespace PawnShop.Modules.Contract.Services
         Task<IList<Business.Models.Contract>> GetContracts(ContractQueryData queryData, int count);
 
         Task<string> GetNextContractNumber();
-        Task<PawnShop.Business.Models.Contract> CreateContract(PawnShop.Business.Models.Contract contract);
+        Task<Business.Models.Contract> CreateContract(InsertContract insertContract, string paymentTypeStr, decimal paymentAmount,
+            DateTime paymentDate, decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default);
 
 
     }

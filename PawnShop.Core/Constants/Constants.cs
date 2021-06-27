@@ -15,5 +15,11 @@
         public const string DealDocumentPath = "DealDocumentPath";
         public const string DealDocumentsFolderPath = "DealDocumentsFolderPath";
 
+        //PaymentType
+        public const string CashPaymentType = "Gotówka";
+        public const string CreditCardPaymentType = "Karta";
+
+        //ContractStates
+        public static string CreatedContractState = "Zalozona";
     }
 }

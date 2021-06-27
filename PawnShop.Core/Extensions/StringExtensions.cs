@@ -20,8 +20,7 @@ namespace PawnShop.Core.Extensions
 
             var year = contractNumber.Substring(contractNumber.IndexOf("/") + 1);
 
-            return $"{++parsedResult}/{year}";
-
+            return parsedResult < 9 ? $"0{++parsedResult}/{year}" : $"{++parsedResult}/{year}";
         }
     }
 }

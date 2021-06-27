@@ -56,10 +56,8 @@ namespace PawnShop.DataAccess.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-#pragma warning disable CS1030 // #warning: 'To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.'
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=Kogut-Desktop\\Sqlexpress;Initial Catalog=Pawnshop;Integrated Security=True;trustServerCertificate=true");
-#pragma warning restore CS1030 // #warning: 'To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.'
             }
         }
 
@@ -647,7 +645,6 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.Client)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.ClientId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Payment_Client");
 
                 entity.HasOne(d => d.PaymentType)
