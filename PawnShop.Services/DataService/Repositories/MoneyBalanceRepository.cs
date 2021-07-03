@@ -26,5 +26,13 @@ namespace PawnShop.Services.DataService.Repositories
                  .OrderByDescending(mb => mb.TodayDate)
                  .FirstAsync();
         }
+
+        public MoneyBalance GetTodayMoneyBalance()
+        {
+            return _context
+                .MoneyBalances
+                .OrderByDescending(mb => mb.TodayDate)
+                .First();
+        }
     }
 }

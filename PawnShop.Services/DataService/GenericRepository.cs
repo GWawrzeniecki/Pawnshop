@@ -129,5 +129,7 @@ namespace PawnShop.Services.DataService
                  ?.Properties
                  .FirstOrDefault(prop => prop.IsModified && prop.Metadata.Name.Equals(nameOfProperty));
         }
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PawnShop.Business.Models;
+using PawnShop.Core.SharedVariables;
 using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.Repositories;
 using System.Threading.Tasks;
@@ -11,7 +12,9 @@ namespace PawnShop.Services.DataService
 
 
         #region private members
+
         private readonly IMapper _mapper;
+        private readonly ISessionContext _sessionContext;
         private readonly PawnshopContext _context = new PawnshopContext();
         private GenericRepository<WorkerBoss> _workerBossRepository;
         private GenericRepository<Person> _personRepository;
@@ -28,9 +31,10 @@ namespace PawnShop.Services.DataService
 
         #endregion private members
 
-        public UnitOfWork(IMapper mapper)
+        public UnitOfWork(IMapper mapper, ISessionContext sessionContext)
         {
             _mapper = mapper;
+            _sessionContext = sessionContext;
         }
 
         #region public properties
@@ -145,17 +149,28 @@ namespace PawnShop.Services.DataService
 
         #endregion public properties
 
-        #region  public Methods
+        #region public Methods
 
         public void SaveChanges()
         {
+
             _context.SaveChanges();
+
         }
 
         public async Task SaveChangesAsync()
         {
+
             await _context.SaveChangesAsync();
+
         }
+
+        #endregion
+
+        #region PrivateMethod
+
+
+
         #endregion
     }
 }

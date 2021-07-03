@@ -8,9 +8,7 @@ using Prism.Regions;
 
 namespace PawnShop.Modules.Contract.Windows.Views
 {
-    /// <summary>
-    ///     Interaction logic for AddContractWindow.xaml
-    /// </summary>
+
     public partial class CreateContractWindow : MetroWindow, IScopedWindow, ISupportDataContext
     {
         public CreateContractWindow(IContainerProvider containerProvider, IRegionManager scopedRegionManager)
@@ -19,7 +17,7 @@ namespace PawnShop.Modules.Contract.Windows.Views
             RegionManager.SetRegionManager(HamburgerMenuItemCollection, scopedRegionManager);
             RegionManager.SetRegionManager(CreateContractContentControl, scopedRegionManager);
             RegisterViews(containerProvider, scopedRegionManager);
-
+            DisabledHamburgerMenuItemsOnStart(containerProvider);
         }
 
 
@@ -29,14 +27,26 @@ namespace PawnShop.Modules.Contract.Windows.Views
             var clientDataHamburgerMenuItem = containerProvider.Resolve<ClientDataHamburgerMenuItem>();
             var contractDataHamburgerMenuItem = containerProvider.Resolve<ContractDataHamburgerMenuItem>();
             var summaryHamburgerMenuItem = containerProvider.Resolve<SummaryHamburgerMenuItem>();
+
             RegionManagerAware.SetRegionManagerAware(clientDataHamburgerMenuItem,
-                scopedRegionManager); // adding here because hmi doesnt have view model
+                scopedRegionManager); // adding here because hmi doesn't have view model
             RegionManagerAware.SetRegionManagerAware(contractDataHamburgerMenuItem, scopedRegionManager);
             RegionManagerAware.SetRegionManagerAware(summaryHamburgerMenuItem, scopedRegionManager);
             scopedRegionManager.Regions[RegionNames.MenuRegion].Add(clientDataHamburgerMenuItem);
             scopedRegionManager.Regions[RegionNames.MenuRegion].Add(contractDataHamburgerMenuItem);
             scopedRegionManager.Regions[RegionNames.MenuRegion].Add(summaryHamburgerMenuItem);
 
+
         }
+
+        private void DisabledHamburgerMenuItemsOnStart(IContainerProvider containerProvider)
+        {
+            var contractDataHamburgerMenuItem = containerProvider.Resolve<ContractDataHamburgerMenuItem>();
+            var summaryHamburgerMenuItem = containerProvider.Resolve<SummaryHamburgerMenuItem>();
+            contractDataHamburgerMenuItem.IsEnabled = false;
+            summaryHamburgerMenuItem.IsEnabled = false;
+        }
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Core.SharedVariables;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Enums;
@@ -18,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PawnShop.Core.SharedVariables;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
@@ -164,9 +164,9 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
         public DelegateCommand CreateContractCommand => _createContractCommand ??= new DelegateCommand(CreateContract);
-        
 
-       
+
+
 
         #endregion commands
 

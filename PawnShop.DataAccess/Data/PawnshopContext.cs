@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PawnShop.Business.Models;
 
 #nullable disable
@@ -889,5 +892,9 @@ namespace PawnShop.DataAccess.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+
+
+
     }
 }

@@ -25,7 +25,6 @@ namespace PawnShop.Modules.Home
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<Views.Home, HomeViewModel>();
-            containerRegistry.RegisterSingleton<HomeHamburgerMenuItem>();
         }
     }
 }

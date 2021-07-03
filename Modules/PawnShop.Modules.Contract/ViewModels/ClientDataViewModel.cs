@@ -2,12 +2,12 @@
 using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
+using PawnShop.Core.HamburgerMenu.Implementations;
+using PawnShop.Core.HamburgerMenu.Interfaces;
 using PawnShop.Core.ScopedRegion;
-using PawnShop.Core.SharedVariables;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.Models.DropDownButtonModels;
-using PawnShop.Modules.Contract.Services;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
@@ -21,16 +21,12 @@ using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
-    public class ClientDataViewModel : BindableBase, IRegionManagerAware, INavigationAware
+    public class ClientDataViewModel : BindableBase, IRegionManagerAware, INavigationAware, IHamburgerMenuEnabled
     {
         #region privateMembers
 
-        private readonly IContractService _contractService;
         private readonly IDialogService _dialogService;
-        private readonly IContainerProvider _containerProvider;
-        private readonly ContractDataHamburgerMenuItem _contractDataHamburgerMenuItem;
         private readonly IClientService _clientService;
-        private readonly ISessionContext _sessionContext;
         private IList<ClientSearchOption> _clientSearchOptions;
         private ClientSearchOption _selectedClientSearchOption;
         private IList<Client> _searchedClients;
@@ -45,15 +41,12 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region constructor
 
-        public ClientDataViewModel(IContractService contractService, IDialogService dialogService,
-             IContainerProvider containerProvider, IClientService clientService, ISessionContext sessionContext)
+        public ClientDataViewModel(IDialogService dialogService,
+             IContainerProvider containerProvider, IClientService clientService)
         {
-            _contractService = contractService;
             _dialogService = dialogService;
-            _containerProvider = containerProvider;
             _clientService = clientService;
-            _sessionContext = sessionContext;
-            _contractDataHamburgerMenuItem = _containerProvider.Resolve<ContractDataHamburgerMenuItem>();
+            HamburgerMenuItem = containerProvider.Resolve<ContractDataHamburgerMenuItem>();
             LoadClientSearchOptions();
 
         }
@@ -121,7 +114,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             {
                 SetProperty(ref _selectedClient, value);
                 RaisePropertyChanged(nameof(IsNextButtonEnabled));
-                _contractDataHamburgerMenuItem.IsEnabled = IsNextButtonEnabled; // to do interface
+                (this as IHamburgerMenuEnabled).IsEnabled = IsNextButtonEnabled;
             }
         }
 
@@ -239,6 +232,13 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             navigationContext.Parameters.Add("DealMaker", SelectedClient);
         }
+
+        #endregion
+
+        #region IHamburgerMenuEnabled
+
+        public HamburgerMenuItemBase HamburgerMenuItem { get; set; }
+
 
         #endregion
 

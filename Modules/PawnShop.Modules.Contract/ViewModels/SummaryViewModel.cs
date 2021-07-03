@@ -6,7 +6,7 @@ using PawnShop.Core.SharedVariables;
 using PawnShop.Exceptions;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Services;
-using PawnShop.Services.DataService;
+using PawnShop.Modules.Contract.Windows.Views;
 using PawnShop.Services.DataService.InsertModels;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using PawnShop.Modules.Contract.Windows.Views;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
@@ -32,7 +31,6 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly ISessionContext _sessionContext;
         private readonly IConfigData _configData;
         private readonly IContractService _contractService;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IShellService _shellService;
         private Business.Models.Contract _contract;
@@ -43,15 +41,14 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Constructor
 
-        public SummaryViewModel(ICalculateService calculateService, IPdfService pdfService, ISessionContext sessionContext, 
-            IConfigData configData, IContractService contractService, IUnitOfWork unitOfWork, IMapper mapper, IShellService shellService)
+        public SummaryViewModel(ICalculateService calculateService, IPdfService pdfService, ISessionContext sessionContext,
+            IConfigData configData, IContractService contractService, IMapper mapper, IShellService shellService)
         {
             _calculateService = calculateService;
             _pdfService = pdfService;
             _sessionContext = sessionContext;
             _configData = configData;
             _contractService = contractService;
-            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _shellService = shellService;
             Contract = new Business.Models.Contract();
@@ -102,11 +99,11 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             try
             {
-                var contract = await AddContractToDb();
+                await AddContractToDbAsync();
                 if (IsPrintDealDocument)
-                    PrintDealDocument();
+                    await PrintDealDocumentAsync();
                 MaterialMessageBox.Show($"Pomyślnie utworzono umowę.", "Sukces");
-               _shellService.CloseShell<CreateContractWindow>();
+
 
             }
             catch (CreateContractException createContractException)
@@ -127,6 +124,10 @@ namespace PawnShop.Modules.Contract.ViewModels
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
+            finally
+            {
+                _shellService.CloseShell<CreateContractWindow>();
+            }
         }
 
 
@@ -139,17 +140,15 @@ namespace PawnShop.Modules.Contract.ViewModels
 
 
 
-        private async Task<Business.Models.Contract> AddContractToDb()
+        private async Task AddContractToDbAsync()
         {
-
 
             var insertContract = _mapper.Map<InsertContract>(Contract);
 
-            return await _contractService.CreateContract(insertContract, Constants.CashPaymentType, RePurchasePrice, DateTime.Now,
-                  RePurchasePrice);
+            await _contractService.CreateContract(insertContract, Constants.CashPaymentType, SumOfEstimatedValues, DateTime.Now, SumOfEstimatedValues);
         }
 
-        private void PrintDealDocument()
+        private async Task PrintDealDocumentAsync()
         {
             try
             {
@@ -198,8 +197,8 @@ namespace PawnShop.Modules.Contract.ViewModels
                 fieldNameFieldValue.Add(("NetStorageCost", NetStorageCost.ToString()));
 
                 var path = $@"{_configData.DealDocumentsFolderPath}\{Contract.ContractNumberId.Replace('/', '.')}.pdf";
-                _pdfService.FillPdfForm(_configData.DealDocumentPath, path, fieldNameFieldValue.ToArray());
-                _pdfService.PrintPdf(path);
+                await _pdfService.FillPdfFormAsync(_configData.DealDocumentPath, path, fieldNameFieldValue.ToArray());
+                await _pdfService.PrintPdfAsync(path);
 
             }
             catch (Exception e)

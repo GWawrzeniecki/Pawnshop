@@ -15,7 +15,7 @@ namespace PawnShop.Modules.Contract.MenuItem
             Command = new DelegateCommand(Navigate);
             Label = "Podsumowanie";
             Icon = new PackIconMaterial { Kind = PackIconMaterialKind.CreditCard };
-            IsEnabled = false;
+
         }
 
         public override string DefaultNavigationPath => nameof(Summary);

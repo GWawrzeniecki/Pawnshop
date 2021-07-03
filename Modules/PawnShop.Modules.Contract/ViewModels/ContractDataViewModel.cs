@@ -1,6 +1,8 @@
 ﻿using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
+using PawnShop.Core.HamburgerMenu.Implementations;
+using PawnShop.Core.HamburgerMenu.Interfaces;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.MenuItem;
@@ -18,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
-    public class ContractDataViewModel : BindableBase, IRegionManagerAware, INavigationAware
+    public class ContractDataViewModel : BindableBase, IRegionManagerAware, INavigationAware, IHamburgerMenuEnabled
     {
         #region Private members
 
@@ -26,7 +28,6 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IContractService _contractService;
         private readonly IDialogService _dialogService;
         private readonly ICalculateService _calculateService;
-        private readonly SummaryHamburgerMenuItem _summaryHamburgerMenuItem;
         private string _contractNumber;
         private LendingRate _selectedLendingRate;
         private DateTime? _rePurchaseDateTime;
@@ -43,9 +44,10 @@ namespace PawnShop.Modules.Contract.ViewModels
             _contractService = contractService;
             _dialogService = dialogService;
             _calculateService = calculateService;
-            _summaryHamburgerMenuItem = containerProvider.Resolve<SummaryHamburgerMenuItem>();
+            HamburgerMenuItem = containerProvider.Resolve<SummaryHamburgerMenuItem>();
             BoughtContractItems = new List<ContractItem>();
             LoadStartupData();
+
 
         }
 
@@ -83,7 +85,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 RaisePropertyChanged(nameof(IsNextButtonEnabled));
                 RaisePropertyChanged(nameof(RePurchasePrice));
                 AddContractItemCommand.RaiseCanExecuteChanged();
-                _summaryHamburgerMenuItem.IsEnabled = IsNextButtonEnabled;
+                (this as IHamburgerMenuEnabled).IsEnabled = IsNextButtonEnabled;
 
             }
         }
@@ -122,7 +124,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 SetProperty(ref _boughtContractItems, value);
                 RaisePropertyChanged(nameof(RePurchasePrice));
                 RaisePropertyChanged(nameof(IsNextButtonEnabled));
-                _summaryHamburgerMenuItem.IsEnabled = IsNextButtonEnabled;
+                (this as IHamburgerMenuEnabled).IsEnabled = IsNextButtonEnabled;
             }
         }
 
@@ -227,5 +229,12 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
         #endregion
+
+        #region IHamburgerMenuEnabled
+
+        public HamburgerMenuItemBase HamburgerMenuItem { get; set; }
+
+        #endregion
+
     }
 }

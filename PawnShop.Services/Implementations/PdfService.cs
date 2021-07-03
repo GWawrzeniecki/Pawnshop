@@ -4,6 +4,8 @@ using PawnShop.Services.Interfaces;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace PawnShop.Services.Implementations
@@ -51,6 +53,21 @@ namespace PawnShop.Services.Implementations
 
             Process printProcess = new Process { StartInfo = printProcessInfo };
             printProcess.Start();
+        }
+
+        public async Task FillPdfFormAsync(string pdfPath, string pdfSavePath,
+            (string textFieldName, string textFieldValue)[] replaceValueTuples)
+        {
+            await Task.Run(() => FillPdfForm(pdfPath, pdfSavePath, replaceValueTuples));
+        }
+
+        public async Task PrintPdfAsync(string pdfPath)
+        {
+            await Task.Factory
+                .StartNew(() => PrintPdf(pdfPath), CancellationToken.None, TaskCreationOptions.None,
+                    TaskScheduler.FromCurrentSynchronizationContext());
+
+
         }
     }
 

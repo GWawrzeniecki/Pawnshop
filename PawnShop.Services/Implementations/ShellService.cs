@@ -1,11 +1,11 @@
 ﻿using PawnShop.Core.Regions;
 using PawnShop.Core.ScopedRegion;
+using PawnShop.Core.SharedVariables;
 using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Regions;
 using System.Linq;
 using System.Windows;
-using PawnShop.Core.SharedVariables;
 
 namespace PawnShop.Services.Implementations
 {
@@ -24,6 +24,15 @@ namespace PawnShop.Services.Implementations
 
         public void ShowShell<T>(string viewName) where T : Window
         {
+            var window = Application.Current.Windows.OfType<Window>()
+                .FirstOrDefault(w => w.GetType() == typeof(T));
+
+            if (window != null)
+            {
+                window.Activate();
+                return;
+            }
+
             var scopedRegion = _regionManager.CreateRegionManager();
             var shell = _container.Resolve<T>((typeof(IRegionManager), scopedRegion), (typeof(IContainerProvider), _container));
 
@@ -41,6 +50,6 @@ namespace PawnShop.Services.Implementations
             Application.Current.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive && window.GetType() == typeof(T))?.Close();
         }
 
-       
+
     }
 }
