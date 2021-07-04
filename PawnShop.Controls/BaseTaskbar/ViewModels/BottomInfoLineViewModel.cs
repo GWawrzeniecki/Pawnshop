@@ -1,15 +1,22 @@
 ﻿using PawnShop.Core.SharedVariables;
 using Prism.Mvvm;
 using System;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
+using BespokeFusion;
+using PawnShop.Core.Events;
+using PawnShop.Services.DataService;
+using Prism.Events;
 
 namespace PawnShop.Controls.BaseTaskbar.ViewModels
 {
     public class BottomInfoLineViewModel : BindableBase  // To do bindeableBase w/wo session context
     {
-        #region private methods
 
-        private DispatcherTimer _dispatcherTimer;
+        #region private methods
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly DispatcherTimer _dispatcherTimer;
         private DateTime _actualDateTime;
         private ISessionContext _sessionContext;
 
@@ -17,12 +24,16 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
 
         #region constructor
 
-        public BottomInfoLineViewModel(ISessionContext sessionContext)
+        public BottomInfoLineViewModel(ISessionContext sessionContext, IEventAggregator eventAggregator, IUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _dispatcherTimer = new DispatcherTimer();
             UpdateActualDateTime();
             SessionContext = sessionContext;
+            eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Subscribe(MoneyBalanceChanged);
         }
+
+
 
         #endregion constructor
 
@@ -63,5 +74,27 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
         }
 
         #endregion dispatcher event
+
+        #region MoneyBalanceChangedEvent
+
+        private async void MoneyBalanceChanged()
+        {
+            try
+            {
+                await TryToUpdateMoneyBalanceAsync();
+            }
+            catch (Exception e)
+            {
+                MaterialMessageBox.Show($"Nie udało się odświeżyć stanu kasy.{Environment.NewLine}Uruchom ponownie aplikacje.", "Błąd");
+
+            }
+        }
+
+        public async Task TryToUpdateMoneyBalanceAsync()
+        {
+            _sessionContext.TodayMoneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
+        }
+
+        #endregion
     }
 }

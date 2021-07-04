@@ -47,7 +47,7 @@ namespace PawnShop.Services.Implementations
 
         public void CloseShell<T>() where T : Window
         {
-            Application.Current.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive && window.GetType() == typeof(T))?.Close();
+            Application.Current?.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive && window.GetType() == typeof(T))?.Close();
         }
 
 

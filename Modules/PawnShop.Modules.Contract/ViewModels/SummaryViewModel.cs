@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using PawnShop.Core.Events;
+using Prism.Events;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
@@ -33,6 +35,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IContractService _contractService;
         private readonly IMapper _mapper;
         private readonly IShellService _shellService;
+        private readonly IEventAggregator _eventAggregator;
         private Business.Models.Contract _contract;
         private bool _isPrintDealDocument;
         private DelegateCommand _createContractCommand;
@@ -42,7 +45,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         #region Constructor
 
         public SummaryViewModel(ICalculateService calculateService, IPdfService pdfService, ISessionContext sessionContext,
-            IConfigData configData, IContractService contractService, IMapper mapper, IShellService shellService)
+            IConfigData configData, IContractService contractService, IMapper mapper, IShellService shellService, IEventAggregator eventAggregator)
         {
             _calculateService = calculateService;
             _pdfService = pdfService;
@@ -51,6 +54,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             _contractService = contractService;
             _mapper = mapper;
             _shellService = shellService;
+            _eventAggregator = eventAggregator;
             Contract = new Business.Models.Contract();
         }
         #endregion
@@ -102,6 +106,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 await AddContractToDbAsync();
                 if (IsPrintDealDocument)
                     await PrintDealDocumentAsync();
+                _eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Publish();
                 MaterialMessageBox.Show($"Pomyślnie utworzono umowę.", "Sukces");
 
 
