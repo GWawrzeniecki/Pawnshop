@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>PawnShop.Modules.Login</AssemblyName>
     <UserSecretsId>ec9b738c-72ae-4a87-bb2f-9a102490bfc8</UserSecretsId>
@@ -11,7 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="10.2.3" />
-    <PackageReference Include="MahApps.Metro" Version="2.4.6" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.7" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
     <PackageReference Include="MaterialMessageBox" Version="4.0.2" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />

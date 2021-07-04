@@ -83,7 +83,7 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
             {
                 await TryToUpdateMoneyBalanceAsync();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MaterialMessageBox.Show($"Nie udało się odświeżyć stanu kasy.{Environment.NewLine}Uruchom ponownie aplikacje.", "Błąd");
 

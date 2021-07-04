@@ -1,50 +1,51 @@
-﻿<mah:MetroWindow x:Class="PawnShop.Views.MainWindow"
-                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                 xmlns:prism="http://prismlibrary.com/"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
-                 prism:ViewModelLocator.AutoWireViewModel="True"
-                 Title="{Binding Title}" MinWidth="1280" MinHeight="800"
-                 WindowStartupLocation="CenterScreen" WindowState="Maximized">
+﻿<mah:MetroWindow
+    x:Class="PawnShop.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:prism="http://prismlibrary.com/"
+    Title="{Binding Title}"
+    MinWidth="1280"
+    MinHeight="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized">
 
     <Window.Resources>
-        <Style  TargetType="TextBlock" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+        <Style BasedOn="{StaticResource MahApps.Styles.TextBlock}" TargetType="TextBlock">
             <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
         </Style>
     </Window.Resources>
 
     <DockPanel LastChildFill="True">
-        <!--Top Taskbar-->
-        <ContentControl DockPanel.Dock="Top"
-                        prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.TopTaskBarRegion}" />
+        <!--  Top Taskbar  -->
+        <ContentControl prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.TopTaskBarRegion}" DockPanel.Dock="Top" />
 
-        <!--Bottom info line-->
-        <ContentControl DockPanel.Dock="Bottom"
-                        prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.BottomInfoLineRegion}" />
+        <!--  Bottom info line  -->
+        <ContentControl prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.BottomInfoLineRegion}" DockPanel.Dock="Bottom" />
 
-        <!--Menu-->
-        <mah:HamburgerMenu SelectedIndex="1"
-                           OpenPaneLength="150"
-                           CompactPaneLength="50"
-                           IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
-                           DockPanel.Dock="Left"
-                           ItemTemplate="{StaticResource MenuItemTemplate}"
-                           OptionsItemTemplate="{StaticResource MenuItemTemplate}"
-                           Style="{StaticResource MahApps.Styles.HamburgerMenu.Ripple}">
+        <!--  Menu  -->
+        <mah:HamburgerMenu
+            CompactPaneLength="50"
+            DockPanel.Dock="Left"
+            IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
+            ItemTemplate="{StaticResource MenuItemTemplate}"
+            OpenPaneLength="150"
+            OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+            SelectedIndex="1"
+            Style="{StaticResource MahApps.Styles.HamburgerMenu.Ripple}">
 
-            <!--Menu items-->
+            <!--  Menu items  -->
             <mah:HamburgerMenu.ItemsSource>
-                <mah:HamburgerMenuItemCollection x:Name="HamburgerMenuItemCollection"
-                                                 prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.MenuRegion}" />
+                <mah:HamburgerMenuItemCollection x:Name="HamburgerMenuItemCollection" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.MenuRegion}" />
             </mah:HamburgerMenu.ItemsSource>
 
             <mah:HamburgerMenu.Content>
                 <Grid>
-                    <!--Main Content-->
+                    <!--  Main Content  -->
 
-                    <ContentControl x:Name="ContentRegionControl"
-                                    prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ContentRegion}" />
+                    <ContentControl x:Name="ContentRegionControl" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ContentRegion}" />
                 </Grid>
             </mah:HamburgerMenu.Content>
         </mah:HamburgerMenu>
