@@ -26,7 +26,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         public RenewContractDataViewModel(ICalculateService calculateService, ISessionContext sessionContext)
         {
             _calculateService = calculateService;
-            Contract = sessionContext.ContractToRenew;
+        
         }
 
         #endregion
