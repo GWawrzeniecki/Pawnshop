@@ -2,14 +2,18 @@
 using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Constants;
+using PawnShop.Core.Events;
+using PawnShop.Core.ScopedRegion;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Exceptions;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Services;
+using PawnShop.Modules.Contract.Windows.ViewModels;
 using PawnShop.Modules.Contract.Windows.Views;
 using PawnShop.Services.DataService.InsertModels;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
@@ -17,12 +21,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using PawnShop.Core.Events;
-using Prism.Events;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
-    public class SummaryViewModel : BindableBase, INavigationAware
+    public class SummaryViewModel : BindableBase, IRegionManagerAware, INavigationAware
     {
 
 
@@ -86,13 +88,22 @@ namespace PawnShop.Modules.Contract.ViewModels
 
 
 
+
         #endregion
+
+        #region IRegionManagerAware
+
+        public IRegionManager RegionManager { get; set; }
+
+        #endregion IRegionManagerAware
 
         #region Commands
 
 
         public DelegateCommand CreateContractCommand =>
             _createContractCommand ??= new DelegateCommand(CreateContract);
+
+
 
 
 
@@ -103,12 +114,13 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             try
             {
+                if (_shellService.GetShellViewModel<CreateContractWindow>() is CreateContractWindowViewModel vm)
+                    vm.IsBusy = true;
                 await AddContractToDbAsync();
                 if (IsPrintDealDocument)
                     await PrintDealDocumentAsync();
                 _eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Publish();
                 MaterialMessageBox.Show($"Pomyślnie utworzono umowę.", "Sukces");
-
 
             }
             catch (CreateContractException createContractException)
@@ -131,6 +143,8 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             finally
             {
+                if (_shellService.GetShellViewModel<CreateContractWindow>() is CreateContractWindowViewModel vm)
+                    vm.IsBusy = false;
                 _shellService.CloseShell<CreateContractWindow>();
             }
         }

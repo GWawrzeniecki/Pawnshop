@@ -9,7 +9,8 @@ namespace PawnShop.Core.SharedVariables
 
         private WorkerBoss _loggedPerson;
         private MoneyBalance _moneyBalance;
-       
+        private Contract _contractToRenew;
+
 
 
         #endregion private members
@@ -28,7 +29,11 @@ namespace PawnShop.Core.SharedVariables
             set => SetProperty(ref _moneyBalance, value);
         }
 
-
+        public Business.Models.Contract ContractToRenew
+        {
+            get => _contractToRenew;
+            set => SetProperty(ref _contractToRenew, value);
+        }
 
         #endregion public properties
     }

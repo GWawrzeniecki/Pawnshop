@@ -56,8 +56,11 @@ namespace PawnShop.Services.DataService.Repositories
             return await _context.Contracts
                 .Include(p => p.ContractState)
                 .Include(p => p.LendingRate)
+                .Include(p => p.ContractItems)
                 .Include(p => p.DealMaker)
                 .ThenInclude(p => p.ClientNavigation)
+                .Include(p => p.ContractRenews)
+                .ThenInclude(c => c.LendingRate)
                 .OrderByDescending(ctr => ctr.StartDate)
                 .Take(count)
                 .ToListAsync();
@@ -68,8 +71,11 @@ namespace PawnShop.Services.DataService.Repositories
             var contractQuery = _context.Contracts
                  .Include(p => p.ContractState)
                  .Include(p => p.LendingRate)
+                 .Include(p => p.ContractItems)
                  .Include(p => p.DealMaker)
                  .ThenInclude(p => p.ClientNavigation)
+                 .Include(p => p.ContractRenews)
+                 .ThenInclude(c => c.LendingRate)
                  .AsQueryable();
 
             if (!string.IsNullOrEmpty(queryData.Client))

@@ -24,7 +24,7 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
         private IList<HamburgerMenuItemBase> _hamburgerMenuItems;
         private DelegateCommand<Type> _navigateCommand;
         private DelegateCommand _closeShellCommand;
-
+        private bool _isBusy;
         #endregion private members
 
         #region constructor
@@ -96,7 +96,11 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
             get => _tittle;
             set => SetProperty(ref _tittle, value);
         }
-
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
         #endregion public Properties
 
 

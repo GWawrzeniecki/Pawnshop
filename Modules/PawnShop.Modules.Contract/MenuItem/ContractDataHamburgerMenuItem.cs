@@ -26,5 +26,8 @@ namespace PawnShop.Modules.Contract.MenuItem
         {
             RegionManager.RequestNavigate(RegionNames.ContentRegion, DefaultNavigationPath);
         }
+
+
+
     }
 }

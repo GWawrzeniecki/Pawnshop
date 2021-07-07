@@ -1,13 +1,12 @@
-﻿using PawnShop.Core.SharedVariables;
+﻿using BespokeFusion;
+using PawnShop.Core.Events;
+using PawnShop.Core.SharedVariables;
+using PawnShop.Services.DataService;
+using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Threading;
-using BespokeFusion;
-using PawnShop.Core.Events;
-using PawnShop.Services.DataService;
-using Prism.Events;
 
 namespace PawnShop.Controls.BaseTaskbar.ViewModels
 {

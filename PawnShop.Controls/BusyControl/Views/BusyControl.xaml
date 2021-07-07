@@ -1,0 +1,16 @@
+﻿<UserControl
+    x:Class="PawnShop.Controls.BusyControl.Views.BusyControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <Border
+            mah:VisibilityHelper.IsVisible="{Binding IsBusy}"
+            Background="#55000000"
+            BorderThickness="0">
+            <mah:ProgressRing />
+        </Border>
+    </Grid>
+</UserControl>

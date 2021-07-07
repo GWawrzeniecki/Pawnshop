@@ -14,6 +14,7 @@ using PawnShop.Services.DataService.QueryDataModels;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
+using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -45,8 +46,10 @@ namespace PawnShop.Modules.Contract.ViewModels
         private string _client;
         private string _contractAmount;
         private LendingRate _lendingRate;
+        private Business.Models.Contract _selectedContract;
         private DelegateCommand _refreshCommand;
         private DelegateCommand _createContractCommand;
+        private DelegateCommand _renewContractCommand;
 
         #endregion private members
 
@@ -63,6 +66,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             _containerProvider = containerProvider;
             _sessionContext = sessionContext;
             LoadStartupData();
+
         }
 
         #endregion constructor
@@ -84,6 +88,13 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             get => _contracts;
             set => SetProperty(ref _contracts, value);
+        }
+
+
+        public Business.Models.Contract SelectedContract
+        {
+            get => _selectedContract;
+            set => SetProperty(ref _selectedContract, value);
         }
 
         public IList<LendingRate> LendingRates
@@ -152,6 +163,8 @@ namespace PawnShop.Modules.Contract.ViewModels
             set => SetProperty(ref _lendingRate, value);
         }
 
+
+
         #endregion properties
 
         #region commands
@@ -164,7 +177,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
         public DelegateCommand CreateContractCommand => _createContractCommand ??= new DelegateCommand(CreateContract);
-
+        public DelegateCommand RenewContractCommand => _renewContractCommand ??= new DelegateCommand(RenewContract);
 
 
 
@@ -228,17 +241,17 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             DateSearchOptions = new List<DateSearchOption>
             {
-                new DateSearchOption {Name = "Wyczyść", SearchOption = SearchOptions.Clean},
-                new DateSearchOption {Name = "Dzisiaj", SearchOption = SearchOptions.Today},
-                new DateSearchOption {Name = "Wczoraj", SearchOption = SearchOptions.Yesterday},
-                new DateSearchOption {Name = "Bieżący tydzien", SearchOption = SearchOptions.CurrentWeek},
-                new DateSearchOption {Name = "Poprzedni tydzien", SearchOption = SearchOptions.PastWeek},
-                new DateSearchOption {Name = "Bieżący miesiąc", SearchOption = SearchOptions.CurrentMonth},
-                new DateSearchOption {Name = "Poprzedni miesiąc", SearchOption = SearchOptions.PastMonth},
-                new DateSearchOption {Name = "Bieżący kwartał", SearchOption = SearchOptions.CurrentQuarter},
-                new DateSearchOption {Name = "Poprzedni kwartał", SearchOption = SearchOptions.PastQuarter},
-                new DateSearchOption {Name = "Bieżący rok", SearchOption = SearchOptions.CurrentYear},
-                new DateSearchOption {Name = "Poprzedni rok", SearchOption = SearchOptions.PastYear}
+                new() {Name = "Wyczyść", SearchOption = SearchOptions.Clean},
+                new() {Name = "Dzisiaj", SearchOption = SearchOptions.Today},
+                new() {Name = "Wczoraj", SearchOption = SearchOptions.Yesterday},
+                new() {Name = "Bieżący tydzien", SearchOption = SearchOptions.CurrentWeek},
+                new() {Name = "Poprzedni tydzien", SearchOption = SearchOptions.PastWeek},
+                new() {Name = "Bieżący miesiąc", SearchOption = SearchOptions.CurrentMonth},
+                new() {Name = "Poprzedni miesiąc", SearchOption = SearchOptions.PastMonth},
+                new() {Name = "Bieżący kwartał", SearchOption = SearchOptions.CurrentQuarter},
+                new() {Name = "Poprzedni kwartał", SearchOption = SearchOptions.PastQuarter},
+                new() {Name = "Bieżący rok", SearchOption = SearchOptions.CurrentYear},
+                new() {Name = "Poprzedni rok", SearchOption = SearchOptions.PastYear}
             };
         }
 
@@ -246,9 +259,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             RefreshButtonOptions = new List<RefreshButtonOption>
             {
-                new RefreshButtonOption {Name = "Wyczyść filtr", RefreshOption = RefreshOptions.Clean},
-                new RefreshButtonOption
-                    {Name = "Wyczyść filtr i odśwież", RefreshOption = RefreshOptions.CleanAndRefresh}
+                new() {Name = "Wyczyść filtr", RefreshOption = RefreshOptions.Clean},
+                new() {Name = "Wyczyść filtr i odśwież", RefreshOption = RefreshOptions.CleanAndRefresh}
             };
         }
 
@@ -384,6 +396,15 @@ namespace PawnShop.Modules.Contract.ViewModels
         private void CreateContract()
         {
             _shellService.ShowShell<CreateContractWindow>(nameof(ClientData));
+        }
+
+        private void RenewContract()
+        {
+            if (SelectedContract is null)
+                return;
+            _sessionContext.ContractToRenew = SelectedContract;
+            _shellService.ShowShell<RenewContractWindow>(nameof(RenewContractData), new NavigationParameters() { { "contract", SelectedContract } });
+
         }
 
         #endregion private methods

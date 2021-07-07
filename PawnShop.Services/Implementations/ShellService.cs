@@ -22,12 +22,12 @@ namespace PawnShop.Services.Implementations
             _sessionContext = sessionContext;
         }
 
-        public void ShowShell<T>(string viewName) where T : Window
+        public void ShowShell<T>(string viewName, NavigationParameters navigationParameter = null) where T : Window
         {
             var window = Application.Current.Windows.OfType<Window>()
                 .FirstOrDefault(w => w.GetType() == typeof(T));
 
-            if (window != null)
+            if (window is not null)
             {
                 window.Activate();
                 return;
@@ -39,7 +39,7 @@ namespace PawnShop.Services.Implementations
             RegionManager.SetRegionManager(shell, scopedRegion);
             RegionManagerAware.SetRegionManagerAware(shell, scopedRegion);
 
-            scopedRegion.RequestNavigate(RegionNames.ContentRegion, viewName);
+            scopedRegion.RequestNavigate(RegionNames.ContentRegion, viewName, navigationParameter);
 
             shell.Show();
 
@@ -50,6 +50,10 @@ namespace PawnShop.Services.Implementations
             Application.Current?.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive && window.GetType() == typeof(T))?.Close();
         }
 
-
+        public object GetShellViewModel<T>() where T : Window
+        {
+            return Application.Current?.Windows.OfType<Window>()
+                  .FirstOrDefault(window => window.GetType() == typeof(T))?.DataContext;
+        }
     }
 }

@@ -1,11 +1,12 @@
-﻿<UserControl x:Class="PawnShop.Modules.Contract.Views.Contract"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:prism="http://prismlibrary.com/"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             prism:ViewModelLocator.AutoWireViewModel="True">
+﻿<UserControl
+    x:Class="PawnShop.Modules.Contract.Views.Contract"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <Grid Margin="10 0 10 0">
+    <Grid Margin="10,0,10,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -14,12 +15,12 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <!-- TextBoxes and buttons-->
+        <!--  TextBoxes and buttons  -->
         <GroupBox
             Grid.Row="0"
             Grid.Column="0"
-            Header="Kryteria wyświetlania danych"
-            Margin="0 0 0 15">
+            Margin="0,0,0,15"
+            Header="Kryteria wyświetlania danych">
             <Grid>
 
                 <Grid.Resources>
@@ -38,15 +39,15 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <!-- firs row-->
+                <!--  firs row  -->
                 <TextBox
-                    Margin="{StaticResource ControlMargin}"
                     Grid.Row="0"
                     Grid.Column="0"
-                    mah:TextBoxHelper.Watermark="Nr: umowy"
+                    Margin="{StaticResource ControlMargin}"
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
-                    Text="{Binding ContractNumber,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}">
+                    mah:TextBoxHelper.Watermark="Nr: umowy"
+                    Text="{Binding ContractNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
 
                     <TextBox.InputBindings>
                         <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
@@ -54,14 +55,13 @@
                 </TextBox>
 
                 <TextBox
-                    Margin="{StaticResource ControlMargin}"
                     Grid.Row="0"
                     Grid.Column="1"
-                    mah:TextBoxHelper.Watermark="Klient"
+                    Margin="{StaticResource ControlMargin}"
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
-
-                    Text="{Binding Client,Mode=TwoWay,ValidatesOnDataErrors=True,Delay=400,UpdateSourceTrigger=PropertyChanged}">
+                    mah:TextBoxHelper.Watermark="Klient"
+                    Text="{Binding Client, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
 
                     <TextBox.InputBindings>
                         <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
@@ -69,50 +69,50 @@
                 </TextBox>
 
                 <DatePicker
-                    Margin="{StaticResource ControlMargin}"
                     Grid.Row="0"
                     Grid.Column="2"
+                    Margin="{StaticResource ControlMargin}"
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
                     mah:TextBoxHelper.Watermark="Od daty:"
                     SelectedDate="{Binding FromDate, Mode=TwoWay}" />
 
                 <DatePicker
-                    Margin="{StaticResource ControlMargin}"
                     Grid.Row="0"
                     Grid.Column="3"
+                    Margin="{StaticResource ControlMargin}"
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
                     mah:TextBoxHelper.Watermark="Do daty:"
                     SelectedDate="{Binding ToDate, Mode=TwoWay}" />
 
                 <mah:DropDownButton
-                    Margin="15 5 15 5"
                     Grid.Row="0"
                     Grid.Column="4"
-                    Content="Opcje dat" MinHeight="26"
-                    ItemsSource="{Binding DateSearchOptions}"
-                    DisplayMemberPath="Name">
+                    MinHeight="26"
+                    Margin="15,5,15,5"
+                    Content="Opcje dat"
+                    DisplayMemberPath="Name"
+                    ItemsSource="{Binding DateSearchOptions}">
                     <mah:DropDownButton.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
                             <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
-                            <Setter Property="Command"
-                                    Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:DropDownButton}}, Path=DataContext.DateSearchOptionCommand}" />
+                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:DropDownButton}}, Path=DataContext.DateSearchOptionCommand}" />
                             <Setter Property="CommandParameter" Value="{Binding SearchOption}" />
                         </Style>
                     </mah:DropDownButton.ItemContainerStyle>
                 </mah:DropDownButton>
-                <!-- Second row-->
+                <!--  Second row  -->
 
                 <ComboBox
-                    Margin="{StaticResource ControlMargin}"
                     Grid.Row="1"
                     Grid.Column="0"
+                    Margin="{StaticResource ControlMargin}"
                     mah:TextBoxHelper.ClearTextButton="True"
-                    mah:TextBoxHelper.Watermark="Status umowy:"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
+                    mah:TextBoxHelper.Watermark="Status umowy:"
                     ItemsSource="{Binding ContractStates}"
-                    SelectedItem="{Binding ContractState,Mode=TwoWay}">
+                    SelectedItem="{Binding ContractState, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding State}" />
@@ -121,26 +121,26 @@
                 </ComboBox>
 
                 <TextBox
-                    Margin="{StaticResource ControlMargin}"
                     Grid.Row="1"
                     Grid.Column="1"
+                    Margin="{StaticResource ControlMargin}"
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.Watermark="Kwota:"
-                    Text="{Binding ContractAmount,Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
+                    Text="{Binding ContractAmount, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
                     </TextBox.InputBindings>
                 </TextBox>
 
                 <ComboBox
-                    Margin="{StaticResource ControlMargin}"
                     Grid.Row="1"
                     Grid.Column="2"
+                    Margin="{StaticResource ControlMargin}"
                     mah:TextBoxHelper.ClearTextButton="True"
-                    mah:TextBoxHelper.Watermark="Czas trwania umowy:"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
+                    mah:TextBoxHelper.Watermark="Czas trwania umowy:"
                     ItemsSource="{Binding LendingRates}"
-                    SelectedItem="{Binding LendingRate,Mode=TwoWay}">
+                    SelectedItem="{Binding LendingRate, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Days}" />
@@ -149,53 +149,58 @@
                 </ComboBox>
 
                 <Button
-                    Margin="{StaticResource ControlMargin}"
                     Grid.Row="1"
                     Grid.Column="3"
-                    Content="Odśwież"
-                    Command="{Binding RefreshCommand}" />
+                    Margin="{StaticResource ControlMargin}"
+                    Command="{Binding RefreshCommand}"
+                    Content="Odśwież" />
 
                 <mah:DropDownButton
-                    Margin="15 5 15 5"
                     Grid.Row="1"
                     Grid.Column="4"
+                    Margin="15,5,15,5"
                     Content="Opcje odświeżania"
-                    ItemsSource="{Binding RefreshButtonOptions}"
-                    DisplayMemberPath="Name">
+                    DisplayMemberPath="Name"
+                    ItemsSource="{Binding RefreshButtonOptions}">
 
                     <mah:DropDownButton.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
                             <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
-                            <Setter Property="Command"
-                                    Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:DropDownButton}}, Path=DataContext.RefreshButtonOptionCommand}" />
+                            <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:DropDownButton}}, Path=DataContext.RefreshButtonOptionCommand}" />
                             <Setter Property="CommandParameter" Value="{Binding RefreshOption}" />
                         </Style>
                     </mah:DropDownButton.ItemContainerStyle>
                 </mah:DropDownButton>
             </Grid>
         </GroupBox>
-        <!-- DataGrid-->
+        <!--  DataGrid  -->
         <GroupBox
             Grid.Row="1"
             Grid.Column="0"
             Header="Lista umów">
 
             <DataGrid
-                ItemsSource="{Binding Contracts}"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 CanUserDeleteRows="False"
-                IsReadOnly="True">
+                IsReadOnly="True"
+                ItemsSource="{Binding Contracts}"
+                SelectedItem="{Binding SelectedContract, Mode=TwoWay}">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Numer umowy" Binding="{Binding ContractNumberId}" />
-                    <DataGridTextColumn Header="Stan umowy" Binding="{Binding ContractState.State}" />
-                    <DataGridTextColumn Header="Kwota" Binding="{Binding AmountContract}" />
-                    <DataGridTextColumn Header="Data założenia umowy" Binding="{Binding StartDate}" />
-                    <DataGridTextColumn Header="Czas trwania umowy" Binding="{Binding LendingRate.Days}" />
-                    <DataGridTextColumn Header="Klient" Binding="{Binding DealMaker.ClientNavigation.FullName}" />
+                    <DataGridTextColumn Binding="{Binding ContractNumberId}" Header="Numer umowy" />
+                    <DataGridTextColumn Binding="{Binding ContractState.State}" Header="Stan umowy" />
+                    <DataGridTextColumn Binding="{Binding AmountContract}" Header="Kwota" />
+                    <DataGridTextColumn Binding="{Binding StartDate}" Header="Data założenia umowy" />
+                    <DataGridTextColumn Binding="{Binding LendingRate.Days}" Header="Czas trwania umowy" />
+                    <DataGridTextColumn Binding="{Binding DealMaker.ClientNavigation.FullName}" Header="Klient" />
                 </DataGrid.Columns>
             </DataGrid>
         </GroupBox>
+
+
+
+
+
     </Grid>
 </UserControl>

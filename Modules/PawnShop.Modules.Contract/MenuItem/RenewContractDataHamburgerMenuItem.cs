@@ -8,16 +8,17 @@ using Prism.Regions;
 
 namespace PawnShop.Modules.Contract.MenuItem
 {
-    public class ClientDataHamburgerMenuItem : HamburgerMenuItemBase, IRegionManagerAware
+    public class RenewContractDataHamburgerMenuItem : HamburgerMenuItemBase, IRegionManagerAware
     {
-        public ClientDataHamburgerMenuItem()
+        public RenewContractDataHamburgerMenuItem()
         {
             Command = new DelegateCommand(Navigate);
-            Label = "Dane klienta";
-            Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Account };
+            Label = "Dane umowy";
+            Icon = new PackIconMaterial { Kind = PackIconMaterialKind.FileDocumentEditOutline };
+
         }
 
-        public override string DefaultNavigationPath => nameof(ClientData);
+        public override string DefaultNavigationPath => nameof(RenewContractData);
 
         public IRegionManager RegionManager { get; set; }
 

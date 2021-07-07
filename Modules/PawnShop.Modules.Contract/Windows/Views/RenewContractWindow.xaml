@@ -1,18 +1,12 @@
 ﻿<mah:MetroWindow
-    x:Class="PawnShop.Modules.Contract.Windows.Views.CreateContractWindow"
+    x:Class="PawnShop.Modules.Contract.Windows.Views.RenewContractWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:views="clr-namespace:PawnShop.Controls.BusyControl.Views;assembly=PawnShop.Controls"
-    Title="{Binding Tittle}"
-    MinWidth="1280"
-    MinHeight="800"
-    prism:ViewModelLocator.AutoWireViewModel="True"
-    WindowStartupLocation="CenterScreen">
-
-
+    prism:ViewModelLocator.AutoWireViewModel="True">
 
     <DockPanel LastChildFill="True">
 
@@ -45,5 +39,4 @@
             <views:BusyControl />
         </Grid>
     </DockPanel>
-
 </mah:MetroWindow>
