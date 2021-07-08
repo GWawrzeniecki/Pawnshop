@@ -4,7 +4,9 @@ using PawnShop.Services.Interfaces;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using PawnShop.Business.Models;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
@@ -23,10 +25,10 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Constructor
 
-        public RenewContractDataViewModel(ICalculateService calculateService, ISessionContext sessionContext)
+        public RenewContractDataViewModel(ICalculateService calculateService)
         {
             _calculateService = calculateService;
-        
+            Contract = new Business.Models.Contract() { ContractItems = new List<ContractItem>(), LendingRate = new LendingRate() };
         }
 
         #endregion
@@ -36,7 +38,16 @@ namespace PawnShop.Modules.Contract.ViewModels
         public Business.Models.Contract Contract
         {
             get => _contract;
-            set => SetProperty(ref _contract, value);
+            set
+            {
+                SetProperty(ref _contract, value);
+                RaisePropertyChanged(nameof(ContractDate));
+                RaisePropertyChanged(nameof(HowManyDaysLate));
+                RaisePropertyChanged(nameof(SumOfEstimatedValues));
+                RaisePropertyChanged(nameof(RePurchasePrice));
+
+
+            }
         }
 
 
