@@ -1,7 +1,4 @@
-﻿using Prism.Regions;
-using System.Windows;
-
-namespace PawnShop.Core.ScopedRegion
+﻿namespace PawnShop.Core.ScopedRegion
 {
     public class RegionManagerAware
     {

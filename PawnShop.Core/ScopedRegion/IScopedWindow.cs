@@ -1,7 +1,4 @@
-﻿using Prism.Ioc;
-using Prism.Regions;
-
-namespace PawnShop.Core.ScopedRegion
+﻿namespace PawnShop.Core.ScopedRegion
 {
     public interface IScopedWindow
     {

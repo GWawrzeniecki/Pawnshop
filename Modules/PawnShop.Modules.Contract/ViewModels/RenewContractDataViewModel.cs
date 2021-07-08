@@ -1,12 +1,11 @@
-﻿using PawnShop.Core.ScopedRegion;
-using PawnShop.Core.SharedVariables;
+﻿using PawnShop.Business.Models;
+using PawnShop.Core.ScopedRegion;
 using PawnShop.Services.Interfaces;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PawnShop.Business.Models;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {

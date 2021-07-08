@@ -1,6 +1,4 @@
-﻿using Prism.Commands;
-
-namespace PawnShop.Core
+﻿namespace PawnShop.Core
 {
     public interface IApplicationCommands
     {

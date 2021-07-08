@@ -1,6 +1,4 @@
-﻿using MahApps.Metro.Controls;
-
-namespace PawnShop.Core.HamburgerMenu.Implementations
+﻿namespace PawnShop.Core.HamburgerMenu.Implementations
 {
     public abstract class HamburgerMenuItemBase : HamburgerMenuIconItem, Interfaces.IHamburgerMenuItemBase
     {

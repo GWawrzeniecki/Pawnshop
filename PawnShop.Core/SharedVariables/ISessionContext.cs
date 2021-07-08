@@ -1,6 +1,4 @@
-﻿using PawnShop.Business.Models;
-
-namespace PawnShop.Core.SharedVariables
+﻿namespace PawnShop.Core.SharedVariables
 {
     public interface ISessionContext
     {

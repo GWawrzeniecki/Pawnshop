@@ -8,6 +8,7 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
         #region PrivateMembers
 
         private bool _isBusy;
+        private object _selectedItem;
 
         #endregion
 
@@ -23,6 +24,11 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
 
         #region PublicProperties
 
+        public object SelectedItem
+        {
+            get => _selectedItem;
+            set => SetProperty(ref _selectedItem, value);
+        }
 
         public bool IsBusy
         {

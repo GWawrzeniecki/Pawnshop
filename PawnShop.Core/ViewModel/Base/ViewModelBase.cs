@@ -1,8 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Internal;
-using PawnShop.Validator.Base;
-using Prism.Commands;
-using Prism.Mvvm;
+﻿using PawnShop.Validator.Base;
 using System;
 using System.ComponentModel;
 using System.Linq;

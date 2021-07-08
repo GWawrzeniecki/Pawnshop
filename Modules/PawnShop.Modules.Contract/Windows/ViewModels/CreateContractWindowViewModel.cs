@@ -20,7 +20,6 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
         private object _selectedItem;
         private readonly IContainerProvider _containerProvider;
         private readonly IShellService _shellService;
-        private int _selectedIndex;
         private IList<HamburgerMenuItemBase> _hamburgerMenuItems;
         private DelegateCommand<Type> _navigateCommand;
         private DelegateCommand _closeShellCommand;
@@ -77,12 +76,6 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
         {
             get => _hamburgerMenuItems;
             set => SetProperty(ref _hamburgerMenuItems, value);
-        }
-
-        public int SelectedIndex
-        {
-            get => _selectedIndex;
-            set => SetProperty(ref _selectedIndex, value);
         }
 
         public object SelectedItem
