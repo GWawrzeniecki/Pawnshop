@@ -1,4 +1,7 @@
-﻿namespace PawnShop.Core.SharedVariables
+﻿using PawnShop.Business.Models;
+using Prism.Mvvm;
+
+namespace PawnShop.Core.SharedVariables
 {
     public class SessionContext : BindableBase, ISessionContext
     {

@@ -1,4 +1,6 @@
-﻿namespace PawnShop.Core.ScopedRegion
+﻿using Prism.Regions;
+
+namespace PawnShop.Core.ScopedRegion
 {
     public interface IRegionManagerAware
     {
