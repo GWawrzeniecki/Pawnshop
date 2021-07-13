@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using Prism.Regions;
+﻿using Prism.Regions;
+using System.Windows;
 
 namespace PawnShop.Core.ScopedRegion
 {

@@ -16,26 +16,47 @@ namespace PawnShop.Services.Implementations
 
 
 
-        private static decimal GetNetStorageCost(decimal estimatedValue, int percent) => estimatedValue * percent / 100;
+        private static decimal GetNetStorageCost(decimal estimatedValue, LendingRate lendingRate) => estimatedValue * lendingRate.Procent / 100;
+        private decimal AddVat(decimal netAmount) => (netAmount * _configData.VatPercent / 100) + netAmount;
 
-        private decimal GetVatStorageCost(decimal estimatedValue, int percent)
+        private static decimal GetNetRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay)
         {
-            var netCost = GetNetStorageCost(estimatedValue, percent);
-            var vat = netCost * _configData.VatPercent / 100;
-            return netCost + vat;
+            if (delay is null or 0)
+            {
+                return GetNetStorageCost(estimatedValue, lendingRate);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public decimal CalculateContractAmount(decimal estimatedValue, LendingRate lendingRate)
         {
-            if (lendingRate == null) throw new ArgumentNullException(nameof(lendingRate));
-            return estimatedValue + decimal.Round(
-                GetVatStorageCost(estimatedValue, lendingRate.Procent));
+            return lendingRate == null
+                ? throw new ArgumentNullException(nameof(lendingRate))
+                : estimatedValue + decimal.Round(AddVat(GetNetStorageCost(estimatedValue, lendingRate)));
         }
 
         public decimal CalculateNetStorageCost(decimal estimatedValue, LendingRate lendingRate)
         {
-            if (lendingRate == null) throw new ArgumentNullException(nameof(lendingRate));
-            return GetNetStorageCost(estimatedValue, lendingRate.Procent);
+            return lendingRate == null
+                ? throw new ArgumentNullException(nameof(lendingRate))
+                : GetNetStorageCost(estimatedValue, lendingRate);
+        }
+
+        public decimal CalculateNetRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay)
+        {
+            return lendingRate == null
+                ? throw new ArgumentNullException(nameof(lendingRate))
+                : GetNetRenewCost(estimatedValue, lendingRate, delay);
+        }
+
+        public decimal CalculateRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay)
+        {
+            return lendingRate == null
+                ? throw new ArgumentNullException(nameof(lendingRate))
+                : decimal.Round(AddVat(CalculateNetRenewCost(estimatedValue, lendingRate, delay)));
         }
     }
 }

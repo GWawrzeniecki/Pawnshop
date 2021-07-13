@@ -1,7 +1,7 @@
-﻿using PawnShop.Core.Enums;
-using System;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
+using PawnShop.Core.Enums;
 using Prism.Services.Dialogs;
+using System;
 
 namespace PawnShop.Core.Dialogs
 {

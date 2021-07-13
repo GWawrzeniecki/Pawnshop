@@ -23,7 +23,7 @@
                 CompactPaneLength="50"
                 DockPanel.Dock="Left"
                 ItemTemplate="{StaticResource MenuItemTemplate}"
-                OpenPaneLength="150"
+                OpenPaneLength="160"
                 OptionsItemTemplate="{StaticResource MenuItemTemplate}"
                 SelectedIndex="0"
                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}"

@@ -2,6 +2,7 @@
     x:Class="PawnShop.Modules.Contract.Views.RenewContractData"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:PawnShop.Modules.Contract.Converters"
     xmlns:menuItem="clr-namespace:PawnShop.Modules.Contract.MenuItem"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:views="clr-namespace:PawnShop.Modules.Contract.Windows.Views"
@@ -19,13 +20,12 @@
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock Text="Umowa kupna - sprzedaży" />
+                        <TextBlock Text="Spóźnienie" />
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
         </Style>
-
+        <converters:LendingRateConverter x:Key="LendingRateConverter" />
     </UserControl.Resources>
 
 
@@ -89,12 +89,98 @@
                             HorizontalAlignment="Left"
                             Text="{Binding ContractDate, Mode=OneWay, StringFormat=d}" />
 
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="5,5,5,5"
+                            HorizontalAlignment="Left"
+                            Text="{Binding HowManyDaysLateCalculated, Mode=OneWay}" />
 
-
-                        <!--<TextBlock
-                            Grid.Row="0"
+                        <TextBlock
+                            Grid.Row="1"
                             Grid.Column="2"
-                            Text="PLN" />-->
+                            Text="dni" />
+
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="5,5,5,5"
+                            HorizontalAlignment="Left"
+                            Text="{Binding SumOfEstimatedValues, Mode=OneWay}" />
+
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Text="PLN" />
+
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="5,5,5,5"
+                            HorizontalAlignment="Left"
+                            Text="{Binding RePurchasePrice, Mode=OneWay}" />
+
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Text="PLN" />
+
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox
+                    Grid.Row="1"
+                    Margin="0,15,0,5"
+                    Header="Przedłużenie">
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Text="Nowy termin:" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="Spóźnienie" />
+                        <!--<CheckBox
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            IsChecked="{Binding IsDelayed, Mode=TwoWay}" />-->
+
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Text="Cena przedłużenia:" />
+
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Text="Nowa cena odkupu:" />
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="5,5,5,5"
+                            HorizontalAlignment="Left"
+                            Text="{Binding NewRepurchaseDate, Mode=OneWay, StringFormat=d}" />
 
                         <TextBlock
                             Grid.Row="1"
@@ -114,7 +200,7 @@
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
-                            Text="{Binding SumOfEstimatedValues, Mode=OneWay}" />
+                            Text="{Binding RenewPrice, Mode=OneWay}" />
 
 
 
@@ -128,7 +214,7 @@
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
-                            Text="{Binding RePurchasePrice, Mode=OneWay}" />
+                            Text="{Binding NewRePurchasePrice, Mode=OneWay}" />
 
 
 
@@ -137,71 +223,43 @@
                             Grid.Column="2"
                             Text="PLN" />
 
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox
-                    Grid.Row="1"
-                    Margin="0,15,0,5"
-                    Header="Przedłużenie">
-
-
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-
                         <TextBlock
                             Grid.Row="0"
-                            Grid.Column="0"
-                            Text="Wybierz dokumenty do druku" />
-
-
-                        <CheckBox
+                            Grid.Column="3"
+                            Text="Ilość dni:" />
+                        <TextBlock
                             Grid.Row="1"
-                            Grid.Column="0"
-                            IsChecked="{Binding IsPrintDealDocument}" />
+                            Grid.Column="3"
+                            Text="Ilość dni:" />
 
-                        <!--<Grid
+                        <ComboBox
                             Grid.Row="0"
-                            Grid.RowSpan="2"
-                            Grid.Column="1"
-                            HorizontalAlignment="Right">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                            Grid.Column="4"
+                            Margin="0,0,0,5"
+                            ItemsSource="{Binding LendingRates}"
+                            SelectedItem="{Binding SelectedNewRepurchaseDateLendingRate, Mode=TwoWay}">
 
-                            <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Text="Ilość kopii" />
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Days}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
-                            <ComboBox
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="{StaticResource ControlMargin}"
-                                SelectedIndex="0">
-
-                                <ComboBoxItem Content="1" />
-                                <ComboBoxItem Content="2" />
-                                <ComboBoxItem Content="3" />
-                                <ComboBoxItem Content="4" />
-                                <ComboBoxItem Content="5" />
-
-                            </ComboBox>
-
-                        </Grid>-->
-
-
-
+                        <ComboBox
+                            Grid.Row="1"
+                            Grid.Column="4"
+                            Margin="0,0,0,5"
+                            IsEditable="True"
+                            ItemsSource="{Binding LendingRates}"
+                            Text="{Binding SelectedDelayLendingRate, Mode=TwoWay, Delay=300, Converter={StaticResource LendingRateConverter}}"
+                            TextSearch.TextPath="Days">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Days}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
                     </Grid>
 
@@ -236,13 +294,12 @@
 
             <Button
                 Grid.Column="1"
-                Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
-                CommandParameter="{x:Type menuItem:ContractDataHamburgerMenuItem}"
-                Content="Wstecz" />
+                Content="Wstecz"
+                IsEnabled="False" />
             <Button
                 Grid.Column="2"
                 Command="{Binding CreateContractCommand}"
-                Content="Utwórz" />
+                Content="Dalej" />
             <Button
                 Grid.Column="3"
                 Command="{Binding DataContext.CloseShellCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"

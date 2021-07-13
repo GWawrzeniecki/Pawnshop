@@ -211,7 +211,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            _dealMaker = navigationContext.Parameters.GetValue<Client>("DealMaker");
+            _dealMaker = navigationContext.Parameters.GetValue<Client>("DealMaker") ?? _dealMaker;
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

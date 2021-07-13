@@ -1,11 +1,11 @@
-﻿using PawnShop.Validator.Base;
+﻿using FluentValidation;
+using FluentValidation.Internal;
+using PawnShop.Validator.Base;
+using Prism.Commands;
+using Prism.Mvvm;
 using System;
 using System.ComponentModel;
 using System.Linq;
-using FluentValidation;
-using FluentValidation.Internal;
-using Prism.Commands;
-using Prism.Mvvm;
 
 namespace PawnShop.Core.ViewModel.Base
 {

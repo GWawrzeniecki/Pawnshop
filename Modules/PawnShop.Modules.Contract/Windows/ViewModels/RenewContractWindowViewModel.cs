@@ -9,6 +9,7 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
 
         private bool _isBusy;
         private object _selectedItem;
+        private string _tittle;
 
         #endregion
 
@@ -16,7 +17,7 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
 
         public RenewContractWindowViewModel()
         {
-
+            Tittle = "Przedłużenie umowy";
         }
 
         #endregion
@@ -34,6 +35,13 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
         {
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
+        }
+
+
+        public string Tittle
+        {
+            get => _tittle;
+            set => SetProperty(ref _tittle, value);
         }
 
         #endregion

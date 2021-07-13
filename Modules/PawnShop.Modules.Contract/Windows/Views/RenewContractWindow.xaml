@@ -6,7 +6,11 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:views="clr-namespace:PawnShop.Controls.BusyControl.Views;assembly=PawnShop.Controls"
-    prism:ViewModelLocator.AutoWireViewModel="True">
+    Title="{Binding Tittle}"
+    MinWidth="1280"
+    MinHeight="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    WindowStartupLocation="CenterScreen">
 
     <DockPanel LastChildFill="True">
 
@@ -17,7 +21,7 @@
                 CompactPaneLength="50"
                 DockPanel.Dock="Left"
                 ItemTemplate="{StaticResource MenuItemTemplate}"
-                OpenPaneLength="150"
+                OpenPaneLength="160"
                 OptionsItemTemplate="{StaticResource MenuItemTemplate}"
                 SelectedIndex="0"
                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}"

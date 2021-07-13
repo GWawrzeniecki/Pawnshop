@@ -23,4 +23,7 @@
 		<ProjectReference Include="..\..\PawnShop.Exceptions\PawnShop.Exceptions.csproj" />
 		<ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Converters\" />
+	</ItemGroup>
 </Project>

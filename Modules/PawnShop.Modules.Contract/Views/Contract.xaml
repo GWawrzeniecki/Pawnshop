@@ -191,7 +191,7 @@
                     <DataGridTextColumn Binding="{Binding ContractNumberId}" Header="Numer umowy" />
                     <DataGridTextColumn Binding="{Binding ContractState.State}" Header="Stan umowy" />
                     <DataGridTextColumn Binding="{Binding AmountContract}" Header="Kwota" />
-                    <DataGridTextColumn Binding="{Binding StartDate}" Header="Data założenia umowy" />
+                    <DataGridTextColumn Binding="{Binding StartDate, StringFormat=d}" Header="Data założenia umowy" />
                     <DataGridTextColumn Binding="{Binding LendingRate.Days}" Header="Czas trwania umowy" />
                     <DataGridTextColumn Binding="{Binding DealMaker.ClientNavigation.FullName}" Header="Klient" />
                 </DataGrid.Columns>

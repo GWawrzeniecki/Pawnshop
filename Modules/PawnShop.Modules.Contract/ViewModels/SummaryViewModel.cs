@@ -232,14 +232,19 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-
-            Contract.ContractItems = new Collection<ContractItem>(navigationContext.Parameters.GetValue<IList<ContractItem>>("ContractItems"));
-            Contract.LendingRate = navigationContext.Parameters.GetValue<LendingRate>("LendingRate");
+            var contractItems = navigationContext.Parameters.GetValue<IList<ContractItem>>("ContractItems");
+            if (contractItems is not null && contractItems.Any())
+                Contract.ContractItems = new Collection<ContractItem>(contractItems);
+            Contract.LendingRate = navigationContext.Parameters.GetValue<LendingRate>("LendingRate") ??
+                                   Contract.LendingRate;
             Contract.LendingRateId = Contract.LendingRate.Id;
-            Contract.DealMaker = navigationContext.Parameters.GetValue<Client>("DealMaker");
+            Contract.DealMaker = navigationContext.Parameters.GetValue<Client>("DealMaker") ?? Contract.DealMaker;
             Contract.DealMakerId = Contract.DealMaker.ClientId;
-            Contract.StartDate = navigationContext.Parameters.GetValue<DateTime>("StartDate");
-            Contract.ContractNumberId = navigationContext.Parameters.GetValue<string>("ContractNumber");
+            var startDate = navigationContext.Parameters.GetValue<DateTime>("StartDate");
+            if (DateTime.Compare(startDate, DateTime.MinValue) > 0)
+                Contract.StartDate = startDate;
+            Contract.ContractNumberId = navigationContext.Parameters.GetValue<string>("ContractNumber") ??
+                                        Contract.ContractNumberId;
             Contract.AmountContract = SumOfEstimatedValues;
             Contract.WorkerBossId = _sessionContext.LoggedPerson.WorkerBossId;
 
