@@ -132,8 +132,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
 
-        public decimal RenewPrice => _actuaLendingRate is not null
-                    ? _calculateService.CalculateRenewCost(SumOfEstimatedValues, _actuaLendingRate, HowManyDaysLate)
+        public decimal RenewPrice => _actuaLendingRate is not null && LendingRates is not null
+                    ? _calculateService.CalculateRenewCost(SumOfEstimatedValues, _actuaLendingRate, HowManyDaysLate, LendingRates)
                     : 0;
 
 
@@ -147,7 +147,11 @@ namespace PawnShop.Modules.Contract.ViewModels
         public IList<LendingRate> LendingRates
         {
             get => _lendingRates;
-            set => SetProperty(ref _lendingRates, value);
+            set
+            {
+                SetProperty(ref _lendingRates, value);
+                RaisePropertyChanged(nameof(RenewPrice));
+            }
         }
 
 

@@ -160,10 +160,6 @@
                             Grid.Row="1"
                             Grid.Column="0"
                             Text="Spóźnienie" />
-                        <!--<CheckBox
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            IsChecked="{Binding IsDelayed, Mode=TwoWay}" />-->
 
                         <TextBlock
                             Grid.Row="2"
@@ -202,8 +198,6 @@
                             HorizontalAlignment="Left"
                             Text="{Binding RenewPrice, Mode=OneWay}" />
 
-
-
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="2"
@@ -215,8 +209,6 @@
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
                             Text="{Binding NewRePurchasePrice, Mode=OneWay}" />
-
-
 
                         <TextBlock
                             Grid.Row="3"
@@ -252,7 +244,7 @@
                             Margin="0,0,0,5"
                             IsEditable="True"
                             ItemsSource="{Binding LendingRates}"
-                            Text="{Binding SelectedDelayLendingRate, Mode=TwoWay, Delay=300, Converter={StaticResource LendingRateConverter}}"
+                            Text="{Binding SelectedDelayLendingRate, Mode=TwoWay, Delay=100, Converter={StaticResource LendingRateConverter}}"
                             TextSearch.TextPath="Days">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
