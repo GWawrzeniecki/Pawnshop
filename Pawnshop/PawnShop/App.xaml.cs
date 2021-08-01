@@ -67,6 +67,7 @@ namespace PawnShop
                 cfg.AddProfile<LaptopViewModelToLaptopProfile>();
                 cfg.AddProfile<InsertContractToContractProfile>();
                 cfg.AddProfile<InsertContractItemToContractItemProfile>();
+                cfg.AddProfile<InsertContractRenewToContractRenewProfile>();
             });
             var mapper = configuration.CreateMapper();
 

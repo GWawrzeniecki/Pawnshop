@@ -20,6 +20,7 @@
         public const string CreditCardPaymentType = "Karta";
 
         //ContractStates
-        public static string CreatedContractState = "Zalozona";
+        public const string CreatedContractState = "Zalozona";
+        public const string RenewContractState = "Przedluzona";
     }
 }

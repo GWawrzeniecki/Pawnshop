@@ -15,7 +15,7 @@ namespace PawnShop.Services.DataService
 
         private readonly IMapper _mapper;
         private readonly ISessionContext _sessionContext;
-        private readonly PawnshopContext _context = new PawnshopContext();
+        private readonly PawnshopContext _context = new();
         private GenericRepository<WorkerBoss> _workerBossRepository;
         private GenericRepository<Person> _personRepository;
         private MoneyBalanceRepository _moneyBalanceRepository;
@@ -38,6 +38,8 @@ namespace PawnShop.Services.DataService
         }
 
         #region public properties
+
+        public PawnshopContext Test => _context;
 
         public GenericRepository<WorkerBoss> WorkerBossRepository
         {

@@ -53,12 +53,20 @@ namespace PawnShop.Services.DataService.Repositories
 
         public async Task<IList<Contract>> GetTopContractsAsync(int count)
         {
-            return await _context.Contracts
+            return await _context.Contracts // to do this two queires in one
                 .Include(p => p.ContractState)
                 .Include(p => p.LendingRate)
                 .Include(p => p.ContractItems)
+                .ThenInclude(c => c.Category)
+                .ThenInclude(c => c.Measure)
                 .Include(p => p.DealMaker)
                 .ThenInclude(p => p.ClientNavigation)
+                .ThenInclude(person => person.Address)
+                .ThenInclude(address => address.Country)
+                .Include(c => c.DealMaker)
+                .ThenInclude(c => c.ClientNavigation)
+                .ThenInclude(c => c.Address)
+                .ThenInclude(c => c.City)
                 .Include(p => p.ContractRenews)
                 .ThenInclude(c => c.LendingRate)
                 .OrderByDescending(ctr => ctr.StartDate)
@@ -72,8 +80,16 @@ namespace PawnShop.Services.DataService.Repositories
                  .Include(p => p.ContractState)
                  .Include(p => p.LendingRate)
                  .Include(p => p.ContractItems)
+                 .ThenInclude(c => c.Category)
+                 .ThenInclude(c => c.Measure)
                  .Include(p => p.DealMaker)
                  .ThenInclude(p => p.ClientNavigation)
+                 .ThenInclude(person => person.Address)
+                 .ThenInclude(address => address.Country)
+                 .Include(c => c.DealMaker)
+                 .ThenInclude(c => c.ClientNavigation)
+                 .ThenInclude(c => c.Address)
+                 .ThenInclude(c => c.City)
                  .Include(p => p.ContractRenews)
                  .ThenInclude(c => c.LendingRate)
                  .AsQueryable();
@@ -129,9 +145,13 @@ namespace PawnShop.Services.DataService.Repositories
            DateTime paymentDate, decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
         {
             var contract = _mapper.Map<Contract>(insertContract);
-            var paymentType = await _context.PaymentTypes.FirstOrDefaultAsync(p => p.Type.Equals(paymentTypeStr));
+            var paymentType = await _context.PaymentTypes
+                             .AsNoTracking()
+                             .FirstOrDefaultAsync(p => p.Type.Equals(paymentTypeStr));
             var contractState =
-                await _context.ContractStates.FirstOrDefaultAsync(c => c.State.Equals(CreatedContractState));
+                await _context.ContractStates
+                      .AsNoTracking()
+                      .FirstOrDefaultAsync(c => c.State.Equals(CreatedContractState));
             var payment = new Payment { PaymentTypeId = paymentType.Id, Amount = paymentAmount, Date = paymentDate };
             var moneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
             var dealDocument = new DealDocument { MoneyBalanceId = moneyBalance.TodayDate, Payment = payment, Cost = cost, Income = income, RepaymentCapital = repaymentCapital, Profit = profit };
@@ -144,5 +164,28 @@ namespace PawnShop.Services.DataService.Repositories
         }
 
 
+        public async Task<Contract> RenewContract(Contract contractToRenew, InsertContractRenew insertContractRenew, PaymentType paymentType, decimal paymentAmount,
+            decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
+        {
+            var payment = new Payment { PaymentTypeId = paymentType.Id, Amount = paymentAmount, Date = DateTime.Today, ClientId = contractToRenew.DealMakerId };
+            var moneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
+            var dealDocument = new DealDocument { MoneyBalanceId = moneyBalance.TodayDate, Payment = payment, Cost = cost, Income = income, RepaymentCapital = repaymentCapital, Profit = profit };
+
+            var renewContract = _mapper.Map<ContractRenew>(insertContractRenew);
+            renewContract.DealDocument = dealDocument;
+
+            var contractState =
+                await _context.ContractStates.AsNoTracking().FirstOrDefaultAsync(c => c.State.Equals(RenewContractState));
+
+            var test = ReferenceEquals(_context, _unitOfWork.Test);
+
+            Attach(contractToRenew);
+            contractToRenew.ContractStateId = contractState.Id;
+            contractToRenew.ContractRenews.Add(renewContract);
+
+            await _context.SaveChangesAsync();
+
+            return contractToRenew;
+        }
     }
 }

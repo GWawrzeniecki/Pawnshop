@@ -60,6 +60,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             Contract = new Business.Models.Contract();
         }
         #endregion
+
         #region PublicProperties
 
 
@@ -116,11 +117,12 @@ namespace PawnShop.Modules.Contract.ViewModels
             {
                 if (_shellService.GetShellViewModel<CreateContractWindow>() is CreateContractWindowViewModel vm)
                     vm.IsBusy = true;
-                await AddContractToDbAsync();
-                if (IsPrintDealDocument)
-                    await PrintDealDocumentAsync();
+                await TryToInsertContractAsync();
                 _eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Publish();
                 MaterialMessageBox.Show($"Pomyślnie utworzono umowę.", "Sukces");
+                if (IsPrintDealDocument)
+                    await TryToPrintDealDocumentAsync();
+
 
             }
             catch (CreateContractException createContractException)
@@ -159,7 +161,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
 
 
-        private async Task AddContractToDbAsync()
+        private async Task TryToInsertContractAsync()
         {
 
             var insertContract = _mapper.Map<InsertContract>(Contract);
@@ -167,63 +169,9 @@ namespace PawnShop.Modules.Contract.ViewModels
             await _contractService.CreateContract(insertContract, Constants.CashPaymentType, SumOfEstimatedValues, DateTime.Now, SumOfEstimatedValues);
         }
 
-        private async Task PrintDealDocumentAsync()
+        private async Task TryToPrintDealDocumentAsync()
         {
-            try
-            {
-                var fieldNameFieldValue = new List<(string, string)>
-                {
-                    ("TodayDate", Contract.StartDate.ToShortDateString()),
-                    ("ContractNumber", Contract.ContractNumberId),
-                    ("FirstNameLastName", Contract.DealMaker.ClientNavigation.FullName),
-                    ("Street", Contract.DealMaker.ClientNavigation.Address.Street),
-                    ("City", Contract.DealMaker.ClientNavigation.Address.City.City1),
-                    ("HouseNumber", Contract.DealMaker.ClientNavigation.Address.HouseNumber),
-                    ("ApartmentNumber", Contract.DealMaker.ClientNavigation.Address.ApartmentNumber),
-                    ("PostCode", Contract.DealMaker.ClientNavigation.Address.PostCode),
-                    ("BirthDate", Contract.DealMaker.ClientNavigation.BirthDate.ToShortDateString()),
-                    ("P1", Contract.DealMaker.Pesel[0].ToString()),
-                    ("P2", Contract.DealMaker.Pesel[1].ToString()),
-                    ("P3", Contract.DealMaker.Pesel[2].ToString()),
-                    ("P4", Contract.DealMaker.Pesel[3].ToString()),
-                    ("P5", Contract.DealMaker.Pesel[4].ToString()),
-                    ("P6", Contract.DealMaker.Pesel[5].ToString()),
-                    ("P7", Contract.DealMaker.Pesel[6].ToString()),
-                    ("P8", Contract.DealMaker.Pesel[7].ToString()),
-                    ("P9", Contract.DealMaker.Pesel[8].ToString()),
-                    ("P10", Contract.DealMaker.Pesel[9].ToString()),
-                    ("P111", Contract.DealMaker.Pesel[10].ToString()),
-                    ("IDCardNumber1", Contract.DealMaker.IdcardNumber[..2]),
-                    ("IDCardNumber2", Contract.DealMaker.IdcardNumber[3..])
-                };
-
-
-
-                for (var i = 1; i <= Contract.ContractItems.Count; i++)
-                {
-                    fieldNameFieldValue.Add(($"LpRow{i}", i.ToString()));
-                    fieldNameFieldValue.Add(($"Description{i}", Contract.ContractItems.ToArray()[i - 1].Name));
-                    fieldNameFieldValue.Add(($"JmRow{i}", Contract.ContractItems.ToArray()[i - 1].Category.Measure.Measure));
-                    fieldNameFieldValue.Add(($"Quantity{i}", Contract.ContractItems.ToArray()[i - 1].Amount.ToString()));
-                    fieldNameFieldValue.Add(($"EstimatedValue{i}", Contract.ContractItems.ToArray()[i - 1].EstimatedValue.ToString()));
-                    fieldNameFieldValue.Add(($"Condition{i}", Contract.ContractItems.ToArray()[i - 1].TechnicalCondition));
-                }
-
-                fieldNameFieldValue.Add(("EstimatedValueSum", SumOfEstimatedValues.ToString()));
-                fieldNameFieldValue.Add(("PCC", PCC.ToString()));
-                fieldNameFieldValue.Add(("RePurchaseDate", Contract.StartDate.AddDays(Contract.LendingRate.Days).ToShortDateString()));
-                fieldNameFieldValue.Add(("RePurchasePrice", RePurchasePrice.ToString()));
-                fieldNameFieldValue.Add(("NetStorageCost", NetStorageCost.ToString()));
-
-                var path = $@"{_configData.DealDocumentsFolderPath}\{Contract.ContractNumberId.Replace('/', '.')}.pdf";
-                await _pdfService.FillPdfFormAsync(_configData.DealDocumentPath, path, fieldNameFieldValue.ToArray());
-                await _pdfService.PrintPdfAsync(path);
-
-            }
-            catch (Exception e)
-            {
-                throw new PrintDealDocumentException("Wystąpił problem podczas drukowania umowy.", e);
-            }
+            await _contractService.PrintDealDocument(Contract);
         }
 
         #endregion

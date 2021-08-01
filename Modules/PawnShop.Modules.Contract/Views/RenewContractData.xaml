@@ -290,11 +290,13 @@
                 IsEnabled="False" />
             <Button
                 Grid.Column="2"
-                Command="{Binding CreateContractCommand}"
-                Content="Dalej" />
+                Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:RenewContractWindow}}"
+                CommandParameter="{x:Type menuItem:RenewContractPaymentHamburgerMenuItem}"
+                Content="Dalej"
+                IsEnabled="{Binding IsNextButtonEnabled}" />
             <Button
                 Grid.Column="3"
-                Command="{Binding DataContext.CloseShellCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
+                Command="{Binding DataContext.CloseShellCommand, RelativeSource={RelativeSource AncestorType=views:RenewContractWindow}}"
                 Content="Anuluj" />
         </Grid>
 

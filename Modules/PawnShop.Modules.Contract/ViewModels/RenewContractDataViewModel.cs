@@ -1,9 +1,13 @@
 ﻿using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Core.HamburgerMenu.Implementations;
+using PawnShop.Core.HamburgerMenu.Interfaces;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.Services;
 using PawnShop.Services.Interfaces;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
@@ -13,10 +17,8 @@ using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
-    public class RenewContractDataViewModel : BindableBase, IRegionManagerAware, INavigationAware
+    public class RenewContractDataViewModel : BindableBase, IRegionManagerAware, INavigationAware, IHamburgerMenuEnabled
     {
-
-
         #region PrivateMembers
         private readonly ICalculateService _calculateService;
         private readonly IContractService _contractService;
@@ -26,17 +28,17 @@ namespace PawnShop.Modules.Contract.ViewModels
         private IList<LendingRate> _lendingRates;
         private LendingRate _selectedNewRepurchaseDateLendingRate;
         private LendingRate _selectedDelayLendingRate;
-        private LendingRate _actuaLendingRate;
+        private LendingRate _actualLendingRate;
         #endregion
-
 
         #region Constructor
 
-        public RenewContractDataViewModel(ICalculateService calculateService, IContractService contractService)
+        public RenewContractDataViewModel(ICalculateService calculateService, IContractService contractService, IContainerProvider containerProvider)
         {
             _calculateService = calculateService;
             _contractService = contractService;
             Contract = new Business.Models.Contract() { ContractItems = new List<ContractItem>(), LendingRate = new LendingRate() };
+            HamburgerMenuItem = containerProvider.Resolve<RenewContractPaymentHamburgerMenuItem>();
             LoadStartupData();
         }
 
@@ -66,7 +68,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             {
                 if (Contract.ContractRenews.Count == 0)
                 {
-                    _actuaLendingRate = Contract.LendingRate;
+                    _actualLendingRate = Contract.LendingRate;
                     RaisePropertyChanged(nameof(RenewPrice));
                     return Contract.StartDate.AddDays(Contract.LendingRate.Days);
                 }
@@ -74,7 +76,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 var lastRenew = Contract.ContractRenews
                     .OrderByDescending(c => c.RenewContractId)
                     .First();
-                _actuaLendingRate = lastRenew.LendingRate;
+                _actualLendingRate = lastRenew.LendingRate;
                 RaisePropertyChanged(nameof(RenewPrice));
                 return lastRenew.StartDate.AddDays(lastRenew.LendingRate.Days);
             }
@@ -87,6 +89,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 var days = DateTime.Compare(ContractDate, DateTime.Now) < 0 ? DateTime.Today.Subtract(ContractDate).Days : 0;
                 IsDelayed = days > 0;
                 HowManyDaysLate = days;
+                SelectedDelayLendingRate = LendingRates?.FirstOrDefault(lr => lr.Days == days) ?? new LendingRate { Days = days };
                 return days;
             }
         }
@@ -115,9 +118,15 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
 
-        public DateTime? NewRepurchaseDate => SelectedNewRepurchaseDateLendingRate is not null
-            ? ContractDate.AddDays(SelectedNewRepurchaseDateLendingRate.Days)
-            : null;
+        public DateTime? NewRepurchaseDate
+        {
+            get
+            {
+                return SelectedNewRepurchaseDateLendingRate is not null
+                       ? ContractDate.AddDays(SelectedNewRepurchaseDateLendingRate.Days)
+                       : null;
+            }
+        }
 
 
 
@@ -132,8 +141,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
 
-        public decimal RenewPrice => _actuaLendingRate is not null && LendingRates is not null
-                    ? _calculateService.CalculateRenewCost(SumOfEstimatedValues, _actuaLendingRate, HowManyDaysLate, LendingRates)
+        public decimal RenewPrice => _actualLendingRate is not null && LendingRates is not null
+                    ? _calculateService.CalculateRenewCost(SumOfEstimatedValues, _actualLendingRate, HowManyDaysLate, LendingRates)
                     : 0;
 
 
@@ -163,6 +172,8 @@ namespace PawnShop.Modules.Contract.ViewModels
                 SetProperty(ref _selectedNewRepurchaseDateLendingRate, value);
                 RaisePropertyChanged(nameof(NewRepurchaseDate));
                 RaisePropertyChanged(nameof(NewRePurchasePrice));
+                RaisePropertyChanged(nameof(IsNextButtonEnabled));
+                (this as IHamburgerMenuEnabled).IsEnabled = IsNextButtonEnabled;
             }
         }
         public LendingRate SelectedDelayLendingRate
@@ -174,6 +185,8 @@ namespace PawnShop.Modules.Contract.ViewModels
                 HowManyDaysLate = value?.Days ?? 0;
             }
         }
+
+        public bool IsNextButtonEnabled => NewRepurchaseDate is not null;
 
         #endregion
 
@@ -214,7 +227,9 @@ namespace PawnShop.Modules.Contract.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
 
-            Contract = navigationContext.Parameters.GetValue<Business.Models.Contract>("contract");
+            var contract = navigationContext.Parameters.GetValue<Business.Models.Contract>("contract");
+            if (contract is not null)
+                Contract = contract;
 
         }
 
@@ -225,8 +240,18 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-
+            navigationContext.Parameters.Add("contract", Contract);
+            navigationContext.Parameters.Add("renewPrice", RenewPrice);
+            navigationContext.Parameters.Add("renewLendingRate", SelectedNewRepurchaseDateLendingRate);
+            navigationContext.Parameters.Add("startDate", ContractDate);
         }
+
+        #endregion
+
+        #region IHamburgerMenuEnabled
+
+        public HamburgerMenuItemBase HamburgerMenuItem { get; set; }
+
 
         #endregion
 

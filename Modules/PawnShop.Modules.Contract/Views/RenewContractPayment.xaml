@@ -1,0 +1,205 @@
+﻿<UserControl
+    x:Class="PawnShop.Modules.Contract.Views.RenewContractPayment"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:menuItem="clr-namespace:PawnShop.Modules.Contract.MenuItem"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:views="clr-namespace:PawnShop.Modules.Contract.Windows.Views"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <Thickness x:Key="ControlMargin">5 5 15 5</Thickness>
+        <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">
+            <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+        </Style>
+        <Style BasedOn="{StaticResource MahApps.Styles.CheckBox.Win10}" TargetType="{x:Type CheckBox}">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="Umowa kupna - sprzedaży" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+        </Style>
+
+    </UserControl.Resources>
+
+
+    <Grid Margin="10,10,10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <GroupBox
+            Grid.Row="0"
+            Margin="0,0,0,15"
+            Header="Płatność i dokumenty">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <GroupBox
+                    Grid.Row="0"
+                    Margin="0,15,0,0"
+                    Header="Płatność">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Text="Cena przedłużenia:" />
+
+                        <TextBlock Grid.Row="0" Grid.Column="1">
+                            <Run Text="{Binding RenewPrice}" />
+                            <Run Text="PLN" />
+
+                        </TextBlock>
+
+
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="Typ płatności:" />
+
+                        <ComboBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            ItemsSource="{Binding PaymentTypes}"
+                            SelectedItem="{Binding SelectedPaymentType}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Type}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+
+
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox
+                    Grid.Row="1"
+                    Margin="0,15,0,5"
+                    Header="Dokumenty">
+
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Text="Wybierz dokumenty do druku" />
+
+
+                        <CheckBox
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            IsChecked="{Binding IsPrintDealDocument}" />
+
+                        <!--<Grid
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Text="Ilość kopii" />
+
+                            <ComboBox
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="{StaticResource ControlMargin}"
+                                SelectedIndex="0">
+
+                                <ComboBoxItem Content="1" />
+                                <ComboBoxItem Content="2" />
+                                <ComboBoxItem Content="3" />
+                                <ComboBoxItem Content="4" />
+                                <ComboBoxItem Content="5" />
+
+                            </ComboBox>
+
+                        </Grid>-->
+
+
+
+
+                    </Grid>
+
+                </GroupBox>
+
+
+
+            </Grid>
+        </GroupBox>
+
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="0,0,0,15">
+
+            <Grid.Resources>
+                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                    <Setter Property="Margin" Value="5,0,15,0" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button
+                Grid.Column="1"
+                Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:RenewContractWindow}}"
+                CommandParameter="{x:Type menuItem:RenewContractDataHamburgerMenuItem}"
+                Content="Wstecz" />
+            <Button
+                Grid.Column="2"
+                Command="{Binding SaveCommand}"
+                Content="Zapisz" />
+            <Button
+                Grid.Column="3"
+                Command="{Binding DataContext.CloseShellCommand, RelativeSource={RelativeSource AncestorType=views:RenewContractWindow}}"
+                Content="Anuluj" />
+        </Grid>
+
+
+
+    </Grid>
+</UserControl>

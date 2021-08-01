@@ -6,7 +6,6 @@ namespace PawnShop.Services.DataService.InsertModels
     public class InsertContract
     {
         public string ContractNumberId { get; set; }
-        public int DealDocumentId { get; set; }
         public int LendingRateId { get; set; }
         public int ContractStateId { get; set; }
         public int DealMakerId { get; set; }

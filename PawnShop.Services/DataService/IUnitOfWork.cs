@@ -1,4 +1,5 @@
 ﻿using PawnShop.Business.Models;
+using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.Repositories;
 using System.Threading.Tasks;
 
@@ -6,6 +7,8 @@ namespace PawnShop.Services.DataService
 {
     public interface IUnitOfWork
     {
+
+        public PawnshopContext Test { get; }
         public void SaveChanges();
         public Task SaveChangesAsync();
         public GenericRepository<WorkerBoss> WorkerBossRepository { get; }

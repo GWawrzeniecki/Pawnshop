@@ -119,6 +119,17 @@ namespace PawnShop.Services.DataService
             context.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
+        public virtual void Update(TEntity entityToUpdate, string propertyName)
+        {
+            dbSet.Attach(entityToUpdate);
+            context.Entry(entityToUpdate).Property(propertyName).IsModified = true;
+        }
+
+        public virtual void Attach(TEntity entity)
+        {
+            context.Attach(entity);
+        }
+
         public PropertyEntry GetModifiedPropertyEntry<T, TProperty>(Expression<Func<T, TProperty>> propertyExpression, TProperty value, string nameOfProperty) where T : class
         {
             return context

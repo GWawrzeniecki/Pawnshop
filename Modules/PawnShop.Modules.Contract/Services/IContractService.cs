@@ -12,6 +12,7 @@ namespace PawnShop.Modules.Contract.Services
         Task<IList<LendingRate>> LoadLendingRates();
 
         Task<IList<ContractState>> LoadContractStates();
+        Task<IList<PaymentType>> LoadPaymentTypes();
 
         Task<IList<Business.Models.Contract>> LoadContracts();
 
@@ -21,6 +22,9 @@ namespace PawnShop.Modules.Contract.Services
         Task<Business.Models.Contract> CreateContract(InsertContract insertContract, string paymentTypeStr, decimal paymentAmount,
             DateTime paymentDate, decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default);
 
+        Task PrintDealDocument(Business.Models.Contract contract);
 
+        Task<Business.Models.Contract> RenewContract(Business.Models.Contract contractToRenew, InsertContractRenew insertContractRenew, PaymentType paymentType, decimal paymentAmount,
+            decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default);
     }
 }
