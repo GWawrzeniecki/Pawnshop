@@ -37,11 +37,17 @@ namespace PawnShop.Modules.Contract
             containerRegistry.RegisterForNavigation<Summary, SummaryViewModel>();
             containerRegistry.RegisterForNavigation<RenewContractData, RenewContractDataViewModel>();
             containerRegistry.RegisterForNavigation<RenewContractPayment, RenewContractPaymentViewModel>();
+            containerRegistry.RegisterForNavigation<BuyBackContractData, BuyBackContractDataViewModel>();
+            containerRegistry.RegisterForNavigation<BuyBackContractItems, BuyBackContractItemsViewModel>();
+            containerRegistry.RegisterForNavigation<BuyBackContractPayment, BuyBackContractPaymentViewModel>();
             containerRegistry.RegisterSingleton<ClientDataHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<ContractDataHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<SummaryHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<RenewContractDataHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<RenewContractPaymentHamburgerMenuItem>();
+            containerRegistry.RegisterSingleton<BuyBackContractDataHamburgerMenuItem>();
+            containerRegistry.RegisterSingleton<BuyBackContractItemsHamburgerMenuItem>();
+            containerRegistry.RegisterSingleton<BuyBackContactPaymentHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<ContractValidator>();
             containerRegistry.RegisterSingleton<CreateContractValidator>();
             containerRegistry.RegisterSingleton<AddClientValidator>();

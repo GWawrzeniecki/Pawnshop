@@ -3,6 +3,7 @@ using PawnShop.Core.Events;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Services.DataService;
 using Prism.Events;
+using Prism.Ioc;
 using Prism.Mvvm;
 using System;
 using System.Threading.Tasks;
@@ -13,8 +14,10 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
     public class BottomInfoLineViewModel : BindableBase  // To do bindeableBase w/wo session context
     {
 
+
         #region private methods
-        private readonly IUnitOfWork _unitOfWork;
+
+        private readonly IContainerProvider _containerProvider;
         private readonly DispatcherTimer _dispatcherTimer;
         private DateTime _actualDateTime;
         private ISessionContext _sessionContext;
@@ -23,16 +26,15 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
 
         #region constructor
 
-        public BottomInfoLineViewModel(ISessionContext sessionContext, IEventAggregator eventAggregator, IUnitOfWork unitOfWork)
+        public BottomInfoLineViewModel(ISessionContext sessionContext, IEventAggregator eventAggregator, IContainerProvider containerProvider)
         {
-            _unitOfWork = unitOfWork;
+            _containerProvider = containerProvider;
+
             _dispatcherTimer = new DispatcherTimer();
             UpdateActualDateTime();
             SessionContext = sessionContext;
             eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Subscribe(MoneyBalanceChanged);
         }
-
-
 
         #endregion constructor
 
@@ -91,7 +93,8 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
 
         public async Task TryToUpdateMoneyBalanceAsync()
         {
-            _sessionContext.TodayMoneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
+            using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+            _sessionContext.TodayMoneyBalance = await unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
         }
 
         #endregion

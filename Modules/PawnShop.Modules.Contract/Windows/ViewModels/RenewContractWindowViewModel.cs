@@ -10,7 +10,6 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
     public class RenewContractWindowViewModel : BindableBase
     {
 
-
         #region PrivateMembers
 
         private bool _isBusy;

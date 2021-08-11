@@ -10,12 +10,23 @@ namespace PawnShop.Services.Implementations
 {
     public class ClientService : IClientService
     {
+        #region PrivateMembers
+
         private readonly IUnitOfWork _unitOfWork;
+
+        #endregion
+
+        #region Constructor
 
         public ClientService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
+
+        #endregion
+
+        #region PublicMethods
+
         public async Task<IList<Client>> GetClientBySurname(string surname)
         {
             try
@@ -65,6 +76,10 @@ namespace PawnShop.Services.Implementations
             }
         }
 
+        #endregion
+
+        #region PrivateMethods
+
         private async Task<IList<Client>> TryToGetClientBySurname(string surname)
         {
             return await _unitOfWork.ClientRepository.GetClientBySurname(surname);
@@ -85,6 +100,6 @@ namespace PawnShop.Services.Implementations
             return await _unitOfWork.ClientRepository.UpdateClientAsync(client);
         }
 
-
+        #endregion
     }
 }

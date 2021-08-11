@@ -133,7 +133,6 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #endregion
 
-
         #region Commands
 
 
@@ -144,8 +143,6 @@ namespace PawnShop.Modules.Contract.ViewModels
 
 
         #endregion Commands
-
-
 
         #region CommandMethods
 

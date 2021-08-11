@@ -60,25 +60,31 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="0"
-                            Text="Termin umowy:" />
+                            Text="Początek terminu:" />
 
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
-                            Text="Spóźnienie:" />
+                            Text="Termin umowy:" />
 
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
-                            Text="Kwota umowy:" />
+                            Text="Spóźnienie:" />
 
                         <TextBlock
                             Grid.Row="3"
+                            Grid.Column="0"
+                            Text="Kwota umowy:" />
+
+                        <TextBlock
+                            Grid.Row="4"
                             Grid.Column="0"
                             Text="Cena umowy:" />
 
@@ -87,41 +93,50 @@
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
-                            Text="{Binding ContractDate, Mode=OneWay, StringFormat=d}" />
+                            Text="{Binding ContractStartDate, Mode=OneWay, StringFormat=d}" />
 
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
-                            Text="{Binding HowManyDaysLateCalculated, Mode=OneWay}" />
+                            Text="{Binding ContractDate, Mode=OneWay, StringFormat=d}" />
 
                         <TextBlock
-                            Grid.Row="1"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="5,5,5,5"
+                            HorizontalAlignment="Left"
+                            Text="{Binding HowManyDaysLateCalculated, Mode=OneWay}" />
+
+
+
+                        <TextBlock
+                            Grid.Row="2"
                             Grid.Column="2"
                             Text="dni" />
 
                         <TextBlock
-                            Grid.Row="2"
+                            Grid.Row="3"
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
                             Text="{Binding SumOfEstimatedValues, Mode=OneWay}" />
 
                         <TextBlock
-                            Grid.Row="2"
+                            Grid.Row="4"
                             Grid.Column="2"
                             Text="PLN" />
 
                         <TextBlock
-                            Grid.Row="3"
+                            Grid.Row="4"
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
                             Text="{Binding RePurchasePrice, Mode=OneWay}" />
 
                         <TextBlock
-                            Grid.Row="3"
+                            Grid.Row="4"
                             Grid.Column="2"
                             Text="PLN" />
 

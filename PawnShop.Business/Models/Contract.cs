@@ -14,7 +14,8 @@ namespace PawnShop.Business.Models
         }
 
         public string ContractNumberId { get; set; }
-        public int DealDocumentId { get; set; }
+        public int CreateContractDealDocumentId { get; set; }
+        public int? BuyBackDealDocumentId { get; set; }
         public int LendingRateId { get; set; }
         public int ContractStateId { get; set; }
         public int DealMakerId { get; set; }
@@ -24,8 +25,9 @@ namespace PawnShop.Business.Models
         public decimal AmountContract { get; set; }
 
         public virtual Client BuyBack { get; set; }
+        public virtual DealDocument BuyBackDealDocument { get; set; }
         public virtual ContractState ContractState { get; set; }
-        public virtual DealDocument DealDocument { get; set; }
+        public virtual DealDocument CreateContractDealDocument { get; set; }
         public virtual Client DealMaker { get; set; }
         public virtual LendingRate LendingRate { get; set; }
         public virtual WorkerBoss WorkerBoss { get; set; }

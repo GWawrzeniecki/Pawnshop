@@ -9,7 +9,7 @@ namespace PawnShop.Services.DataService.Repositories
 {
     public class MoneyBalanceRepository : GenericRepository<MoneyBalance>
     {
-        private PawnshopContext _context;
+        private readonly PawnshopContext _context;
         private readonly string _getTodayMoneyBalanceProcedureName = "CreateTodayMoneyBalance";
 
         public MoneyBalanceRepository(PawnshopContext context) : base(context)

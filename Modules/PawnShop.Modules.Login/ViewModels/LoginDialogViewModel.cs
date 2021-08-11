@@ -19,7 +19,6 @@ namespace PawnShop.Modules.Login.ViewModels
         #region private members
 
         private readonly ILoginService _loginService;
-        private readonly IDialogService _dialogService;
         private readonly IUIService _uiService;
         private bool _userNameHasText;
         private bool _passwordBoxHasText;
@@ -41,7 +40,10 @@ namespace PawnShop.Modules.Login.ViewModels
         #region commands
 
         public DelegateCommand<PasswordBox> LoginCommand =>
-            _loginCommand ??= new DelegateCommand<PasswordBox>(LoginAsync, CanLogin);
+            _loginCommand ??= new DelegateCommand<PasswordBox>(LoginAsync, CanLogin)
+                .ObservesProperty(() => UserNameHasText)
+                .ObservesProperty(() => PasswordBoxHasText)
+                .ObservesProperty(() => LoginButtonIsBusy);
 
         #endregion commands
 
@@ -81,14 +83,11 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #region constructor
 
-        public LoginDialogViewModel(ILoginService loginService, IDialogService dialogService, IUIService uService,
+        public LoginDialogViewModel(ILoginService loginService, IUIService uService,
             LoginDialogValidator loginDialogValidator) : base(loginDialogValidator)
         {
-            LoginCommand.ObservesProperty(() => UserNameHasText).ObservesProperty(() => PasswordBoxHasText)
-                .ObservesProperty(() => LoginButtonIsBusy);
-            this._loginService = loginService;
-            this._dialogService = dialogService;
-            this._uiService = uService;
+            _loginService = loginService;
+            _uiService = uService;
             PasswordTag = true;
         }
 

@@ -33,6 +33,7 @@ namespace PawnShop
     {
         public App()
         {
+            Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
 
         protected override Window CreateShell()
@@ -52,6 +53,7 @@ namespace PawnShop
             containerRegistry.RegisterSingleton<IClientService, ClientService>(); // to do (maybe) to move in future
             containerRegistry.RegisterSingleton<IContractItemService, ContractItemService>();
             containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();
+            containerRegistry.RegisterSingleton<IPrintService, PrintService>();
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();

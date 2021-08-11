@@ -29,6 +29,7 @@
         <Button
             Grid.Column="2"
             Margin="0,0,20,0"
+            Command="{Binding BuyBackContractCommand}"
             Content="Wykup umowę" />
         <icons:NotificationsIcon Grid.Column="4" />
         <icons:LogoutIcon Grid.Column="5" />

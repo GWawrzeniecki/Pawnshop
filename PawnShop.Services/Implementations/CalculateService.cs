@@ -10,13 +10,22 @@ namespace PawnShop.Services.Implementations
 {
     public class CalculateService : ICalculateService
     {
+        #region PrivateMembers
+
         private readonly IConfigData _configData;
+
+        #endregion
+
+        #region Constructor
 
         public CalculateService(IConfigData configData)
         {
             _configData = configData;
         }
 
+        #endregion
+
+        #region PublicMethods
 
         public decimal CalculateContractAmount(decimal estimatedValue, LendingRate lendingRate)
         {
@@ -45,6 +54,17 @@ namespace PawnShop.Services.Implementations
                 ? throw new ArgumentNullException(nameof(lendingRate))
                 : decimal.Round(AddVat(CalculateNetRenewCost(estimatedValue, lendingRate, delay, lendingRates)));
         }
+
+        public decimal CalculateBuyBackCost(decimal estimatedValue, LendingRate lendingRate, int? delay, IList<LendingRate> lendingRates)
+        {
+            return lendingRate == null
+                ? throw new ArgumentNullException(nameof(lendingRate))
+                : decimal.Round(AddVat(CalculateNetRenewCost(estimatedValue, lendingRate, delay, lendingRates))) + estimatedValue;
+        }
+
+        #endregion
+
+        #region PrivateMethods
 
         private decimal GetNetStorageCost(decimal estimatedValue, LendingRate lendingRate) => estimatedValue * lendingRate.Procent / 100;
         private decimal AddVat(decimal netAmount) => (netAmount * _configData.VatPercent / 100) + netAmount;
@@ -97,6 +117,9 @@ namespace PawnShop.Services.Implementations
 
             return subtractedLendingRates;
         }
+
+        #endregion
+
 
 
     }

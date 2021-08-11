@@ -59,8 +59,6 @@ namespace PawnShop.DataAccess.Data
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=Kogut-Desktop\\Sqlexpress;Initial Catalog=Pawnshop;Integrated Security=True;trustServerCertificate=true");
             }
-
-            optionsBuilder.EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -175,7 +173,7 @@ namespace PawnShop.DataAccess.Data
 
                 entity.ToTable("Contract", "Pawnshop");
 
-                entity.HasIndex(e => e.DealDocumentId, "DealDocumentUniqueContract")
+                entity.HasIndex(e => e.CreateContractDealDocumentId, "DealDocumentUniqueContract")
                     .IsUnique();
 
                 entity.Property(e => e.ContractNumberId)
@@ -184,11 +182,13 @@ namespace PawnShop.DataAccess.Data
 
                 entity.Property(e => e.AmountContract).HasColumnType("decimal(10, 2)");
 
+                entity.Property(e => e.BuyBackDealDocumentId).HasColumnName("BuyBackDealDocumentID");
+
                 entity.Property(e => e.BuyBackId).HasColumnName("BuyBackID");
 
                 entity.Property(e => e.ContractStateId).HasColumnName("ContractStateID");
 
-                entity.Property(e => e.DealDocumentId).HasColumnName("DealDocumentID");
+                entity.Property(e => e.CreateContractDealDocumentId).HasColumnName("CreateContractDealDocumentID");
 
                 entity.Property(e => e.DealMakerId).HasColumnName("DealMakerID");
 
@@ -197,6 +197,11 @@ namespace PawnShop.DataAccess.Data
                 entity.Property(e => e.StartDate).HasColumnType("date");
 
                 entity.Property(e => e.WorkerBossId).HasColumnName("WorkerBossID");
+
+                entity.HasOne(d => d.BuyBackDealDocument)
+                    .WithMany(p => p.ContractBuyBackDealDocuments)
+                    .HasForeignKey(d => d.BuyBackDealDocumentId)
+                    .HasConstraintName("BuyBackContract_DealDocument");
 
                 entity.HasOne(d => d.BuyBack)
                     .WithMany(p => p.ContractBuyBacks)
@@ -209,11 +214,11 @@ namespace PawnShop.DataAccess.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Contract_ContractState");
 
-                entity.HasOne(d => d.DealDocument)
-                    .WithOne(p => p.Contract)
-                    .HasForeignKey<Contract>(d => d.DealDocumentId)
+                entity.HasOne(d => d.CreateContractDealDocument)
+                    .WithOne(p => p.ContractCreateContractDealDocument)
+                    .HasForeignKey<Contract>(d => d.CreateContractDealDocumentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Contract_DealDocument");
+                    .HasConstraintName("CreateContract_DealDocument");
 
                 entity.HasOne(d => d.DealMaker)
                     .WithMany(p => p.ContractDealMakers)
@@ -891,9 +896,5 @@ namespace PawnShop.DataAccess.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-
-
-
     }
 }

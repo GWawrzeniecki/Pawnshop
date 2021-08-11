@@ -20,6 +20,7 @@ namespace PawnShop.Modules.Contract.ViewModels
     public class RenewContractDataViewModel : BindableBase, IRegionManagerAware, INavigationAware, IHamburgerMenuEnabled
     {
         #region PrivateMembers
+
         private readonly ICalculateService _calculateService;
         private readonly IContractService _contractService;
         private bool _isDelayed;
@@ -29,15 +30,19 @@ namespace PawnShop.Modules.Contract.ViewModels
         private LendingRate _selectedNewRepurchaseDateLendingRate;
         private LendingRate _selectedDelayLendingRate;
         private LendingRate _actualLendingRate;
+        private DateTime _contractStartDate;
+
         #endregion
 
         #region Constructor
 
-        public RenewContractDataViewModel(ICalculateService calculateService, IContractService contractService, IContainerProvider containerProvider)
+        public RenewContractDataViewModel(ICalculateService calculateService, IContractService contractService,
+            IContainerProvider containerProvider)
         {
             _calculateService = calculateService;
             _contractService = contractService;
-            Contract = new Business.Models.Contract() { ContractItems = new List<ContractItem>(), LendingRate = new LendingRate() };
+            Contract = new Business.Models.Contract()
+            { ContractItems = new List<ContractItem>(), LendingRate = new LendingRate() };
             HamburgerMenuItem = containerProvider.Resolve<RenewContractPaymentHamburgerMenuItem>();
             LoadStartupData();
         }
@@ -56,11 +61,14 @@ namespace PawnShop.Modules.Contract.ViewModels
                 RaisePropertyChanged(nameof(HowManyDaysLateCalculated));
                 RaisePropertyChanged(nameof(SumOfEstimatedValues));
                 RaisePropertyChanged(nameof(RePurchasePrice));
-
-
             }
         }
 
+        public DateTime ContractStartDate
+        {
+            get => _contractStartDate;
+            set => SetProperty(ref _contractStartDate, value);
+        }
 
         public DateTime ContractDate
         {
@@ -70,6 +78,8 @@ namespace PawnShop.Modules.Contract.ViewModels
                 {
                     _actualLendingRate = Contract.LendingRate;
                     RaisePropertyChanged(nameof(RenewPrice));
+                    RaisePropertyChanged(nameof(RePurchasePrice));
+                    ContractStartDate = Contract.StartDate;
                     return Contract.StartDate.AddDays(Contract.LendingRate.Days);
                 }
 
@@ -78,6 +88,8 @@ namespace PawnShop.Modules.Contract.ViewModels
                     .First();
                 _actualLendingRate = lastRenew.LendingRate;
                 RaisePropertyChanged(nameof(RenewPrice));
+                RaisePropertyChanged(nameof(RePurchasePrice));
+                ContractStartDate = Contract.StartDate;
                 return lastRenew.StartDate.AddDays(lastRenew.LendingRate.Days);
             }
         }
@@ -86,30 +98,23 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             get
             {
-                var days = DateTime.Compare(ContractDate, DateTime.Now) < 0 ? DateTime.Today.Subtract(ContractDate).Days : 0;
+                var days = DateTime.Compare(ContractDate, DateTime.Now) < 0
+                    ? DateTime.Today.Subtract(ContractDate).Days
+                    : 0;
                 IsDelayed = days > 0;
                 HowManyDaysLate = days;
-                SelectedDelayLendingRate = LendingRates?.FirstOrDefault(lr => lr.Days == days) ?? new LendingRate { Days = days };
+                SelectedDelayLendingRate =
+                    LendingRates?.FirstOrDefault(lr => lr.Days == days) ?? new LendingRate { Days = days };
                 return days;
             }
         }
 
         public decimal SumOfEstimatedValues => Contract.ContractItems.Sum(c => c.EstimatedValue);
 
-
-        public decimal RePurchasePrice
-        {
-            get
-            {
-                if (Contract.ContractRenews.Count == 0)
-                    return _calculateService.CalculateContractAmount(SumOfEstimatedValues, Contract.LendingRate);
-                var lastRenew = Contract.ContractRenews
-                    .OrderByDescending(c => c.RenewContractId)
-                    .First();
-                return _calculateService.CalculateContractAmount(SumOfEstimatedValues, lastRenew.LendingRate);
-            }
-        }
-
+        public decimal RePurchasePrice =>
+            _actualLendingRate is not null
+                ? _calculateService.CalculateContractAmount(SumOfEstimatedValues, _actualLendingRate)
+                : 0;
 
         public bool IsDelayed
         {
@@ -117,18 +122,10 @@ namespace PawnShop.Modules.Contract.ViewModels
             set => SetProperty(ref _isDelayed, value);
         }
 
-
-        public DateTime? NewRepurchaseDate
-        {
-            get
-            {
-                return SelectedNewRepurchaseDateLendingRate is not null
-                       ? ContractDate.AddDays(SelectedNewRepurchaseDateLendingRate.Days)
-                       : null;
-            }
-        }
-
-
+        public DateTime? NewRepurchaseDate =>
+            SelectedNewRepurchaseDateLendingRate is not null
+                ? ContractDate.AddDays(SelectedNewRepurchaseDateLendingRate.Days)
+                : null;
 
         public int HowManyDaysLate
         {
@@ -140,18 +137,15 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
         }
 
-
         public decimal RenewPrice => _actualLendingRate is not null && LendingRates is not null
-                    ? _calculateService.CalculateRenewCost(SumOfEstimatedValues, _actualLendingRate, HowManyDaysLate, LendingRates)
-                    : 0;
-
-
+            ? _calculateService.CalculateRenewCost(SumOfEstimatedValues, _actualLendingRate, HowManyDaysLate,
+                LendingRates)
+            : 0;
 
         public decimal NewRePurchasePrice => SelectedNewRepurchaseDateLendingRate is not null
-                    ? _calculateService.CalculateContractAmount(SumOfEstimatedValues,
-                        SelectedNewRepurchaseDateLendingRate)
-                    : 0;
-
+            ? _calculateService.CalculateContractAmount(SumOfEstimatedValues,
+                SelectedNewRepurchaseDateLendingRate)
+            : 0;
 
         public IList<LendingRate> LendingRates
         {
@@ -162,7 +156,6 @@ namespace PawnShop.Modules.Contract.ViewModels
                 RaisePropertyChanged(nameof(RenewPrice));
             }
         }
-
 
         public LendingRate SelectedNewRepurchaseDateLendingRate
         {
@@ -176,6 +169,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 (this as IHamburgerMenuEnabled).IsEnabled = IsNextButtonEnabled;
             }
         }
+
         public LendingRate SelectedDelayLendingRate
         {
             get => _selectedDelayLendingRate;
@@ -197,7 +191,6 @@ namespace PawnShop.Modules.Contract.ViewModels
             try
             {
                 await TryToLoadLendingRate();
-
             }
 
             catch (LoadingLendingRatesException loadingLendingRatesException)
@@ -206,7 +199,6 @@ namespace PawnShop.Modules.Contract.ViewModels
                     $"{loadingLendingRatesException.Message}{Environment.NewLine}Błąd: {loadingLendingRatesException.InnerException?.Message}",
                     "Błąd");
             }
-
         }
 
         private async Task TryToLoadLendingRate()
@@ -226,11 +218,9 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-
             var contract = navigationContext.Parameters.GetValue<Business.Models.Contract>("contract");
             if (contract is not null)
                 Contract = contract;
-
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -252,8 +242,6 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public HamburgerMenuItemBase HamburgerMenuItem { get; set; }
 
-
         #endregion
-
     }
 }

@@ -50,6 +50,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private DelegateCommand _refreshCommand;
         private DelegateCommand _createContractCommand;
         private DelegateCommand _renewContractCommand;
+        private DelegateCommand _buyBackContractCommand;
 
         #endregion private members
 
@@ -79,8 +80,6 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
         #endregion viewModelBase
-
-
 
         #region properties
 
@@ -178,8 +177,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
         public DelegateCommand CreateContractCommand => _createContractCommand ??= new DelegateCommand(CreateContract);
         public DelegateCommand RenewContractCommand => _renewContractCommand ??= new DelegateCommand(RenewContract);
-
-
+        public DelegateCommand BuyBackContractCommand => _buyBackContractCommand ??= new DelegateCommand(BuyBackContract);
 
         #endregion commands
 
@@ -400,11 +398,17 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private void RenewContract()
         {
-            if (SelectedContract is null)
+            if (SelectedContract is null || SelectedContract.ContractState.State.Equals(Core.Constants.Constants.BuyBackContractState))
                 return;
-            _sessionContext.ContractToRenew = SelectedContract;
             _shellService.ShowShell<RenewContractWindow>(nameof(RenewContractData), new NavigationParameters() { { "contract", SelectedContract } });
 
+        }
+
+        private void BuyBackContract()
+        {
+            if (SelectedContract is null || SelectedContract.ContractState.State.Equals(Core.Constants.Constants.BuyBackContractState))
+                return;
+            _shellService.ShowShell<BuyBackContractWindow>(nameof(BuyBackContractData), new NavigationParameters() { { "contract", SelectedContract } });
         }
 
         #endregion private methods

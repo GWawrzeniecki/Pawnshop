@@ -12,12 +12,8 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     WindowStartupLocation="CenterScreen">
 
-
-
     <DockPanel LastChildFill="True">
-
         <Grid>
-
             <mah:HamburgerMenu
                 x:Name="HamburgerMenu"
                 CompactPaneLength="50"
@@ -41,7 +37,6 @@
                     </Grid>
                 </mah:HamburgerMenu.Content>
             </mah:HamburgerMenu>
-
             <views:BusyControl />
         </Grid>
     </DockPanel>

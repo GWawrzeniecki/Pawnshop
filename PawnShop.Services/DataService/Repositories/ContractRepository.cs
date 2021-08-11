@@ -5,6 +5,7 @@ using PawnShop.Core.Extensions;
 using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.InsertModels;
 using PawnShop.Services.DataService.QueryDataModels;
+using Prism.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,15 @@ namespace PawnShop.Services.DataService.Repositories
     public class ContractRepository : GenericRepository<Contract>
     {
         private readonly PawnshopContext _context;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IContainerProvider _containerProvider;
         private readonly IMapper _mapper;
         private readonly string _updateContractStatesProcedureName = "UpdateContractStates";
 
-        public ContractRepository(PawnshopContext context, IUnitOfWork unitOfWork, IMapper mapper) : base(context)
+        public ContractRepository(PawnshopContext context, IContainerProvider containerProvider) : base(context)
         {
             _context = context;
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _containerProvider = containerProvider;
+            _mapper = _containerProvider.Resolve<IMapper>();
         }
 
         public async Task UpdateContractStates() => await _context.Database.ExecuteSqlRawAsync($"Exec [{DBSchemaName}].[{_updateContractStatesProcedureName}]");
@@ -145,18 +146,14 @@ namespace PawnShop.Services.DataService.Repositories
            DateTime paymentDate, decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
         {
             var contract = _mapper.Map<Contract>(insertContract);
-            var paymentType = await _context.PaymentTypes
-                             .AsNoTracking()
-                             .FirstOrDefaultAsync(p => p.Type.Equals(paymentTypeStr));
-            var contractState =
-                await _context.ContractStates
-                      .AsNoTracking()
-                      .FirstOrDefaultAsync(c => c.State.Equals(CreatedContractState));
+            var paymentType = await _context.PaymentTypes.AsNoTracking().FirstOrDefaultAsync(p => p.Type.Equals(paymentTypeStr));
+            var contractState = await _context.ContractStates.AsNoTracking().FirstOrDefaultAsync(c => c.State.Equals(CreatedContractState));
             var payment = new Payment { PaymentTypeId = paymentType.Id, Amount = paymentAmount, Date = paymentDate };
-            var moneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
+            using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+            var moneyBalance = await unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
             var dealDocument = new DealDocument { MoneyBalanceId = moneyBalance.TodayDate, Payment = payment, Cost = cost, Income = income, RepaymentCapital = repaymentCapital, Profit = profit };
             contract.ContractStateId = contractState.Id;
-            contract.DealDocument = dealDocument;
+            contract.CreateContractDealDocument = dealDocument;
             await _context.Contracts.AddAsync(contract);
             await _context.SaveChangesAsync();
 
@@ -168,24 +165,36 @@ namespace PawnShop.Services.DataService.Repositories
             decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
         {
             var payment = new Payment { PaymentTypeId = paymentType.Id, Amount = paymentAmount, Date = DateTime.Today, ClientId = contractToRenew.DealMakerId };
-            var moneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
+            using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+            var moneyBalance = await unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
             var dealDocument = new DealDocument { MoneyBalanceId = moneyBalance.TodayDate, Payment = payment, Cost = cost, Income = income, RepaymentCapital = repaymentCapital, Profit = profit };
-
             var renewContract = _mapper.Map<ContractRenew>(insertContractRenew);
             renewContract.DealDocument = dealDocument;
-
-            var contractState =
-                await _context.ContractStates.AsNoTracking().FirstOrDefaultAsync(c => c.State.Equals(RenewContractState));
-
-            var test = ReferenceEquals(_context, _unitOfWork.Test);
-
+            var contractState = await _context.ContractStates.AsNoTracking().FirstOrDefaultAsync(c => c.State.Equals(RenewContractState));
             Attach(contractToRenew);
             contractToRenew.ContractStateId = contractState.Id;
             contractToRenew.ContractRenews.Add(renewContract);
-
             await _context.SaveChangesAsync();
-
             return contractToRenew;
         }
+
+        public async Task<Contract> BuyBackContract(Contract contractToBuyBack, PaymentType paymentType, decimal paymentAmount,
+            decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
+        {
+            var payment = new Payment { PaymentTypeId = paymentType.Id, Amount = paymentAmount, Date = DateTime.Today, ClientId = contractToBuyBack.DealMakerId };
+            using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+            var moneyBalance = await unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
+            var dealDocument = new DealDocument { MoneyBalanceId = moneyBalance.TodayDate, Payment = payment, Cost = cost, Income = income, RepaymentCapital = repaymentCapital, Profit = profit };
+            var contractState = await _context.ContractStates.AsNoTracking().FirstOrDefaultAsync(c => c.State.Equals(BuyBackContractState));
+            Attach(contractToBuyBack);
+            contractToBuyBack.ContractStateId = contractState.Id;
+            contractToBuyBack.BuyBackId = contractToBuyBack.DealMakerId;
+            contractToBuyBack.BuyBackDealDocument = dealDocument;
+            await _context.SaveChangesAsync();
+
+            return contractToBuyBack;
+        }
+
+
     }
 }

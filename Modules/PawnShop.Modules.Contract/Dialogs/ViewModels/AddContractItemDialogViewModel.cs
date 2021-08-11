@@ -21,10 +21,6 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
     public class AddContractItemDialogViewModel : ViewModelBase<AddContractItemDialogViewModel>, IDialogAware
     {
 
-        private readonly IContractItemService _contractItemService;
-        private readonly IContainerProvider _containerProvider;
-        private readonly IMapper _mapper;
-
         #region PrivateMembers
 
         private string _title;
@@ -42,11 +38,11 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         private DelegateCommand _addContractItemCommand;
         private IList<ContractItemState> _contractItemStates;
         private ContractItemState _selectedContractItemState;
-
-
+        private readonly IContractItemService _contractItemService;
+        private readonly IContainerProvider _containerProvider;
+        private readonly IMapper _mapper;
 
         #endregion
-
 
         #region Constructor
 
@@ -63,9 +59,7 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
 
         #endregion
 
-
         #region PublicProperties
-
         public string Title
         {
             get => _title;
@@ -157,8 +151,6 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             set => SetProperty(ref _selectedContractItemState, value);
         }
 
-
-
         #endregion
 
         #region commands
@@ -171,11 +163,6 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             _addContractItemCommand ??=
                 new DelegateCommand(AddContractItem, CanExecuteAddContractItem)
             .ObservesProperty(() => HasErrors);
-
-
-
-
-
 
         #endregion
 
@@ -200,6 +187,7 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         public event Action<IDialogResult> RequestClose;
 
         #endregion IDialogAware
+
         #region viewModelBase
 
         protected override AddContractItemDialogViewModel GetInstance()
@@ -278,7 +266,6 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
 
 
         #endregion
-
 
         #region commandMethods
 

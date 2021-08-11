@@ -1,11 +1,12 @@
 ﻿using PawnShop.Business.Models;
 using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.Repositories;
+using System;
 using System.Threading.Tasks;
 
 namespace PawnShop.Services.DataService
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
 
         public PawnshopContext Test { get; }

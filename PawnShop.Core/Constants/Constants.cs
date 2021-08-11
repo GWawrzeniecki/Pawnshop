@@ -22,5 +22,6 @@
         //ContractStates
         public const string CreatedContractState = "Zalozona";
         public const string RenewContractState = "Przedluzona";
+        public const string BuyBackContractState = "Wykupiona";
     }
 }

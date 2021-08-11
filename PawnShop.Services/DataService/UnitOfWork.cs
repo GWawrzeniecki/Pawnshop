@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using PawnShop.Business.Models;
-using PawnShop.Core.SharedVariables;
+﻿using PawnShop.Business.Models;
 using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.Repositories;
+using Prism.Ioc;
+using System;
 using System.Threading.Tasks;
 
 namespace PawnShop.Services.DataService
@@ -13,8 +13,7 @@ namespace PawnShop.Services.DataService
 
         #region private members
 
-        private readonly IMapper _mapper;
-        private readonly ISessionContext _sessionContext;
+        private readonly IContainerProvider _containerProvider;
         private readonly PawnshopContext _context = new();
         private GenericRepository<WorkerBoss> _workerBossRepository;
         private GenericRepository<Person> _personRepository;
@@ -28,14 +27,18 @@ namespace PawnShop.Services.DataService
         private GenericRepository<UnitMeasure> _unitMeasureRepository;
         private GenericRepository<ContractItemState> _contractItemStateRepository;
         private GenericRepository<PaymentType> _paymentTypeRepository;
+        private bool _disposed;
 
         #endregion private members
 
-        public UnitOfWork(IMapper mapper, ISessionContext sessionContext)
+        #region Constructor
+
+        public UnitOfWork(IContainerProvider containerProvider)
         {
-            _mapper = mapper;
-            _sessionContext = sessionContext;
+            _containerProvider = containerProvider;
         }
+
+        #endregion
 
         #region public properties
 
@@ -72,7 +75,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._contractRepository ??= new ContractRepository(_context, this, _mapper);
+                this._contractRepository ??= new ContractRepository(_context, _containerProvider);
                 return _contractRepository;
             }
         }
@@ -173,6 +176,27 @@ namespace PawnShop.Services.DataService
 
 
 
+        #endregion
+
+        #region IDisposable
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+            this._disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
         #endregion
     }
 }

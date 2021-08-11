@@ -1,0 +1,46 @@
+﻿<mah:MetroWindow
+    x:Class="PawnShop.Modules.Contract.Windows.Views.BuyBackContractWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:views="clr-namespace:PawnShop.Controls.BusyControl.Views;assembly=PawnShop.Controls"
+    Title="{Binding Title}"
+    MinWidth="1280"
+    MinHeight="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    WindowStartupLocation="CenterScreen">
+    <Grid>
+
+        <DockPanel LastChildFill="True">
+            <Grid>
+                <mah:HamburgerMenu
+                    x:Name="HamburgerMenu"
+                    CompactPaneLength="50"
+                    DockPanel.Dock="Left"
+                    ItemTemplate="{StaticResource MenuItemTemplate}"
+                    OpenPaneLength="160"
+                    OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+                    SelectedIndex="0"
+                    SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                    Style="{StaticResource MahApps.Styles.HamburgerMenu.Ripple}">
+
+                    <!--  Menu items  -->
+                    <mah:HamburgerMenu.ItemsSource>
+                        <mah:HamburgerMenuItemCollection x:Name="HamburgerMenuItemCollection" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.MenuRegion}" />
+                    </mah:HamburgerMenu.ItemsSource>
+
+                    <mah:HamburgerMenu.Content>
+                        <Grid>
+                            <!--  Main Content  -->
+                            <ContentControl x:Name="CreateContractContentControl" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ContentRegion}" />
+                        </Grid>
+                    </mah:HamburgerMenu.Content>
+                </mah:HamburgerMenu>
+                <views:BusyControl />
+            </Grid>
+        </DockPanel>
+
+    </Grid>
+</mah:MetroWindow>

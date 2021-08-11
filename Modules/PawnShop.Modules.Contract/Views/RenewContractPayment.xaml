@@ -6,6 +6,7 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:views="clr-namespace:PawnShop.Modules.Contract.Windows.Views"
     prism:ViewModelLocator.AutoWireViewModel="True">
+
     <UserControl.Resources>
         <Thickness x:Key="ControlMargin">5 5 15 5</Thickness>
         <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">

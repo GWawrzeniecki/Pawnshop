@@ -26,5 +26,7 @@ namespace PawnShop.Modules.Contract.Services
 
         Task<Business.Models.Contract> RenewContract(Business.Models.Contract contractToRenew, InsertContractRenew insertContractRenew, PaymentType paymentType, decimal paymentAmount,
             decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default);
+        Task<Business.Models.Contract> BuyBackContract(Business.Models.Contract buyBackContract, PaymentType paymentType, decimal paymentAmount,
+            decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default);
     }
 }
