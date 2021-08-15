@@ -22,11 +22,12 @@
     <ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Home\PawnShop.Modules.Home.csproj" />
+    <ProjectReference Include="..\..\PawnShop.Modules.Settings\PawnShop.Modules.Settings.csproj" />
     <ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="App.config">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

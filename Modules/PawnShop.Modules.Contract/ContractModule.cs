@@ -26,7 +26,6 @@ namespace PawnShop.Modules.Contract
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager.Regions[RegionNames.MenuRegion].Add(containerProvider.Resolve<ContractHamburgerMenuItem>());
-
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

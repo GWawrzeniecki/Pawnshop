@@ -2,6 +2,6 @@
 {
     public interface IConfigurationService
     {
-        public T GetValue<T>(string key);
+        public T GetValueFromAppConfig<T>(string key);
     }
 }

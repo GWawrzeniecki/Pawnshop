@@ -80,7 +80,7 @@
                             Text="Cena odkupu:" />
 
                         <TextBlock Grid.Row="0" Grid.Column="1">
-                            <Run Text="{Binding BuyBackPrice,Mode=OneWay}" />
+                            <Run Text="{Binding BuyBackPrice, Mode=OneWay}" />
                             <Run Text="PLN" />
 
                         </TextBlock>

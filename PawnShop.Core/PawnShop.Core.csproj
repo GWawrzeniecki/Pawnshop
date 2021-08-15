@@ -10,6 +10,8 @@
     <PackageReference Include="FluentValidation" Version="10.3.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.7" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
@@ -17,6 +19,12 @@
   <ItemGroup>
     <ProjectReference Include="..\PawnShop.DataAccess\PawnShop.DataAccess.csproj" />
     <ProjectReference Include="..\PawnShop.Exceptions\PawnShop.Exceptions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="usersettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

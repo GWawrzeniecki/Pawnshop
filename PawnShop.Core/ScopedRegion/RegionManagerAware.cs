@@ -5,6 +5,11 @@ namespace PawnShop.Core.ScopedRegion
 {
     public class RegionManagerAware
     {
+        /// <summary>
+        /// Setting IRegionManager property from IRegionManagerAware Interface
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="regionManager"></param>
         public static void SetRegionManagerAware(object item, IRegionManager regionManager)
         {
             switch (item)

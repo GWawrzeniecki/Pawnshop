@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿
+using Prism.Mvvm;
 
 namespace PawnShop.ViewModels
 {
@@ -6,6 +7,7 @@ namespace PawnShop.ViewModels
     {
         public MahappsDialogWindowViewModel()
         {
+
         }
     }
 }

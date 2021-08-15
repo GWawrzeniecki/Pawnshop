@@ -7,6 +7,9 @@ using RegionBehavior = Prism.Regions.RegionBehavior;
 
 namespace PawnShop.Core.ScopedRegion
 {
+    /// <summary>
+    /// Allows for scoped views obtains correct region manager in their view models
+    /// </summary>
     public class RegionManagerAwareBehavior : RegionBehavior
     {
         public const string BehaviorKey = "RegionManagerAwareBehavior";
@@ -16,8 +19,7 @@ namespace PawnShop.Core.ScopedRegion
             Region.ActiveViews.CollectionChanged += ActiveViews_CollectionChanged;
         }
 
-        private void ActiveViews_CollectionChanged(object sender,
-            System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void ActiveViews_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
@@ -55,14 +57,11 @@ namespace PawnShop.Core.ScopedRegion
                     {
                         if (frameworkElement.DataContext is IRegionManagerAware rmAwareDataContext)
                         {
-                            if (frameworkElement.Parent is FrameworkElement frameworkElementParent)
+                            if (frameworkElement.Parent is FrameworkElement { DataContext: IRegionManagerAware rmAwareDataContextParent }) // if view doesn't have a view model it will inherit it from Parent
                             {
-                                if (frameworkElementParent.DataContext is IRegionManagerAware rmAwareDataContextParent)
-                                {
-                                    if (rmAwareDataContext == rmAwareDataContextParent)
-                                    {
-                                        return;
-                                    }
+                                if (rmAwareDataContext == rmAwareDataContextParent)
+                                {//view is using Parents view model 
+                                    return;
                                 }
                             }
 

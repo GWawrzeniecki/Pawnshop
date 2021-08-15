@@ -10,7 +10,7 @@ namespace PawnShop.Core.Taskbar
     {
         #region private members
 
-        private Dictionary<object, List<DependentViewInfo>> _dependentViewCache = new Dictionary<object, List<DependentViewInfo>>();
+        private Dictionary<object, List<DependentViewInfo>> _dependentViewCache = new();
 
         #endregion private members
 
@@ -80,7 +80,7 @@ namespace PawnShop.Core.Taskbar
 
         private DependentViewInfo CreateDependentViewInfo(DependentViewAttribute att)
         {
-            return new DependentViewInfo { TargetRegionName = att.TargetRegionName, View = Activator.CreateInstance(att.Type) };
+            return new() { TargetRegionName = att.TargetRegionName, View = Activator.CreateInstance(att.Type) };
         }
 
         private IEnumerable<T> GetCustomAttributes<T>(Type type) => type.GetCustomAttributes(typeof(T), true).OfType<T>();
@@ -100,12 +100,12 @@ namespace PawnShop.Core.Taskbar
 
         private IRegionMemberLifetime GetItemOrContextLifetime(object oldView)
         {
-            if (oldView is IRegionMemberLifetime regionMemberLifetime)
-                return regionMemberLifetime;
-            else if (oldView is FrameworkElement frameworkElement)
-                return frameworkElement.DataContext as IRegionMemberLifetime;
-            else
-                return null;
+            return oldView switch
+            {
+                IRegionMemberLifetime regionMemberLifetime => regionMemberLifetime,
+                FrameworkElement frameworkElement => frameworkElement.DataContext as IRegionMemberLifetime,
+                _ => null
+            };
         }
 
         private RegionMemberLifetimeAttribute GetItemOrContentLifetimeAttribute(object oldView)

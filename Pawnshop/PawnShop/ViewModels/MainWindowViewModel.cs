@@ -72,10 +72,10 @@ namespace PawnShop.ViewModels
         {
             try
             {
-                _configData.VatPercent = _configurationService.GetValue<int>(Constants.VatPercentKey);
-                _configData.DealDocumentPath = _configurationService.GetValue<string>(Constants.DealDocumentPath);
+                _configData.VatPercent = _configurationService.GetValueFromAppConfig<int>(Constants.VatPercentKey);
+                _configData.DealDocumentPath = _configurationService.GetValueFromAppConfig<string>(Constants.DealDocumentPath);
                 _configData.DealDocumentsFolderPath =
-                    _configurationService.GetValue<string>(Constants.DealDocumentsFolderPath);
+                    _configurationService.GetValueFromAppConfig<string>(Constants.DealDocumentsFolderPath);
             }
             catch (Exception e)
             {

@@ -29,9 +29,9 @@ namespace PawnShop.Services.Implementations
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
-                using MemoryStream memoryStream = new MemoryStream();
-                using CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
-                using (StreamWriter streamWriter = new StreamWriter(cryptoStream))
+                using MemoryStream memoryStream = new();
+                using CryptoStream cryptoStream = new(memoryStream, encryptor, CryptoStreamMode.Write);
+                using (StreamWriter streamWriter = new(cryptoStream))
                 {
                     streamWriter.Write(plainText);
                 }
@@ -58,9 +58,9 @@ namespace PawnShop.Services.Implementations
             aes.IV = iv;
             ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 
-            using MemoryStream memoryStream = new MemoryStream(buffer);
-            using CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-            using StreamReader streamReader = new StreamReader(cryptoStream);
+            using MemoryStream memoryStream = new(buffer);
+            using CryptoStream cryptoStream = new(memoryStream, decryptor, CryptoStreamMode.Read);
+            using StreamReader streamReader = new(cryptoStream);
             return streamReader.ReadToEnd();
         }
 

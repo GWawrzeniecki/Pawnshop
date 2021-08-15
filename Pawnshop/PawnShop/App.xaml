@@ -20,6 +20,8 @@
                 <ResourceDictionary Source="Styles/Buttons.xaml" />
                 <!--  TextBlocks  -->
                 <ResourceDictionary Source="Styles/TextBlocks.xaml" />
+                <!--  TabItem  -->
+                <ResourceDictionary Source="Styles/TabItem.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

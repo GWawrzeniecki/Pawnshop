@@ -6,5 +6,6 @@
         public const string TopTaskBarRegion = "TopTaskBarRegion";
         public const string BottomInfoLineRegion = "BottomInfoLineRegion";
         public const string MenuRegion = "MenuRegion";
+        public const string TabControlRegion = "TabControlRegion";
     }
 }

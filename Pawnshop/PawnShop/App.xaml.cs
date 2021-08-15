@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
+using ControlzEx.Theming;
 using MahApps.Metro.Controls;
 using PawnShop.Controls.BaseTaskbar.Views;
 using PawnShop.Core;
+using PawnShop.Core.Constants;
 using PawnShop.Core.Regions;
 using PawnShop.Core.ScopedRegion;
+using PawnShop.Core.Services.Implementations;
+using PawnShop.Core.Services.Interfaces;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Core.Taskbar;
 using PawnShop.Dialogs.Views;
@@ -14,6 +18,7 @@ using PawnShop.Modules.Home;
 using PawnShop.Modules.Login;
 using PawnShop.Modules.Login.ViewModels;
 using PawnShop.Modules.Login.Views;
+using PawnShop.Modules.Settings;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Implementations;
 using PawnShop.Services.Interfaces;
@@ -23,6 +28,7 @@ using Prism.Modularity;
 using Prism.Regions;
 using System.Windows;
 using System.Windows.Controls;
+
 
 namespace PawnShop
 {
@@ -34,6 +40,18 @@ namespace PawnShop
         public App()
         {
             Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            SetTheme();
+        }
+
+        private void SetTheme()
+        {
+            var themeName = Container.Resolve<IUserSettingsService>().GetValue<string>(Constants.ThemeNameSection);
+            ThemeManager.Current.ChangeTheme(this, themeName);
         }
 
         protected override Window CreateShell()
@@ -54,6 +72,7 @@ namespace PawnShop
             containerRegistry.RegisterSingleton<IContractItemService, ContractItemService>();
             containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();
             containerRegistry.RegisterSingleton<IPrintService, PrintService>();
+            containerRegistry.RegisterSingleton<IUserSettingsService, UserSettingsService>();
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();
@@ -91,6 +110,7 @@ namespace PawnShop
             moduleCatalog.AddModule<LoginModule>();
             moduleCatalog.AddModule<HomeModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<ContractModule>(InitializationMode.OnDemand);
+            moduleCatalog.AddModule<SettingsModule>(InitializationMode.OnDemand);
         }
 
         protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
@@ -117,18 +137,20 @@ namespace PawnShop
 
             moduleManager.LoadModule<HomeModule>();
             moduleManager.LoadModule<ContractModule>();
+            moduleManager.LoadModule<SettingsModule>();
 
             #endregion loading modules
 
             #region registering views
 
             var regionManager = Container.Resolve<IRegionManager>();
-            var bottomInfoLine = Container.Resolve<BottomInfoLine>();
-            regionManager.Regions[RegionNames.BottomInfoLineRegion].Add(bottomInfoLine);
+            regionManager.RegisterViewWithRegion<BottomInfoLine>(RegionNames.BottomInfoLineRegion);
 
             #endregion registering views
 
             #endregion Login
+
+
         }
     }
 }

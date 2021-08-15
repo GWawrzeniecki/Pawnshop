@@ -11,8 +11,8 @@ namespace PawnShop.Views
         public MainWindow(IRegionManager regionManager)
         {
             InitializeComponent();
-            RegionManager.SetRegionManager(this.HamburgerMenuItemCollection, regionManager);
-            RegionManager.SetRegionManager(this.ContentRegionControl, regionManager);
+            RegionManager.SetRegionManager(HamburgerMenuItemCollection, regionManager); // https://stackoverflow.com/questions/53968851/i-am-unable-to-make-a-contentcontrol-a-region-using-prism
+            RegionManager.SetRegionManager(ContentRegionControl, regionManager);
         }
     }
 }

@@ -15,6 +15,7 @@
         public const string DealDocumentPath = "DealDocumentPath";
         public const string DealDocumentsFolderPath = "DealDocumentsFolderPath";
 
+
         //PaymentType
         public const string CashPaymentType = "Gotówka";
         public const string CreditCardPaymentType = "Karta";
@@ -23,5 +24,8 @@
         public const string CreatedContractState = "Zalozona";
         public const string RenewContractState = "Przedluzona";
         public const string BuyBackContractState = "Wykupiona";
+
+        //UserSettings.json names
+        public const string ThemeNameSection = "UserSettings:ThemeName";
     }
 }

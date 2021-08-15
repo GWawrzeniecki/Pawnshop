@@ -1,6 +1,5 @@
 ﻿using PawnShop.Core.Regions;
 using PawnShop.Core.ScopedRegion;
-using PawnShop.Core.SharedVariables;
 using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Regions;
@@ -13,13 +12,12 @@ namespace PawnShop.Services.Implementations
     {
         private readonly IContainerProvider _container;
         private readonly IRegionManager _regionManager;
-        private readonly ISessionContext _sessionContext;
 
-        public ShellService(IContainerProvider container, IRegionManager regionManager, ISessionContext sessionContext)
+
+        public ShellService(IContainerProvider container, IRegionManager regionManager)
         {
             _container = container;
             _regionManager = regionManager;
-            _sessionContext = sessionContext;
         }
 
         public void ShowShell<T>(string viewName, NavigationParameters navigationParameter = null) where T : Window
@@ -33,11 +31,11 @@ namespace PawnShop.Services.Implementations
                 return;
             }
 
-            var scopedRegion = _regionManager.CreateRegionManager();
-            var shell = _container.Resolve<T>((typeof(IRegionManager), scopedRegion), (typeof(IContainerProvider), _container));
+            var scopedRegion = _regionManager.CreateRegionManager(); // creating scoped region manager
+            var shell = _container.Resolve<T>((typeof(IRegionManager), scopedRegion), (typeof(IContainerProvider), _container)); // resolving shell
 
-            RegionManager.SetRegionManager(shell, scopedRegion);
-            RegionManagerAware.SetRegionManagerAware(shell, scopedRegion);
+            RegionManager.SetRegionManager(shell, scopedRegion); // setting scoped region manager property for that shell
+            RegionManagerAware.SetRegionManagerAware(shell, scopedRegion); // setting this so we can navigate in right region manager
 
             scopedRegion.RequestNavigate(RegionNames.ContentRegion, viewName, navigationParameter);
 
