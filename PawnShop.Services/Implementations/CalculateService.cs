@@ -10,17 +10,18 @@ namespace PawnShop.Services.Implementations
 {
     public class CalculateService : ICalculateService
     {
+
         #region PrivateMembers
 
-        private readonly IConfigData _configData;
+        private readonly IUserSettings _userSettings;
 
         #endregion
 
         #region Constructor
 
-        public CalculateService(IConfigData configData)
+        public CalculateService(IUserSettings userSettings)
         {
-            _configData = configData;
+            _userSettings = userSettings;
         }
 
         #endregion
@@ -66,10 +67,10 @@ namespace PawnShop.Services.Implementations
 
         #region PrivateMethods
 
-        private decimal GetNetStorageCost(decimal estimatedValue, LendingRate lendingRate) => estimatedValue * lendingRate.Procent / 100;
-        private decimal AddVat(decimal netAmount) => (netAmount * _configData.VatPercent / 100) + netAmount;
+        private static decimal GetNetStorageCost(decimal estimatedValue, LendingRate lendingRate) => estimatedValue * lendingRate.Procent / 100;
+        private decimal AddVat(decimal netAmount) => (netAmount * _userSettings.VatPercent / 100) + netAmount;
 
-        private decimal GetNetRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay, IList<LendingRate> lendingRates)
+        private static decimal GetNetRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay, IList<LendingRate> lendingRates)
         {
             if (delay is null or 0)
             {
@@ -88,7 +89,7 @@ namespace PawnShop.Services.Implementations
             return netStorageCost;
         }
 
-        private IEnumerable<LendingRate> GetDelayedLendingRates(int delay, IList<LendingRate> lendingRates)
+        private static IEnumerable<LendingRate> GetDelayedLendingRates(int delay, IList<LendingRate> lendingRates)
         {
             if (lendingRates.Any(l => l.Days == delay))
                 return new[] { lendingRates.First(l => l.Days == delay) };

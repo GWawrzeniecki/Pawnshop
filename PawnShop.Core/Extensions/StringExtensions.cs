@@ -18,7 +18,7 @@ namespace PawnShop.Core.Extensions
             if (!int.TryParse(number, out var parsedResult))
                 throw new GetNextContractNumberException($"Aktualny numer umowy był nieprawidłowy.{number}");
 
-            var year = contractNumber.Substring(contractNumber.IndexOf("/") + 1);
+            var year = contractNumber[(contractNumber.IndexOf("/") + 1)..];
 
             return parsedResult < 9 ? $"0{++parsedResult}/{year}" : $"{++parsedResult}/{year}";
         }

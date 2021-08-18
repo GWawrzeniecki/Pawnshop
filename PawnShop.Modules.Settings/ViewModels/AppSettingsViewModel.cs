@@ -1,9 +1,9 @@
 ﻿using BespokeFusion;
 using ControlzEx.Theming;
-using PawnShop.Core.Constants;
-using PawnShop.Core.Services.Interfaces;
+using PawnShop.Core.SharedVariables;
 using PawnShop.Core.ViewModel;
 using PawnShop.Modules.Settings.Models;
+using PawnShop.Services.Interfaces;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -19,15 +19,17 @@ namespace PawnShop.Modules.Settings.ViewModels
 
         private AppTheme _selectedAppTheme;
         private IList<AppTheme> _appThemes;
-        private readonly IUserSettingsService _userSettingsService;
         private bool _isAppThemeChangedByUser;
+        private readonly ISettingsService<UserSettings> _userSettingsService;
+        private readonly IUserSettings _userSettings;
 
         #endregion
 
         #region Constructor
-        public AppSettingsViewModel(IUserSettingsService userSettingsService)
+        public AppSettingsViewModel(ISettingsService<UserSettings> userSettingsService, IUserSettings userSettings)
         {
             _userSettingsService = userSettingsService;
+            _userSettings = userSettings;
             Header = "Aplikacja";
             LoadAppThemes();
             LoadActualAppTheme();
@@ -53,7 +55,7 @@ namespace PawnShop.Modules.Settings.ViewModels
                 SetProperty(ref _selectedAppTheme, value);
                 if (_isAppThemeChangedByUser)
                 {
-                    ThemeManager.Current.ChangeTheme(Application.Current, value.ThemeName);
+                    ChangeTheme(value);
                     SaveCurrentTheme(value);
                 }
             }
@@ -74,7 +76,7 @@ namespace PawnShop.Modules.Settings.ViewModels
 
         private void LoadActualAppTheme()
         {
-            var themeName = _userSettingsService.GetValue<string>(Constants.ThemeNameSection);
+            var themeName = _userSettings.ThemeName;
             SelectedAppTheme = AppThemes.FirstOrDefault(appTheme => appTheme.ThemeName.Equals(themeName));
             _isAppThemeChangedByUser = true;
         }
@@ -83,7 +85,8 @@ namespace PawnShop.Modules.Settings.ViewModels
         {
             try
             {
-                _userSettingsService.SaveValue(Constants.ThemeNameSection, appTheme.ThemeName);
+                _userSettings.ThemeName = appTheme.ThemeName;
+                _userSettingsService.SaveSettings(_userSettings as UserSettings);
             }
             catch (Exception e)
             {
@@ -91,6 +94,12 @@ namespace PawnShop.Modules.Settings.ViewModels
                     $"Wystąpił błąd podczas zapisywania motywu do ustawień. {Environment.NewLine}Błąd: {e.Message}", "Błąd");
             }
         }
+
+        private static void ChangeTheme(AppTheme value)
+        {
+            _ = ThemeManager.Current.ChangeTheme(Application.Current, value.ThemeName);
+        }
+
 
         #endregion
 

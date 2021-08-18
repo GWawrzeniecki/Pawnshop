@@ -5,7 +5,6 @@ using PawnShop.Core.Enums;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Validators;
-using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Services.Dialogs;
@@ -23,8 +22,6 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         private string _title;
         private DelegateCommand _cancelCommand;
         private DelegateCommand _createClientCommand;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly AddClientValidator _addClientValidator;
         private readonly IMapper _mapper;
         private readonly IClientService _clientService;
         private ClientMode _mode;
@@ -181,12 +178,11 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
 
         #region constructor
 
-        public AddClientDialogViewModel(IUnitOfWork unitOfWork, AddClientValidator addClientValidator, IMapper mapper, IClientService clientService) :
+        public AddClientDialogViewModel(AddClientValidator addClientValidator, IMapper mapper, IClientService clientService) :
             base(
                 addClientValidator)
         {
-            _unitOfWork = unitOfWork;
-            _addClientValidator = addClientValidator;
+
             _mapper = mapper;
             _clientService = clientService;
             CreateClientButtonVisibility = Visibility.Hidden;

@@ -18,9 +18,8 @@ namespace PawnShop.Modules.Contract.Services
     {
         #region private members
 
-        //private readonly IUnitOfWork _unitOfWork;
         private readonly IPdfService _pdfService;
-        private readonly IConfigData _configData;
+        private readonly IUserSettings _userSettings;
         private readonly ICalculateService _calculateService;
         private readonly IContainerProvider _containerProvider;
 
@@ -28,12 +27,11 @@ namespace PawnShop.Modules.Contract.Services
 
         #region constructor
 
-        public ContractService(IUnitOfWork unitOfWork, IPdfService pdfService, IConfigData configData,
+        public ContractService(IPdfService pdfService, IUserSettings userSettings,
             ICalculateService calculateService, IContainerProvider containerProvider)
         {
-            //_unitOfWork = unitOfWork;
             _pdfService = pdfService;
-            _configData = configData;
+            _userSettings = userSettings;
             _calculateService = calculateService;
             _containerProvider = containerProvider;
         }
@@ -321,8 +319,8 @@ namespace PawnShop.Modules.Contract.Services
                         .AddDays(contract.ContractRenews.ToArray()[i - 1].LendingRate.Days).ToShortDateString()));
             }
 
-            var path = $@"{_configData.DealDocumentsFolderPath}\{contract.ContractNumberId.Replace('/', '.')}.pdf";
-            await _pdfService.FillPdfFormAsync(_configData.DealDocumentPath, path, fieldNameFieldValue.ToArray());
+            var path = $@"{_userSettings.DealDocumentsFolderPath}\{contract.ContractNumberId.Replace('/', '.')}.pdf";
+            await _pdfService.FillPdfFormAsync(_userSettings.DealDocumentPath, path, fieldNameFieldValue.ToArray());
             await _pdfService.PrintPdfAsync(path);
         }
 

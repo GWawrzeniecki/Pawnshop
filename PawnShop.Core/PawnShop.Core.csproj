@@ -22,9 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="usersettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

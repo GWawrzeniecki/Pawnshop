@@ -23,8 +23,8 @@ namespace PawnShop.Services.Implementations
 
         public HashService(ISecretManagerService secretManagerService, IAesService aesService)
         {
-            this._secretManagerService = secretManagerService;
-            this._aesService = aesService;
+            _secretManagerService = secretManagerService;
+            _aesService = aesService;
         }
 
         #endregion constructor
@@ -82,7 +82,7 @@ namespace PawnShop.Services.Implementations
 
         #region private methods
 
-        private byte[] DeriveKey(SecureString password, byte[] salt, int iterations, int keyByteLength)
+        private static byte[] DeriveKey(SecureString password, byte[] salt, int iterations, int keyByteLength)
         {
             IntPtr ptr = Marshal.SecureStringToBSTR(password);
             byte[] passwordByteArray = null;
@@ -113,9 +113,9 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-        private byte[] GenerateSalt()
+        private static byte[] GenerateSalt()
         {
-            using RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+            using RNGCryptoServiceProvider provider = new();
             byte[] salt = new byte[SaltSize];
             provider.GetBytes(salt);
             return salt;

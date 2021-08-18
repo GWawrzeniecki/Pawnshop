@@ -1,6 +1,7 @@
-﻿using BespokeFusion;
+﻿using AutoMapper;
+using BespokeFusion;
+using ControlzEx.Theming;
 using PawnShop.Core;
-using PawnShop.Core.Constants;
 using PawnShop.Core.Regions;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Services.Interfaces;
@@ -19,8 +20,9 @@ namespace PawnShop.ViewModels
         private string _title = "Lombard \"VIP\"";
         private DelegateCommand<string> _navigateCommand;
         private readonly IRegionManager _regionManager;
-        private readonly IConfigData _configData;
-        private readonly IConfigurationService _configurationService;
+        private readonly IUserSettings _userSettings;
+        private readonly ISettingsService<UserSettings> _userSettingsService;
+        private readonly IMapper _mapper;
         private bool _isPaneOpen;
 
         #endregion private members
@@ -45,16 +47,17 @@ namespace PawnShop.ViewModels
 
         #region constructors
 
-        public MainWindowViewModel(IRegionManager regionManager, IApplicationCommands applicationCommands, IConfigData configData, IConfigurationService configurationService)
+        public MainWindowViewModel(IRegionManager regionManager, IApplicationCommands applicationCommands, IUserSettings userSettings
+        , ISettingsService<UserSettings> userSettingsService, IMapper mapper)
         {
             applicationCommands.NavigateCommand.RegisterCommand(NavigateCommand);
-            this._regionManager = regionManager;
-            _configData = configData;
-            _configurationService = configurationService;
-            LoadConfigData();
+            _regionManager = regionManager;
+            _userSettings = userSettings;
+            _userSettingsService = userSettingsService;
+            _mapper = mapper;
+            LoadUserSettings();
+            SetTheme();
         }
-
-
 
         #endregion constructors
 
@@ -68,22 +71,30 @@ namespace PawnShop.ViewModels
             _regionManager.RequestNavigate(RegionNames.ContentRegion, navigationPath);
         }
 
-        private void LoadConfigData()
+        private void LoadUserSettings()
         {
             try
             {
-                _configData.VatPercent = _configurationService.GetValueFromAppConfig<int>(Constants.VatPercentKey);
-                _configData.DealDocumentPath = _configurationService.GetValueFromAppConfig<string>(Constants.DealDocumentPath);
-                _configData.DealDocumentsFolderPath =
-                    _configurationService.GetValueFromAppConfig<string>(Constants.DealDocumentsFolderPath);
+                if (!_userSettingsService.IsSettingsExist()) // until we don't have an installer
+                {
+                    _userSettingsService.SaveSettings(new UserSettings() { VatPercent = 23, ThemeName = "Light.Blue", DealDocumentsFolderPath = @"C:\Users\Kogut\Documents\PawnShop\DealDocuments", DealDocumentPath = @"C:\Users\Kogut\iCloudDrive\Documents\Inżynierka\Umowa\UMOWA KUPNA-SPRZEDAZY_V3-Form.pdf" });
+                }
+
+                _mapper.Map(_userSettingsService.LoadSettings(), _userSettings);
             }
             catch (Exception e)
             {
                 MaterialMessageBox.ShowError(
-                    $"Nie udało się wczytać wartości z pliku konfiguracyjnego.{Environment.NewLine}Błąd: {e.Message}{Environment.NewLine}Aplikacja zostanie wyłączona.{Environment.NewLine}Skontaktuj się z administratorem.",
+                    $"Nie udało się wczytać ustawień użytkownika.{Environment.NewLine}Błąd: {e.Message}{Environment.NewLine}Aplikacja zostanie wyłączona.{Environment.NewLine}Skontaktuj się z administratorem.",
                     "Krytyczny błąd");
                 Application.Current.Shutdown();
             }
+        }
+
+        private void SetTheme()
+        {
+            if (!ThemeManager.Current.DetectTheme(Application.Current).Name.Equals(_userSettings.ThemeName))
+                _ = ThemeManager.Current.ChangeTheme(Application.Current, _userSettings.ThemeName);
         }
 
         #endregion private methods

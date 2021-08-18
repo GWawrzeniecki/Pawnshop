@@ -51,7 +51,7 @@ namespace PawnShop.Services.Implementations
                 WindowStyle = ProcessWindowStyle.Hidden
             };
 
-            Process printProcess = new Process { StartInfo = printProcessInfo };
+            Process printProcess = new() { StartInfo = printProcessInfo };
             printProcess.Start();
         }
 

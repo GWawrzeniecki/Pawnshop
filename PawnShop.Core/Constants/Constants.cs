@@ -10,12 +10,6 @@
         //Contract Item Categories
         public const string Laptop = "Laptop";
 
-        //App.cfg key names
-        public const string VatPercentKey = "VATPercent";
-        public const string DealDocumentPath = "DealDocumentPath";
-        public const string DealDocumentsFolderPath = "DealDocumentsFolderPath";
-
-
         //PaymentType
         public const string CashPaymentType = "Gotówka";
         public const string CreditCardPaymentType = "Karta";
@@ -27,5 +21,13 @@
 
         //UserSettings.json names
         public const string ThemeNameSection = "UserSettings:ThemeName";
+
+        //usersettings.json file name
+        public const string UserSettingsFileName = "usersettings.json";
+
+        //usersettings.json key names
+        public const string VatPercentKey = "VATPercent";
+        public const string DealDocumentPathKey = "DealDocumentPath";
+        public const string DealDocumentsFolderPathKey = "DealDocumentsFolderPath";
     }
 }

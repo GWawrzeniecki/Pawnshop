@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
-using ControlzEx.Theming;
 using MahApps.Metro.Controls;
 using PawnShop.Controls.BaseTaskbar.Views;
 using PawnShop.Core;
 using PawnShop.Core.Constants;
 using PawnShop.Core.Regions;
 using PawnShop.Core.ScopedRegion;
-using PawnShop.Core.Services.Implementations;
-using PawnShop.Core.Services.Interfaces;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Core.Taskbar;
 using PawnShop.Dialogs.Views;
@@ -42,18 +39,6 @@ namespace PawnShop
             Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-            SetTheme();
-        }
-
-        private void SetTheme()
-        {
-            var themeName = Container.Resolve<IUserSettingsService>().GetValue<string>(Constants.ThemeNameSection);
-            ThemeManager.Current.ChangeTheme(this, themeName);
-        }
-
         protected override Window CreateShell()
         {
             return Container.Resolve<MainWindow>();
@@ -67,12 +52,14 @@ namespace PawnShop
             containerRegistry.RegisterSingleton<IShellService, ShellService>();
             containerRegistry.RegisterSingleton<ISessionContext, SessionContext>();
             containerRegistry.RegisterSingleton<IConfigData, ConfigData>();
+            containerRegistry.RegisterSingleton<IUserSettings, UserSettings>();
             containerRegistry.RegisterSingleton<IValidatorService, ValidatorService>();
             containerRegistry.RegisterSingleton<IClientService, ClientService>(); // to do (maybe) to move in future
             containerRegistry.RegisterSingleton<IContractItemService, ContractItemService>();
             containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();
             containerRegistry.RegisterSingleton<IPrintService, PrintService>();
-            containerRegistry.RegisterSingleton<IUserSettingsService, UserSettingsService>();
+            containerRegistry.RegisterInstance<ISettingsService<UserSettings>>(
+                new SettingsService<UserSettings>(Constants.UserSettingsFileName));
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();
@@ -89,6 +76,7 @@ namespace PawnShop
                 cfg.AddProfile<InsertContractToContractProfile>();
                 cfg.AddProfile<InsertContractItemToContractItemProfile>();
                 cfg.AddProfile<InsertContractRenewToContractRenewProfile>();
+                cfg.AddProfile<UserSettingsProfile>();
             });
             var mapper = configuration.CreateMapper();
 
@@ -149,7 +137,6 @@ namespace PawnShop
             #endregion registering views
 
             #endregion Login
-
 
         }
     }

@@ -4,7 +4,38 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
-        <TextBlock FontSize="72" Text="B" />
+
+    <UserControl.Resources>
+        <Thickness x:Key="ControlMargin">5 5 15 5</Thickness>
+        <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">
+            <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+        </Style>
+    </UserControl.Resources>
+
+
+
+    <Grid Margin="0,15,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+
+        <!--<TextBlock
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="Automatyczne wyszukiwanie skończonych umow co 14 dni" />-->
+
+
     </Grid>
+
+
+
 </UserControl>

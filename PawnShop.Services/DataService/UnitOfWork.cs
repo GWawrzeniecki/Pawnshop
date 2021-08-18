@@ -48,7 +48,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._workerBossRepository ??= new GenericRepository<WorkerBoss>(_context);
+                _workerBossRepository ??= new GenericRepository<WorkerBoss>(_context);
                 return _workerBossRepository;
             }
         }
@@ -57,7 +57,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._personRepository ??= new GenericRepository<Person>(_context);
+                _personRepository ??= new GenericRepository<Person>(_context);
                 return _personRepository;
             }
         }
@@ -66,7 +66,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._moneyBalanceRepository ??= new MoneyBalanceRepository(_context);
+                _moneyBalanceRepository ??= new MoneyBalanceRepository(_context);
                 return _moneyBalanceRepository;
             }
         }
@@ -75,7 +75,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._contractRepository ??= new ContractRepository(_context, _containerProvider);
+                _contractRepository ??= new ContractRepository(_context, _containerProvider);
                 return _contractRepository;
             }
         }
@@ -84,7 +84,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._lendingRateRepository ??= new GenericRepository<LendingRate>(_context);
+                _lendingRateRepository ??= new GenericRepository<LendingRate>(_context);
                 return _lendingRateRepository;
             }
         }
@@ -93,7 +93,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._contractStateRepository ??= new GenericRepository<ContractState>(_context);
+                _contractStateRepository ??= new GenericRepository<ContractState>(_context);
                 return _contractStateRepository;
             }
         }
@@ -102,7 +102,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._clientRepository ??= new ClientRepository(_context);
+                _clientRepository ??= new ClientRepository(_context);
                 return _clientRepository;
             }
         }
@@ -111,7 +111,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._contractItemRepository ??= new GenericRepository<ContractItem>(_context);
+                _contractItemRepository ??= new GenericRepository<ContractItem>(_context);
                 return _contractItemRepository;
             }
         }
@@ -120,7 +120,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._contractItemCategoryRepository ??= new GenericRepository<ContractItemCategory>(_context);
+                _contractItemCategoryRepository ??= new GenericRepository<ContractItemCategory>(_context);
                 return _contractItemCategoryRepository;
             }
         }
@@ -129,7 +129,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._unitMeasureRepository ??= new GenericRepository<UnitMeasure>(_context);
+                _unitMeasureRepository ??= new GenericRepository<UnitMeasure>(_context);
                 return _unitMeasureRepository;
             }
         }
@@ -138,7 +138,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._contractItemStateRepository ??= new GenericRepository<ContractItemState>(_context);
+                _contractItemStateRepository ??= new GenericRepository<ContractItemState>(_context);
                 return _contractItemStateRepository;
             }
         }
@@ -147,7 +147,7 @@ namespace PawnShop.Services.DataService
         {
             get
             {
-                this._paymentTypeRepository ??= new GenericRepository<PaymentType>(_context);
+                _paymentTypeRepository ??= new GenericRepository<PaymentType>(_context);
                 return _paymentTypeRepository;
             }
         }
@@ -182,14 +182,14 @@ namespace PawnShop.Services.DataService
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     _context.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()

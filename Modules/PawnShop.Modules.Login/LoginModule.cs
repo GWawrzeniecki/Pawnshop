@@ -17,7 +17,7 @@ namespace PawnShop.Modules.Login
             containerRegistry.RegisterSingleton<ISecretManagerService, SecretManagerService>();
             containerRegistry.RegisterSingleton<IHashService, HashService>();
             containerRegistry.RegisterSingleton<IAesService, AesService>();
-            containerRegistry.RegisterSingleton<ILoginService, LoginService>();
+            containerRegistry.Register<ILoginService, LoginService>();
             containerRegistry.RegisterSingleton<LoginDialogValidator>();
         }
     }

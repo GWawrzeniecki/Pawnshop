@@ -29,10 +29,10 @@ namespace PawnShop.Services.Implementations
 
         public LoginService(IHashService hashService, IUnitOfWork unitOfWork, ISessionContext sessionContext, IDialogService dialogService)
         {
-            this._hashService = hashService;
-            this._unitOfWork = unitOfWork;
-            this._sessionContext = sessionContext;
-            this._dialogService = dialogService;
+            _hashService = hashService;
+            _unitOfWork = unitOfWork;
+            _sessionContext = sessionContext;
+            _dialogService = dialogService;
         }
 
         #endregion constructor
@@ -128,14 +128,13 @@ namespace PawnShop.Services.Implementations
 
         private async Task<(bool success, WorkerBoss workerBoss)> TryGetWorkerBossAsync(string login)
         {
-            var workerBoss = (await _unitOfWork.WorkerBossRepository.GetAsync(filter: p => p.Login.Equals(login))).FirstOrDefault();
+            var workerBoss = (await _unitOfWork.WorkerBossRepository.GetAsync(filter: p => p.Login.Equals(login), null, "WorkerBossNavigation")).FirstOrDefault();
 
             return workerBoss == null ? (false, null) : (true, workerBoss);
         }
 
         private async Task TryLoadStartupData(WorkerBoss loggedUser)
         {
-            var loggedPerson = await _unitOfWork.PersonRepository.GetByIDAsync(loggedUser.WorkerBossId);
             await _unitOfWork.MoneyBalanceRepository.CreateTodayMoneyBalance();
             var todayMoneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
             _sessionContext.LoggedPerson = loggedUser;

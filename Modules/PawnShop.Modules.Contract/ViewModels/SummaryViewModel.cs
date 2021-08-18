@@ -27,13 +27,10 @@ namespace PawnShop.Modules.Contract.ViewModels
     public class SummaryViewModel : BindableBase, IRegionManagerAware, INavigationAware
     {
 
-
-
         #region PrivateMembers
+
         private readonly ICalculateService _calculateService;
-        private readonly IPdfService _pdfService;
         private readonly ISessionContext _sessionContext;
-        private readonly IConfigData _configData;
         private readonly IContractService _contractService;
         private readonly IMapper _mapper;
         private readonly IShellService _shellService;
@@ -46,13 +43,11 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Constructor
 
-        public SummaryViewModel(ICalculateService calculateService, IPdfService pdfService, ISessionContext sessionContext,
-            IConfigData configData, IContractService contractService, IMapper mapper, IShellService shellService, IEventAggregator eventAggregator)
+        public SummaryViewModel(ICalculateService calculateService, ISessionContext sessionContext,
+             IContractService contractService, IMapper mapper, IShellService shellService, IEventAggregator eventAggregator)
         {
             _calculateService = calculateService;
-            _pdfService = pdfService;
             _sessionContext = sessionContext;
-            _configData = configData;
             _contractService = contractService;
             _mapper = mapper;
             _shellService = shellService;

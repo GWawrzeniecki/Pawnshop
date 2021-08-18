@@ -17,7 +17,7 @@ namespace PawnShop.Services.DataService
         public GenericRepository(PawnshopContext context)
         {
             this.context = context;
-            this.dbSet = context.Set<TEntity>();
+            dbSet = context.Set<TEntity>();
         }
 
         public virtual IEnumerable<TEntity> Get(
