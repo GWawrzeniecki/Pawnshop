@@ -10,6 +10,7 @@ using PawnShop.Core.Taskbar;
 using PawnShop.Dialogs.Views;
 using PawnShop.Dialogs.ViewsModels;
 using PawnShop.Mapper.Profiles;
+using PawnShop.Modules.Client;
 using PawnShop.Modules.Contract;
 using PawnShop.Modules.Home;
 using PawnShop.Modules.Login;
@@ -66,7 +67,7 @@ namespace PawnShop
             ConfigureMapper(containerRegistry);
         }
 
-        private void ConfigureMapper(IContainerRegistry containerRegistry)
+        private static void ConfigureMapper(IContainerRegistry containerRegistry)
         {
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -99,6 +100,7 @@ namespace PawnShop
             moduleCatalog.AddModule<HomeModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<ContractModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<SettingsModule>(InitializationMode.OnDemand);
+            moduleCatalog.AddModule<ClientModule>(InitializationMode.OnDemand);
         }
 
         protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
@@ -125,6 +127,7 @@ namespace PawnShop
 
             moduleManager.LoadModule<HomeModule>();
             moduleManager.LoadModule<ContractModule>();
+            moduleManager.LoadModule<ClientModule>();
             moduleManager.LoadModule<SettingsModule>();
 
             #endregion loading modules

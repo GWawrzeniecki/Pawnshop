@@ -16,13 +16,14 @@
     <PackageReference Include="Prism.Unity" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Modules\PawnShop.Modules.Client\PawnShop.Modules.Client.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Contract\PawnShop.Modules.Contract.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Home\PawnShop.Modules.Home.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Login\PawnShop.Modules.Login.csproj" />
+    <ProjectReference Include="..\..\Modules\PawnShop.Modules.Settings\PawnShop.Modules.Settings.csproj" />
     <ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Home\PawnShop.Modules.Home.csproj" />
-    <ProjectReference Include="..\..\PawnShop.Modules.Settings\PawnShop.Modules.Settings.csproj" />
     <ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
