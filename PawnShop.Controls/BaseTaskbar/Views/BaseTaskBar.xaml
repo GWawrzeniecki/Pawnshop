@@ -3,6 +3,7 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:icons="clr-namespace:PawnShop.Controls.Icons.Views"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              prism:ViewModelLocator.AutoWireViewModel="True">
 
     <Grid Margin="2 8 2 8">

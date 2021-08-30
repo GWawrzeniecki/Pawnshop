@@ -1,0 +1,68 @@
+﻿<UserControl
+    x:Class="PawnShop.Modules.Settings.Dialogs.Views.EditLendingRateDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
+            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="ShowInTaskbar" Value="True" />
+            <Setter Property="SizeToContent" Value="WidthAndHeight" />
+            <Setter Property="Title" Value="{Binding Title}" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+
+    <Border Margin="10,5,10,5">
+
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+
+            <TextBox
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="0,0,5,5"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.HasText="{Binding HasDaysText, Mode=TwoWay}"
+                mah:TextBoxHelper.UseFloatingWatermark="True"
+                mah:TextBoxHelper.Watermark="Ilość dni"
+                Text="{Binding Days, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBox
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="0,0,5,5"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.HasText="{Binding HasPercentageText, Mode=TwoWay}"
+                mah:TextBoxHelper.UseFloatingWatermark="True"
+                mah:TextBoxHelper.Watermark="Procent"
+                Text="{Binding Percentage, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button
+                Grid.Row="0"
+                Grid.Column="2"
+                Margin="0,0,0,5"
+                Command="{Binding EditLendingRateCommand}"
+                Content="Zapisz" />
+
+
+        </Grid>
+    </Border>
+
+
+
+</UserControl>

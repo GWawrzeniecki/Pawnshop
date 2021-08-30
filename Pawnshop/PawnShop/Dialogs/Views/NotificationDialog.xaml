@@ -1,10 +1,11 @@
-﻿<UserControl x:Class="PawnShop.Dialogs.Views.NotificationDialog"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/"
-              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-              prism:ViewModelLocator.AutoWireViewModel="True">
+﻿<UserControl
+    x:Class="PawnShop.Dialogs.Views.NotificationDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="mah:MetroWindow">
@@ -17,7 +18,7 @@
             <Setter Property="IconTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <iconPacks:PackIconMaterial  Kind="Information"  />
+                        <iconPacks:PackIconMaterial Kind="Information" />
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
@@ -34,8 +35,21 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-            <TextBlock Text="{Binding Message}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  TextWrapping="Wrap" />
+            <TextBlock
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Text="{Binding Message}"
+                TextWrapping="Wrap" />
         </ScrollViewer>
-        <Button Command="{Binding CloseDialogCommand}" CommandParameter="true" Content="OK" Width="75" Height="25" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="1" IsDefault="True" />
+        <Button
+            Grid.Row="1"
+            Width="75"
+            Height="25"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Center"
+            Command="{Binding CloseDialogCommand}"
+            CommandParameter="true"
+            Content="OK"
+            IsDefault="True" />
     </Grid>
 </UserControl>

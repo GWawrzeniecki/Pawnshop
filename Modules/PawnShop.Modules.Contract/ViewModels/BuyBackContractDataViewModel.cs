@@ -2,7 +2,6 @@
 using PawnShop.Business.Models;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
-using PawnShop.Modules.Contract.Services;
 using PawnShop.Services.Interfaces;
 using Prism.Mvvm;
 using Prism.Regions;

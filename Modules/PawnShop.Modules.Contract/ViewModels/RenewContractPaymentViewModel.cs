@@ -4,7 +4,6 @@ using PawnShop.Core.Events;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions;
 using PawnShop.Exceptions.DBExceptions;
-using PawnShop.Modules.Contract.Services;
 using PawnShop.Modules.Contract.Windows.ViewModels;
 using PawnShop.Modules.Contract.Windows.Views;
 using PawnShop.Services.DataService.InsertModels;

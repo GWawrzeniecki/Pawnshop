@@ -6,7 +6,6 @@ using PawnShop.Core.HamburgerMenu.Interfaces;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.MenuItem;
-using PawnShop.Modules.Contract.Services;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;

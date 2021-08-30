@@ -7,6 +7,9 @@
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <GroupBox Margin="10,0,10,0" Header="Ustawienia">
-        <TabControl Style="{DynamicResource MahApps.Styles.TabControl.Animated}" Margin="0,3,0,0" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.TabControlRegion}" />
+        <TabControl
+            Margin="0,3,0,0"
+            prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.TabControlRegion}"
+            Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
     </GroupBox>
 </UserControl>

@@ -70,7 +70,7 @@ namespace PawnShop.Modules.Settings.ViewModels
             AppThemes = new List<AppTheme>
             {
                 new() {DisplayThemeName = "Jasny", ThemeName = "Light.Blue"},
-                new() {DisplayThemeName = "Ciemny", ThemeName = "Dark.Blue"}
+                new() {DisplayThemeName = "Ciemny", ThemeName = "Dark.Steel"}
             };
         }
 

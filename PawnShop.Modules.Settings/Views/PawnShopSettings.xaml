@@ -2,6 +2,7 @@
     x:Class="PawnShop.Modules.Settings.Views.PawnShopSettings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
@@ -10,14 +11,20 @@
         <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">
             <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
         </Style>
+        <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
+            <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+        </Style>
+        <Style BasedOn="{StaticResource MahApps.Styles.Button.Flat}" TargetType="Button">
+            <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+        </Style>
     </UserControl.Resources>
 
 
 
     <Grid Margin="0,15,0,0">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -28,10 +35,59 @@
         </Grid.RowDefinitions>
 
 
-        <!--<TextBlock
+        <TextBlock Grid.Row="0" Grid.Column="0">
+            <Run Text="Automatyczne wyszukiwanie skończonych umow co" />
+            <Run Text="{Binding AutomaticSearchingEndedContractsDay}" />
+            <Run Text=" dni" />
+        </TextBlock>
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="Ścieżka do szablonu z umowa" />
+
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Text="Terminy przedluzania umow i oprocentowanie" />
+
+        <TextBox
             Grid.Row="0"
             Grid.Column="1"
-            Text="Automatyczne wyszukiwanie skończonych umow co 14 dni" />-->
+            VerticalContentAlignment="Center"
+            Text="{Binding AutomaticSearchingEndedContractsDay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Delay=400}" />
+
+        <TextBox
+            Grid.Row="1"
+            Grid.Column="1"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            Text="{Binding DealDocumentPath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <!--<TextBox
+            Grid.Row="2"
+            Grid.Column="1"
+            VerticalContentAlignment="Center"
+            IsReadOnly="True"
+            Text="{Binding LendingRate, Mode=OneWay}" />-->
+
+        <Button
+            Grid.Row="0"
+            Grid.Column="2"
+            Command="{Binding SaveSearchContractsDayCommand}"
+            Content="Zapisz" />
+
+        <Button
+            Grid.Row="1"
+            Grid.Column="2"
+            Command="{Binding ChooseDealDocumentFilePathCommand}"
+            Content="Wybierz" />
+
+        <Button
+            Grid.Row="2"
+            Grid.Column="2"
+            Command="{Binding SetLendingRatesCommand}"
+            Content="Ustaw" />
 
 
     </Grid>

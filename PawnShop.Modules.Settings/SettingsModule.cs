@@ -1,7 +1,12 @@
 ﻿using PawnShop.Core.Regions;
+using PawnShop.Modules.Settings.Dialogs.ViewModels;
+using PawnShop.Modules.Settings.Dialogs.Views;
 using PawnShop.Modules.Settings.MenuItem;
+using PawnShop.Modules.Settings.Validators;
 using PawnShop.Modules.Settings.ViewModels;
 using PawnShop.Modules.Settings.Views;
+using PawnShop.Services.Implementations;
+using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -27,8 +32,14 @@ namespace PawnShop.Modules.Settings
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<Views.Settings, SettingsViewModel>();
-            containerRegistry.RegisterForNavigation<Views.AppSettings, AppSettingsViewModel>();
-            containerRegistry.RegisterForNavigation<Views.PawnShopSettings, PawnShopSettingsViewModel>();
+            containerRegistry.RegisterForNavigation<AppSettings, AppSettingsViewModel>();
+            containerRegistry.RegisterForNavigation<PawnShopSettings, PawnShopSettingsViewModel>();
+            containerRegistry.RegisterDialog<LendingRateSettingsDialog, LendingRateSettingsDialogViewModel>();
+            containerRegistry.RegisterDialog<EditLendingRateDialog, EditLendingRateDialogViewModel>();
+            containerRegistry.Register<ILendingRateService, LendingRateService>();
+            containerRegistry.Register<LendingRateSettingsDialogValidator>();
+            containerRegistry.Register<EditLendingRateDialogValidator>();
+            containerRegistry.Register<PawnShopSettingsValidator>();
         }
     }
 }

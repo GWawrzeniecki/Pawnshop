@@ -6,7 +6,6 @@ using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Enums;
 using PawnShop.Modules.Contract.Extensions;
 using PawnShop.Modules.Contract.Models.DropDownButtonModels;
-using PawnShop.Modules.Contract.Services;
 using PawnShop.Modules.Contract.Validators;
 using PawnShop.Modules.Contract.Views;
 using PawnShop.Modules.Contract.Windows.Views;

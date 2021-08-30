@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PawnShop.Modules.Contract.Services
+namespace PawnShop.Services.Interfaces
 {
     public interface IContractService
     {

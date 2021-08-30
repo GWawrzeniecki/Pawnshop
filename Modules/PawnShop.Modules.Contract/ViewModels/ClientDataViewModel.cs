@@ -57,8 +57,8 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public DelegateCommand<string> SearchClientCommand =>
             _searchClientCommand ??=
-                new DelegateCommand<string>(SearchClient, CanExecuteSearchClient).ObservesProperty(() =>
-                    ClientSearchComboBoxText)
+                new DelegateCommand<string>(SearchClient, CanExecuteSearchClient)
+            .ObservesProperty(() => ClientSearchComboBoxText)
             .ObservesProperty(() => SelectedClientSearchOption);
 
         public DelegateCommand AddClientCommand =>

@@ -2,7 +2,6 @@
 using PawnShop.Modules.Contract.Dialogs.ViewModels;
 using PawnShop.Modules.Contract.Dialogs.Views;
 using PawnShop.Modules.Contract.MenuItem;
-using PawnShop.Modules.Contract.Services;
 using PawnShop.Modules.Contract.Validators;
 using PawnShop.Modules.Contract.ViewModels;
 using PawnShop.Modules.Contract.Views;

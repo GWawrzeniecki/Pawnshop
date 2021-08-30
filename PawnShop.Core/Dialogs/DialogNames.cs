@@ -6,5 +6,7 @@
         public const string NotificationDialog = "NotificationDialog";
         public const string AddClientDialog = "AddClientDialog";
         public const string AddContractItemDialog = "AddContractItemDialog";
+        public const string LendingRateSettingsDialog = "LendingRateSettingsDialog";
+        public const string EditLendingRateDialog = "EditLendingRateDialog";
     }
 }

@@ -77,7 +77,14 @@ namespace PawnShop.ViewModels
             {
                 if (!_userSettingsService.IsSettingsExist()) // until we don't have an installer
                 {
-                    _userSettingsService.SaveSettings(new UserSettings() { VatPercent = 23, ThemeName = "Light.Blue", DealDocumentsFolderPath = @"C:\Users\Kogut\Documents\PawnShop\DealDocuments", DealDocumentPath = @"C:\Users\Kogut\iCloudDrive\Documents\Inżynierka\Umowa\UMOWA KUPNA-SPRZEDAZY_V3-Form.pdf" });
+                    _userSettingsService.SaveSettings(new UserSettings()
+                    {
+                        VatPercent = 23,
+                        AutomaticSearchingEndedContractsDay = 14,
+                        ThemeName = "Light.Blue",
+                        DealDocumentsFolderPath = @"C:\Users\Kogut\Documents\PawnShop\DealDocuments",
+                        DealDocumentPath = @"C:\Users\Kogut\iCloudDrive\Documents\Inżynierka\Umowa\UMOWA KUPNA-SPRZEDAZY_V3-Form.pdf"
+                    });
                 }
 
                 _mapper.Map(_userSettingsService.LoadSettings(), _userSettings);

@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PawnShop.Modules.Contract.Services
+namespace PawnShop.Services.Implementations
 {
     public class ContractService : IContractService
     {
@@ -117,7 +117,7 @@ namespace PawnShop.Modules.Contract.Services
             }
         }
 
-        public async Task<Business.Models.Contract> CreateContract(InsertContract insertContract, string paymentTypeStr,
+        public async Task<Contract> CreateContract(InsertContract insertContract, string paymentTypeStr,
             decimal paymentAmount,
             DateTime paymentDate, decimal? cost, decimal? income = default, decimal? repaymentCapital = default,
             decimal? profit = default)

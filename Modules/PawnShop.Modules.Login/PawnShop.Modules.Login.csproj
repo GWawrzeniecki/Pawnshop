@@ -10,7 +10,7 @@
     <None Remove="Logo\test_logo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="10.3.0" />
+    <PackageReference Include="FluentValidation" Version="10.3.3" />
     <PackageReference Include="MahApps.Metro" Version="2.4.7" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
     <PackageReference Include="MaterialMessageBox" Version="4.0.2" />
