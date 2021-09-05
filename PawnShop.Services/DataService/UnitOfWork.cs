@@ -14,7 +14,7 @@ namespace PawnShop.Services.DataService
         #region private members
 
         private readonly IContainerProvider _containerProvider;
-        private readonly PawnshopContext _context = new();
+        public readonly PawnshopContext _context = new();
         private GenericRepository<WorkerBoss> _workerBossRepository;
         private GenericRepository<Person> _personRepository;
         private MoneyBalanceRepository _moneyBalanceRepository;
@@ -28,6 +28,8 @@ namespace PawnShop.Services.DataService
         private GenericRepository<ContractItemState> _contractItemStateRepository;
         private GenericRepository<PaymentType> _paymentTypeRepository;
         private bool _disposed;
+        private GenericRepository<Country> _countryRepository;
+        private GenericRepository<City> _cityRepository;
 
         #endregion private members
 
@@ -149,6 +151,24 @@ namespace PawnShop.Services.DataService
             {
                 _paymentTypeRepository ??= new GenericRepository<PaymentType>(_context);
                 return _paymentTypeRepository;
+            }
+        }
+
+        public GenericRepository<Country> CountryRepository
+        {
+            get
+            {
+                _countryRepository ??= new GenericRepository<Country>(_context);
+                return _countryRepository;
+            }
+        }
+
+        public GenericRepository<City> CityRepository
+        {
+            get
+            {
+                _cityRepository ??= new GenericRepository<City>(_context);
+                return _cityRepository;
             }
         }
 

@@ -9,9 +9,5 @@ namespace PawnShop.Services.Interfaces
         Task<IList<Client>> GetClientBySurname(string surname);
 
         Task<IList<Client>> GetClientByPesel(string pesel);
-
-        Task<Client> CreateClient(Client client);
-        Task<Client> UpdateClient(Client client);
-
     }
 }

@@ -23,27 +23,28 @@
         <Grid Margin="10,10,10,0">
 
             <Grid.Resources>
-                <Style BasedOn="{StaticResource MahApps.Styles.TextBlock}" TargetType="TextBlock">
+                <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">
                     <Setter Property="Margin" Value="5,5,5,5" />
-                    <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
                     <Setter Property="Padding" Value="5" />
-
                 </Style>
-
 
                 <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
                     <Setter Property="Margin" Value="0,5,5,5" />
-                    <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+                    <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
                     <Setter Property="Padding" Value="5" />
-                    <!--<Setter Property="HorizontalContentAlignment" Value="Center"/>-->
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                 </Style>
 
                 <Style BasedOn="{StaticResource MahApps.Styles.DatePicker}" TargetType="DatePicker">
                     <Setter Property="Margin" Value="0,5,5,5" />
-                    <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+                    <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
                     <Setter Property="Padding" Value="5" />
                 </Style>
+
+                <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
+                    <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                </Style>
+
 
             </Grid.Resources>
 
@@ -140,68 +141,83 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         Grid.ColumnSpan="3"
-                        Text="{Binding FirstName, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding FirstName, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBox
                         Grid.Row="1"
                         Grid.Column="1"
                         Grid.ColumnSpan="3"
-                        Text="{Binding LastName, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding LastName, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBox
                         Grid.Row="2"
                         Grid.Column="1"
                         Grid.ColumnSpan="3"
-                        Text="{Binding Street, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding Street, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBox
                         Grid.Row="3"
                         Grid.Column="1"
                         Margin="0,5,5,5"
-                        Text="{Binding HouseNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding HouseNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBox
                         Grid.Row="3"
                         Grid.Column="3"
                         Margin="0,5,5,5"
                         Text="{Binding ApartmentNumber, Mode=TwoWay}" />
 
-                    <TextBox
+                    <ComboBox
                         Grid.Row="4"
                         Grid.Column="1"
                         Margin="0,5,5,5"
-                        Text="{Binding City, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                        DisplayMemberPath="City1"
+                        IsEditable="True"
+                        IsTextSearchEnabled="True"
+                        ItemsSource="{Binding Cities}"
+                        SelectedItem="{Binding SelectedCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                        TextSearch.TextPath="City1" />
+
                     <TextBox
                         Grid.Row="4"
                         Grid.Column="3"
                         Margin="0,5,5,5"
-                        Text="{Binding PostCode, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBox
+                        Text="{Binding PostCode, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <ComboBox
                         Grid.Row="5"
                         Grid.Column="1"
                         Grid.ColumnSpan="3"
                         Margin="0,5,5,5"
-                        Text="{Binding Country, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                        DisplayMemberPath="Country1"
+                        IsEditable="True"
+                        IsTextSearchEnabled="True"
+                        ItemsSource="{Binding Countries}"
+                        SelectedItem="{Binding SelectedCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                        TextSearch.TextPath="Country1" />
+
                     <DatePicker
                         Grid.Row="6"
                         Grid.Column="1"
                         Grid.ColumnSpan="3"
                         mah:TextBoxHelper.ClearTextButton="True"
                         mah:TextBoxHelper.Watermark="Wybierz date"
-                        SelectedDate="{Binding BirthDate, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                        SelectedDate="{Binding BirthDate, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBox
                         Grid.Row="7"
                         Grid.Column="1"
                         Grid.ColumnSpan="3"
-                        Text="{Binding Pesel, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding Pesel, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBox
                         Grid.Row="8"
                         Grid.Column="1"
                         Margin="0,5,5,5"
-                        Text="{Binding IdCardNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding IdCardNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
                     <DatePicker
                         Grid.Row="8"
                         Grid.Column="3"
                         Margin="0,5,5,5"
                         mah:TextBoxHelper.ClearTextButton="True"
                         mah:TextBoxHelper.Watermark="Wybierz date"
-                        SelectedDate="{Binding ValidityDateIdCard, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                        SelectedDate="{Binding ValidityDateIdCard, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
 
                 </Grid>

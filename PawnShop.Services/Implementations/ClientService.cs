@@ -2,6 +2,7 @@
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
+using Prism.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,15 +13,15 @@ namespace PawnShop.Services.Implementations
     {
         #region PrivateMembers
 
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IContainerProvider _containerProvider;
 
         #endregion
 
         #region Constructor
 
-        public ClientService(IUnitOfWork unitOfWork)
+        public ClientService(IContainerProvider containerProvider)
         {
-            _unitOfWork = unitOfWork;
+            _containerProvider = containerProvider;
         }
 
         #endregion
@@ -51,53 +52,20 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-
-        public async Task<Client> CreateClient(Client client)
-        {
-            try
-            {
-                return await TryToCreateClient(client);
-            }
-            catch (Exception e)
-            {
-                throw new CreateClientException("Wystąpił problem podczas dodawania nowego klienta.", e);
-            }
-        }
-
-        public async Task<Client> UpdateClient(Client client)
-        {
-            try
-            {
-                return await TryToUpdateClient(client);
-            }
-            catch (Exception e)
-            {
-                throw new CreateClientException("Wystąpił problem podczas aktualizacji danych klienta.", e);
-            }
-        }
-
         #endregion
 
         #region PrivateMethods
 
         private async Task<IList<Client>> TryToGetClientBySurname(string surname)
         {
-            return await _unitOfWork.ClientRepository.GetClientBySurname(surname);
+            using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+            return await unitOfWork.ClientRepository.GetClientBySurname(surname);
         }
 
         private async Task<IList<Client>> TryToGetClientByPesel(string pesel)
         {
-            return await _unitOfWork.ClientRepository.GetClientByPesel(pesel);
-        }
-
-        private async Task<Client> TryToCreateClient(Client client)
-        {
-            return await _unitOfWork.ClientRepository.CreateClientAsync(client);
-        }
-
-        private async Task<Client> TryToUpdateClient(Client client)
-        {
-            return await _unitOfWork.ClientRepository.UpdateClientAsync(client);
+            using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+            return await unitOfWork.ClientRepository.GetClientByPesel(pesel);
         }
 
         #endregion
