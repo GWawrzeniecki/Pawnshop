@@ -172,7 +172,7 @@
                         IsTextSearchEnabled="True"
                         ItemsSource="{Binding Cities}"
                         SelectedItem="{Binding SelectedCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                        Text="{Binding City, Mode=TwoWay, Delay=100, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                         TextSearch.TextPath="City1" />
 
                     <TextBox
@@ -191,7 +191,7 @@
                         IsTextSearchEnabled="True"
                         ItemsSource="{Binding Countries}"
                         SelectedItem="{Binding SelectedCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Text="{Binding Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                        Text="{Binding Country, Mode=TwoWay, Delay=100, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                         TextSearch.TextPath="Country1" />
 
                     <DatePicker
