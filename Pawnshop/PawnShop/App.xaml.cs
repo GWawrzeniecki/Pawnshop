@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using MahApps.Metro.Controls;
 using PawnShop.Controls.BaseTaskbar.Views;
+using PawnShop.Controls.Dialogs.ViewModels;
+using PawnShop.Controls.Dialogs.Views;
+using PawnShop.Controls.Validators;
 using PawnShop.Core;
 using PawnShop.Core.Constants;
 using PawnShop.Core.Regions;
@@ -59,10 +62,12 @@ namespace PawnShop
             containerRegistry.RegisterSingleton<IContractItemService, ContractItemService>();
             containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();
             containerRegistry.RegisterSingleton<IPrintService, PrintService>();
+            containerRegistry.RegisterSingleton<AddClientValidator>();
             containerRegistry.RegisterInstance<ISettingsService<UserSettings>>(new SettingsService<UserSettings>(Constants.UserSettingsFileName));
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();
+            containerRegistry.RegisterDialog<AddClientDialog, AddClientDialogViewModel>();
             ConfigureMapper(containerRegistry);
         }
 

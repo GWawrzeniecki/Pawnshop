@@ -65,10 +65,8 @@ namespace PawnShop.Modules.Contract.ViewModels
             _addClientCommand ??= new DelegateCommand(AddClient);
 
         public DelegateCommand<Client> EditClientCommand =>
-            _editClientCommand ??= new DelegateCommand<Client>(EditClient, CanExecuteEditClient).ObservesProperty(() =>
-                 SelectedClient);
-
-
+            _editClientCommand ??= new DelegateCommand<Client>(EditClient, CanExecuteEditClient)
+                .ObservesProperty(() => SelectedClient);
 
         #endregion Commands
 

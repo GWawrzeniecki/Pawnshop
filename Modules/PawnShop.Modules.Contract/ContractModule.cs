@@ -48,13 +48,11 @@ namespace PawnShop.Modules.Contract
             containerRegistry.RegisterSingleton<BuyBackContactPaymentHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<ContractValidator>();
             containerRegistry.RegisterSingleton<CreateContractValidator>();
-            containerRegistry.RegisterSingleton<AddClientValidator>();
             containerRegistry.RegisterSingleton<AddContractItemValidator>();
             containerRegistry.Register<IContractService, ContractService>();
             containerRegistry.RegisterSingleton<ICalculateService, CalculateService>();
             containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();
             containerRegistry.RegisterSingleton<IPdfService, PdfService>();
-            containerRegistry.RegisterDialog<AddClientDialog, AddClientDialogViewModel>();
             containerRegistry.RegisterDialog<AddContractItemDialog, AddContractItemDialogViewModel>();
         }
     }

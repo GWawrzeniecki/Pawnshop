@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Controls.Validators;
 using PawnShop.Core.Enums;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
-using PawnShop.Modules.Contract.Validators;
 using PawnShop.Services.DataService;
 using Prism.Commands;
 using Prism.Ioc;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 
-namespace PawnShop.Modules.Contract.Dialogs.ViewModels
+namespace PawnShop.Controls.Dialogs.ViewModels
 {
     public class AddClientDialogViewModel : ViewModelBase<AddClientDialogViewModel>, IDialogAware
     {

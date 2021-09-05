@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace PawnShop.Modules.Contract.Dialogs.Views
+namespace PawnShop.Controls.Dialogs.Views
 {
     /// <summary>
     /// Interaction logic for AddClientDialog

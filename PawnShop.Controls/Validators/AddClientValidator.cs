@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using PawnShop.Modules.Contract.Dialogs.ViewModels;
+using PawnShop.Controls.Dialogs.ViewModels;
 using PawnShop.Services.Interfaces;
 using PawnShop.Validator.Base;
 
-namespace PawnShop.Modules.Contract.Validators
+namespace PawnShop.Controls.Validators
 {
     public class AddClientValidator : ValidatorBase<AddClientDialogViewModel>
     {

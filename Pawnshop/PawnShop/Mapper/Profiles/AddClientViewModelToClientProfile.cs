@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using PawnShop.Business.Models;
-using PawnShop.Modules.Contract.Dialogs.ViewModels;
+using PawnShop.Controls.Dialogs.ViewModels;
 
 namespace PawnShop.Mapper.Profiles
 {

@@ -1,12 +1,9 @@
 ﻿<UserControl
-    x:Class="PawnShop.Modules.Contract.Dialogs.Views.AddClientDialog"
+    x:Class="PawnShop.Controls.Dialogs.Views.AddClientDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:menuItem="clr-namespace:PawnShop.Modules.Contract.MenuItem"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime"
-    xmlns:views="clr-namespace:PawnShop.Modules.Contract.Windows.Views"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <prism:Dialog.WindowStyle>
