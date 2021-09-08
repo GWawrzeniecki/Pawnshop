@@ -9,7 +9,7 @@
     <GroupBox Margin="10,0,10,0" Header="Ustawienia">
         <TabControl
             Margin="0,3,0,0"
-            prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.TabControlRegion}"
+            prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.SettingsTabControlRegion}"
             Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
     </GroupBox>
 </UserControl>

@@ -1,6 +1,6 @@
-﻿using PawnShop.Modules.Contract.Enums;
+﻿using PawnShop.Core.Enums;
 
-namespace PawnShop.Modules.Contract.Models.DropDownButtonModels
+namespace PawnShop.Core.Models.DropDownButtonModels
 {
     public class RefreshButtonOption
     {

@@ -1,5 +1,8 @@
 ﻿using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Core.Enums;
+using PawnShop.Core.Models.DropDownButtonModels;
+using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
@@ -9,7 +12,6 @@ using PawnShop.Modules.Contract.Models.DropDownButtonModels;
 using PawnShop.Modules.Contract.Validators;
 using PawnShop.Modules.Contract.Views;
 using PawnShop.Modules.Contract.Windows.Views;
-using PawnShop.Services.DataService.QueryDataModels;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
@@ -269,57 +271,46 @@ namespace PawnShop.Modules.Contract.ViewModels
                     FromDate = null;
                     ToDate = null;
                     break;
-
                 case SearchOptions.Today:
                     FromDate = DateTime.Today;
                     ToDate = DateTime.Today;
                     break;
-
                 case SearchOptions.Yesterday:
                     FromDate = DateTime.Today.Yesterday();
                     ToDate = DateTime.Today.Yesterday();
                     break;
-
                 case SearchOptions.CurrentWeek:
                     FromDate = DateTime.Today.Monday();
                     ToDate = DateTime.Today.Sunday();
                     break;
-
                 case SearchOptions.PastWeek:
                     FromDate = DateTime.Today.PastMonday();
                     ToDate = DateTime.Today.PastSunday();
                     break;
-
                 case SearchOptions.CurrentMonth:
                     FromDate = DateTime.Today.BeginningOfCurrentMonth();
                     ToDate = DateTime.Today.EndOfCurrentMonth();
                     break;
-
                 case SearchOptions.PastMonth:
                     FromDate = DateTime.Today.BeginningOfPastMonth();
                     ToDate = DateTime.Today.EndOfPastMonth();
                     break;
-
                 case SearchOptions.CurrentQuarter:
                     FromDate = DateTime.Today.BeginningOfCurrentQuarter();
                     ToDate = DateTime.Today.EndOfCurrentQuarter();
                     break;
-
                 case SearchOptions.PastQuarter:
                     FromDate = DateTime.Today.BeginningOfPastQuarter();
                     ToDate = DateTime.Today.EndOfPastQuarter();
                     break;
-
                 case SearchOptions.CurrentYear:
                     FromDate = DateTime.Today.BeginningOfCurrentYear();
                     ToDate = DateTime.Today.EndOfCurrentYear();
                     break;
-
                 case SearchOptions.PastYear:
                     FromDate = DateTime.Today.BeginningOfPastYear();
                     ToDate = DateTime.Today.EndOfPastYear();
                     break;
-
                 default:
                     throw new ArgumentOutOfRangeException(nameof(searchOption), searchOption, null);
             }

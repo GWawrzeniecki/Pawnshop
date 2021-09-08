@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using PawnShop.Business.Models;
 using PawnShop.Core.Extensions;
+using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.InsertModels;
-using PawnShop.Services.DataService.QueryDataModels;
 using Prism.Ioc;
 using System;
 using System.Collections.Generic;

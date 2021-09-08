@@ -25,8 +25,8 @@ namespace PawnShop.Modules.Settings
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager.Regions[RegionNames.MenuRegion].Add(containerProvider.Resolve<SettingsHamburgerMenuItem>());
-            _regionManager.RegisterViewWithRegion<AppSettings>(RegionNames.TabControlRegion);
-            _regionManager.RegisterViewWithRegion<PawnShopSettings>(RegionNames.TabControlRegion);
+            _regionManager.RegisterViewWithRegion<AppSettings>(RegionNames.SettingsTabControlRegion);
+            _regionManager.RegisterViewWithRegion<PawnShopSettings>(RegionNames.SettingsTabControlRegion);
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

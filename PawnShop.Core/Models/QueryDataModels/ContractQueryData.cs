@@ -1,7 +1,7 @@
 ﻿using PawnShop.Business.Models;
 using System;
 
-namespace PawnShop.Services.DataService.QueryDataModels
+namespace PawnShop.Core.Models.QueryDataModels
 {
     public class ContractQueryData
     {

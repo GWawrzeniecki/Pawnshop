@@ -1,4 +1,4 @@
-﻿namespace PawnShop.Modules.Contract.Enums
+﻿namespace PawnShop.Core.Enums
 {
     public enum RefreshOptions
     {

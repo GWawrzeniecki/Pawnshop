@@ -82,6 +82,7 @@ namespace PawnShop
                 cfg.AddProfile<InsertContractItemToContractItemProfile>();
                 cfg.AddProfile<InsertContractRenewToContractRenewProfile>();
                 cfg.AddProfile<UserSettingsProfile>();
+                cfg.AddProfile<ClientViewModelToClientQueryData>();
             });
             var mapper = configuration.CreateMapper();
 

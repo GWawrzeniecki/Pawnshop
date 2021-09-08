@@ -1,6 +1,6 @@
 ﻿using PawnShop.Business.Models;
+using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Services.DataService.InsertModels;
-using PawnShop.Services.DataService.QueryDataModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

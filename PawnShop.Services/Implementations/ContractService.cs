@@ -1,10 +1,10 @@
 ﻿using PawnShop.Business.Models;
+using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Exceptions;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
 using PawnShop.Services.DataService.InsertModels;
-using PawnShop.Services.DataService.QueryDataModels;
 using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using System;

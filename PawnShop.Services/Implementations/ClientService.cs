@@ -1,4 +1,5 @@
 ﻿using PawnShop.Business.Models;
+using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
@@ -52,6 +53,30 @@ namespace PawnShop.Services.Implementations
             }
         }
 
+        public async Task<IList<Client>> GetClients(int count)
+        {
+            try
+            {
+                return await TryToGetClients(count);
+            }
+            catch (Exception e)
+            {
+                throw new LoadingClientsException("Wystąpił problem podczas pobierania klientów.", e);
+            }
+        }
+
+        public async Task<IList<Client>> GetClients(ClientQueryData clientQueryData, int count)
+        {
+            try
+            {
+                return await TryToGetClients(clientQueryData, count);
+            }
+            catch (Exception e)
+            {
+                throw new SearchClientsException("Wystąpił problem podczas wyszukiwania klientów.", e);
+            }
+        }
+
         #endregion
 
         #region PrivateMethods
@@ -66,6 +91,18 @@ namespace PawnShop.Services.Implementations
         {
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
             return await unitOfWork.ClientRepository.GetClientByPesel(pesel);
+        }
+
+        private async Task<IList<Client>> TryToGetClients(int count)
+        {
+            using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+            return await unitOfWork.ClientRepository.GetClients(count);
+        }
+
+        private async Task<IList<Client>> TryToGetClients(ClientQueryData clientQueryData, int count)
+        {
+            using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+            return await unitOfWork.ClientRepository.GetClients(clientQueryData, count);
         }
 
         #endregion
