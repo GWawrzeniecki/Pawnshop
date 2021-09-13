@@ -1,9 +1,83 @@
-﻿<UserControl x:Class="PawnShop.Modules.Client.Views.DetailTab"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/"             
-             prism:ViewModelLocator.AutoWireViewModel="True">
+﻿<UserControl
+    x:Class="PawnShop.Modules.Client.Views.DetailTab"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
-            
+
+
+        <Grid.Resources>
+            <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">
+                <Setter Property="Margin" Value="5,5,5,5" />
+                
+            </Style>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="Imie oraz nazwisko:" />
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="Adres:" />
+
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Text="Data urodzenia:" />
+
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="{Binding FullName}" />
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            Text="{Binding FullAddress}" />
+
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="1"
+            Text="{Binding BirthDate}" />
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="2"
+            Text="Pesel:" />
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="2"
+            Text="Dowod osobisty:" />
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="3"
+            Text="{Binding Pesel}" />
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="3"
+            Text="{Binding IdCardNumber}" />
+
+
     </Grid>
 </UserControl>

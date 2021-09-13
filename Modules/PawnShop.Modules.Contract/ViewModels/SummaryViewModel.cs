@@ -113,7 +113,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                     vm.IsBusy = true;
                 await TryToInsertContractAsync();
                 _eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Publish();
-                MaterialMessageBox.Show($"Pomyślnie utworzono umowę.", "Sukces");
+                MaterialMessageBox.Show("Pomyślnie utworzono umowę.", "Sukces");
                 if (IsPrintDealDocument)
                     await TryToPrintDealDocumentAsync();
 

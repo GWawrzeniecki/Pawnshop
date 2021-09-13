@@ -1,5 +1,6 @@
 ﻿using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Core.Constants;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.DropDownButtonModels;
 using PawnShop.Core.Models.QueryDataModels;
@@ -232,7 +233,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private async Task TryToLoadContracts()
         {
-            Contracts = (await _contractService.LoadContracts())
+            Contracts = (await _contractService.LoadContracts(100))
                 .ToList();
         }
 
@@ -388,17 +389,17 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private void RenewContract()
         {
-            if (SelectedContract is null || SelectedContract.ContractState.State.Equals(Core.Constants.Constants.BuyBackContractState))
+            if (SelectedContract is null || SelectedContract.ContractState.State.Equals(Constants.BuyBackContractState))
                 return;
-            _shellService.ShowShell<RenewContractWindow>(nameof(RenewContractData), new NavigationParameters() { { "contract", SelectedContract } });
+            _shellService.ShowShell<RenewContractWindow>(nameof(RenewContractData), new NavigationParameters { { "contract", SelectedContract } });
 
         }
 
         private void BuyBackContract()
         {
-            if (SelectedContract is null || SelectedContract.ContractState.State.Equals(Core.Constants.Constants.BuyBackContractState))
+            if (SelectedContract is null || SelectedContract.ContractState.State.Equals(Constants.BuyBackContractState))
                 return;
-            _shellService.ShowShell<BuyBackContractWindow>(nameof(BuyBackContractData), new NavigationParameters() { { "contract", SelectedContract } });
+            _shellService.ShowShell<BuyBackContractWindow>(nameof(BuyBackContractData), new NavigationParameters { { "contract", SelectedContract } });
         }
 
         #endregion private methods

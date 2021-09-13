@@ -1,6 +1,7 @@
 ﻿using Prism.Regions;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 
@@ -28,9 +29,9 @@ namespace PawnShop.Core.Taskbar
 
         #region OnAttachEvent
 
-        private void ActiveViewsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void ActiveViewsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 foreach (var view in e.NewItems)
                 {
@@ -59,7 +60,7 @@ namespace PawnShop.Core.Taskbar
                     dependentViewInfos.ForEach(dependentViewInfo => Region.RegionManager.Regions[dependentViewInfo.TargetRegionName].Add(dependentViewInfo.View));
                 }
             }
-            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
                 foreach (var oldView in e.OldItems)
                 {

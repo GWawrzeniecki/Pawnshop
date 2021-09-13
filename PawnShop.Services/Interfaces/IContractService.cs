@@ -14,19 +14,21 @@ namespace PawnShop.Services.Interfaces
         Task<IList<ContractState>> LoadContractStates();
         Task<IList<PaymentType>> LoadPaymentTypes();
 
-        Task<IList<Business.Models.Contract>> LoadContracts();
+        Task<IList<Contract>> LoadContracts(int count);
 
-        Task<IList<Business.Models.Contract>> GetContracts(ContractQueryData queryData, int count);
+        Task<IList<Contract>> LoadContracts(Client client, int count);
+
+        Task<IList<Contract>> GetContracts(ContractQueryData queryData, int count);
 
         Task<string> GetNextContractNumber();
-        Task<Business.Models.Contract> CreateContract(InsertContract insertContract, string paymentTypeStr, decimal paymentAmount,
+        Task<Contract> CreateContract(InsertContract insertContract, string paymentTypeStr, decimal paymentAmount,
             DateTime paymentDate, decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default);
 
-        Task PrintDealDocument(Business.Models.Contract contract);
+        Task PrintDealDocument(Contract contract);
 
-        Task<Business.Models.Contract> RenewContract(Business.Models.Contract contractToRenew, InsertContractRenew insertContractRenew, PaymentType paymentType, decimal paymentAmount,
+        Task<Contract> RenewContract(Contract contractToRenew, InsertContractRenew insertContractRenew, PaymentType paymentType, decimal paymentAmount,
             decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default);
-        Task<Business.Models.Contract> BuyBackContract(Business.Models.Contract buyBackContract, PaymentType paymentType, decimal paymentAmount,
+        Task<Contract> BuyBackContract(Contract buyBackContract, PaymentType paymentType, decimal paymentAmount,
             decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default);
     }
 }

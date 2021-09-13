@@ -77,7 +77,7 @@ namespace PawnShop.ViewModels
             {
                 if (!_userSettingsService.IsSettingsExist()) // until we don't have an installer
                 {
-                    _userSettingsService.SaveSettings(new UserSettings()
+                    _userSettingsService.SaveSettings(new UserSettings
                     {
                         VatPercent = 23,
                         AutomaticSearchingEndedContractsDay = 14,

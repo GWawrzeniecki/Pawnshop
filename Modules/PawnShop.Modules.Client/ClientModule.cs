@@ -1,5 +1,6 @@
 ﻿using PawnShop.Core.Regions;
 using PawnShop.Modules.Client.MenuItem;
+using PawnShop.Modules.Client.Validators;
 using PawnShop.Modules.Client.ViewModels;
 using PawnShop.Modules.Client.Views;
 using Prism.Ioc;
@@ -30,6 +31,7 @@ namespace PawnShop.Modules.Client
             containerRegistry.RegisterForNavigation<Views.Client, ClientViewModel>();
             containerRegistry.RegisterForNavigation<DealTab, DealTabViewModel>();
             containerRegistry.RegisterForNavigation<DetailTab, DetailTabViewModel>();
+            containerRegistry.Register<ClientViewModelValidator>();
 
         }
     }

@@ -40,8 +40,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             _calculateService = calculateService;
             _contractService = contractService;
-            Contract = new Business.Models.Contract()
-            { ContractItems = new List<ContractItem>(), LendingRate = new LendingRate() };
+            Contract = new Business.Models.Contract { ContractItems = new List<ContractItem>(), LendingRate = new LendingRate() };
             HamburgerMenuItem = containerProvider.Resolve<RenewContractPaymentHamburgerMenuItem>();
             LoadStartupData();
         }

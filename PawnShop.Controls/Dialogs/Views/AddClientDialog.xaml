@@ -169,6 +169,7 @@
                         IsTextSearchEnabled="True"
                         ItemsSource="{Binding Cities}"
                         SelectedItem="{Binding SelectedCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        StaysOpenOnEdit="True"
                         Text="{Binding City, Mode=TwoWay, Delay=100, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                         TextSearch.TextPath="City1" />
 
@@ -188,6 +189,7 @@
                         IsTextSearchEnabled="True"
                         ItemsSource="{Binding Countries}"
                         SelectedItem="{Binding SelectedCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        StaysOpenOnEdit="True"
                         Text="{Binding Country, Mode=TwoWay, Delay=100, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                         TextSearch.TextPath="Country1" />
 

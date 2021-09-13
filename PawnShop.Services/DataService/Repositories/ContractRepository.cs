@@ -52,48 +52,22 @@ namespace PawnShop.Services.DataService.Repositories
             return actualContractNumber.First().ContractNumberID.GetNextContractNumber();
         }
 
+        public async Task<IList<Contract>> GetTopContractsAsync(Client client, int count)
+        {
+            return await GetTopContractsQueryable(count)
+                .Where(c => c.DealMakerId == client.ClientId)
+                .ToListAsync();
+        }
+
         public async Task<IList<Contract>> GetTopContractsAsync(int count)
         {
-            return await _context.Contracts // to do this two queires in one
-                .Include(p => p.ContractState)
-                .Include(p => p.LendingRate)
-                .Include(p => p.ContractItems)
-                .ThenInclude(c => c.Category)
-                .ThenInclude(c => c.Measure)
-                .Include(p => p.DealMaker)
-                .ThenInclude(p => p.ClientNavigation)
-                .ThenInclude(person => person.Address)
-                .ThenInclude(address => address.Country)
-                .Include(c => c.DealMaker)
-                .ThenInclude(c => c.ClientNavigation)
-                .ThenInclude(c => c.Address)
-                .ThenInclude(c => c.City)
-                .Include(p => p.ContractRenews)
-                .ThenInclude(c => c.LendingRate)
-                .OrderByDescending(ctr => ctr.StartDate)
-                .Take(count)
-                .ToListAsync();
+            return await GetTopContractsQueryable(count).ToListAsync();
+
         }
 
         public async Task<IList<Contract>> GetContracts(ContractQueryData queryData, int count)
         {
-            var contractQuery = _context.Contracts
-                 .Include(p => p.ContractState)
-                 .Include(p => p.LendingRate)
-                 .Include(p => p.ContractItems)
-                 .ThenInclude(c => c.Category)
-                 .ThenInclude(c => c.Measure)
-                 .Include(p => p.DealMaker)
-                 .ThenInclude(p => p.ClientNavigation)
-                 .ThenInclude(person => person.Address)
-                 .ThenInclude(address => address.Country)
-                 .Include(c => c.DealMaker)
-                 .ThenInclude(c => c.ClientNavigation)
-                 .ThenInclude(c => c.Address)
-                 .ThenInclude(c => c.City)
-                 .Include(p => p.ContractRenews)
-                 .ThenInclude(c => c.LendingRate)
-                 .AsQueryable();
+            var contractQuery = GetTopContractsQueryable(count);
 
             if (!string.IsNullOrEmpty(queryData.Client))
             {
@@ -195,6 +169,26 @@ namespace PawnShop.Services.DataService.Repositories
             return contractToBuyBack;
         }
 
-
+        private IQueryable<Contract> GetTopContractsQueryable(int count)
+        {
+            return _context.Contracts
+                .Include(p => p.ContractState)
+                .Include(p => p.LendingRate)
+                .Include(p => p.ContractItems)
+                .ThenInclude(c => c.Category)
+                .ThenInclude(c => c.Measure)
+                .Include(p => p.DealMaker)
+                .ThenInclude(p => p.ClientNavigation)
+                .ThenInclude(person => person.Address)
+                .ThenInclude(address => address.Country)
+                .Include(c => c.DealMaker)
+                .ThenInclude(c => c.ClientNavigation)
+                .ThenInclude(c => c.Address)
+                .ThenInclude(c => c.City)
+                .Include(p => p.ContractRenews)
+                .ThenInclude(c => c.LendingRate)
+                .Take(count)
+                .AsQueryable();
+        }
     }
 }

@@ -79,11 +79,11 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-        public async Task<IList<Business.Models.Contract>> LoadContracts()
+        public async Task<IList<Contract>> LoadContracts(int count)
         {
             try
             {
-                return await TryToLoadContracts();
+                return await TryToLoadContracts(count);
             }
             catch (Exception e)
             {
@@ -91,7 +91,19 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-        public async Task<IList<Business.Models.Contract>> GetContracts(ContractQueryData queryData, int count)
+        public async Task<IList<Contract>> LoadContracts(Client client, int count)
+        {
+            try
+            {
+                return await TryToLoadContracts(client, count);
+            }
+            catch (Exception e)
+            {
+                throw new LoadingContractsException("Wystąpił problem podczas ładowania umów.", e);
+            }
+        }
+
+        public async Task<IList<Contract>> GetContracts(ContractQueryData queryData, int count)
         {
             try
             {
@@ -133,7 +145,7 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-        public async Task PrintDealDocument(Business.Models.Contract contract)
+        public async Task PrintDealDocument(Contract contract)
         {
             try
             {
@@ -145,7 +157,7 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-        public async Task<Business.Models.Contract> RenewContract(Business.Models.Contract contractToRenew,
+        public async Task<Contract> RenewContract(Contract contractToRenew,
             InsertContractRenew insertContractRenew, PaymentType paymentType, decimal paymentAmount,
             decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
         {
@@ -160,7 +172,7 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-        public async Task<Business.Models.Contract> BuyBackContract(Business.Models.Contract buyBackContract,
+        public async Task<Contract> BuyBackContract(Contract buyBackContract,
             PaymentType paymentType, decimal paymentAmount, decimal? cost,
             decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
         {
@@ -197,13 +209,19 @@ namespace PawnShop.Services.Implementations
             return (await unitOfWork.PaymentTypeRepository.GetAsync()).ToList();
         }
 
-        private async Task<IList<Business.Models.Contract>> TryToLoadContracts()
+        private async Task<IList<Contract>> TryToLoadContracts(int count)
         {
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
-            return await unitOfWork.ContractRepository.GetTopContractsAsync(100);
+            return await unitOfWork.ContractRepository.GetTopContractsAsync(count);
         }
 
-        public async Task<IList<Business.Models.Contract>> TryToGetContracts(ContractQueryData queryData, int count)
+        private async Task<IList<Contract>> TryToLoadContracts(Client client, int count)
+        {
+            using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+            return await unitOfWork.ContractRepository.GetTopContractsAsync(client, count);
+        }
+
+        public async Task<IList<Contract>> TryToGetContracts(ContractQueryData queryData, int count)
         {
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
             return await unitOfWork.ContractRepository.GetContracts(queryData, count);
@@ -215,7 +233,7 @@ namespace PawnShop.Services.Implementations
             return await unitOfWork.ContractRepository.GetNextContractNumber();
         }
 
-        private async Task<Business.Models.Contract> TryToCreateContract(InsertContract insertContract,
+        private async Task<Contract> TryToCreateContract(InsertContract insertContract,
             string paymentTypeStr, decimal paymentAmount,
             DateTime paymentDate, decimal? cost, decimal? income = default, decimal? repaymentCapital = default,
             decimal? profit = default)
@@ -225,7 +243,7 @@ namespace PawnShop.Services.Implementations
                 paymentDate, cost, income, repaymentCapital, profit);
         }
 
-        private async Task<Business.Models.Contract> TryToRenewContract(Business.Models.Contract contractToRenew,
+        private async Task<Contract> TryToRenewContract(Contract contractToRenew,
             InsertContractRenew insertContractRenew, PaymentType paymentType, decimal paymentAmount,
             decimal? cost, decimal? income = default, decimal? repaymentCapital = default, decimal? profit = default)
         {
@@ -234,8 +252,8 @@ namespace PawnShop.Services.Implementations
                 paymentAmount, cost, income, repaymentCapital, profit);
         }
 
-        private async Task<Business.Models.Contract> TryToBuyBackContract(
-            Business.Models.Contract buyBackContract, PaymentType paymentType, decimal paymentAmount, decimal? cost,
+        private async Task<Contract> TryToBuyBackContract(
+            Contract buyBackContract, PaymentType paymentType, decimal paymentAmount, decimal? cost,
             decimal? income, decimal? repaymentCapital, decimal? profit)
         {
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
@@ -244,7 +262,7 @@ namespace PawnShop.Services.Implementations
                 paymentAmount, cost, income, repaymentCapital, profit);
         }
 
-        private async Task TryToPrintDealDocument(Business.Models.Contract contract)
+        private async Task TryToPrintDealDocument(Contract contract)
         {
             decimal SumOfEstimatedValues()
             {

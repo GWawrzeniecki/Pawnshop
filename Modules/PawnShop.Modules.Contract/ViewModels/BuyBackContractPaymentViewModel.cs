@@ -149,7 +149,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                     BuyBackPrice, BuyBackPrice - SumOfEstimatedValues);
 
                 _eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Publish();
-                MaterialMessageBox.Show($"Pomyślnie przedłużono umowę.", "Sukces");
+                MaterialMessageBox.Show("Pomyślnie przedłużono umowę.", "Sukces");
 
                 if (IsPrintDealDocument)
                     await TryToPrintDealDocumentAsync();

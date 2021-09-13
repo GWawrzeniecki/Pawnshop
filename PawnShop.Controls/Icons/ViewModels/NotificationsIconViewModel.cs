@@ -4,8 +4,5 @@ namespace PawnShop.Controls.Icons.ViewModels
 {
     public class NotificationsIconViewModel : BindableBase
     {
-        public NotificationsIconViewModel()
-        {
-        }
     }
 }

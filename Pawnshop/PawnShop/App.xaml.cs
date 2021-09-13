@@ -30,7 +30,6 @@ using Prism.Regions;
 using System.Windows;
 using System.Windows.Controls;
 
-
 namespace PawnShop
 {
     /// <summary>
@@ -83,6 +82,7 @@ namespace PawnShop
                 cfg.AddProfile<InsertContractRenewToContractRenewProfile>();
                 cfg.AddProfile<UserSettingsProfile>();
                 cfg.AddProfile<ClientViewModelToClientQueryData>();
+                cfg.AddProfile<ClientToDetailTabViewModel>();
             });
             var mapper = configuration.CreateMapper();
 

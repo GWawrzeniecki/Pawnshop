@@ -2,12 +2,16 @@
 using BespokeFusion;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
+using PawnShop.Core.Events;
 using PawnShop.Core.Models.DropDownButtonModels;
 using PawnShop.Core.Models.QueryDataModels;
+using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Client.Validators;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
-using Prism.Mvvm;
+using Prism.Events;
+using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -15,13 +19,15 @@ using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Client.ViewModels
 {
-    public class ClientViewModel : BindableBase
+    public class ClientViewModel : ViewModelBase<ClientViewModel>
     {
         #region PrivateMembers
 
         private readonly IDialogService _dialogService;
         private readonly IClientService _clientService;
         private readonly IMapper _mapper;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IRegionManager _regionManager;
         private DelegateCommand _createClientCommand;
         private DelegateCommand<Business.Models.Client> _editClientCommand;
         private string _firstName;
@@ -40,11 +46,12 @@ namespace PawnShop.Modules.Client.ViewModels
 
         #region Constructor
 
-        public ClientViewModel(IDialogService dialogService, IClientService clientService, IMapper mapper)
+        public ClientViewModel(IDialogService dialogService, IClientService clientService, IMapper mapper, IEventAggregator eventAggregator, ClientViewModelValidator clientViewModelValidator) : base(clientViewModelValidator)
         {
             _dialogService = dialogService;
             _clientService = clientService;
             _mapper = mapper;
+            _eventAggregator = eventAggregator;
             Clients = new List<Business.Models.Client>();
             LoadStartupData();
         }
@@ -62,7 +69,13 @@ namespace PawnShop.Modules.Client.ViewModels
         public Business.Models.Client SelectedClient
         {
             get => _selectedClient;
-            set => SetProperty(ref _selectedClient, value);
+            set
+            {
+                SetProperty(ref _selectedClient, value);
+
+                if (value is not null)
+                    _eventAggregator.GetEvent<SelectedClientChangedEvent>().Publish(value);
+            }
         }
         public IList<RefreshButtonOption> RefreshButtonOptions
         {
@@ -107,6 +120,15 @@ namespace PawnShop.Modules.Client.ViewModels
         }
 
         #endregion
+
+        #region viewModelBase
+
+        protected override ClientViewModel GetInstance()
+        {
+            return this;
+        }
+
+        #endregion viewModelBase
 
         #region Commands
 

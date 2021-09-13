@@ -1,4 +1,5 @@
 ﻿using Prism.Regions;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,7 +17,7 @@ namespace PawnShop.Core.Regions
             {
                 switch (e.Action)
                 {
-                    case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                    case NotifyCollectionChangedAction.Add:
                         {
                             foreach (FrameworkElement item in e.NewItems)
                             {
@@ -25,7 +26,7 @@ namespace PawnShop.Core.Regions
 
                             break;
                         }
-                    case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                    case NotifyCollectionChangedAction.Remove:
                         {
                             foreach (FrameworkElement item in e.OldItems)
                             {

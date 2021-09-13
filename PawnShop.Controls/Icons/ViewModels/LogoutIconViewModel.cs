@@ -25,7 +25,7 @@ _logoutCommand ??= new DelegateCommand(Logout);
 
         public LogoutIconViewModel(ILoginService loginService)
         {
-            this._loginService = loginService;
+            _loginService = loginService;
         }
 
         #endregion constructor

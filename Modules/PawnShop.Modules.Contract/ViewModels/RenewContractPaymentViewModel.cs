@@ -102,7 +102,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 if (_shellService.GetShellViewModel<RenewContractWindow>() is RenewContractWindowViewModel vm)
                     vm.IsBusy = true;
 
-                var insertContractRenew = new InsertContractRenew()
+                var insertContractRenew = new InsertContractRenew
                 {
                     ClientId = _contractToRenew.DealMakerId,
                     ContractNumberId = _contractToRenew.ContractNumberId,
@@ -113,7 +113,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 await TryToRenewContract(_contractToRenew, insertContractRenew, SelectedPaymentType, RenewPrice, null,
                     RenewPrice);
                 _eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Publish();
-                MaterialMessageBox.Show($"Pomyślnie przedłużono umowę.", "Sukces");
+                MaterialMessageBox.Show("Pomyślnie przedłużono umowę.", "Sukces");
                 if (IsPrintDealDocument)
                     await TryToPrintDealDocumentAsync();
 

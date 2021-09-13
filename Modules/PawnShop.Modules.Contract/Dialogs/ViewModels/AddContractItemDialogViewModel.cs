@@ -2,6 +2,7 @@
 using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Controls.ContractItemViews.ViewModels;
+using PawnShop.Core.Constants;
 using PawnShop.Core.ViewModel;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
@@ -253,7 +254,7 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         {
             AdditionalInformationUserControl = contractItemCategory.Category switch
             {
-                Core.Constants.Constants.Laptop => _containerProvider.Resolve<Laptop>(),
+                Constants.Laptop => _containerProvider.Resolve<Laptop>(),
                 _ => throw new NotImplementedException(contractItemCategory.Category)
             };
         }
@@ -286,8 +287,6 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
                     case LaptopViewModel laptopViewModel:
                         var laptop = _mapper.Map<Business.Models.Laptop>(laptopViewModel);
                         contractItem.Laptop = laptop;
-                        break;
-                    default:
                         break;
                 }
 

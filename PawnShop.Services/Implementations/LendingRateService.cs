@@ -67,7 +67,7 @@ namespace PawnShop.Services.Implementations
         private async Task TryToAddLendingRate(int days, int percentage)
         {
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
-            await unitOfWork.LendingRateRepository.InsertAsync(new LendingRate() { Days = days, Procent = percentage });
+            await unitOfWork.LendingRateRepository.InsertAsync(new LendingRate { Days = days, Procent = percentage });
             await unitOfWork.SaveChangesAsync();
         }
 

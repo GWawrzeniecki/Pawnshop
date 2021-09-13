@@ -23,10 +23,10 @@ namespace PawnShop.Modules.Home.MenuItem
 
         public HomeHamburgerMenuItem(IApplicationCommands applicationCommands)
         {
-            this._applicationCommands = applicationCommands;
+            _applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);
             Label = nameof(Views.Home);
-            Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Home };
+            Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Home };
         }
 
         #endregion constructr

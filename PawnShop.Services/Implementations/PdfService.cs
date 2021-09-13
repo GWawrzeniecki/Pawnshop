@@ -42,7 +42,7 @@ namespace PawnShop.Services.Implementations
             var result = dialog.ShowDialog();
             if (!result.HasValue || !result.Value) return;
 
-            var printProcessInfo = new ProcessStartInfo()
+            var printProcessInfo = new ProcessStartInfo
             {
                 UseShellExecute = true,
                 Verb = "print",

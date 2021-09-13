@@ -15,11 +15,6 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Constructor
 
-        public BuyBackContractItemsViewModel()
-        {
-
-        }
-
         #endregion
 
         #region PublicProperties

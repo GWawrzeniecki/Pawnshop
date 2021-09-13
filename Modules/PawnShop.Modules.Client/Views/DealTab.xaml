@@ -1,9 +1,25 @@
-﻿<UserControl x:Class="PawnShop.Modules.Client.Views.DealTab"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/"             
-             prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
-            
-    </Grid>
+﻿<UserControl
+    x:Class="PawnShop.Modules.Client.Views.DealTab"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <DataGrid
+        AutoGenerateColumns="False"
+        CanUserAddRows="False"
+        CanUserDeleteRows="False"
+        IsReadOnly="True"
+        ItemsSource="{Binding Contracts}">
+
+        <DataGrid.Columns>
+            <DataGridTextColumn Binding="{Binding ContractNumberId}" Header="Numer umowy" />
+            <DataGridTextColumn Binding="{Binding ContractState.State}" Header="Stan umowy" />
+            <DataGridTextColumn Binding="{Binding AmountContract}" Header="Kwota" />
+            <DataGridTextColumn Binding="{Binding StartDate, StringFormat=d}" Header="Data założenia umowy" />
+            <DataGridTextColumn Binding="{Binding LendingRate.Days}" Header="Czas trwania umowy" />
+            <DataGridTextColumn Binding="{Binding DealMaker.ClientNavigation.FullName}" Header="Klient" />
+        </DataGrid.Columns>
+    </DataGrid>
+
 </UserControl>

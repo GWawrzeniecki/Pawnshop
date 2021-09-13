@@ -110,7 +110,7 @@ namespace PawnShop.Controls.Validators
             RuleFor(view => view.HouseNumber)
                 .NotEmpty()
                 .WithMessage("Pole nie posiada wartości.");
-            this._validatorService = validatorService;
+            _validatorService = validatorService;
         }
 
         private bool BeAValidIdCard(string arg)

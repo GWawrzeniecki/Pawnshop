@@ -136,12 +136,13 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
 
         private void EditLendingRate()
         {
-            var initializers = new Dictionary<Type, Func<object, object>>() {
-                { typeof(ICollection<ContractRenew> ), (s) =>  new HashSet<ContractRenew>() },
-                { typeof(ICollection<Contract>  ), (s) =>  new HashSet<Contract>() }
+            var initializers = new Dictionary<Type, Func<object, object>>
+            {
+                { typeof(ICollection<ContractRenew> ), s =>  new HashSet<ContractRenew>() },
+                { typeof(ICollection<Contract>  ), s =>  new HashSet<Contract>() }
             };
 
-            _dialogService.ShowEditLendingRateSettingsDialog(SelectedLendingRate.GetClone(initializers), (result) =>
+            _dialogService.ShowEditLendingRateSettingsDialog(SelectedLendingRate.GetClone(initializers), result =>
             {
                 if (result.Result == ButtonResult.OK)
                 {

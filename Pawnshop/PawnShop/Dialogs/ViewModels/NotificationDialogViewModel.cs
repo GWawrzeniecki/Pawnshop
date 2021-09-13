@@ -11,10 +11,6 @@ namespace PawnShop.Dialogs.ViewsModels
         private string _message;
         private string _title = "Notification";
 
-        public NotificationDialogViewModel()
-        {
-        }
-
         public DelegateCommand<string> CloseDialogCommand => _closeDialogCommand ??= new DelegateCommand<string>(CloseDialog);
 
         public string Message

@@ -23,10 +23,10 @@ namespace PawnShop.Modules.Client.MenuItem
 
         public ClientHamburgerMenuItem(IApplicationCommands applicationCommands)
         {
-            this._applicationCommands = applicationCommands;
+            _applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);
             Label = "Klienci";
-            Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Account };
+            Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Account };
         }
 
         #endregion constructr

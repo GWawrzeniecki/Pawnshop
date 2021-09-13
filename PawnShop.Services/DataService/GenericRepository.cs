@@ -33,7 +33,7 @@ namespace PawnShop.Services.DataService
             }
 
             foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                (new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
             }
@@ -42,10 +42,8 @@ namespace PawnShop.Services.DataService
             {
                 return orderBy(query).ToList();
             }
-            else
-            {
-                return query.ToList();
-            }
+
+            return query.ToList();
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAsync(
@@ -70,10 +68,8 @@ namespace PawnShop.Services.DataService
             {
                 return await orderBy(query).ToListAsync();
             }
-            else
-            {
-                return await query.ToListAsync();
-            }
+
+            return await query.ToListAsync();
         }
 
         public virtual TEntity GetByID(object id)

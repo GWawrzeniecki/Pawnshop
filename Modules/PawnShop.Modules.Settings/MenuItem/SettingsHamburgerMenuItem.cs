@@ -26,10 +26,10 @@ namespace PawnShop.Modules.Settings.MenuItem
 
         public SettingsHamburgerMenuItem(IApplicationCommands applicationCommands)
         {
-            this._applicationCommands = applicationCommands;
+            _applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);
             Label = "Ustawienia";
-            Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.CogOutline };
+            Icon = new PackIconMaterial { Kind = PackIconMaterialKind.CogOutline };
         }
 
         #endregion constructr

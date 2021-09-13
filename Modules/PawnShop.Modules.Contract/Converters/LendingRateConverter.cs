@@ -15,7 +15,7 @@ namespace PawnShop.Modules.Contract.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return int.TryParse(value?.ToString(), out var digit) ? new LendingRate() { Days = digit } : null;
+            return int.TryParse(value?.ToString(), out var digit) ? new LendingRate { Days = digit } : null;
         }
     }
 }

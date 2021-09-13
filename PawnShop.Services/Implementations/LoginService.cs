@@ -128,9 +128,11 @@ namespace PawnShop.Services.Implementations
 
         private async Task<(bool success, WorkerBoss workerBoss)> TryGetWorkerBossAsync(string login)
         {
-            var workerBoss = (await _unitOfWork.WorkerBossRepository.GetAsync(filter: p => p.Login.Equals(login), null, "WorkerBossNavigation")).FirstOrDefault();
+            var workerBoss = (await _unitOfWork.WorkerBossRepository.GetAsync(filter: p => p.Login.Equals(login), null,
+                "WorkerBossNavigation"));
+            var test = workerBoss.FirstOrDefault();
 
-            return workerBoss == null ? (false, null) : (true, workerBoss);
+            return test == null ? (false, null) : (true, test);
         }
 
         private async Task TryLoadStartupData(WorkerBoss loggedUser)

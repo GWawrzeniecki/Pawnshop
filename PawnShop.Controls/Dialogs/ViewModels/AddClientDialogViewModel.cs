@@ -15,7 +15,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-
 namespace PawnShop.Controls.Dialogs.ViewModels
 {
     public class AddClientDialogViewModel : ViewModelBase<AddClientDialogViewModel>, IDialogAware
@@ -156,7 +155,9 @@ namespace PawnShop.Controls.Dialogs.ViewModels
             set
             {
                 SetProperty(ref _city, value);
-                SelectedCity ??= new City() { City1 = value, CountryId = SelectedCountry?.CountryId ?? 0 };
+                SelectedCity ??= new City { City1 = City, CountryId = SelectedCountry?.CountryId ?? 0 }; // city name and country bug
+                if (SelectedCity.CityId == 0)
+                    SelectedCity.City1 = value;
             }
         }
 
@@ -166,7 +167,9 @@ namespace PawnShop.Controls.Dialogs.ViewModels
             set
             {
                 SetProperty(ref _country, value);
-                SelectedCountry ??= new Country() { Country1 = value };
+                SelectedCountry ??= new Country { Country1 = Country };
+                if (SelectedCountry.CountryId == 0)
+                    SelectedCountry.Country1 = value;
             }
         }
 
@@ -255,8 +258,7 @@ namespace PawnShop.Controls.Dialogs.ViewModels
             Mode = parameters.GetValue<ClientMode>("mode");
             Client = parameters.TryGetValue("client", out Client client) ? client : new()
             {
-                ClientNavigation = new Person()
-                { Address = new Address(), Client = new Client() }
+                ClientNavigation = new Person { Address = new Address(), Client = new Client() }
             };
             MapClientToVmBasedOnClientMode();
             await LoadStartupData();

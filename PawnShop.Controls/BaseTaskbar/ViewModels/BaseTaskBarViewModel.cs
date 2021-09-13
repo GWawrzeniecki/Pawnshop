@@ -4,8 +4,5 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
 {
     public class BaseTaskBarViewModel : BindableBase
     {
-        public BaseTaskBarViewModel()
-        {
-        }
     }
 }

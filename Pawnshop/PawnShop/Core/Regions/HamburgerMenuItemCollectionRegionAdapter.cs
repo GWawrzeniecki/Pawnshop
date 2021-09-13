@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using Prism.Regions;
+using System.Collections.Specialized;
 
 namespace PawnShop.Core.Regions
 {
@@ -13,7 +14,7 @@ namespace PawnShop.Core.Regions
         {
             region.Views.CollectionChanged += (s, e) =>
             {
-                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                if (e.Action == NotifyCollectionChangedAction.Add)
                 {
                     foreach (HamburgerMenuIconItem element in e.NewItems)
                     {
