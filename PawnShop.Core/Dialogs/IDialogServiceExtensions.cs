@@ -46,5 +46,16 @@ namespace PawnShop.Core.Dialogs
             dialogService.ShowDialog(DialogNames.EditLendingRateDialog, dialogParameters, callBack);
         }
 
+        public static void ShowWorkerDialog(this IDialogService dialogService, Action<IDialogResult> callBack, string title, WorkerDialogMode workerDialogMode, WorkerBoss workerBoss)
+        {
+            var dialogParameters = new DialogParameters { { "title", title }, { "workerDialogMode", workerDialogMode }, { "workerBoss", workerBoss } };
+            dialogService.ShowDialog(DialogNames.WorkerDialog, dialogParameters, callBack);
+        }
+
+        public static void ShowWorkerDialog(this IDialogService dialogService, Action<IDialogResult> callBack, string title)
+        {
+            var dialogParameters = new DialogParameters { { "title", title }, { "workerDialogMode", WorkerDialogMode.Add } };
+            dialogService.ShowDialog(DialogNames.WorkerDialog, dialogParameters, callBack);
+        }
     }
 }

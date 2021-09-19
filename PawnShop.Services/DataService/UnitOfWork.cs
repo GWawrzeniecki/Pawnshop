@@ -10,12 +10,11 @@ namespace PawnShop.Services.DataService
     public class UnitOfWork : IUnitOfWork
     {
 
-
         #region private members
 
         private readonly IContainerProvider _containerProvider;
         public readonly PawnshopContext _context = new();
-        private GenericRepository<WorkerBoss> _workerBossRepository;
+        private WorkerBossRepository _workerBossRepository;
         private GenericRepository<Person> _personRepository;
         private MoneyBalanceRepository _moneyBalanceRepository;
         private GenericRepository<LendingRate> _lendingRateRepository;
@@ -46,11 +45,11 @@ namespace PawnShop.Services.DataService
 
         public PawnshopContext Test => _context;
 
-        public GenericRepository<WorkerBoss> WorkerBossRepository
+        public WorkerBossRepository WorkerBossRepository
         {
             get
             {
-                _workerBossRepository ??= new GenericRepository<WorkerBoss>(_context);
+                _workerBossRepository ??= new WorkerBossRepository(_context);
                 return _workerBossRepository;
             }
         }

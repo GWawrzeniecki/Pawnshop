@@ -50,9 +50,7 @@ namespace PawnShop.Controls.Dialogs.ViewModels
         private string _idCardNumber;
         private DateTime? _validityDateIdCard;
 
-
         #endregion private members
-
 
         #region public properties
 
@@ -73,7 +71,6 @@ namespace PawnShop.Controls.Dialogs.ViewModels
             get => _firstName;
             set => SetProperty(ref _firstName, value);
         }
-
 
         public string LastName
         {
@@ -155,7 +152,7 @@ namespace PawnShop.Controls.Dialogs.ViewModels
             set
             {
                 SetProperty(ref _city, value);
-                SelectedCity ??= new City { City1 = City, CountryId = SelectedCountry?.CountryId ?? 0 }; // city name and country bug
+                SelectedCity ??= new City { City1 = City, CountryId = SelectedCountry?.CountryId ?? 0 };
                 if (SelectedCity.CityId == 0)
                     SelectedCity.City1 = value;
             }
@@ -198,7 +195,6 @@ namespace PawnShop.Controls.Dialogs.ViewModels
         }
 
         #endregion public properties
-
 
         #region commands
 
@@ -359,8 +355,6 @@ namespace PawnShop.Controls.Dialogs.ViewModels
             {
                 MapVmToClient();
                 ApplyNewCountryCityToClient();
-
-                var t = ((UnitOfWork)_unitOfWork)._context.ChangeTracker.Entries();
                 await _unitOfWork.ClientRepository.InsertAsync(Client);
                 await _unitOfWork.SaveChangesAsync();
             }

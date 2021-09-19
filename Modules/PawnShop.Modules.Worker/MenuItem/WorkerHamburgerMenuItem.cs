@@ -3,9 +3,10 @@ using PawnShop.Core;
 using PawnShop.Core.HamburgerMenu.Implementations;
 using Prism.Commands;
 
-namespace PawnShop.Modules.Client.MenuItem
+namespace PawnShop.Modules.Worker.MenuItem
 {
-    public class ClientHamburgerMenuItem : HamburgerMenuItemBase
+    public class WorkerHamburgerMenuItem : HamburgerMenuItemBase
+
     {
         #region private members
 
@@ -15,18 +16,18 @@ namespace PawnShop.Modules.Client.MenuItem
 
         #region public properties
 
-        public override string DefaultNavigationPath => nameof(Views.Client);
+        public override string DefaultNavigationPath => nameof(Views.Workers);
 
         #endregion public properties
 
         #region constructr
 
-        public ClientHamburgerMenuItem(IApplicationCommands applicationCommands)
+        public WorkerHamburgerMenuItem(IApplicationCommands applicationCommands)
         {
             _applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);
-            Label = "Klienci";
-            Icon = new PackIconMaterial { Kind = PackIconMaterialKind.AccountSupervisor };
+            Label = "Pracownicy";
+            Icon = new PackIconMaterial { Kind = PackIconMaterialKind.AccountHardHat };
         }
 
         #endregion constructr

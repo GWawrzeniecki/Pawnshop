@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using PawnShop.Core.Events;
 using PawnShop.Core.ViewModel;
+using PawnShop.Modules.Client.Events;
 using Prism.Events;
 using Prism.Mvvm;
 using System;

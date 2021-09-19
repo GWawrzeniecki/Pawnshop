@@ -8,5 +8,6 @@
         public const string MenuRegion = "MenuRegion";
         public const string SettingsTabControlRegion = "SettingsTabControlRegion";
         public const string ClientTabControlRegion = "ClientTabControlRegion";
+        public const string WorkerTabControlRegion = "WorkerTabControlRegion";
     }
 }

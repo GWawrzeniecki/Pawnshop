@@ -2,11 +2,11 @@
 using BespokeFusion;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
-using PawnShop.Core.Events;
 using PawnShop.Core.Models.DropDownButtonModels;
 using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Client.Events;
 using PawnShop.Modules.Client.Validators;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;

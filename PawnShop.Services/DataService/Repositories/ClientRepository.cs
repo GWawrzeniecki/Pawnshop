@@ -102,8 +102,7 @@ namespace PawnShop.Services.DataService.Repositories
         #endregion
 
         #region PrivateMethods
-
-        public IQueryable<Client> GetClientsAsQueryable(int count)
+        private IQueryable<Client> GetClientsAsQueryable(int count)
         {
             return _context.Clients
                 .Include(client => client.ClientNavigation)

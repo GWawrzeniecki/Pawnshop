@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Home\PawnShop.Modules.Home.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Login\PawnShop.Modules.Login.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Settings\PawnShop.Modules.Settings.csproj" />
+    <ProjectReference Include="..\..\Modules\PawnShop.Modules.Worker\PawnShop.Modules.Worker.csproj" />
     <ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Home\PawnShop.Modules.Home.csproj" />

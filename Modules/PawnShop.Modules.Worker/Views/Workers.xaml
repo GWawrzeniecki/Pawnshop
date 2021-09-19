@@ -1,0 +1,25 @@
+﻿<UserControl
+    x:Class="PawnShop.Modules.Worker.Views.Workers"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <GroupBox Margin="10,0,10,0" Header="Lista pracowników">
+        <DataGrid
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            IsReadOnly="True"
+            ItemsSource="{Binding WorkerBosses}"
+            SelectedItem="{Binding SelectedWorkerBoss, Mode=TwoWay}">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding WorkerBossNavigation.FirstName}" Header="Imię" />
+                <DataGridTextColumn Binding="{Binding WorkerBossNavigation.LastName}" Header="Nazwisko" />
+                <DataGridTextColumn Binding="{Binding WorkerBossType.Type}" Header="Typ" />
+                <DataGridTextColumn Binding="{Binding Salary}" Header="Pensja" />
+                <DataGridTextColumn Binding="{Binding GrantedBonus}" Header="Bonus" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </GroupBox>
+</UserControl>

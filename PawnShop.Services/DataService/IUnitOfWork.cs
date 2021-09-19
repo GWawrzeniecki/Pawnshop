@@ -9,7 +9,7 @@ namespace PawnShop.Services.DataService
     {
         public void SaveChanges();
         public Task SaveChangesAsync();
-        public GenericRepository<WorkerBoss> WorkerBossRepository { get; }
+        public WorkerBossRepository WorkerBossRepository { get; }
         public GenericRepository<Person> PersonRepository { get; }
 
         public MoneyBalanceRepository MoneyBalanceRepository { get; }

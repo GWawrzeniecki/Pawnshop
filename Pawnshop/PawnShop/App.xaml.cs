@@ -20,6 +20,7 @@ using PawnShop.Modules.Login;
 using PawnShop.Modules.Login.ViewModels;
 using PawnShop.Modules.Login.Views;
 using PawnShop.Modules.Settings;
+using PawnShop.Modules.Worker;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Implementations;
 using PawnShop.Services.Interfaces;
@@ -83,6 +84,8 @@ namespace PawnShop
                 cfg.AddProfile<UserSettingsProfile>();
                 cfg.AddProfile<ClientViewModelToClientQueryData>();
                 cfg.AddProfile<ClientToDetailTabViewModel>();
+                cfg.AddProfile<WorkerBossToPersonalDataViewModel>();
+                cfg.AddProfile<WorkerBossToWorkerDataViewModel>();
             });
             var mapper = configuration.CreateMapper();
 
@@ -106,6 +109,7 @@ namespace PawnShop
             moduleCatalog.AddModule<ContractModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<SettingsModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<ClientModule>(InitializationMode.OnDemand);
+            moduleCatalog.AddModule<WorkerModule>(InitializationMode.OnDemand);
         }
 
         protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
@@ -133,6 +137,7 @@ namespace PawnShop
             moduleManager.LoadModule<HomeModule>();
             moduleManager.LoadModule<ContractModule>();
             moduleManager.LoadModule<ClientModule>();
+            moduleManager.LoadModule<WorkerModule>();
             moduleManager.LoadModule<SettingsModule>();
 
             #endregion loading modules

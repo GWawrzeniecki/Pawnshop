@@ -1,0 +1,49 @@
+﻿<UserControl
+    x:Class="PawnShop.Modules.Worker.TaskBar.WorkerTaskBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:views="clr-namespace:PawnShop.Controls.Icons.Views;assembly=PawnShop.Controls"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+
+
+    <Grid Margin="115,10,0,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Button
+            Grid.Column="0"
+            Margin="0,0,20,0"
+            Command="{Binding ShowWorkerCommand}"
+            Content="Podgląd pracownika" />
+
+        <Button
+            Grid.Column="1"
+            Margin="0,0,20,0"
+            Command="{Binding CreateWorkerCommand}"
+            Content="Dodaj pracownika" />
+
+        <Button
+            Grid.Column="2"
+            Margin="0,0,20,0"
+            Command="{Binding EditWorkerCommand}"
+            Content="Edytuj pracownika" />
+
+        <Button
+            Grid.Column="3"
+            Margin="0,0,20,0"
+            Command="{Binding DeleteWorkerCommand}"
+            Content="Usuń pracownika" />
+
+        <views:NotificationsIcon Grid.Column="5" />
+        <views:LogoutIcon Grid.Column="6" />
+    </Grid>
+
+</UserControl>

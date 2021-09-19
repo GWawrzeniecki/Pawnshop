@@ -8,5 +8,6 @@
         public const string AddContractItemDialog = "AddContractItemDialog";
         public const string LendingRateSettingsDialog = "LendingRateSettingsDialog";
         public const string EditLendingRateDialog = "EditLendingRateDialog";
+        public const string WorkerDialog = "WorkerDialog";
     }
 }

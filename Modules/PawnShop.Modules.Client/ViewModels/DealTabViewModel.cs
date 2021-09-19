@@ -1,8 +1,8 @@
 ﻿using BespokeFusion;
 using PawnShop.Business.Models;
-using PawnShop.Core.Events;
 using PawnShop.Core.ViewModel;
 using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Client.Events;
 using PawnShop.Services.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
