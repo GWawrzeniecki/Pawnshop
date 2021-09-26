@@ -37,11 +37,20 @@
                 <Setter Property="Padding" Value="5" />
             </Style>
 
+            <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
+                <Setter Property="Margin" Value="0,5,5,5" />
+                <Setter Property="IsEnabled" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsEnabledConverter}}" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+            </Style>
+
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" MinWidth="150" />
+            <ColumnDefinition
+                Width="*"
+                MinWidth="150"
+                MaxWidth="400" />
 
         </Grid.ColumnDefinitions>
 
@@ -76,10 +85,16 @@
             Grid.Column="0"
             Text="Przyznany bonus:" />
 
-        <TextBox
+        <ComboBox
             Grid.Row="0"
             Grid.Column="1"
-            Text="{Binding WorkerBossType, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+            DisplayMemberPath="Type"
+            IsTextSearchEnabled="True"
+            ItemsSource="{Binding WorkerBossTypes}"
+            SelectedItem="{Binding SelectedWorkerBossType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            StaysOpenOnEdit="True"
+            Text="{Binding WorkerBossTypeStr, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}"
+            TextSearch.TextPath="Type" />
 
         <DatePicker
             Grid.Row="1"

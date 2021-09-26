@@ -86,6 +86,7 @@ namespace PawnShop
                 cfg.AddProfile<ClientToDetailTabViewModel>();
                 cfg.AddProfile<WorkerBossToPersonalDataViewModel>();
                 cfg.AddProfile<WorkerBossToWorkerDataViewModel>();
+                cfg.AddProfile<WorkerBossToLoginPrivilegesData>();
             });
             var mapper = configuration.CreateMapper();
 

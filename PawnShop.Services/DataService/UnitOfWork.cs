@@ -29,6 +29,7 @@ namespace PawnShop.Services.DataService
         private bool _disposed;
         private GenericRepository<Country> _countryRepository;
         private GenericRepository<City> _cityRepository;
+        private GenericRepository<WorkerBossType> _workerBossTypeRepository;
 
         #endregion private members
 
@@ -168,6 +169,15 @@ namespace PawnShop.Services.DataService
             {
                 _cityRepository ??= new GenericRepository<City>(_context);
                 return _cityRepository;
+            }
+        }
+
+        public GenericRepository<WorkerBossType> WorkerBossTypeRepository
+        {
+            get
+            {
+                _workerBossTypeRepository ??= new GenericRepository<WorkerBossType>(_context);
+                return _workerBossTypeRepository;
             }
         }
 

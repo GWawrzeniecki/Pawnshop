@@ -41,11 +41,11 @@ namespace PawnShop.Services.Implementations
             GetSecret(IterationsKeySecret, out string Iterations);
             var iterations = int.Parse(Iterations);
 
-            var key = Convert.ToBase64String(DeriveKey(password, salt, iterations, KeySize));
+            var hashedPassword = Convert.ToBase64String(HashPassword(password, salt, iterations, KeySize));
 
-            GetSecret(PepperAesKeySecret, out string AesPepperKey);
+            GetSecret(PepperAesKeySecret, out string aesPepperKey);
 
-            var encryptedKey = Encrypt(AesPepperKey, key);
+            var encryptedKey = Encrypt(aesPepperKey, hashedPassword);
             return $"{Convert.ToBase64String(salt)}.{encryptedKey}";
         }
 
@@ -63,17 +63,17 @@ namespace PawnShop.Services.Implementations
                 throw new FormatException($"Parameter {nameof(hash)} has invalid format.");
 
             var salt = Convert.FromBase64String(parts[0]);
-            var key = Convert.FromBase64String(parts[1]);
+            var originalHash = Convert.FromBase64String(parts[1]);
 
-            GetSecret(PepperAesKeySecret, out string AesPepperKey);
+            GetSecret(PepperAesKeySecret, out string aesPepperKey);
 
-            var decryptedKey = Decrypt(AesPepperKey, Convert.ToBase64String(key));
-            key = Convert.FromBase64String(decryptedKey);
+            var decryptedHash = Decrypt(aesPepperKey, Convert.ToBase64String(originalHash));
+            originalHash = Convert.FromBase64String(decryptedHash);
             GetSecret(IterationsKeySecret, out string Iterations);
             var iterations = int.Parse(Iterations);
-            var keyToCheck = DeriveKey(password, salt, iterations, KeySize);
+            var hashedPassword = HashPassword(password, salt, iterations, KeySize);
 
-            var verified = keyToCheck.SequenceEqual(key);
+            var verified = hashedPassword.SequenceEqual(originalHash);
 
             return verified;
         }
@@ -82,20 +82,33 @@ namespace PawnShop.Services.Implementations
 
         #region private methods
 
-        private static byte[] DeriveKey(SecureString password, byte[] salt, int iterations, int keyByteLength)
+        /// <summary>
+        /// Hashing password with Rfc2898DeriveBytes, while keeping the password in plain text in the memory for the shortest amount of time
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="salt"></param>
+        /// <param name="iterations"></param>
+        /// <param name="keyByteLength"></param>
+        /// <returns></returns>
+        private static byte[] HashPassword(SecureString password, byte[] salt, int iterations, int keyByteLength)
         {
+            // ptr is a pointer pointing to the first character of the data string with a four byte length prefix.
+            // A four - byte integer that contains the number of bytes in the following data string.
+            // It appears immediately before the first character of the data string. This value does not include the terminator.
+            //https://www.py4u.net/discuss/771461
             IntPtr ptr = Marshal.SecureStringToBSTR(password);
             byte[] passwordByteArray = null;
             try
             {
-                int length = Marshal.ReadInt32(ptr, -4);
+                int length = Marshal.ReadInt32(ptr, -4); // -4 before a pointer to the string
                 passwordByteArray = new byte[length];
+                //if the byte[] is not pinned then the garbage collector could relocate the object during collection and we would be left with no way to zero out the original copy.
                 GCHandle handle = GCHandle.Alloc(passwordByteArray, GCHandleType.Pinned);
                 try
                 {
                     for (int i = 0; i < length; i++)
                     {
-                        passwordByteArray[i] = Marshal.ReadByte(ptr, i);
+                        passwordByteArray[i] = Marshal.ReadByte(ptr, i); // we start from 0 = pointer to the string
                     }
 
                     using var rfc2898 = new Rfc2898DeriveBytes(passwordByteArray, salt, iterations);
@@ -133,6 +146,8 @@ namespace PawnShop.Services.Implementations
         private string Encrypt(string key, string valueToEncrypt) => _aesService.EncryptString(key, valueToEncrypt);
 
         private string Decrypt(string key, string valueToDecrypt) => _aesService.DecryptString(key, valueToDecrypt);
+
+
 
         #endregion private methods
     }

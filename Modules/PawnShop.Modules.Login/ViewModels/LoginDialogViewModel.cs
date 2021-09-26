@@ -1,8 +1,9 @@
 ﻿using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Core.Extensions;
+using PawnShop.Core.Interfaces;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
-using PawnShop.Modules.Login.Extensions;
 using PawnShop.Modules.Login.Validators;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
@@ -10,7 +11,6 @@ using Prism.Services.Dialogs;
 using System;
 using System.Security;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace PawnShop.Modules.Login.ViewModels
 {
@@ -24,7 +24,7 @@ namespace PawnShop.Modules.Login.ViewModels
         private bool _passwordBoxHasText;
         private bool _passwordTag;
         private string _userName;
-        private DelegateCommand<PasswordBox> _loginCommand;
+        private DelegateCommand<object> _loginCommand;
         private bool _loginButtonIsBusy;
 
         #endregion private members
@@ -39,8 +39,8 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #region commands
 
-        public DelegateCommand<PasswordBox> LoginCommand =>
-            _loginCommand ??= new DelegateCommand<PasswordBox>(LoginAsync, CanLogin)
+        public DelegateCommand<object> LoginCommand =>
+            _loginCommand ??= new DelegateCommand<object>(LoginAsync, CanLogin)
                 .ObservesProperty(() => UserNameHasText)
                 .ObservesProperty(() => PasswordBoxHasText)
                 .ObservesProperty(() => LoginButtonIsBusy);
@@ -112,13 +112,15 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #region command methods
 
-        private async void LoginAsync(PasswordBox passwordBox)
+        private async void LoginAsync(object view)
         {
             try
             {
                 LoginButtonIsBusy = true;
-                AutoLoginAdmin(passwordBox);
-                var password = passwordBox.GetReadOnlyCopy();
+                var iHavePassword = view as IHavePassword;
+                var password = iHavePassword.Password.Copy();
+                password = AutoLoginAdmin(); // for testing purpose
+                password.MakeReadOnly(); ;
                 _uiService.SetMouseBusyCursor();
                 var (success, loggedUser) = await TryToLoginAsync(UserName, password);
                 if (success)
@@ -177,7 +179,7 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #region private methods
 
-        private bool CanLogin(PasswordBox passwordBox)
+        private bool CanLogin(object view)
         {
             //return UserNameHasText && PasswordBoxHasText && !LoginButtonIsBusy;
             return true && !LoginButtonIsBusy; // For fast login while developing
@@ -193,10 +195,11 @@ namespace PawnShop.Modules.Login.ViewModels
 
         private void CloseDialog(ButtonResult buttonResult) => RequestClose?.Invoke(new DialogResult(buttonResult));
 
-        private void AutoLoginAdmin(PasswordBox passwordBox)
+        private SecureString AutoLoginAdmin()
         {
             UserName = "grzegorz.wawrzeniecki";
-            passwordBox.Password = "testtesttest";
+            const string password = "testtesttest";
+            return password.ToSecureString();
         }
 
         private void CloseDialogWithSuccess()

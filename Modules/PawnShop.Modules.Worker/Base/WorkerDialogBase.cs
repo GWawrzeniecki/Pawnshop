@@ -46,10 +46,20 @@ namespace PawnShop.Modules.Worker.Base
 
         #endregion
 
+        #region PublicMethods
+        public virtual void MapVmToWorkerBoss()
+        {
+            _mapper.Map(this, WorkerTabControlRegionContext.WorkerBoss);
+        }
+
+        #endregion
+
+        #region ProtectedMethpods
         protected virtual void MapWorkerBossToVm()
         {
             _mapper.Map(WorkerTabControlRegionContext.WorkerBoss, this);
         }
 
+        #endregion
     }
 }

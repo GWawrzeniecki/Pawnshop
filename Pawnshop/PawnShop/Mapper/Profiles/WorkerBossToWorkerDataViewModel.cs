@@ -9,13 +9,11 @@ namespace PawnShop.Mapper.Profiles
         public WorkerBossToWorkerDataViewModel()
         {
             CreateMap<WorkerBoss, WorkerDataViewModel>()
-                .ForPath(x => x.WorkerBossType, opt => opt.MapFrom(source => source.WorkerBossType.Type))
                 .ForMember(x => x.Salary, opt => opt.MapFrom(source => source.Salary))
                 .ForMember(x => x.GrantedBonus, opt => opt.MapFrom(source => source.GrantedBonus))
                 .ForMember(x => x.HireDate, opt => opt.MapFrom(source => source.HireDate))
-                .ForMember(x => x.DatePhysicalCheckUp, opt => opt.MapFrom(source => source.DatePhysicalCheckUp));
-
-
+                .ForMember(x => x.DatePhysicalCheckUp, opt => opt.MapFrom(source => source.DatePhysicalCheckUp))
+                .ReverseMap();
         }
     }
 }

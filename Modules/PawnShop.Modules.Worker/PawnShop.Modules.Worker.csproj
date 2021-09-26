@@ -15,4 +15,10 @@
     <ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Page Update="Styles\PasswordBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
 </Project>

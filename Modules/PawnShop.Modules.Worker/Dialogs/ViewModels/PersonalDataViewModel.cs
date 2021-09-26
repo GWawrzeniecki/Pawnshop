@@ -152,8 +152,12 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         {
             base.MapWorkerBossToVm();
             MapCountryCityBasedOnMode();
+        }
 
-
+        public override void MapVmToWorkerBoss()
+        {
+            base.MapVmToWorkerBoss();
+            ApplyNewCountryCityToWorker();
         }
 
         #endregion
@@ -171,7 +175,6 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
                 MaterialMessageBox.ShowError(
                     $"Wystąpił problem podczas pobierania listy krajów i miast.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
-
             }
         }
 
@@ -184,11 +187,14 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
 
         private async void MapCountryCityBasedOnMode()
         {
-            if (WorkerTabControlRegionContext.WorkerDialogMode == WorkerDialogMode.Show)
+            switch (WorkerTabControlRegionContext.WorkerDialogMode)
             {
-                await _loadStartupDataTask;
-                ApplyCountryCityToWorkerBoss();
-                MapCountryCityToVmFromWorkerBoss();
+                case WorkerDialogMode.Show:
+                case WorkerDialogMode.Edit:
+                    await _loadStartupDataTask;
+                    ApplyCountryCityToWorkerBoss();
+                    MapCountryCityToVmFromWorkerBoss();
+                    break;
             }
         }
 
@@ -209,6 +215,16 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         {
             SelectedCountry = WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.Country;
             SelectedCity = WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.City;
+        }
+
+        private void ApplyNewCountryCityToWorker()
+        {
+            SelectedCity.Country = SelectedCountry;
+            SelectedCity.CountryId = SelectedCountry.CountryId;
+            WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.City = SelectedCity;
+            WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.Country = SelectedCountry;
+            WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.CountryId = SelectedCountry.CountryId;
+            WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.CityId = SelectedCity.CityId;
         }
 
         #endregion

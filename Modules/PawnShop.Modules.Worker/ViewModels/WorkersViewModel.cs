@@ -6,7 +6,6 @@ using PawnShop.Services.DataService;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Mvvm;
-using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -58,7 +57,6 @@ namespace PawnShop.Modules.Worker.ViewModels
 
         #endregion
 
-
         #region Commands
 
         public DelegateCommand ShowWorkerCommand =>
@@ -84,7 +82,7 @@ namespace PawnShop.Modules.Worker.ViewModels
         {
             _dialogService.ShowWorkerDialog(null, "Podgląd pracownika", WorkerDialogMode.Show, SelectedWorkerBoss);
 
-            var test = _containerProvider.Resolve<IRegionManager>();
+
         }
 
         private void CreateWorker()
@@ -94,7 +92,13 @@ namespace PawnShop.Modules.Worker.ViewModels
 
         private void EditWorker()
         {
+            _dialogService.ShowWorkerDialog((result) =>
+            {
+                if (result.Result == ButtonResult.OK)
+                {
 
+                }
+            }, "Edycja pracownika", WorkerDialogMode.Edit, SelectedWorkerBoss);
         }
 
         private bool CanExecuteShowEditDeleteWorkerBoss()

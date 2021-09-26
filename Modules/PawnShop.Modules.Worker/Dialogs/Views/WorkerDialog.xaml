@@ -3,7 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <prism:Dialog.WindowStyle>
@@ -29,12 +31,21 @@
             Grid.Row="0"
             prism:RegionManager.RegionContext="{Binding WorkerTabControlRegionContext, Mode=TwoWay}"
             prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.WorkerTabControlRegion}"
-            Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
+            Style="{DynamicResource MahApps.Styles.TabControl.Animated}">
+
+            <!--TabControl.Resources>
+                <system:Double x:Key="MahApps.Font.Size.TabItem">
+                    20.00
+                </system:Double>
+            </TabControl.Resources>-->
+
+        </TabControl>
 
         <Grid
             Grid.Row="1"
             Grid.Column="0"
-            Margin="0,0,0,5">
+            Margin="0,0,0,5"
+            Visibility="{Binding ButtonGridVisibility}">
 
             <Grid.Resources>
                 <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
@@ -56,17 +67,19 @@
 
             <Button
                 Grid.Column="2"
-                Command="{Binding CreateClientCommand}"
-                Content="Utwórz" />
+                Command="{Binding CreateWorkerCommand}"
+                Content="Utwórz"
+                Visibility="{Binding CreateWorkerButtonVisibility}" />
             <Button
                 Grid.Column="2"
-                Command="{Binding CreateClientCommand}"
+                Command="{Binding UpdateWorkerCommand}"
                 Content="Zapisz"
-                Visibility="{Binding UpdateClientButtonVisibility}" />
+                Visibility="{Binding UpdateWorkerButtonVisibility}" />
             <Button
                 Grid.Column="3"
                 Command="{Binding CancelCommand}"
-                Content="Anuluj" />
+                Content="Anuluj"
+                Visibility="{Binding CancelClientButtonVisibility}" />
 
         </Grid>
 

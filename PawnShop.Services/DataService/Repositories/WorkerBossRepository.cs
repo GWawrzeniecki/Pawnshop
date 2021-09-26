@@ -46,6 +46,7 @@ namespace PawnShop.Services.DataService.Repositories
                 .Include(worker => worker.WorkerBossNavigation)
                 .ThenInclude(person => person.Address)
                 .ThenInclude(address => address.Country)
+                .Include(worker => worker.Privilege)
                 .AsQueryable();
         }
 

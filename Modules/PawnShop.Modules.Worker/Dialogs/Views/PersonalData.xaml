@@ -15,7 +15,6 @@
             <converters:WorkerTabControlRegionContextToIsReadOnlyConverter x:Key="RegionContextToIsReadOnlyConverter" />
             <converters:WorkerTabControlRegionContextToIsEnabledConverter x:Key="RegionContextToIsEnabledConverter" />
 
-
             <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">
                 <Setter Property="Margin" Value="5,5,5,5" />
                 <Setter Property="Padding" Value="5" />
@@ -45,10 +44,10 @@
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" MinWidth="150" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" MaxWidth="150" />
+            <ColumnDefinition Width="*" MaxWidth="100" />
+            <ColumnDefinition Width="*" MaxWidth="150" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>

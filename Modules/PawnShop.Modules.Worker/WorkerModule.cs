@@ -24,6 +24,7 @@ namespace PawnShop.Modules.Worker
             _regionManager.Regions[RegionNames.MenuRegion].Add(containerProvider.Resolve<WorkerHamburgerMenuItem>());
             _regionManager.RegisterViewWithRegion<PersonalData>(RegionNames.WorkerTabControlRegion);
             _regionManager.RegisterViewWithRegion<WorkerData>(RegionNames.WorkerTabControlRegion);
+            _regionManager.RegisterViewWithRegion<LoginPrivilegesData>(RegionNames.WorkerTabControlRegion);
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
@@ -32,8 +33,7 @@ namespace PawnShop.Modules.Worker
             containerRegistry.RegisterForNavigation<Workers, WorkersViewModel>();
             containerRegistry.RegisterForNavigation<PersonalData, PersonalDataViewModel>();
             containerRegistry.RegisterForNavigation<WorkerData, WorkerDataViewModel>();
-
-
+            containerRegistry.RegisterForNavigation<LoginPrivilegesData, LoginPrivilegesDataViewModel>();
         }
     }
 }
