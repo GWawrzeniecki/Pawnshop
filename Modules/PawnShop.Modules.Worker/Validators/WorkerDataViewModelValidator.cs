@@ -1,4 +1,6 @@
-﻿using PawnShop.Modules.Worker.Base;
+﻿using FluentValidation;
+using PawnShop.Modules.Worker.Base;
+using PawnShop.Modules.Worker.Dialogs.ViewModels;
 using PawnShop.Validator.Base;
 
 namespace PawnShop.Modules.Worker.Validators
@@ -7,6 +9,9 @@ namespace PawnShop.Modules.Worker.Validators
     {
         public WorkerDataViewModelValidator()
         {
+            RuleFor(view => (view as WorkerDataViewModel).WorkerBossTypeStr)
+                .NotEmpty()
+                .WithMessage("Pole nie posiada wartości.");
 
         }
     }

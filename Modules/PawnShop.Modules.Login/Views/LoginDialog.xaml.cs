@@ -17,6 +17,10 @@ namespace PawnShop.Modules.Login.Views
         #region IHavePassword
 
         public SecureString Password => PasswordBox.SecurePassword;
+        public void SetFakePassword()
+        {
+
+        }
 
         #endregion
     }

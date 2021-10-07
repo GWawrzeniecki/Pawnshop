@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="10.3.3" />
     <PackageReference Include="MahApps.Metro" Version="2.4.7" />
-    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.10.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />

@@ -14,19 +14,20 @@ namespace PawnShop.Modules.Worker.Dialogs.Views
         public LoginPrivilegesData()
         {
             InitializeComponent();
-            SetFakePassword();
+            //SetFakePassword();
         }
 
         #region IHavePassword
 
         public SecureString Password => PasswordBox.SecurePassword;
-
-        #endregion
-
-        private void SetFakePassword()
+        public void SetFakePassword()
         {
             PasswordBox.Password = (this.DataContext as LoginPrivilegesDataViewModel).FakePassword;
         }
+
+        #endregion
+
+
 
     }
 }

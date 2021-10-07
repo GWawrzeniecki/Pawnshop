@@ -22,6 +22,7 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         private string _passwordHash;
         private DelegateCommand<object> _passwordChangedCommand;
         private SecureString _newPassword;
+        private bool _passwordTag;
 
         #endregion
 
@@ -80,7 +81,11 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             get => _passwordBoxHasText;
             set => SetProperty(ref _passwordBoxHasText, value);
         }
-
+        public bool PasswordTag
+        {
+            get => _passwordTag;
+            set => SetProperty(ref _passwordTag, value);
+        }
 
         public string FakePassword => "XXXXXXXX";
 

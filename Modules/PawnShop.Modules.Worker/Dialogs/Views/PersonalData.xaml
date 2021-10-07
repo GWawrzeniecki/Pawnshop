@@ -8,7 +8,8 @@
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <Grid Margin="0,0,0,5">
+    <AdornerDecorator>
+        <Grid Margin="0,0,0,5">
 
         <Grid.Resources>
 
@@ -185,5 +186,7 @@
             Grid.ColumnSpan="3"
             Text="{Binding Pesel, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
+
+        </AdornerDecorator>
 
 </base:WorkerDialogViewBase>

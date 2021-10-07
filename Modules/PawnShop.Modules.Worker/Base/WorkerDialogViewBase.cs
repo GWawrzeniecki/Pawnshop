@@ -1,4 +1,6 @@
-﻿using PawnShop.Modules.Worker.RegionContext;
+﻿using PawnShop.Core.Enums;
+using PawnShop.Core.Interfaces;
+using PawnShop.Modules.Worker.RegionContext;
 using Prism.Common;
 using System.ComponentModel;
 using System.Windows.Controls;
@@ -27,6 +29,7 @@ namespace PawnShop.Modules.Worker.Base
             _workerTabControlRegionContext = workerTabControlRegionContext;
             PassRegionContextToDataContext();
             RegisterInRegionContext();
+            SetFakePassword();
         }
 
         private void PassRegionContextToDataContext()
@@ -40,6 +43,13 @@ namespace PawnShop.Modules.Worker.Base
             _workerTabControlRegionContext.EditViews.Add(this);
         }
 
+        private void SetFakePassword()
+        {
+            if (_workerTabControlRegionContext.WorkerDialogMode != WorkerDialogMode.Add && this is IHavePassword havePassword)
+            {
+                havePassword.SetFakePassword();
+            }
+        }
 
     }
 }

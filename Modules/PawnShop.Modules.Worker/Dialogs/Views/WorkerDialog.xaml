@@ -18,60 +18,62 @@
         </Style>
     </prism:Dialog.WindowStyle>
 
-    <Grid>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <TabControl
-            Grid.Row="0"
-            prism:RegionManager.RegionContext="{Binding WorkerTabControlRegionContext, Mode=TwoWay}"
-            prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.WorkerTabControlRegion}"
-            Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
-
-        <Grid
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="0,0,0,5"
-            Visibility="{Binding ButtonGridVisibility}">
-
-            <Grid.Resources>
-                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-                    <Setter Property="Margin" Value="5,0,15,0" />
-                </Style>
-            </Grid.Resources>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    
+        <Grid>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
+            <TabControl
+                Grid.Row="0"
+                prism:RegionManager.RegionContext="{Binding WorkerTabControlRegionContext, Mode=TwoWay}"
+                prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.WorkerTabControlRegion}"
+                Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
 
-            <Button
-                Grid.Column="2"
-                Command="{Binding CreateWorkerCommand}"
-                Content="Utwórz"
-                Visibility="{Binding CreateWorkerButtonVisibility}" />
-            <Button
-                Grid.Column="2"
-                Command="{Binding UpdateWorkerCommand}"
-                Content="Zapisz"
-                Visibility="{Binding UpdateWorkerButtonVisibility}" />
-            <Button
-                Grid.Column="3"
-                Command="{Binding CancelCommand}"
-                Content="Anuluj"
-                Visibility="{Binding CancelClientButtonVisibility}" />
+            <Grid
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="0,0,0,5"
+                Visibility="{Binding ButtonGridVisibility}">
+
+                <Grid.Resources>
+                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                        <Setter Property="Margin" Value="5,0,15,0" />
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding CreateWorkerCommand}"
+                    Content="Utwórz"
+                    Visibility="{Binding CreateWorkerButtonVisibility}" />
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding UpdateWorkerCommand}"
+                    Content="Zapisz"
+                    Visibility="{Binding UpdateWorkerButtonVisibility}" />
+                <Button
+                    Grid.Column="3"
+                    Command="{Binding CancelCommand}"
+                    Content="Anuluj"
+                    Visibility="{Binding CancelClientButtonVisibility}" />
+
+            </Grid>
 
         </Grid>
-
-    </Grid>
+   
 </UserControl>

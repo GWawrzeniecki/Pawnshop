@@ -8,121 +8,119 @@
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
+    <AdornerDecorator>
+        <Grid Margin="0,0,0,5">
 
-    <Grid Margin="0,0,0,5">
+            <Grid.Resources>
 
-        <Grid.Resources>
-
-            <converters:WorkerTabControlRegionContextToIsReadOnlyConverter x:Key="RegionContextToIsReadOnlyConverter" />
-            <converters:WorkerTabControlRegionContextToIsEnabledConverter x:Key="RegionContextToIsEnabledConverter" />
-
-
-            <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">
-                <Setter Property="Margin" Value="5,5,5,5" />
-                <Setter Property="Padding" Value="5" />
-            </Style>
-
-            <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
-                <Setter Property="Margin" Value="0,5,5,5" />
-                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
-                <Setter Property="Padding" Value="5" />
-                <Setter Property="IsReadOnly" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsReadOnlyConverter}}" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
-            </Style>
-
-            <Style BasedOn="{StaticResource MahApps.Styles.DatePicker}" TargetType="DatePicker">
-                <Setter Property="Margin" Value="0,5,5,5" />
-                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
-                <Setter Property="IsEnabled" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsEnabledConverter}}" />
-                <Setter Property="Padding" Value="5" />
-            </Style>
-
-            <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
-                <Setter Property="Margin" Value="0,5,5,5" />
-                <Setter Property="IsEnabled" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsEnabledConverter}}" />
-                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
-            </Style>
-
-        </Grid.Resources>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition
-                Width="*"
-                MinWidth="150"/>
-
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-
-        </Grid.RowDefinitions>
+                <converters:WorkerTabControlRegionContextToIsReadOnlyConverter x:Key="RegionContextToIsReadOnlyConverter" />
+                <converters:WorkerTabControlRegionContextToIsEnabledConverter x:Key="RegionContextToIsEnabledConverter" />
 
 
-        <TextBlock
-            Grid.Row="0"
-            Grid.Column="0"
-            Text="Typ pracownika:" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="0"
-            Text="Data zatrudnienia:" />
-        <TextBlock
-            Grid.Row="2"
-            Grid.Column="0"
-            Text="Data badań:" />
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="0"
-            Text="Pensja:" />
-        <TextBlock
-            Grid.Row="4"
-            Grid.Column="0"
-            Text="Przyznany bonus:" />
+                <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">
+                    <Setter Property="Margin" Value="5,5,5,5" />
+                    <Setter Property="Padding" Value="5" />
+                </Style>
 
-        <ComboBox
-            Grid.Row="0"
-            Grid.Column="1"
-            DisplayMemberPath="Type"
-            IsTextSearchEnabled="True"
-            ItemsSource="{Binding WorkerBossTypes}"
-            SelectedItem="{Binding SelectedWorkerBossType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            StaysOpenOnEdit="True"
-            Text="{Binding WorkerBossTypeStr, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}"
-            TextSearch.TextPath="Type" />
+                <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
+                    <Setter Property="Margin" Value="0,5,5,5" />
+                    <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="IsReadOnly" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsReadOnlyConverter}}" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                </Style>
 
-        <DatePicker
-            Grid.Row="1"
-            mah:TextBoxHelper.ClearTextButton="True"
-            mah:TextBoxHelper.Watermark="Wybierz date"
-            Grid.Column="1"
-            SelectedDate="{Binding HireDate, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+                <Style BasedOn="{StaticResource MahApps.Styles.DatePicker}" TargetType="DatePicker">
+                    <Setter Property="Margin" Value="0,5,5,5" />
+                    <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                    <Setter Property="IsEnabled" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsEnabledConverter}}" />
+                    <Setter Property="Padding" Value="5" />
+                </Style>
 
-        <DatePicker
-            Grid.Row="2"
-            Grid.Column="1"
-            mah:TextBoxHelper.ClearTextButton="True"
-            mah:TextBoxHelper.Watermark="Wybierz date"
-            SelectedDate="{Binding DatePhysicalCheckUp, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+                <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
+                    <Setter Property="Margin" Value="0,5,5,5" />
+                    <Setter Property="IsEnabled" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsEnabledConverter}}" />
+                    <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                </Style>
 
-        <TextBox
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="0,5,5,5"
-            Text="{Binding Salary, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid.Resources>
 
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="1"
-            Margin="0,5,5,5"
-            Text="{Binding GrantedBonus, Mode=TwoWay}" />
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MinWidth="150" />
+
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+
+            </Grid.RowDefinitions>
 
 
-    </Grid>
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="Typ pracownika:" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="Data zatrudnienia:" />
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Text="Data badań:" />
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                Text="Pensja:" />
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Text="Przyznany bonus:" />
 
+            <ComboBox
+                Grid.Row="0"
+                Grid.Column="1"
+                DisplayMemberPath="Type"
+                IsTextSearchEnabled="True"
+                ItemsSource="{Binding WorkerBossTypes}"
+                SelectedItem="{Binding SelectedWorkerBossType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                StaysOpenOnEdit="True"
+                Text="{Binding WorkerBossTypeStr, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}"
+                TextSearch.TextPath="Type" />
+
+            <DatePicker
+                Grid.Row="1"
+                Grid.Column="1"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.Watermark="Wybierz date"
+                SelectedDate="{Binding HireDate, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+
+            <DatePicker
+                Grid.Row="2"
+                Grid.Column="1"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.Watermark="Wybierz date"
+                SelectedDate="{Binding DatePhysicalCheckUp, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBox
+                Grid.Row="3"
+                Grid.Column="1"
+                Margin="0,5,5,5"
+                Text="{Binding Salary, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBox
+                Grid.Row="4"
+                Grid.Column="1"
+                Margin="0,5,5,5"
+                Text="{Binding GrantedBonus, Mode=TwoWay}" />
+
+
+        </Grid>
+    </AdornerDecorator>
 
 </base:WorkerDialogViewBase>
