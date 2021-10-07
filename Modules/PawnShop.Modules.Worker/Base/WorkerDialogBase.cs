@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using PawnShop.Business.Models;
+using PawnShop.Core.Enums;
 using PawnShop.Core.ViewModel;
+using PawnShop.Core.ViewModel.Base;
 using PawnShop.Modules.Worker.RegionContext;
-using Prism.Mvvm;
+using PawnShop.Validator.Base;
 
 namespace PawnShop.Modules.Worker.Base
 {
-    public abstract class WorkerDialogBase : BindableBase, ITabItemViewModel
+    public abstract class WorkerDialogBase : ViewModelBase<WorkerDialogBase>, ITabItemViewModel
     {
         #region PrivateMembers
 
@@ -18,7 +20,7 @@ namespace PawnShop.Modules.Worker.Base
 
         #region Constructor
 
-        protected WorkerDialogBase(IMapper mapper)
+        protected WorkerDialogBase(IMapper mapper, ValidatorBase<WorkerDialogBase> validator) : base(validator)
         {
             _mapper = mapper;
         }
@@ -33,7 +35,7 @@ namespace PawnShop.Modules.Worker.Base
             set
             {
                 SetProperty(ref _workerTabControlRegionContext, value);
-                if (value?.WorkerBoss != null)
+                if (value?.WorkerBoss != null && value?.WorkerDialogMode != WorkerDialogMode.Add)
                     MapWorkerBossToVm();
             }
         }
@@ -46,15 +48,31 @@ namespace PawnShop.Modules.Worker.Base
 
         #endregion
 
+        #region ViewModelBase
+
+        protected override WorkerDialogBase GetInstance()
+        {
+            return this;
+        }
+
+        #endregion
+
         #region PublicMethods
+
         public virtual void MapVmToWorkerBoss()
         {
             _mapper.Map(this, WorkerTabControlRegionContext.WorkerBoss);
         }
 
+        public virtual void AttachAdditionalContext()
+        {
+
+        }
+
         #endregion
 
         #region ProtectedMethpods
+
         protected virtual void MapWorkerBossToVm()
         {
             _mapper.Map(WorkerTabControlRegionContext.WorkerBoss, this);

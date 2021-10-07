@@ -81,13 +81,17 @@ namespace PawnShop.Modules.Worker.ViewModels
         private void ShowWorker()
         {
             _dialogService.ShowWorkerDialog(null, "Podgląd pracownika", WorkerDialogMode.Show, SelectedWorkerBoss);
-
-
         }
 
         private void CreateWorker()
         {
+            _dialogService.ShowWorkerDialog((result) =>
+            {
+                if (result.Result == ButtonResult.OK)
+                {
 
+                }
+            }, "Rejestracja nowego pracownika", WorkerDialogMode.Add);
         }
 
         private void EditWorker()

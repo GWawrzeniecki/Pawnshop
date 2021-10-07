@@ -2,6 +2,7 @@
 using PawnShop.Modules.Worker.Dialogs.ViewModels;
 using PawnShop.Modules.Worker.Dialogs.Views;
 using PawnShop.Modules.Worker.MenuItem;
+using PawnShop.Modules.Worker.Validators;
 using PawnShop.Modules.Worker.ViewModels;
 using PawnShop.Modules.Worker.Views;
 using Prism.Ioc;
@@ -34,6 +35,9 @@ namespace PawnShop.Modules.Worker
             containerRegistry.RegisterForNavigation<PersonalData, PersonalDataViewModel>();
             containerRegistry.RegisterForNavigation<WorkerData, WorkerDataViewModel>();
             containerRegistry.RegisterForNavigation<LoginPrivilegesData, LoginPrivilegesDataViewModel>();
+            containerRegistry.Register<PersonalDataViewModelValidator>();
+            containerRegistry.Register<WorkerDataViewModelValidator>();
+            containerRegistry.Register<LoginPrivilegesDataViewModelValidator>();
         }
     }
 }

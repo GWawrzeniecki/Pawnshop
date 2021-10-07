@@ -49,8 +49,7 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition
                 Width="*"
-                MinWidth="150"
-                MaxWidth="400" />
+                MinWidth="150"/>
 
         </Grid.ColumnDefinitions>
 
@@ -98,13 +97,17 @@
 
         <DatePicker
             Grid.Row="1"
+            mah:TextBoxHelper.ClearTextButton="True"
+            mah:TextBoxHelper.Watermark="Wybierz date"
             Grid.Column="1"
-            Text="{Binding HireDate, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+            SelectedDate="{Binding HireDate, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
         <DatePicker
             Grid.Row="2"
             Grid.Column="1"
-            Text="{Binding DatePhysicalCheckUp, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+            mah:TextBoxHelper.ClearTextButton="True"
+            mah:TextBoxHelper.Watermark="Wybierz date"
+            SelectedDate="{Binding DatePhysicalCheckUp, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
         <TextBox
             Grid.Row="3"

@@ -21,25 +21,15 @@
     <Grid>
 
         <Grid.RowDefinitions>
-
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-
         </Grid.RowDefinitions>
 
         <TabControl
             Grid.Row="0"
             prism:RegionManager.RegionContext="{Binding WorkerTabControlRegionContext, Mode=TwoWay}"
             prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.WorkerTabControlRegion}"
-            Style="{DynamicResource MahApps.Styles.TabControl.Animated}">
-
-            <!--TabControl.Resources>
-                <system:Double x:Key="MahApps.Font.Size.TabItem">
-                    20.00
-                </system:Double>
-            </TabControl.Resources>-->
-
-        </TabControl>
+            Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
 
         <Grid
             Grid.Row="1"

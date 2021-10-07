@@ -3,6 +3,7 @@ using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Modules.Worker.Base;
+using PawnShop.Modules.Worker.Validators;
 using PawnShop.Services.DataService;
 using Prism.Ioc;
 using System;
@@ -17,8 +18,8 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         #region PrivateMembers
 
         private string _workerBossTypeStr;
-        private DateTime _hireDate;
-        private DateTime _datePhysicalCheckUp;
+        private DateTime? _hireDate;
+        private DateTime? _datePhysicalCheckUp;
         private int? _salary;
         private int? _grantedBonus;
         private IList<WorkerBossType> _workerBossTypes;
@@ -30,7 +31,7 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
 
         #region Constructor
 
-        public WorkerDataViewModel(IMapper mapper, IContainerProvider containerProvider) : base(mapper)
+        public WorkerDataViewModel(IMapper mapper, IContainerProvider containerProvider, WorkerDataViewModelValidator validator) : base(mapper, validator)
         {
             _containerProvider = containerProvider;
             Header = "Dane pracownika";
@@ -59,13 +60,13 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             set => SetProperty(ref _selectedWorkerBossType, value);
         }
 
-        public DateTime HireDate
+        public DateTime? HireDate
         {
             get => _hireDate;
             set => SetProperty(ref _hireDate, value);
         }
 
-        public DateTime DatePhysicalCheckUp
+        public DateTime? DatePhysicalCheckUp
         {
             get => _datePhysicalCheckUp;
             set => SetProperty(ref _datePhysicalCheckUp, value);
@@ -91,6 +92,17 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         {
             base.MapWorkerBossToVm();
             MapWorkerBossTypeBasedOnMode();
+        }
+
+        public override void MapVmToWorkerBoss()
+        {
+            base.MapVmToWorkerBoss();
+            MapWorkerBossTypeToWorkerBoss();
+        }
+
+        public override void AttachAdditionalContext()
+        {
+            AttachWorkerBossTypesBasedOnMode();
         }
 
         #endregion
@@ -124,15 +136,14 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
                 case WorkerDialogMode.Show:
                 case WorkerDialogMode.Edit:
                     await _loadWorkerBossTypesTask;
-                    ApplyWorkerBossTypeToRegionContext();
+                    ApplyWorkerBossTypeToWorkerBoss();
                     MapWorkerBossTypeToVm();
                     break;
             }
         }
 
-        private async void ApplyWorkerBossTypeToRegionContext()
+        private void ApplyWorkerBossTypeToWorkerBoss()
         {
-            await _loadWorkerBossTypesTask;
             WorkerTabControlRegionContext.WorkerBoss.WorkerBossType = WorkerBossTypes.First(w =>
                 w.Id == WorkerTabControlRegionContext.WorkerBoss.WorkerBossTypeId);
         }
@@ -142,6 +153,28 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             SelectedWorkerBossType = WorkerTabControlRegionContext.WorkerBoss.WorkerBossType;
         }
 
+        private void MapWorkerBossTypeToWorkerBoss()
+        {
+            WorkerTabControlRegionContext.WorkerBoss.WorkerBossType = SelectedWorkerBossType;
+        }
+
+        private void AttachWorkerBossTypesBasedOnMode()
+        {
+            if (WorkerTabControlRegionContext.WorkerDialogMode == WorkerDialogMode.Add)
+            {
+                foreach (var workerBossType in WorkerBossTypes)
+                {
+                    WorkerTabControlRegionContext.UnitOfWork.WorkerBossTypeRepository.Attach(workerBossType);
+                }
+            }
+            else
+            {
+                foreach (var workerBossType in WorkerBossTypes.Where(wbt => wbt.Id != WorkerTabControlRegionContext.WorkerBoss.WorkerBossType.Id))
+                {
+                    WorkerTabControlRegionContext.UnitOfWork.WorkerBossTypeRepository.Attach(workerBossType);
+                }
+            }
+        }
 
         #endregion
     }

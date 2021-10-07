@@ -13,7 +13,6 @@ namespace PawnShop.Modules.Worker.Dialogs.Views
     {
         public LoginPrivilegesData()
         {
-            //_hashService = hashService;
             InitializeComponent();
             SetFakePassword();
         }

@@ -61,10 +61,7 @@
 
         <Grid.ColumnDefinitions>
 
-            <ColumnDefinition
-                Width="*"
-                MinWidth="150"
-                MaxWidth="550" />
+            <ColumnDefinition Width="*" MinWidth="150" />
 
         </Grid.ColumnDefinitions>
 
@@ -125,7 +122,7 @@
                     Visibility="{Binding WorkerTabControlRegionContext, Converter={StaticResource PasswordVisibilityRegionContextConverter}}">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="PasswordChanged">
-                            <prism:InvokeCommandAction Command="{Binding PasswordChangedCommand}" CommandParameter="{Binding ElementName=This}" />
+                            <prism:InvokeCommandAction Command="{Binding PasswordChangedCommand}" CommandParameter="{Binding ElementName=This, UpdateSourceTrigger=PropertyChanged}" />
                         </b:EventTrigger>
                     </b:Interaction.Triggers>
                 </PasswordBox>

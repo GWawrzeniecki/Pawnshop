@@ -3,6 +3,7 @@ using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Modules.Worker.Base;
+using PawnShop.Modules.Worker.Validators;
 using PawnShop.Services.DataService;
 using Prism.Ioc;
 using System;
@@ -37,7 +38,7 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
 
         #region Constructor
 
-        public PersonalDataViewModel(IMapper mapper, IContainerProvider containerProvider) : base(mapper)
+        public PersonalDataViewModel(IMapper mapper, IContainerProvider containerProvider, PersonalDataViewModelValidator validator) : base(mapper, validator)
         {
             _containerProvider = containerProvider;
             Header = "Dane personalne";
@@ -160,6 +161,11 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             ApplyNewCountryCityToWorker();
         }
 
+        public override void AttachAdditionalContext()
+        {
+            AttachCountriesBasedOnMode();
+        }
+
         #endregion
 
         #region PrivateMethods
@@ -225,6 +231,24 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.Country = SelectedCountry;
             WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.CountryId = SelectedCountry.CountryId;
             WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.CityId = SelectedCity.CityId;
+        }
+
+        private void AttachCountriesBasedOnMode()
+        {
+            if (WorkerTabControlRegionContext.WorkerDialogMode == WorkerDialogMode.Add)
+            {
+                foreach (var country in Countries)
+                {
+                    WorkerTabControlRegionContext.UnitOfWork.CountryRepository.Attach(country);
+                }
+            }
+            else
+            {
+                foreach (var country in Countries.Where(c => c.CountryId != WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.Country.CountryId))
+                {
+                    WorkerTabControlRegionContext.UnitOfWork.CountryRepository.Attach(country);
+                }
+            }
         }
 
         #endregion

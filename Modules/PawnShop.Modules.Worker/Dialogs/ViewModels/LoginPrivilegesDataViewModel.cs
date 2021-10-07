@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using PawnShop.Core.Interfaces;
-using PawnShop.Core.SharedVariables;
 using PawnShop.Modules.Worker.Base;
+using PawnShop.Modules.Worker.Validators;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using System.Security;
 
@@ -12,13 +13,12 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         #region PrivateMembers
 
         private readonly IMapper _mapper;
-        private readonly ISessionContext _sessionContext;
+        private readonly IHashService _hashService;
         private string _userLogin;
         private bool _baseTabs;
         private bool _workerTab;
         private bool _settingsTab;
         private bool _passwordBoxHasText;
-        private bool _isRevealPasswordButtonVisible;
         private string _passwordHash;
         private DelegateCommand<object> _passwordChangedCommand;
         private SecureString _newPassword;
@@ -26,10 +26,10 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         #endregion
 
         #region Constructors
-        public LoginPrivilegesDataViewModel(IMapper mapper, ISessionContext sessionContext) : base(mapper)
+        public LoginPrivilegesDataViewModel(IMapper mapper, IHashService hashService, LoginPrivilegesDataViewModelValidator validator) : base(mapper, validator)
         {
             _mapper = mapper;
-            _sessionContext = sessionContext;
+            _hashService = hashService;
             Header = "Dane logowania i uprawnienia";
         }
 
@@ -81,22 +81,8 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             set => SetProperty(ref _passwordBoxHasText, value);
         }
 
-        public bool IsRevealPasswordButtonVisible
-        {
-            get => _isRevealPasswordButtonVisible;
-            set => SetProperty(ref _isRevealPasswordButtonVisible, value);
-        }
 
         public string FakePassword => "XXXXXXXX";
-
-        #endregion
-
-        #region WorkerDialogBase
-
-        protected override void MapWorkerBossToVm()
-        {
-            base.MapWorkerBossToVm();
-        }
 
         #endregion
 
@@ -108,12 +94,21 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             {
                 _newPassword = iHavePassword.Password;
                 _newPassword.MakeReadOnly();
+                HashNewPassword();
             }
         }
 
         #endregion
 
         #region PrivateMethods
+
+        private void HashNewPassword()
+        {
+            if (_newPassword.Length == 0)
+                return;
+
+            PasswordHash = _hashService.Hash(_newPassword);
+        }
 
         #endregion
     }

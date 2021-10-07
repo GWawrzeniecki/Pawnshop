@@ -1,6 +1,7 @@
 ﻿using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Modules.Worker.Base;
+using PawnShop.Services.DataService;
 using Prism.Mvvm;
 using System.Collections.Generic;
 
@@ -11,6 +12,7 @@ namespace PawnShop.Modules.Worker.RegionContext
         private WorkerBoss _workerBoss;
         private WorkerDialogMode _workerDialogMode;
         private IList<WorkerDialogViewBase> _editViews;
+        private IUnitOfWork _unitOfWork;
 
         public WorkerTabControlRegionContext()
         {
@@ -33,6 +35,12 @@ namespace PawnShop.Modules.Worker.RegionContext
         {
             get => _editViews;
             set => SetProperty(ref _editViews, value);
+        }
+
+        public IUnitOfWork UnitOfWork
+        {
+            get => _unitOfWork;
+            set => SetProperty(ref _unitOfWork, value);
         }
     }
 }

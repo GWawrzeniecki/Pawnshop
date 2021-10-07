@@ -3,7 +3,6 @@ using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Worker.Base;
-using PawnShop.Modules.Worker.Dialogs.Views;
 using PawnShop.Modules.Worker.RegionContext;
 using PawnShop.Services.DataService;
 using Prism.Commands;
@@ -11,7 +10,6 @@ using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -31,6 +29,7 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         private Visibility _buttonGridButtonVisibility;
         private DelegateCommand _createWorkerCommand;
         private DelegateCommand _updateWorkerCommand;
+        private DelegateCommand _cancelCommand;
 
         #endregion
 
@@ -101,9 +100,14 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         {
             Title = parameters.GetValue<string>("title") ?? string.Empty;
             var workerDialogMode = parameters.GetValue<WorkerDialogMode>("workerDialogMode");
-            var workerBoss = parameters.GetValue<WorkerBoss>("workerBoss") ?? new WorkerBoss();
+            var workerBoss = parameters.GetValue<WorkerBoss>("workerBoss") ?? new WorkerBoss()
+            {
+                Privilege = new Privilege(),
+                WorkerBossNavigation = new Person(),
+                WorkerBossType = new WorkerBossType()
+            };
             WorkerTabControlRegionContext = new WorkerTabControlRegionContext
-            { WorkerBoss = workerBoss, WorkerDialogMode = workerDialogMode };
+            { WorkerBoss = workerBoss, WorkerDialogMode = workerDialogMode, UnitOfWork = _unitOfWork };
             OnMode(workerDialogMode);
 
         }
@@ -115,9 +119,9 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         #region Commands
 
         public DelegateCommand CreateWorkerCommand =>
-            _createWorkerCommand ??= new DelegateCommand(CreateWorker);
-
-
+            _createWorkerCommand ??= new DelegateCommand(CreateWorkerAsync);
+        public DelegateCommand CancelCommand =>
+            _cancelCommand ??= new DelegateCommand(Cancel);
 
         public DelegateCommand UpdateWorkerCommand =>
             _updateWorkerCommand ??= new DelegateCommand(UpdateWorkerAsync);
@@ -127,20 +131,16 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
 
         #region CommandsMethods
 
-        private void CreateWorker()
+        private async void CreateWorkerAsync()
         {
 
-        }
-
-        private async void UpdateWorkerAsync()
-        {
             try
             {
-                await TryToUpdateWorkerAsync();
-                MaterialMessageBox.Show("Pomyślnie zapisano zmiany.", "Sukces");
+                await TryToCreateWorkerAsync();
+                MaterialMessageBox.Show("Pracownik zostal pomyslnie dodany.", "Sukces");
                 RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
             }
-            catch (UpdateClientException e)
+            catch (CreateWorkerException e)
             {
                 MaterialMessageBox.ShowError(
                     $"{e.Message}.{Environment.NewLine}Błąd: {e.InnerException?.Message}",
@@ -153,6 +153,34 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
+        }
+
+        private async void UpdateWorkerAsync()
+        {
+            try
+            {
+                await TryToUpdateWorkerAsync();
+                MaterialMessageBox.Show("Pomyślnie zapisano zmiany.", "Sukces");
+                RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+            }
+            catch (UpdateWorkerException e)
+            {
+                MaterialMessageBox.ShowError(
+                    $"{e.Message}.{Environment.NewLine}Błąd: {e.InnerException?.Message}",
+                    "Błąd");
+            }
+            catch (Exception e)
+            {
+
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
+            }
+        }
+
+        private void Cancel()
+        {
+            RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel));
         }
 
         #endregion
@@ -181,12 +209,27 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             CancelWorkerButtonVisibility = Visibility.Hidden;
         }
 
+        private async Task TryToCreateWorkerAsync()
+        {
+            try
+            {
+                AttachAdditionalContexts();
+                AttachWorkerBoss();
+                MapAllDataToWorkerBoss();
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new CreateWorkerException("Wystąpił błąd podczas dodawania pracownika.", e);
+            }
+        }
+
         private async Task TryToUpdateWorkerAsync()
         {
             try
             {
+                AttachAdditionalContexts();
                 AttachWorkerBoss();
-                AttachCountriesBasedOnMode();
                 MapAllDataToWorkerBoss();
                 await _unitOfWork.SaveChangesAsync();
             }
@@ -208,24 +251,11 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             }
         }
 
-        private void AttachCountriesBasedOnMode()
+        private void AttachAdditionalContexts()
         {
-            var personalDataView = WorkerTabControlRegionContext.EditViews.First(view => view is PersonalData);
-            var Countries = (personalDataView.DataContext as PersonalDataViewModel).Countries;
-
-            if (WorkerTabControlRegionContext.WorkerDialogMode == WorkerDialogMode.Add)
+            foreach (var workerDialogViewBase in WorkerTabControlRegionContext.EditViews)
             {
-                foreach (var country in Countries)
-                {
-                    _unitOfWork.CountryRepository.Attach(country);
-                }
-            }
-            else
-            {
-                foreach (var country in Countries.Where(c => c.CountryId != WorkerTabControlRegionContext.WorkerBoss.WorkerBossNavigation.Address.Country.CountryId))
-                {
-                    _unitOfWork.CountryRepository.Attach(country);
-                }
+                (workerDialogViewBase.DataContext as WorkerDialogBase).AttachAdditionalContext();
             }
 
         }

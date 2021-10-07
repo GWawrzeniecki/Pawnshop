@@ -52,9 +52,9 @@ namespace PawnShop.Core.Dialogs
             dialogService.ShowDialog(DialogNames.WorkerDialog, dialogParameters, callBack);
         }
 
-        public static void ShowWorkerDialog(this IDialogService dialogService, Action<IDialogResult> callBack, string title)
+        public static void ShowWorkerDialog(this IDialogService dialogService, Action<IDialogResult> callBack, string title, WorkerDialogMode workerDialogMode)
         {
-            var dialogParameters = new DialogParameters { { "title", title }, { "workerDialogMode", WorkerDialogMode.Add } };
+            var dialogParameters = new DialogParameters { { "title", title }, { "workerDialogMode", workerDialogMode } };
             dialogService.ShowDialog(DialogNames.WorkerDialog, dialogParameters, callBack);
         }
     }
