@@ -11,10 +11,10 @@ using PawnShop.Modules.Client.Validators;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Client.ViewModels
@@ -27,7 +27,6 @@ namespace PawnShop.Modules.Client.ViewModels
         private readonly IClientService _clientService;
         private readonly IMapper _mapper;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IRegionManager _regionManager;
         private DelegateCommand _createClientCommand;
         private DelegateCommand<Business.Models.Client> _editClientCommand;
         private string _firstName;
@@ -41,6 +40,7 @@ namespace PawnShop.Modules.Client.ViewModels
         private Business.Models.Client _selectedClient;
         private IList<RefreshButtonOption> _refreshButtonOptions;
         private DelegateCommand<object> _refreshButtonCommand;
+        private bool _isBusy;
 
         #endregion
 
@@ -119,6 +119,12 @@ namespace PawnShop.Modules.Client.ViewModels
             set => SetProperty(ref _street, value);
         }
 
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
         #endregion
 
         #region viewModelBase
@@ -140,7 +146,7 @@ namespace PawnShop.Modules.Client.ViewModels
                 .ObservesProperty(() => SelectedClient);
 
         public DelegateCommand RefreshCommand =>
-            _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
+            _refreshCommand ??= new DelegateCommand(RefreshDataGridAsync);
 
         public DelegateCommand<object> RefreshButtonOptionCommand =>
             _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
@@ -149,29 +155,47 @@ namespace PawnShop.Modules.Client.ViewModels
 
         #region CommandMethods
 
-        private void CreateClient()
+        private async void CreateClient()
         {
-            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", ClientMode.CreateClient, dialogResult =>
+            var dialogResult = ButtonResult.Cancel;
+
+            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", ClientMode.CreateClient, result =>
             {
-                if (dialogResult.Result == ButtonResult.OK)
+                if (result.Result == ButtonResult.OK)
                 {
-                    SelectedClient = null;
-                    SelectedClient = dialogResult.Parameters.GetValue<Business.Models.Client>("client");
-                }
+                    dialogResult = result.Result;
+                };
 
             });
+
+            if (dialogResult == ButtonResult.OK)
+            {
+                IsBusy = true;
+                await RefreshDataGrid();
+                IsBusy = false;
+            }
         }
 
-        private void EditClient(Business.Models.Client client)
+        private async void EditClient(Business.Models.Client client)
         {
-            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", ClientMode.UpdateClient, dialogResult =>
+            var dialogResult = ButtonResult.Cancel;
+            var selectedClient = SelectedClient;
+
+            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", ClientMode.UpdateClient, result =>
             {
-                if (dialogResult.Result == ButtonResult.OK)
+                if (result.Result == ButtonResult.OK)
                 {
-                    SelectedClient = null;
-                    SelectedClient = dialogResult.Parameters.GetValue<Business.Models.Client>("client");
+                    dialogResult = result.Result;
                 }
             }, client);
+
+            if (dialogResult == ButtonResult.OK)
+            {
+                IsBusy = true;
+                await RefreshDataGrid();
+                SelectedClient = Clients.FirstOrDefault(c => c.ClientId == selectedClient.ClientId);
+                IsBusy = false;
+            }
         }
 
         private bool CanExecuteEditClient(Business.Models.Client arg)
@@ -179,7 +203,7 @@ namespace PawnShop.Modules.Client.ViewModels
             return SelectedClient is not null;
         }
 
-        private async void RefreshDataGrid()
+        private async void RefreshDataGridAsync()
         {
             try
             {
@@ -264,6 +288,27 @@ namespace PawnShop.Modules.Client.ViewModels
         private async Task TryToRefreshDataGrid(ClientQueryData clientQueryData)
         {
             Clients = await _clientService.GetClients(clientQueryData, 100);
+        }
+
+        private async Task RefreshDataGrid()
+        {
+            try
+            {
+                var clientQueryData = _mapper.Map<ClientQueryData>(this);
+                await TryToRefreshDataGrid(clientQueryData);
+            }
+            catch (SearchClientsException loadingContractsException)
+            {
+                MaterialMessageBox.ShowError(
+                    $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
+                    "Błąd");
+            }
+            catch (Exception e)
+            {
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
+            }
         }
 
         #endregion

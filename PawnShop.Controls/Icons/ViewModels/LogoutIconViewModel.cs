@@ -16,8 +16,7 @@ namespace PawnShop.Controls.Icons.ViewModels
 
         #region public properties
 
-        public DelegateCommand LogoutCommand =>
-_logoutCommand ??= new DelegateCommand(Logout);
+        public DelegateCommand LogoutCommand => _logoutCommand ??= new DelegateCommand(Logout);
 
         #endregion public properties
 

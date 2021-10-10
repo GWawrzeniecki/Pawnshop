@@ -34,6 +34,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private bool _isPrintDealDocument;
         private LendingRate _renewLendingRate;
         private DateTime _startDate;
+        private Func<Task> _callBack;
 
         #endregion
 
@@ -116,6 +117,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 MaterialMessageBox.Show("Pomyślnie przedłużono umowę.", "Sukces");
                 if (IsPrintDealDocument)
                     await TryToPrintDealDocumentAsync();
+                await _callBack.Invoke();
 
             }
             catch (RenewContractException renewContractException)
@@ -202,6 +204,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             var startDate = navigationContext.Parameters.GetValue<DateTime>("startDate");
             if (startDate != default)
                 _startDate = startDate;
+            _callBack = navigationContext.Parameters.GetValue<Func<Task>>("CallBack");
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

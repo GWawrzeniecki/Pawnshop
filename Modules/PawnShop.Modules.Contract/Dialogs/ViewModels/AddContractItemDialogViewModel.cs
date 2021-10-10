@@ -118,7 +118,7 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             {
                 SetProperty(ref _selectedContractItemCategory, value);
                 SetAdditionalInformationUserControl(value);
-                (AdditionalInformationUserControl.DataContext as IDetailedInformationUserControl).DetailedInformationUserControlCommand = AddContractItemCommand;
+                (AdditionalInformationUserControl.DataContext as IRaiseCanExecuteChanged).Commands.Add(AddContractItemCommand);
             }
         }
 

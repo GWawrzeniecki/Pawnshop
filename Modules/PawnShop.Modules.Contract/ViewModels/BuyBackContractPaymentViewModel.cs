@@ -37,6 +37,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private bool _isPrintDealDocument;
         private bool _isPrintContractItems;
         private DelegateCommand _saveCommand;
+        private Func<Task> _callBack;
 
         #endregion
 
@@ -110,6 +111,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             var buyBackPrice = navigationContext.Parameters.GetValue<decimal>("buyBackPrice");
             if (buyBackPrice != default)
                 BuyBackPrice = buyBackPrice;
+            _callBack = navigationContext.Parameters.GetValue<Func<Task>>("CallBack");
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -155,6 +157,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                     await TryToPrintDealDocumentAsync();
                 if (IsPrintContractItems)
                     await TryToPrintContractItemsAsync();
+                await _callBack.Invoke();
 
             }
             catch (RenewContractException renewContractException)

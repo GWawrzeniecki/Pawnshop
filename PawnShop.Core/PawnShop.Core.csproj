@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\" />
+    <Folder Include="Privileges\" />
   </ItemGroup>
 
 </Project>

@@ -33,6 +33,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private DelegateCommand _addContractItemCommand;
         private IList<ContractItem> _boughtContractItems;
         private Client _dealMaker;
+        private Func<Task> _callBack;
         #endregion
 
         #region constructor
@@ -208,6 +209,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             _dealMaker = navigationContext.Parameters.GetValue<Client>("DealMaker") ?? _dealMaker;
+            _callBack = navigationContext.Parameters.GetValue<Func<Task>>("CallBack");
+
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -222,6 +225,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             navigationContext.Parameters.Add("StartDate", DateTime.Now);
             navigationContext.Parameters.Add("ContractNumber", ContractNumber);
             navigationContext.Parameters.Add("DealMaker", _dealMaker);
+            navigationContext.Parameters.Add("CallBack", _callBack);
         }
 
         #endregion

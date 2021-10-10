@@ -2,6 +2,8 @@
 using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
+using PawnShop.Core.SharedVariables;
+using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
 using Prism.Commands;
 using Prism.Ioc;
@@ -21,19 +23,22 @@ namespace PawnShop.Modules.Worker.ViewModels
         private WorkerBoss _selectedWorkerBoss;
         private readonly IContainerProvider _containerProvider;
         private readonly IDialogService _dialogService;
+        private readonly ISessionContext _sessionContext;
         private DelegateCommand _showWorkerCommand;
         private DelegateCommand _createWorkerCommand;
         private DelegateCommand _editWorkerCommand;
         private DelegateCommand _deleteWorkerCommand;
+        private bool _isBusy;
 
         #endregion
 
         #region Constructor
 
-        public WorkersViewModel(IContainerProvider containerProvider, IDialogService dialogService)
+        public WorkersViewModel(IContainerProvider containerProvider, IDialogService dialogService, ISessionContext sessionContext)
         {
             _containerProvider = containerProvider;
             _dialogService = dialogService;
+            _sessionContext = sessionContext;
             WorkerBosses = new List<WorkerBoss>();
             LoadStartupData();
         }
@@ -54,6 +59,11 @@ namespace PawnShop.Modules.Worker.ViewModels
             set => SetProperty(ref _selectedWorkerBoss, value);
         }
 
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
 
         #endregion
 
@@ -83,26 +93,45 @@ namespace PawnShop.Modules.Worker.ViewModels
             _dialogService.ShowWorkerDialog(null, "Podgląd pracownika", WorkerDialogMode.Show, SelectedWorkerBoss);
         }
 
-        private void CreateWorker()
+        private async void CreateWorker()
         {
-            _dialogService.ShowWorkerDialog((result) =>
-            {
-                if (result.Result == ButtonResult.OK)
-                {
+            var dialogResult = ButtonResult.Cancel;
 
-                }
-            }, "Rejestracja nowego pracownika", WorkerDialogMode.Add);
+            _dialogService.ShowWorkerDialog((result) =>
+           {
+               if (result.Result == ButtonResult.OK)
+               {
+                   dialogResult = result.Result;
+               }
+           }, "Rejestracja nowego pracownika", WorkerDialogMode.Add);
+
+            if (dialogResult == ButtonResult.OK)
+            {
+                IsBusy = true;
+                await RefreshData();
+                IsBusy = false;
+            }
         }
 
-        private void EditWorker()
+        private async void EditWorker()
         {
-            _dialogService.ShowWorkerDialog((result) =>
-            {
-                if (result.Result == ButtonResult.OK)
-                {
+            var dialogResult = ButtonResult.Cancel;
 
-                }
-            }, "Edycja pracownika", WorkerDialogMode.Edit, SelectedWorkerBoss);
+            _dialogService.ShowWorkerDialog((result) =>
+           {
+               if (result.Result == ButtonResult.OK)
+               {
+                   dialogResult = result.Result;
+               }
+           }, "Edycja pracownika", WorkerDialogMode.Edit, SelectedWorkerBoss);
+
+            if (dialogResult == ButtonResult.OK)
+            {
+                IsBusy = true;
+                await RefreshData();
+                IsBusy = false;
+            }
+
         }
 
         private bool CanExecuteShowEditDeleteWorkerBoss()
@@ -110,9 +139,39 @@ namespace PawnShop.Modules.Worker.ViewModels
             return SelectedWorkerBoss is not null;
         }
 
-        private void DeleteWorker()
+        private async void DeleteWorker()
         {
+            try
+            {
+                if (_sessionContext.LoggedPerson.WorkerBossId == SelectedWorkerBoss.WorkerBossId)
+                {
+                    MaterialMessageBox.ShowError("Nie możesz usunąc aktualnie zalogowanego pracownika.", "Uwaga!");
+                }
+                else
+                {
+                    IsBusy = true;
+                    await TryToDeleteWorker();
+                    MaterialMessageBox.Show("Pracownik został pomyślnie usunięty.", "Sukces");
+                    await RefreshData();
+                }
+            }
+            catch (DeleteWorkerException e)
+            {
+                MaterialMessageBox.ShowError(
+                    $"{e.Message}.{Environment.NewLine}Błąd: {e.InnerException?.Message}",
+                    "Błąd");
+            }
+            catch (Exception e)
+            {
 
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         #endregion
@@ -133,11 +192,39 @@ namespace PawnShop.Modules.Worker.ViewModels
                     "Błąd");
             }
         }
+        private async Task RefreshData()
+        {
+            try
+            {
+                await TryToLoadStartupData();
+
+            }
+            catch (Exception e)
+            {
+                MaterialMessageBox.ShowError(
+                    $"Wystąpił błąd podczas odświeżania listy pracowników.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
+            }
+        }
 
         private async Task TryToLoadStartupData()
         {
             var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
             WorkerBosses = await unitOfWork.WorkerBossRepository.GetWorkerBosses();
+        }
+
+        private async Task TryToDeleteWorker()
+        {
+            try
+            {
+                var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+                unitOfWork.WorkerBossRepository.Delete(SelectedWorkerBoss);
+                await unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new DeleteWorkerException("Wystąpił błąd podczas usuwania pracownika.", e);
+            }
         }
 
 

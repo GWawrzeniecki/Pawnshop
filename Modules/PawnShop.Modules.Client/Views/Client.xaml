@@ -5,6 +5,7 @@
     xmlns:coreRegions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:views="clr-namespace:PawnShop.Controls.BusyControl.Views;assembly=PawnShop.Controls"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid Margin="10,0,10,0">
         <Grid.ColumnDefinitions>
@@ -167,7 +168,7 @@
 
                 <TabControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static coreRegions:RegionNames.ClientTabControlRegion}" />
 
-
+                <views:BusyControl Grid.Row="0" Grid.RowSpan="2" />
             </Grid>
         </GroupBox>
 

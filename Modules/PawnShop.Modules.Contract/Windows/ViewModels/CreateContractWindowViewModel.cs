@@ -55,8 +55,6 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
 
         #endregion viewModelBase
 
-
-
         #region Commands
 
         public DelegateCommand<Type> NavigateCommand =>
@@ -96,8 +94,7 @@ namespace PawnShop.Modules.Contract.Windows.ViewModels
         }
         #endregion public Properties
 
-
-        #region commandMethods
+        #region CommandMethods
 
         public void Navigate(Type type)
         {

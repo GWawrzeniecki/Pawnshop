@@ -37,6 +37,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private Business.Models.Contract _contract;
         private bool _isPrintDealDocument;
         private DelegateCommand _createContractCommand;
+        private Func<Task> _callBack;
 
         #endregion
 
@@ -116,8 +117,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 MaterialMessageBox.Show("Pomyślnie utworzono umowę.", "Sukces");
                 if (IsPrintDealDocument)
                     await TryToPrintDealDocumentAsync();
-
-
+                await _callBack.Invoke();
             }
             catch (CreateContractException createContractException)
             {
@@ -145,21 +145,13 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
         }
 
-
-
-
         #endregion
-
 
         #region PrivateMethods
 
-
-
         private async Task TryToInsertContractAsync()
         {
-
             var insertContract = _mapper.Map<InsertContract>(Contract);
-
             await _contractService.CreateContract(insertContract, Constants.CashPaymentType, SumOfEstimatedValues, DateTime.Now, SumOfEstimatedValues);
         }
 
@@ -189,7 +181,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                                         Contract.ContractNumberId;
             Contract.AmountContract = SumOfEstimatedValues;
             Contract.WorkerBossId = _sessionContext.LoggedPerson.WorkerBossId;
-
+            _callBack = navigationContext.Parameters.GetValue<Func<Task>>("CallBack");
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

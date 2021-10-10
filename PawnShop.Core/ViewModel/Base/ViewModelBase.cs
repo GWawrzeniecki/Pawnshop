@@ -4,12 +4,13 @@ using PawnShop.Validator.Base;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
 namespace PawnShop.Core.ViewModel.Base
 {
-    public abstract class ViewModelBase<T> : BindableBase, IDataErrorInfo, IViewModelBase, IDetailedInformationUserControl where T : class
+    public abstract class ViewModelBase<T> : BindableBase, IDataErrorInfo, IViewModelBase, IRaiseCanExecuteChanged where T : class
     {
         #region private members
 
@@ -23,6 +24,7 @@ namespace PawnShop.Core.ViewModel.Base
         protected ViewModelBase(ValidatorBase<T> dialogValidator)
         {
             _validator = dialogValidator;
+            Commands = new List<DelegateCommand>();
         }
 
 
@@ -42,7 +44,10 @@ namespace PawnShop.Core.ViewModel.Base
             get
             {
                 RaisePropertyChanged(nameof(HasErrors));
-                DetailedInformationUserControlCommand?.RaiseCanExecuteChanged();
+                foreach (var delegateCommand in Commands)
+                {
+                    delegateCommand.RaiseCanExecuteChanged();
+                }
                 var prop = new[] { columnName };
                 var context = new ValidationContext<T>(GetInstance(), new PropertyChain(), new MemberNameValidatorSelector(prop));
                 var validationResult = _validator.Validate(context);
@@ -74,9 +79,9 @@ namespace PawnShop.Core.ViewModel.Base
 
         #endregion IDataErrorInfo
 
-        #region IDetaieldInformationUserControl 
+        #region IRaiseCanExecuteChanged 
 
-        public DelegateCommand DetailedInformationUserControlCommand { get; set; } // to do maybe change it in future
+        public IList<DelegateCommand> Commands { get; set; } // to do maybe change it in future
 
         #endregion
     }

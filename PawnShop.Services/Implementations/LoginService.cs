@@ -107,6 +107,15 @@ namespace PawnShop.Services.Implementations
                 else
                     Application.Current.Shutdown(1);
             });
+
+            //var currentExecutablePath = Process.GetCurrentProcess().MainModule.FileName;
+            //Process.Start(currentExecutablePath);
+            //Application.Current.Shutdown();
+
+            // Przeleciec po wszystkich modułach, sprawdzic czy ma prawa
+            // Jesli nie ma to chowamy jesli jest załadowany
+            // Jesli ma to show lub ladujemy jesli niezaladowany
+
         }
 
         #endregion public methods
@@ -128,11 +137,11 @@ namespace PawnShop.Services.Implementations
 
         private async Task<(bool success, WorkerBoss workerBoss)> TryGetWorkerBossAsync(string login)
         {
-            var workerBoss = await _unitOfWork.WorkerBossRepository.GetAsync(filter: p => p.Login.Equals(login), null,
-                "WorkerBossNavigation");
-            var test = workerBoss.FirstOrDefault();
+            var workerBoss = (await _unitOfWork.WorkerBossRepository.GetAsync(filter: p => p.Login.Equals(login), null,
+                "WorkerBossNavigation,Privilege")).FirstOrDefault();
 
-            return test == null ? (false, null) : (true, test);
+
+            return workerBoss == null ? (false, null) : (true, workerBoss);
         }
 
         private async Task TryLoadStartupData(WorkerBoss loggedUser)
@@ -146,6 +155,11 @@ namespace PawnShop.Services.Implementations
         private async Task TryToUpdateContractStates()
         {
             await _unitOfWork.ContractRepository.UpdateContractStates();
+        }
+
+        private void ReloadModules()
+        {
+
         }
 
         #endregion private method

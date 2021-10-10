@@ -30,6 +30,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private LendingRate _selectedDelayLendingRate;
         private LendingRate _actualLendingRate;
         private DateTime _contractStartDate;
+        private Func<Task> _callBack;
 
         #endregion
 
@@ -219,6 +220,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             var contract = navigationContext.Parameters.GetValue<Business.Models.Contract>("contract");
             if (contract is not null)
                 Contract = contract;
+            _callBack = navigationContext.Parameters.GetValue<Func<Task>>("CallBack");
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -232,6 +234,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             navigationContext.Parameters.Add("renewPrice", RenewPrice);
             navigationContext.Parameters.Add("renewLendingRate", SelectedNewRepurchaseDateLendingRate);
             navigationContext.Parameters.Add("startDate", ContractDate);
+            navigationContext.Parameters.Add("CallBack", _callBack);
         }
 
         #endregion

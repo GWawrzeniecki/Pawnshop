@@ -1,5 +1,9 @@
-﻿using PawnShop.Core.Enums;
+﻿using MahApps.Metro.Controls;
+using PawnShop.Core.Enums;
 using PawnShop.Core.Interfaces;
+using PawnShop.Core.ViewModel;
+using PawnShop.Modules.Worker.Dialogs.ViewModels;
+using PawnShop.Modules.Worker.Dialogs.Views;
 using PawnShop.Modules.Worker.RegionContext;
 using Prism.Common;
 using System.ComponentModel;
@@ -13,6 +17,7 @@ namespace PawnShop.Modules.Worker.Base
 
         public WorkerDialogViewBase()
         {
+
             ObserveWorkerContext();
         }
 
@@ -30,6 +35,7 @@ namespace PawnShop.Modules.Worker.Base
             PassRegionContextToDataContext();
             RegisterInRegionContext();
             SetFakePassword();
+            AddCommands();
         }
 
         private void PassRegionContextToDataContext()
@@ -51,5 +57,16 @@ namespace PawnShop.Modules.Worker.Base
             }
         }
 
+        private void AddCommands()
+        {
+            var workerDialog = this.TryFindParent<WorkerDialog>();
+
+            if (_workerTabControlRegionContext.WorkerDialogMode == WorkerDialogMode.Add)
+                (DataContext as IRaiseCanExecuteChanged).Commands.Add((workerDialog.DataContext as WorkerDialogViewModel).CreateWorkerCommand);
+            else if (_workerTabControlRegionContext.WorkerDialogMode == WorkerDialogMode.Edit)
+            {
+                (DataContext as IRaiseCanExecuteChanged).Commands.Add((workerDialog.DataContext as WorkerDialogViewModel).UpdateWorkerCommand);
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ using PawnShop.Controls.Dialogs.Views;
 using PawnShop.Controls.Validators;
 using PawnShop.Core;
 using PawnShop.Core.Constants;
+using PawnShop.Core.Modules;
 using PawnShop.Core.Regions;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Core.SharedVariables;
@@ -38,6 +39,8 @@ namespace PawnShop
     /// </summary>
     public partial class App
     {
+        private IModuleCatalog _moduleCatalog;
+
         public App()
         {
             Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
@@ -105,6 +108,7 @@ namespace PawnShop
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             base.ConfigureModuleCatalog(moduleCatalog);
+            _moduleCatalog = moduleCatalog;
             moduleCatalog.AddModule<LoginModule>();
             moduleCatalog.AddModule<HomeModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<ContractModule>(InitializationMode.OnDemand);
@@ -152,6 +156,12 @@ namespace PawnShop
 
             #endregion Login
 
+        }
+
+        protected override void RegisterRequiredTypes(IContainerRegistry containerRegistry)
+        {
+            base.RegisterRequiredTypes(containerRegistry);
+            containerRegistry.RegisterSingleton<IModuleInitializer, PrivilegeBasedModuleInitializer>();
         }
     }
 }

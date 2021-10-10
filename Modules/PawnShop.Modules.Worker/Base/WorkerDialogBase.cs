@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Core.ViewModel;
 using PawnShop.Core.ViewModel.Base;
@@ -12,7 +11,6 @@ namespace PawnShop.Modules.Worker.Base
     {
         #region PrivateMembers
 
-        private WorkerBoss _workerBoss;
         private WorkerTabControlRegionContext _workerTabControlRegionContext;
         private readonly IMapper _mapper;
 

@@ -25,6 +25,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly ICalculateService _calculateService;
         private readonly IContractService _contractService;
         private DateTime _contractStartDate;
+        private Func<Task> _callBack;
 
         #endregion
 
@@ -181,6 +182,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             var contract = navigationContext.Parameters.GetValue<Business.Models.Contract>("contract");
             if (contract is not null)
                 Contract = contract;
+            _callBack = navigationContext.Parameters.GetValue<Func<Task>>("CallBack");
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -192,6 +194,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             navigationContext.Parameters.Add("contract", Contract);
             navigationContext.Parameters.Add("buyBackPrice", BuyBackPrice);
+            navigationContext.Parameters.Add("CallBack", _callBack);
         }
 
         #endregion

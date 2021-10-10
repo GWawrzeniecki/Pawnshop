@@ -14,7 +14,6 @@ namespace PawnShop.Modules.Worker.Dialogs.Views
         public LoginPrivilegesData()
         {
             InitializeComponent();
-            //SetFakePassword();
         }
 
         #region IHavePassword

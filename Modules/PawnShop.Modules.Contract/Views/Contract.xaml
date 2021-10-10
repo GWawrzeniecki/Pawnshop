@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:views="clr-namespace:PawnShop.Controls.BusyControl.Views;assembly=PawnShop.Controls"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <Grid Margin="10,0,10,0">
@@ -178,24 +179,26 @@
             Grid.Row="1"
             Grid.Column="0"
             Header="Lista umów">
+            <Grid>
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Contracts}"
+                    SelectedItem="{Binding SelectedContract, Mode=TwoWay}">
 
-            <DataGrid
-                AutoGenerateColumns="False"
-                CanUserAddRows="False"
-                CanUserDeleteRows="False"
-                IsReadOnly="True"
-                ItemsSource="{Binding Contracts}"
-                SelectedItem="{Binding SelectedContract, Mode=TwoWay}">
-
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ContractNumberId}" Header="Numer umowy" />
-                    <DataGridTextColumn Binding="{Binding ContractState.State}" Header="Stan umowy" />
-                    <DataGridTextColumn Binding="{Binding AmountContract}" Header="Kwota" />
-                    <DataGridTextColumn Binding="{Binding StartDate, StringFormat=d}" Header="Data założenia umowy" />
-                    <DataGridTextColumn Binding="{Binding LendingRate.Days}" Header="Czas trwania umowy" />
-                    <DataGridTextColumn Binding="{Binding DealMaker.ClientNavigation.FullName}" Header="Klient" />
-                </DataGrid.Columns>
-            </DataGrid>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding ContractNumberId}" Header="Numer umowy" />
+                        <DataGridTextColumn Binding="{Binding ContractState.State}" Header="Stan umowy" />
+                        <DataGridTextColumn Binding="{Binding AmountContract}" Header="Kwota" />
+                        <DataGridTextColumn Binding="{Binding StartDate, StringFormat=d}" Header="Data założenia umowy" />
+                        <DataGridTextColumn Binding="{Binding LendingRate.Days}" Header="Czas trwania umowy" />
+                        <DataGridTextColumn Binding="{Binding DealMaker.ClientNavigation.FullName}" Header="Klient" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <views:BusyControl />
+            </Grid>
         </GroupBox>
 
 

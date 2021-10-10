@@ -36,6 +36,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private DelegateCommand _addClientCommand;
         private DelegateCommand<Client> _editClientCommand;
         private bool _clientSearchComboBoxIsOpen;
+        private Func<Task> _callBack;
 
         #endregion privateMembers
 
@@ -88,8 +89,6 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
         #endregion privateMethods
-
-
 
         #region public properties
 
@@ -218,7 +217,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-
+            _callBack = navigationContext.Parameters.GetValue<Func<Task>>("CallBack");
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -229,6 +228,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             navigationContext.Parameters.Add("DealMaker", SelectedClient);
+            navigationContext.Parameters.Add("CallBack", _callBack);
         }
 
         #endregion

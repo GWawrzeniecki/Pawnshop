@@ -1,6 +1,8 @@
 ﻿using PawnShop.Core.ScopedRegion;
 using Prism.Mvvm;
 using Prism.Regions;
+using System;
+using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Contract.ViewModels
 {
@@ -10,6 +12,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private Business.Models.Contract _contractToBuyBack;
         private decimal _buyBackPrice;
+        private object _callBack;
 
         #endregion
 
@@ -45,6 +48,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             var buyBackPrice = navigationContext.Parameters.GetValue<decimal>("buyBackPrice");
             if (buyBackPrice != default)
                 _buyBackPrice = buyBackPrice;
+            _callBack = navigationContext.Parameters.GetValue<Func<Task>>("CallBack");
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -56,6 +60,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             navigationContext.Parameters.Add("contract", ContractToBuyBack);
             navigationContext.Parameters.Add("buyBackPrice", _buyBackPrice);
+            navigationContext.Parameters.Add("CallBack", _callBack);
         }
 
         #endregion

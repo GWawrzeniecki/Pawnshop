@@ -7,9 +7,9 @@ using PawnShop.Modules.Worker.RegionContext;
 using PawnShop.Services.DataService;
 using Prism.Commands;
 using Prism.Mvvm;
-using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -20,13 +20,11 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         #region PrivateMembers
 
         private string _title;
-        private readonly IRegionManager _regionManager;
         private readonly IUnitOfWork _unitOfWork;
         private WorkerTabControlRegionContext _workerTabControlRegionContext;
         private Visibility _createWorkerButtonVisibility;
         private Visibility _updateWorkerButtonVisibility;
         private Visibility _cancelWorkerButtonVisibility;
-        private Visibility _buttonGridButtonVisibility;
         private DelegateCommand _createWorkerCommand;
         private DelegateCommand _updateWorkerCommand;
         private DelegateCommand _cancelCommand;
@@ -35,9 +33,8 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
 
         #region Constructor
 
-        public WorkerDialogViewModel(IRegionManager regionManager, IUnitOfWork unitOfWork)
+        public WorkerDialogViewModel(IUnitOfWork unitOfWork)
         {
-            _regionManager = regionManager;
             _unitOfWork = unitOfWork;
         }
 
@@ -76,12 +73,6 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             set => SetProperty(ref _cancelWorkerButtonVisibility, value);
         }
 
-        public Visibility ButtonGridButtonVisibility
-        {
-            get => _buttonGridButtonVisibility;
-            set => SetProperty(ref _buttonGridButtonVisibility, value);
-        }
-
         #endregion
 
         #region IDialogAware
@@ -104,12 +95,10 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             {
                 Privilege = new Privilege(),
                 WorkerBossNavigation = new Person(),
-                WorkerBossType = new WorkerBossType()
             };
             WorkerTabControlRegionContext = new WorkerTabControlRegionContext
             { WorkerBoss = workerBoss, WorkerDialogMode = workerDialogMode, UnitOfWork = _unitOfWork };
             OnMode(workerDialogMode);
-
         }
 
         public event Action<IDialogResult> RequestClose;
@@ -119,12 +108,13 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         #region Commands
 
         public DelegateCommand CreateWorkerCommand =>
-            _createWorkerCommand ??= new DelegateCommand(CreateWorkerAsync);
+            _createWorkerCommand ??= new DelegateCommand(CreateWorkerAsync, CanExecuteCreateOrUpDateWorker);
+
         public DelegateCommand CancelCommand =>
             _cancelCommand ??= new DelegateCommand(Cancel);
 
         public DelegateCommand UpdateWorkerCommand =>
-            _updateWorkerCommand ??= new DelegateCommand(UpdateWorkerAsync);
+            _updateWorkerCommand ??= new DelegateCommand(UpdateWorkerAsync, CanExecuteCreateOrUpDateWorker);
 
 
         #endregion
@@ -183,6 +173,14 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel));
         }
 
+        private bool CanExecuteCreateOrUpDateWorker()
+        {
+            if (WorkerTabControlRegionContext is null)
+                return false;
+
+            return !WorkerTabControlRegionContext.EditViews.Any(v => (v.DataContext as WorkerDialogBase).HasErrors);
+        }
+
         #endregion
 
         #region PrivateMethods
@@ -195,8 +193,10 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
                     HideAllButtons();
                     break;
                 case WorkerDialogMode.Add:
+                    HideUpdateButton();
                     break;
                 case WorkerDialogMode.Edit:
+                    HideCreateButton();
                     break;
                 default:
                     break;
@@ -207,6 +207,16 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             CreateWorkerButtonVisibility = Visibility.Hidden;
             UpdateWorkerButtonVisibility = Visibility.Hidden;
             CancelWorkerButtonVisibility = Visibility.Hidden;
+        }
+
+        private void HideUpdateButton()
+        {
+            UpdateWorkerButtonVisibility = Visibility.Hidden;
+        }
+
+        private void HideCreateButton()
+        {
+            CreateWorkerButtonVisibility = Visibility.Hidden;
         }
 
         private async Task TryToCreateWorkerAsync()
@@ -257,7 +267,6 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             {
                 (workerDialogViewBase.DataContext as WorkerDialogBase).AttachAdditionalContext();
             }
-
         }
 
         #endregion

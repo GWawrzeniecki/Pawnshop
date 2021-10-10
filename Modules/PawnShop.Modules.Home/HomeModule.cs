@@ -1,4 +1,5 @@
-﻿using PawnShop.Core.Regions;
+﻿using PawnShop.Core.Privileges;
+using PawnShop.Core.Regions;
 using PawnShop.Modules.Home.MenuItem;
 using PawnShop.Modules.Home.ViewModels;
 using Prism.Ioc;
@@ -7,6 +8,7 @@ using Prism.Regions;
 
 namespace PawnShop.Modules.Home
 {
+    [Privilege("PawnShopTabs")]
     public class HomeModule : IModule
     {
         private readonly IRegionManager _regionManager;

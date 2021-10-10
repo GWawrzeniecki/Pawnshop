@@ -156,6 +156,7 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         private void MapWorkerBossTypeToWorkerBoss()
         {
             WorkerTabControlRegionContext.WorkerBoss.WorkerBossType = SelectedWorkerBossType;
+            WorkerTabControlRegionContext.WorkerBoss.WorkerBossTypeId = SelectedWorkerBossType.Id;
         }
 
         private void AttachWorkerBossTypesBasedOnMode()

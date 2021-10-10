@@ -53,6 +53,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private DelegateCommand _createContractCommand;
         private DelegateCommand _renewContractCommand;
         private DelegateCommand _buyBackContractCommand;
+        private bool _isBusy;
 
         #endregion private members
 
@@ -163,8 +164,11 @@ namespace PawnShop.Modules.Contract.ViewModels
             get => _lendingRate;
             set => SetProperty(ref _lendingRate, value);
         }
-
-
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
 
         #endregion properties
 
@@ -176,7 +180,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         public DelegateCommand<object> RefreshButtonOptionCommand =>
             _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
 
-        public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
+        public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGridAsync);
         public DelegateCommand CreateContractCommand => _createContractCommand ??= new DelegateCommand(CreateContract);
         public DelegateCommand RenewContractCommand => _renewContractCommand ??= new DelegateCommand(RenewContract);
         public DelegateCommand BuyBackContractCommand => _buyBackContractCommand ??= new DelegateCommand(BuyBackContract);
@@ -346,7 +350,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             LendingRate = null;
         }
 
-        private async void RefreshDataGrid()
+        private async void RefreshDataGridAsync()
         {
             try
             {
@@ -377,6 +381,42 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
         }
 
+        private async Task RefreshDataGrid()
+        {
+            try
+            {
+                IsBusy = true;
+                var queryData = new ContractQueryData // to do mapping
+                {
+                    FromDate = FromDate,
+                    ToDate = ToDate,
+                    Client = Client,
+                    ContractAmount = ContractAmount,
+                    ContractNumber = ContractNumber,
+                    ContractState = ContractState,
+                    LendingRate = LendingRate
+                };
+
+                await TryToRefreshDataGrid(queryData);
+            }
+            catch (LoadingContractsException loadingContractsException)
+            {
+                MaterialMessageBox.ShowError(
+                    $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
+                    "Błąd");
+            }
+            catch (Exception e)
+            {
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
         private async Task TryToRefreshDataGrid(ContractQueryData queryData)
         {
             Contracts = await _contractService.GetContracts(queryData, 100); // to do
@@ -384,14 +424,19 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private void CreateContract()
         {
-            _shellService.ShowShell<CreateContractWindow>(nameof(ClientData));
+            _shellService.ShowShell<CreateContractWindow>(nameof(ClientData), new NavigationParameters { { "CallBack", RefreshDataGridCallBack() } });
+        }
+
+        private Func<Task> RefreshDataGridCallBack()
+        {
+            return RefreshDataGrid;
         }
 
         private void RenewContract()
         {
             if (SelectedContract is null || SelectedContract.ContractState.State.Equals(Constants.BuyBackContractState))
                 return;
-            _shellService.ShowShell<RenewContractWindow>(nameof(RenewContractData), new NavigationParameters { { "contract", SelectedContract } });
+            _shellService.ShowShell<RenewContractWindow>(nameof(RenewContractData), new NavigationParameters { { "contract", SelectedContract }, { "CallBack", RefreshDataGridCallBack() } });
 
         }
 
@@ -399,7 +444,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             if (SelectedContract is null || SelectedContract.ContractState.State.Equals(Constants.BuyBackContractState))
                 return;
-            _shellService.ShowShell<BuyBackContractWindow>(nameof(BuyBackContractData), new NavigationParameters { { "contract", SelectedContract } });
+            _shellService.ShowShell<BuyBackContractWindow>(nameof(BuyBackContractData), new NavigationParameters { { "contract", SelectedContract }, { "CallBack", RefreshDataGridCallBack() } });
         }
 
         #endregion private methods
