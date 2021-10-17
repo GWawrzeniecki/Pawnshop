@@ -1,9 +1,16 @@
 ﻿using PawnShop.Business.Models;
+using PawnShop.Core;
 using PawnShop.Core.Dialogs;
+using PawnShop.Core.Extensions;
+using PawnShop.Core.HamburgerMenu.Interfaces;
+using PawnShop.Core.Regions;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
+using Prism.Events;
+using Prism.Modularity;
+using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Linq;
@@ -22,17 +29,28 @@ namespace PawnShop.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISessionContext _sessionContext;
         private readonly IDialogService _dialogService;
+        private readonly IModuleCatalog _moduleCatalog;
+        private readonly IModuleManager _moduleManager;
+        private readonly IEventAggregator _ea;
+        private readonly IRegionManager _regionManager;
+        private readonly IApplicationCommands _applicationCommands;
 
         #endregion private members
 
         #region constructor
 
-        public LoginService(IHashService hashService, IUnitOfWork unitOfWork, ISessionContext sessionContext, IDialogService dialogService)
+        public LoginService(IHashService hashService, IUnitOfWork unitOfWork, ISessionContext sessionContext, IDialogService dialogService,
+        IModuleCatalog moduleCatalog, IModuleManager moduleManager, IEventAggregator ea, IRegionManager regionManager, IApplicationCommands applicationCommands)
         {
             _hashService = hashService;
             _unitOfWork = unitOfWork;
             _sessionContext = sessionContext;
             _dialogService = dialogService;
+            _moduleCatalog = moduleCatalog;
+            _moduleManager = moduleManager;
+            _ea = ea;
+            _regionManager = regionManager;
+            _applicationCommands = applicationCommands;
         }
 
         #endregion constructor
@@ -99,23 +117,19 @@ namespace PawnShop.Services.Implementations
         public void ShowLogoutDialog()
         {
             Application.Current.MainWindow.Hide();
+            NavigateToContractScreen();
 
             _dialogService.ShowLoginDialog(c =>
             {
                 if (c.Result == ButtonResult.OK)
+                {
+                    SubscribeModulesToEvent();
+                    ReloadModules();
                     Application.Current.MainWindow.Show();
+                }
                 else
                     Application.Current.Shutdown(1);
             });
-
-            //var currentExecutablePath = Process.GetCurrentProcess().MainModule.FileName;
-            //Process.Start(currentExecutablePath);
-            //Application.Current.Shutdown();
-
-            // Przeleciec po wszystkich modułach, sprawdzic czy ma prawa
-            // Jesli nie ma to chowamy jesli jest załadowany
-            // Jesli ma to show lub ladujemy jesli niezaladowany
-
         }
 
         #endregion public methods
@@ -157,9 +171,31 @@ namespace PawnShop.Services.Implementations
             await _unitOfWork.ContractRepository.UpdateContractStates();
         }
 
+        private void SubscribeModulesToEvent()
+        {
+            foreach (var moduleVisibility in _regionManager.Regions[RegionNames.MenuRegion].Views.OfType<IModuleVisibility>())
+            {
+                moduleVisibility.Subscribe();
+            }
+        }
+
         private void ReloadModules()
         {
-
+            foreach (var moduleInfo in _moduleCatalog.Modules.OrderModules())
+            {
+                if (moduleInfo.HasCurrentUserPrivilege(_sessionContext))
+                {
+                    moduleInfo.ShowModule(_moduleManager, _ea);
+                }
+                else
+                {
+                    moduleInfo.HideModule(_ea);
+                }
+            }
+        }
+        private void NavigateToContractScreen()
+        {
+            _applicationCommands.SetMenuItemCommand.Execute("Contract");
         }
 
         #endregion private method

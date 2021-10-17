@@ -2,10 +2,13 @@
 using BespokeFusion;
 using ControlzEx.Theming;
 using PawnShop.Core;
+using PawnShop.Core.HamburgerMenu.Implementations;
 using PawnShop.Core.Regions;
 using PawnShop.Core.SharedVariables;
+using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
@@ -23,7 +26,10 @@ namespace PawnShop.ViewModels
         private readonly IUserSettings _userSettings;
         private readonly ISettingsService<UserSettings> _userSettingsService;
         private readonly IMapper _mapper;
+        private readonly IContainerProvider _containerProvider;
         private bool _isPaneOpen;
+        private DelegateCommand<string> _setSelectedMenuItemCommand;
+        private ModuleHamburgerMenuItemBase _selectedItem;
 
         #endregion private members
 
@@ -41,28 +47,42 @@ namespace PawnShop.ViewModels
             set => SetProperty(ref _isPaneOpen, value);
         }
 
-        public DelegateCommand<string> NavigateCommand => _navigateCommand ??= new DelegateCommand<string>(ExecuteNavigateCommand);
+        public ModuleHamburgerMenuItemBase SelectedItem
+        {
+            get => _selectedItem;
+            set => SetProperty(ref _selectedItem, value);
+        }
 
         #endregion public properties
+
+        #region Commands
+
+        public DelegateCommand<string> NavigateCommand => _navigateCommand ??= new DelegateCommand<string>(ExecuteNavigateCommand);
+
+        public DelegateCommand<string> SetSelectedMenuItemCommand =>
+            _setSelectedMenuItemCommand ??= new DelegateCommand<string>(SetSelectedMenuItem);
+        #endregion
+
 
         #region constructors
 
         public MainWindowViewModel(IRegionManager regionManager, IApplicationCommands applicationCommands, IUserSettings userSettings
-        , ISettingsService<UserSettings> userSettingsService, IMapper mapper)
+        , ISettingsService<UserSettings> userSettingsService, IMapper mapper, IContainerProvider containerProvider)
         {
             applicationCommands.NavigateCommand.RegisterCommand(NavigateCommand);
+            applicationCommands.SetMenuItemCommand.RegisterCommand(SetSelectedMenuItemCommand);
             _regionManager = regionManager;
             _userSettings = userSettings;
             _userSettingsService = userSettingsService;
             _mapper = mapper;
+            _containerProvider = containerProvider;
             LoadUserSettings();
             SetTheme();
         }
 
         #endregion constructors
 
-        #region private methods
-
+        #region CommandMethods
         private void ExecuteNavigateCommand(string navigationPath)
         {
             if (string.IsNullOrEmpty(navigationPath))
@@ -70,6 +90,19 @@ namespace PawnShop.ViewModels
 
             _regionManager.RequestNavigate(RegionNames.ContentRegion, navigationPath);
         }
+
+        private void SetSelectedMenuItem(string navigationPath)
+        {
+            SelectedItem = navigationPath switch
+            {
+                "Contract" => _containerProvider.Resolve<ContractHamburgerMenuItem>(),
+                _ => throw new NotImplementedException(navigationPath)
+            };
+        }
+
+        #endregion
+
+        #region private methods
 
         private void LoadUserSettings()
         {

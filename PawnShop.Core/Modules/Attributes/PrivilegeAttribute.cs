@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PawnShop.Core.Privileges
+namespace PawnShop.Core.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class PrivilegeAttribute : Attribute

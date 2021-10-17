@@ -4,10 +4,11 @@ using MahApps.Metro.IconPacks;
 using PawnShop.Core;
 using PawnShop.Core.HamburgerMenu.Implementations;
 using Prism.Commands;
+using Prism.Events;
 
 namespace PawnShop.Modules.Settings.MenuItem
 {
-    public class SettingsHamburgerMenuItem : HamburgerMenuItemBase
+    public class SettingsHamburgerMenuItem : ModuleHamburgerMenuItemBase
 
     {
         #region private members
@@ -24,7 +25,7 @@ namespace PawnShop.Modules.Settings.MenuItem
 
         #region constructr
 
-        public SettingsHamburgerMenuItem(IApplicationCommands applicationCommands)
+        public SettingsHamburgerMenuItem(IApplicationCommands applicationCommands, IEventAggregator ea) : base("SettingsModule", ea)
         {
             _applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);

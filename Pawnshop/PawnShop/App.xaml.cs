@@ -6,7 +6,7 @@ using PawnShop.Controls.Dialogs.Views;
 using PawnShop.Controls.Validators;
 using PawnShop.Core;
 using PawnShop.Core.Constants;
-using PawnShop.Core.Modules;
+using PawnShop.Core.Extensions;
 using PawnShop.Core.Regions;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Core.SharedVariables;
@@ -29,6 +29,7 @@ using PawnShop.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -39,8 +40,6 @@ namespace PawnShop
     /// </summary>
     public partial class App
     {
-        private IModuleCatalog _moduleCatalog;
-
         public App()
         {
             Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
@@ -108,7 +107,6 @@ namespace PawnShop
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             base.ConfigureModuleCatalog(moduleCatalog);
-            _moduleCatalog = moduleCatalog;
             moduleCatalog.AddModule<LoginModule>();
             moduleCatalog.AddModule<HomeModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<ContractModule>(InitializationMode.OnDemand);
@@ -132,6 +130,7 @@ namespace PawnShop
 
             var loginService = Container.Resolve<ILoginService>();
             var moduleManager = Container.Resolve<IModuleManager>();
+            var sessionContext = Container.Resolve<ISessionContext>();
             var result = loginService.ShowLoginDialog();
 
             if (result != ILoginService.LoginResult.Success) return;
@@ -139,11 +138,7 @@ namespace PawnShop
 
             #region loading modules
 
-            moduleManager.LoadModule<HomeModule>();
-            moduleManager.LoadModule<ContractModule>();
-            moduleManager.LoadModule<ClientModule>();
-            moduleManager.LoadModule<WorkerModule>();
-            moduleManager.LoadModule<SettingsModule>();
+            LoadModules(moduleManager, sessionContext);
 
             #endregion loading modules
 
@@ -157,11 +152,14 @@ namespace PawnShop
             #endregion Login
 
         }
-
-        protected override void RegisterRequiredTypes(IContainerRegistry containerRegistry)
+        private void LoadModules(IModuleManager moduleManager, ISessionContext sessionContext)
         {
-            base.RegisterRequiredTypes(containerRegistry);
-            containerRegistry.RegisterSingleton<IModuleInitializer, PrivilegeBasedModuleInitializer>();
+            foreach (var moduleInfo in moduleManager.Modules
+                .Where(m => m.InitializationMode == InitializationMode.OnDemand && m.HasCurrentUserPrivilege(sessionContext))
+                .OrderModules())
+            {
+                moduleManager.LoadModule(moduleInfo.ModuleName);
+            }
         }
     }
 }

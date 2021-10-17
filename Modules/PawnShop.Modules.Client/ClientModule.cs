@@ -1,4 +1,4 @@
-﻿using PawnShop.Core.Privileges;
+﻿using PawnShop.Core.Attributes;
 using PawnShop.Core.Regions;
 using PawnShop.Modules.Client.MenuItem;
 using PawnShop.Modules.Client.Validators;
@@ -10,7 +10,8 @@ using Prism.Regions;
 
 namespace PawnShop.Modules.Client
 {
-    [PrivilegeAttribute("PawnShopTabs")]
+    [Privilege("PawnShopTabs")]
+    [Order(3)]
     public class ClientModule : IModule
     {
         private readonly IRegionManager _regionManager;

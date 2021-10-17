@@ -1,4 +1,4 @@
-﻿using PawnShop.Core.Privileges;
+﻿using PawnShop.Core.Attributes;
 using PawnShop.Core.Regions;
 using PawnShop.Modules.Contract.Dialogs.ViewModels;
 using PawnShop.Modules.Contract.Dialogs.Views;
@@ -15,6 +15,7 @@ using Prism.Regions;
 namespace PawnShop.Modules.Contract
 {
     [Privilege("PawnShopTabs")]
+    [Order(2)]
     public class ContractModule : IModule
     {
         private readonly IRegionManager _regionManager;
@@ -51,6 +52,7 @@ namespace PawnShop.Modules.Contract
             containerRegistry.RegisterSingleton<ContractValidator>();
             containerRegistry.RegisterSingleton<CreateContractValidator>();
             containerRegistry.RegisterSingleton<AddContractItemValidator>();
+            containerRegistry.RegisterSingleton<ContractHamburgerMenuItem>();
             containerRegistry.Register<IContractService, ContractService>();
             containerRegistry.RegisterSingleton<ICalculateService, CalculateService>();
             containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();

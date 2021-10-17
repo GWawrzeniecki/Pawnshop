@@ -1,4 +1,4 @@
-﻿using PawnShop.Core.Privileges;
+﻿using PawnShop.Core.Attributes;
 using PawnShop.Core.Regions;
 using PawnShop.Modules.Worker.Dialogs.ViewModels;
 using PawnShop.Modules.Worker.Dialogs.Views;
@@ -13,6 +13,7 @@ using Prism.Regions;
 namespace PawnShop.Modules.Worker
 {
     [Privilege("WorkersTab")]
+    [Order(4)]
     public class WorkerModule : IModule
     {
         private readonly IRegionManager _regionManager;

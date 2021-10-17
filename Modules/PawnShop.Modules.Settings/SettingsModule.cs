@@ -1,4 +1,4 @@
-﻿using PawnShop.Core.Privileges;
+﻿using PawnShop.Core.Attributes;
 using PawnShop.Core.Regions;
 using PawnShop.Modules.Settings.Dialogs.ViewModels;
 using PawnShop.Modules.Settings.Dialogs.Views;
@@ -15,6 +15,7 @@ using Prism.Regions;
 namespace PawnShop.Modules.Settings
 {
     [Privilege("SettingsTab")]
+    [Order(5)]
     public class SettingsModule : IModule
     {
         private readonly IRegionManager _regionManager;

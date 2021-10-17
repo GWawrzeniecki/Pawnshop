@@ -34,6 +34,7 @@
             OpenPaneLength="150"
             OptionsItemTemplate="{StaticResource MenuItemTemplate}"
             SelectedIndex="1"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
             Style="{StaticResource MahApps.Styles.HamburgerMenu.Ripple}">
 
             <!--  Menu items  -->

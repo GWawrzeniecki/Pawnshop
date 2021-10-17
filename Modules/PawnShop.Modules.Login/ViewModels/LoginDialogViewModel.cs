@@ -119,7 +119,7 @@ namespace PawnShop.Modules.Login.ViewModels
                 LoginButtonIsBusy = true;
                 var iHavePassword = view as IHavePassword;
                 var password = iHavePassword.Password.Copy();
-                password = AutoLoginAdmin(); // for testing purpose
+                //password = AutoLoginAdmin(); // for testing purpose
                 password.MakeReadOnly(); ;
                 _uiService.SetMouseBusyCursor();
                 var (success, loggedUser) = await TryToLoginAsync(UserName, password);

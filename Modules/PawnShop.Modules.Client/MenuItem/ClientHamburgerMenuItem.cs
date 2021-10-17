@@ -2,10 +2,11 @@
 using PawnShop.Core;
 using PawnShop.Core.HamburgerMenu.Implementations;
 using Prism.Commands;
+using Prism.Events;
 
 namespace PawnShop.Modules.Client.MenuItem
 {
-    public class ClientHamburgerMenuItem : HamburgerMenuItemBase
+    public class ClientHamburgerMenuItem : ModuleHamburgerMenuItemBase
     {
         #region private members
 
@@ -21,7 +22,7 @@ namespace PawnShop.Modules.Client.MenuItem
 
         #region constructr
 
-        public ClientHamburgerMenuItem(IApplicationCommands applicationCommands)
+        public ClientHamburgerMenuItem(IApplicationCommands applicationCommands, IEventAggregator ea) : base("ClientModule", ea)
         {
             _applicationCommands = applicationCommands;
             Command = new DelegateCommand(Navigate);

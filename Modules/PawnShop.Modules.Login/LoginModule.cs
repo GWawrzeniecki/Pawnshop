@@ -1,4 +1,4 @@
-﻿using PawnShop.Core.Privileges;
+﻿using PawnShop.Core.Attributes;
 using PawnShop.Modules.Login.Validators;
 using PawnShop.Services.Implementations;
 using PawnShop.Services.Interfaces;
@@ -8,6 +8,7 @@ using Prism.Modularity;
 namespace PawnShop.Modules.Login
 {
     [Privilege("Login")]
+    [Order(0)]
     public class LoginModule : IModule
     {
         public void OnInitialized(IContainerProvider containerProvider)
