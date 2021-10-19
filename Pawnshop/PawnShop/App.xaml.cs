@@ -20,6 +20,7 @@ using PawnShop.Modules.Home;
 using PawnShop.Modules.Login;
 using PawnShop.Modules.Login.ViewModels;
 using PawnShop.Modules.Login.Views;
+using PawnShop.Modules.Sale;
 using PawnShop.Modules.Settings;
 using PawnShop.Modules.Worker;
 using PawnShop.Services.DataService;
@@ -113,6 +114,7 @@ namespace PawnShop
             moduleCatalog.AddModule<SettingsModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<ClientModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<WorkerModule>(InitializationMode.OnDemand);
+            moduleCatalog.AddModule<SaleModule>(InitializationMode.OnDemand);
         }
 
         protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)

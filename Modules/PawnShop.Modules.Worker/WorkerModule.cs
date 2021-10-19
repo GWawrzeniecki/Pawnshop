@@ -13,7 +13,7 @@ using Prism.Regions;
 namespace PawnShop.Modules.Worker
 {
     [Privilege("WorkersTab")]
-    [Order(4)]
+    [Order(5)]
     public class WorkerModule : IModule
     {
         private readonly IRegionManager _regionManager;

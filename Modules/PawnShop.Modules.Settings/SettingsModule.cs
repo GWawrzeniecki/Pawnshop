@@ -15,7 +15,7 @@ using Prism.Regions;
 namespace PawnShop.Modules.Settings
 {
     [Privilege("SettingsTab")]
-    [Order(5)]
+    [Order(6)]
     public class SettingsModule : IModule
     {
         private readonly IRegionManager _regionManager;
