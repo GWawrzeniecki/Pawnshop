@@ -17,6 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Client\PawnShop.Modules.Client.csproj" />
+    <ProjectReference Include="..\..\Modules\PawnShop.Modules.Commodity\PawnShop.Modules.Commodity.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Contract\PawnShop.Modules.Contract.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Home\PawnShop.Modules.Home.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Login\PawnShop.Modules.Login.csproj" />

@@ -2,17 +2,27 @@
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyName>PawnShop.Modules.Sale</AssemblyName>
+    <AssemblyName>PawnShop.Modules.Commodity</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MenuItem\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MenuItem\" />
-    <Folder Include="Validators\" />
+    <Compile Update="TaskBar\CommodityTaskBar.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="TaskBar\CommodityTaskBar.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 </Project>

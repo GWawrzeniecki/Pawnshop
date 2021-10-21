@@ -25,5 +25,7 @@ namespace PawnShop.Services.DataService
         public GenericRepository<Country> CountryRepository { get; }
         public GenericRepository<City> CityRepository { get; }
         public GenericRepository<WorkerBossType> WorkerBossTypeRepository { get; }
+        public SaleRepository SaleRepository { get; }
+
     }
 }

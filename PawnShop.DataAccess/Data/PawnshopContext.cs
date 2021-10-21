@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using PawnShop.Business.Models;
 
 #nullable disable
@@ -56,10 +58,8 @@ namespace PawnShop.DataAccess.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder
-                    .UseSqlServer(
-                        "Data Source=Kogut-Desktop\\Sqlexpress;Initial Catalog=Pawnshop;Integrated Security=True;trustServerCertificate=true");
-
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=Kogut-Desktop\\Sqlexpress;Initial Catalog=Pawnshop;Integrated Security=True;trustServerCertificate=true");
             }
         }
 
@@ -737,6 +737,8 @@ namespace PawnShop.DataAccess.Data
                 entity.Property(e => e.SaleId).HasColumnName("SaleID");
 
                 entity.Property(e => e.ContractItemId).HasColumnName("ContractItemID");
+
+                entity.Property(e => e.PutOnSaleDate).HasColumnType("date");
 
                 entity.Property(e => e.SalePrice).HasColumnType("decimal(10, 2)");
 

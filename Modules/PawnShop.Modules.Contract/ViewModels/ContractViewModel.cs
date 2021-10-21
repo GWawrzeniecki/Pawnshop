@@ -419,7 +419,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private async Task TryToRefreshDataGrid(ContractQueryData queryData)
         {
-            Contracts = await _contractService.GetContracts(queryData, 100); // to do
+            Contracts = await _contractService.GetContracts(queryData, 100);
         }
 
         private void CreateContract()

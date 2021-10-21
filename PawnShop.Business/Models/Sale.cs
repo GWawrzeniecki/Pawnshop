@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 #nullable disable
 
@@ -14,6 +15,7 @@ namespace PawnShop.Business.Models
         public int SaleId { get; set; }
         public int ContractItemId { get; set; }
         public decimal SalePrice { get; set; }
+        public DateTime PutOnSaleDate { get; set; }
 
         public virtual ContractItem ContractItem { get; set; }
         public virtual LocalSale LocalSale { get; set; }

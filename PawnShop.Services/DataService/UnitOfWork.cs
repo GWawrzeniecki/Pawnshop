@@ -30,6 +30,7 @@ namespace PawnShop.Services.DataService
         private GenericRepository<Country> _countryRepository;
         private GenericRepository<City> _cityRepository;
         private GenericRepository<WorkerBossType> _workerBossTypeRepository;
+        private SaleRepository _saleRepository;
 
         #endregion private members
 
@@ -178,6 +179,15 @@ namespace PawnShop.Services.DataService
             {
                 _workerBossTypeRepository ??= new GenericRepository<WorkerBossType>(_context);
                 return _workerBossTypeRepository;
+            }
+        }
+
+        public SaleRepository SaleRepository
+        {
+            get
+            {
+                _saleRepository ??= new SaleRepository(_context);
+                return _saleRepository;
             }
         }
 

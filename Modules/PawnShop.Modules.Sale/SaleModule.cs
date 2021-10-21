@@ -1,6 +1,7 @@
 ﻿using PawnShop.Core.Attributes;
 using PawnShop.Core.Regions;
 using PawnShop.Modules.Sale.MenuItem;
+using PawnShop.Modules.Sale.Validators;
 using PawnShop.Modules.Sale.ViewModels;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -27,6 +28,7 @@ namespace PawnShop.Modules.Sale
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<Views.Sale, SaleViewModel>();
+            containerRegistry.Register<SaleValidator>();
         }
     }
 }

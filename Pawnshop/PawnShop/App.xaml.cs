@@ -33,6 +33,7 @@ using Prism.Regions;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using PawnShop.Modules.Commodity;
 
 namespace PawnShop
 {
@@ -90,6 +91,7 @@ namespace PawnShop
                 cfg.AddProfile<WorkerBossToPersonalDataViewModel>();
                 cfg.AddProfile<WorkerBossToWorkerDataViewModel>();
                 cfg.AddProfile<WorkerBossToLoginPrivilegesData>();
+                cfg.AddProfile<SaleViewModelToSaleQueryData>();
             });
             var mapper = configuration.CreateMapper();
 
@@ -115,6 +117,7 @@ namespace PawnShop
             moduleCatalog.AddModule<ClientModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<WorkerModule>(InitializationMode.OnDemand);
             moduleCatalog.AddModule<SaleModule>(InitializationMode.OnDemand);
+            moduleCatalog.AddModule<CommodityModule>(InitializationMode.OnDemand);
         }
 
         protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)

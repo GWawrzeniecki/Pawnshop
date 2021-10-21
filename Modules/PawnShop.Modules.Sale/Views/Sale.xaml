@@ -46,8 +46,8 @@
                     Margin="{StaticResource ControlMargin}"
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
-                    mah:TextBoxHelper.Watermark="Nr: umowy"
-                    Text="{Binding ContractNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
+                    mah:TextBoxHelper.Watermark="Nazwa towaru"
+                    Text="{Binding ItemName, Mode=TwoWay, Delay=400, UpdateSourceTrigger=PropertyChanged}">
 
                     <TextBox.InputBindings>
                         <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
@@ -62,7 +62,6 @@
                     mah:TextBoxHelper.UseFloatingWatermark="True"
                     mah:TextBoxHelper.Watermark="Klient"
                     Text="{Binding Client, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
-
                     <TextBox.InputBindings>
                         <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
                     </TextBox.InputBindings>
@@ -110,43 +109,62 @@
                     Margin="{StaticResource ControlMargin}"
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
-                    mah:TextBoxHelper.Watermark="Status umowy:"
-                    ItemsSource="{Binding ContractStates}"
-                    SelectedItem="{Binding ContractState, Mode=TwoWay}">
+                    mah:TextBoxHelper.Watermark="Kategoria towaru"
+                    ItemsSource="{Binding ContractItemCategories}"
+                    SelectedItem="{Binding SelectedContractItemCategory, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding State}" />
+                            <TextBlock Text="{Binding Category}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
-                <TextBox
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="{StaticResource ControlMargin}"
-                    mah:TextBoxHelper.ClearTextButton="True"
-                    mah:TextBoxHelper.Watermark="Kwota:"
-                    Text="{Binding ContractAmount, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
-                    </TextBox.InputBindings>
-                </TextBox>
+                <Grid Grid.Row="1" Grid.Column="1">
 
-                <ComboBox
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="{StaticResource ControlMargin}"
+                        mah:TextBoxHelper.ClearTextButton="True"
+                        mah:TextBoxHelper.UseFloatingWatermark="True"
+                        mah:TextBoxHelper.Watermark="Cena"
+                        Text="{Binding Price, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+
+                    <ComboBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="{StaticResource ControlMargin}"
+                        mah:TextBoxHelper.ClearTextButton="True"
+                        mah:TextBoxHelper.UseFloatingWatermark="True"
+                        mah:TextBoxHelper.Watermark="Opcje ceny"
+                        ItemsSource="{Binding PriceOptions}"
+                        SelectedItem="{Binding SelectedPriceOption, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Option}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                </Grid>
+
+                <TextBox
                     Grid.Row="1"
                     Grid.Column="2"
                     Margin="{StaticResource ControlMargin}"
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
-                    mah:TextBoxHelper.Watermark="Czas trwania umowy:"
-                    ItemsSource="{Binding LendingRates}"
-                    SelectedItem="{Binding LendingRate, Mode=TwoWay}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Days}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                    mah:TextBoxHelper.Watermark="Numer umowy"
+                    Text="{Binding ContractNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Button
                     Grid.Row="1"
@@ -184,16 +202,14 @@
                     CanUserAddRows="False"
                     CanUserDeleteRows="False"
                     IsReadOnly="True"
-                    ItemsSource="{Binding Contracts}"
-                    SelectedItem="{Binding SelectedContract, Mode=TwoWay}">
+                    ItemsSource="{Binding Sales}"
+                    SelectedItem="{Binding SelectedSale, Mode=TwoWay}">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding ContractNumberId}" Header="Numer umowy" />
-                        <DataGridTextColumn Binding="{Binding ContractState.State}" Header="Stan umowy" />
-                        <DataGridTextColumn Binding="{Binding AmountContract}" Header="Kwota" />
-                        <DataGridTextColumn Binding="{Binding StartDate, StringFormat=d}" Header="Data założenia umowy" />
-                        <DataGridTextColumn Binding="{Binding LendingRate.Days}" Header="Czas trwania umowy" />
-                        <DataGridTextColumn Binding="{Binding DealMaker.ClientNavigation.FullName}" Header="Klient" />
+                        <DataGridTextColumn Binding="{Binding ContractItem.Name}" Header="Nazwa towaru" />
+                        <DataGridTextColumn Binding="{Binding SalePrice}" Header="Cena sprzedaży" />
+                        <DataGridTextColumn Binding="{Binding ContractItem.ContractItemState.State}" Header="Stan towaru" />
+                        <DataGridTextColumn Binding="{Binding ContractItem.ContractItemCategory.Category}" Header="Kategoria towaru" />
                     </DataGrid.Columns>
                 </DataGrid>
                 <views:BusyControl />
