@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
@@ -14,7 +10,10 @@ using PawnShop.Modules.Sale.Validators;
 using PawnShop.Services.DataService;
 using Prism.Commands;
 using Prism.Ioc;
-using Prism.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Sale.ViewModels
 {
@@ -187,7 +186,7 @@ namespace PawnShop.Modules.Sale.ViewModels
         {
             try
             {
-                var salesQueryData = _mapper.Map<SaleQueryData>(this);
+                var salesQueryData = _mapper.Map<ContractItemQueryData>(this);
                 await TryToLoadSales(salesQueryData);
             }
             catch (LoadingSalesException loadingSalesException)
@@ -240,40 +239,17 @@ namespace PawnShop.Modules.Sale.ViewModels
 
         private void LoadRefreshButtonOptions()
         {
-            RefreshButtonOptions = new List<RefreshButtonOption>
-            {
-                new() {Name = "Wyczyść filtr", RefreshOption = RefreshOptions.Clean},
-                new() {Name = "Wyczyść filtr i odśwież", RefreshOption = RefreshOptions.CleanAndRefresh}
-            };
+            RefreshButtonOptions = ModelsLoader.LoadRefreshButtonOptions();
         }
 
         private void LoadDateSearchOptions()
         {
-            DateSearchOptions = new List<DateSearchOption>
-            {
-                new() {Name = "Wyczyść", SearchOption = SearchOptions.Clean},
-                new() {Name = "Dzisiaj", SearchOption = SearchOptions.Today},
-                new() {Name = "Wczoraj", SearchOption = SearchOptions.Yesterday},
-                new() {Name = "Bieżący tydzien", SearchOption = SearchOptions.CurrentWeek},
-                new() {Name = "Poprzedni tydzien", SearchOption = SearchOptions.PastWeek},
-                new() {Name = "Bieżący miesiąc", SearchOption = SearchOptions.CurrentMonth},
-                new() {Name = "Poprzedni miesiąc", SearchOption = SearchOptions.PastMonth},
-                new() {Name = "Bieżący kwartał", SearchOption = SearchOptions.CurrentQuarter},
-                new() {Name = "Poprzedni kwartał", SearchOption = SearchOptions.PastQuarter},
-                new() {Name = "Bieżący rok", SearchOption = SearchOptions.CurrentYear},
-                new() {Name = "Poprzedni rok", SearchOption = SearchOptions.PastYear}
-            };
+            DateSearchOptions = ModelsLoader.LoadDateSearchOptions();
         }
 
         private void LoadPriceOptions()
         {
-            PriceOptions = new List<SearchPriceOption>
-            {
-                new() { Option = "Rowne", PriceOption = PriceOption.Equal },
-                new() { Option = "Mniejsze", PriceOption = PriceOption.Lower },
-                new() { Option = "Wieksze", PriceOption = PriceOption.Higher },
-
-            };
+            PriceOptions = ModelsLoader.LoadPriceOptions();
         }
 
         private void CleanSearchProperties()
@@ -283,7 +259,6 @@ namespace PawnShop.Modules.Sale.ViewModels
             ContractNumber = string.Empty;
             Client = string.Empty;
             Price = string.Empty;
-            SelectedSale = null;
             ItemName = string.Empty;
             SelectedContractItemCategory = null;
             SelectedPriceOption = null;
@@ -302,12 +277,12 @@ namespace PawnShop.Modules.Sale.ViewModels
             }
         }
 
-        private async Task TryToLoadSales(SaleQueryData saleQueryData)
+        private async Task TryToLoadSales(ContractItemQueryData contractItemQueryData)
         {
             try
             {
                 using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
-                Sales = await unitOfWork.SaleRepository.GetTopSales(saleQueryData, 100);
+                Sales = await unitOfWork.SaleRepository.GetTopSales(contractItemQueryData, 100);
             }
             catch (Exception e)
             {

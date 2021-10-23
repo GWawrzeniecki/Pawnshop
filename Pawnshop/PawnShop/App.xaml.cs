@@ -15,6 +15,7 @@ using PawnShop.Dialogs.Views;
 using PawnShop.Dialogs.ViewsModels;
 using PawnShop.Mapper.Profiles;
 using PawnShop.Modules.Client;
+using PawnShop.Modules.Commodity;
 using PawnShop.Modules.Contract;
 using PawnShop.Modules.Home;
 using PawnShop.Modules.Login;
@@ -33,7 +34,6 @@ using Prism.Regions;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using PawnShop.Modules.Commodity;
 
 namespace PawnShop
 {
@@ -91,7 +91,8 @@ namespace PawnShop
                 cfg.AddProfile<WorkerBossToPersonalDataViewModel>();
                 cfg.AddProfile<WorkerBossToWorkerDataViewModel>();
                 cfg.AddProfile<WorkerBossToLoginPrivilegesData>();
-                cfg.AddProfile<SaleViewModelToSaleQueryData>();
+                cfg.AddProfile<SaleViewModelToContractItemQueryData>();
+                cfg.AddProfile<CommodityViewModelToContractItemQueryData>();
             });
             var mapper = configuration.CreateMapper();
 

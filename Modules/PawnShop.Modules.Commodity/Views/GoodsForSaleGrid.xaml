@@ -1,0 +1,26 @@
+﻿<UserControl
+    x:Class="PawnShop.Modules.Commodity.Views.GoodsForSaleGrid"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:views="clr-namespace:PawnShop.Controls.BusyControl.Views;assembly=PawnShop.Controls"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <DataGrid
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            IsReadOnly="True"
+            ItemsSource="{Binding ContractItems}"
+            SelectedItem="{Binding SelectedContractItem, Mode=TwoWay}">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Nazwa towaru" />
+                <DataGridTextColumn Binding="{Binding ContractItemState.State}" Header="Stan towaru" />
+                <DataGridTextColumn Binding="{Binding Category.Category}" Header="Kategoria towaru" />
+                <DataGridTextColumn Binding="{Binding ContractNumberId}" Header="Numer umowy" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <views:BusyControl />
+    </Grid>
+</UserControl>

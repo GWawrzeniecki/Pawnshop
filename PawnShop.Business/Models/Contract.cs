@@ -31,7 +31,6 @@ namespace PawnShop.Business.Models
         public virtual Client DealMaker { get; set; }
         public virtual LendingRate LendingRate { get; set; }
         public virtual WorkerBoss WorkerBoss { get; set; }
-        public virtual EndedContract EndedContract { get; set; }
         public virtual ICollection<ContractItem> ContractItems { get; set; }
         public virtual ICollection<ContractRenew> ContractRenews { get; set; }
     }

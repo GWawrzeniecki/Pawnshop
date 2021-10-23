@@ -48,7 +48,9 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
 
         public string Title => "Ustawienia oprocentowania";
 
+#pragma warning disable CS0067 // The event 'LendingRateSettingsDialogViewModel.RequestClose' is never used
         public event Action<IDialogResult> RequestClose;
+#pragma warning restore CS0067 // The event 'LendingRateSettingsDialogViewModel.RequestClose' is never used
 
         public IList<LendingRate> LendingRates
         {

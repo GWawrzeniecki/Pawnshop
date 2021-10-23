@@ -12,12 +12,12 @@ namespace PawnShop.Services.Implementations
                 return false;
 
             var tab = new byte[9] { 7, 3, 1, 9, 7, 3, 1, 7, 3 };
-
-            var bResult = false;
             var sum = 0;
 
             idCardNumber = idCardNumber.Trim().Replace(" ", "");
 
+
+            bool bResult;
             if (idCardNumber.Length == 9)
             {
                 byte b;

@@ -12,7 +12,6 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
     {
         #region PrivateMembers
 
-        private readonly IMapper _mapper;
         private readonly IHashService _hashService;
         private string _userLogin;
         private bool _baseTabs;
@@ -29,7 +28,6 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         #region Constructors
         public LoginPrivilegesDataViewModel(IMapper mapper, IHashService hashService, LoginPrivilegesDataViewModelValidator validator) : base(mapper, validator)
         {
-            _mapper = mapper;
             _hashService = hashService;
             Header = "Dane logowania i uprawnienia";
         }

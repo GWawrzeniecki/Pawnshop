@@ -195,7 +195,9 @@ namespace PawnShop.Modules.Settings.ViewModels
                 }
             }
         }
+#pragma warning disable CS0067 // The event 'PawnShopSettingsViewModel.IsActiveChanged' is never used
         public event EventHandler IsActiveChanged;
+#pragma warning restore CS0067 // The event 'PawnShopSettingsViewModel.IsActiveChanged' is never used
 
 
 

@@ -4,6 +4,6 @@
     {
         Equal,
         Lower,
-        Higher  
+        Higher
     }
 }

@@ -164,7 +164,11 @@
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
                     mah:TextBoxHelper.Watermark="Numer umowy"
-                    Text="{Binding ContractNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                    Text="{Binding ContractNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Return" Command="{Binding RefreshCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
 
                 <Button
                     Grid.Row="1"

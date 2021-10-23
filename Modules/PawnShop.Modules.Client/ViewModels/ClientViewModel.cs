@@ -250,11 +250,7 @@ namespace PawnShop.Modules.Client.ViewModels
 
         private void LoadRefreshButtonOptions()
         {
-            RefreshButtonOptions = new List<RefreshButtonOption>
-            {
-                new() {Name = "Wyczyść filtr", RefreshOption = RefreshOptions.Clean},
-                new() {Name = "Wyczyść filtr i odśwież", RefreshOption = RefreshOptions.CleanAndRefresh}
-            };
+            RefreshButtonOptions = ModelsLoader.LoadRefreshButtonOptions();
         }
 
         private void SetRefreshButtonOption(object refreshOption)

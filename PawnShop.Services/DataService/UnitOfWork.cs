@@ -21,7 +21,7 @@ namespace PawnShop.Services.DataService
         private GenericRepository<ContractState> _contractStateRepository;
         private ContractRepository _contractRepository;
         private ClientRepository _clientRepository;
-        private GenericRepository<ContractItem> _contractItemRepository;
+        private ContractItemRepository _contractItemRepository;
         private GenericRepository<ContractItemCategory> _contractItemCategoryRepository;
         private GenericRepository<UnitMeasure> _unitMeasureRepository;
         private GenericRepository<ContractItemState> _contractItemStateRepository;
@@ -110,11 +110,11 @@ namespace PawnShop.Services.DataService
             }
         }
 
-        public GenericRepository<ContractItem> ContractItemRepository
+        public ContractItemRepository ContractItemRepository
         {
             get
             {
-                _contractItemRepository ??= new GenericRepository<ContractItem>(_context);
+                _contractItemRepository ??= new ContractItemRepository(_context);
                 return _contractItemRepository;
             }
         }

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.DataAccess.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PawnShop.Services.DataService.Repositories
 {
@@ -17,7 +17,7 @@ namespace PawnShop.Services.DataService.Repositories
 
         }
 
-        public async Task<IList<Sale>> GetTopSales(SaleQueryData queryData, int count)
+        public async Task<IList<Sale>> GetTopSales(ContractItemQueryData queryData, int count)
         {
             var query = GetTopSalesAsQueryable(count);
 

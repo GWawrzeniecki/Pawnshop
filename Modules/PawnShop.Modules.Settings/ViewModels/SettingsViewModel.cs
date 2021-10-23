@@ -6,11 +6,8 @@ namespace PawnShop.Modules.Settings.ViewModels
 {
     public class SettingsViewModel : BindableBase
     {
-        private readonly IRegionManager _regionManager;
-
-        public SettingsViewModel(IRegionManager regionManager, IContainerProvider containerProvider)
+        public SettingsViewModel()
         {
-            _regionManager = regionManager;
 
         }
     }

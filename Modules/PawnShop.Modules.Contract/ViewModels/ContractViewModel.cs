@@ -7,9 +7,7 @@ using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
-using PawnShop.Modules.Contract.Enums;
 using PawnShop.Modules.Contract.Extensions;
-using PawnShop.Modules.Contract.Models.DropDownButtonModels;
 using PawnShop.Modules.Contract.Validators;
 using PawnShop.Modules.Contract.Views;
 using PawnShop.Modules.Contract.Windows.Views;
@@ -243,29 +241,12 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private void LoadDateSearchOptions()
         {
-            DateSearchOptions = new List<DateSearchOption>
-            {
-                new() {Name = "Wyczyść", SearchOption = SearchOptions.Clean},
-                new() {Name = "Dzisiaj", SearchOption = SearchOptions.Today},
-                new() {Name = "Wczoraj", SearchOption = SearchOptions.Yesterday},
-                new() {Name = "Bieżący tydzien", SearchOption = SearchOptions.CurrentWeek},
-                new() {Name = "Poprzedni tydzien", SearchOption = SearchOptions.PastWeek},
-                new() {Name = "Bieżący miesiąc", SearchOption = SearchOptions.CurrentMonth},
-                new() {Name = "Poprzedni miesiąc", SearchOption = SearchOptions.PastMonth},
-                new() {Name = "Bieżący kwartał", SearchOption = SearchOptions.CurrentQuarter},
-                new() {Name = "Poprzedni kwartał", SearchOption = SearchOptions.PastQuarter},
-                new() {Name = "Bieżący rok", SearchOption = SearchOptions.CurrentYear},
-                new() {Name = "Poprzedni rok", SearchOption = SearchOptions.PastYear}
-            };
+            DateSearchOptions = ModelsLoader.LoadDateSearchOptions();
         }
 
         private void LoadRefreshButtonOptions()
         {
-            RefreshButtonOptions = new List<RefreshButtonOption>
-            {
-                new() {Name = "Wyczyść filtr", RefreshOption = RefreshOptions.Clean},
-                new() {Name = "Wyczyść filtr i odśwież", RefreshOption = RefreshOptions.CleanAndRefresh}
-            };
+            RefreshButtonOptions = ModelsLoader.LoadRefreshButtonOptions();
         }
 
         private void SetSearchOption(object searchOption)

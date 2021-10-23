@@ -1,6 +1,6 @@
-﻿using System.Windows.Controls;
-using PawnShop.Core.Taskbar;
+﻿using PawnShop.Core.Taskbar;
 using PawnShop.Modules.Commodity.TaskBar;
+using System.Windows.Controls;
 
 namespace PawnShop.Modules.Commodity.Views
 {

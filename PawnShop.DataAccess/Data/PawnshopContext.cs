@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 using PawnShop.Business.Models;
 
 #nullable disable
@@ -30,7 +28,6 @@ namespace PawnShop.DataAccess.Data
         public virtual DbSet<ContractState> ContractStates { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<DealDocument> DealDocuments { get; set; }
-        public virtual DbSet<EndedContract> EndedContracts { get; set; }
         public virtual DbSet<Gemstone> Gemstones { get; set; }
         public virtual DbSet<GoldProduct> GoldProducts { get; set; }
         public virtual DbSet<GoldProductGemstone> GoldProductGemstones { get; set; }
@@ -58,8 +55,10 @@ namespace PawnShop.DataAccess.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
+#pragma warning disable CS1030 // #warning: 'To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.'
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=Kogut-Desktop\\Sqlexpress;Initial Catalog=Pawnshop;Integrated Security=True;trustServerCertificate=true");
+#pragma warning restore CS1030 // #warning: 'To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.'
             }
         }
 
@@ -425,21 +424,6 @@ namespace PawnShop.DataAccess.Data
                     .HasForeignKey<DealDocument>(d => d.PaymentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("DealDocument_Payment");
-            });
-
-            modelBuilder.Entity<EndedContract>(entity =>
-            {
-                entity.ToTable("EndedContracts", "Pawnshop");
-
-                entity.Property(e => e.EndedContractId)
-                    .HasMaxLength(10)
-                    .HasColumnName("EndedContractID");
-
-                entity.HasOne(d => d.EndedContractNavigation)
-                    .WithOne(p => p.EndedContract)
-                    .HasForeignKey<EndedContract>(d => d.EndedContractId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("EndedContracts_Contract");
             });
 
             modelBuilder.Entity<Gemstone>(entity =>

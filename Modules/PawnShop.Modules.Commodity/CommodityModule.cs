@@ -2,6 +2,7 @@
 using PawnShop.Core.Regions;
 using PawnShop.Modules.Commodity.MenuItem;
 using PawnShop.Modules.Commodity.ViewModels;
+using PawnShop.Modules.Commodity.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -22,12 +23,17 @@ namespace PawnShop.Modules.Commodity
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager.Regions[RegionNames.MenuRegion].Add(containerProvider.Resolve<CommodityHamburgerMenuItem>());
+            _regionManager.RegisterViewWithRegion<CurrentGoodsGrid>(RegionNames.CommodityGridRegion);
+            _regionManager.RegisterViewWithRegion<GoodsForSaleGrid>(RegionNames.CommodityGridRegion);
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<Views.Commodity, CommodityViewModel>();
+            containerRegistry.RegisterForNavigation<CurrentGoodsGrid, CurrentGoodsGridViewModel>();
+            containerRegistry.RegisterForNavigation<GoodsForSaleGrid, GoodsForSaleGridViewModel>();
             containerRegistry.Register<CommodityHamburgerMenuItem>();
+
         }
     }
 }
