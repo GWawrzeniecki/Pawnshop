@@ -1,5 +1,7 @@
 ﻿using PawnShop.Core.Attributes;
 using PawnShop.Core.Regions;
+using PawnShop.Modules.Commodity.Dialogs.ViewModels;
+using PawnShop.Modules.Commodity.Dialogs.Views;
 using PawnShop.Modules.Commodity.MenuItem;
 using PawnShop.Modules.Commodity.ViewModels;
 using PawnShop.Modules.Commodity.Views;
@@ -23,8 +25,8 @@ namespace PawnShop.Modules.Commodity
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager.Regions[RegionNames.MenuRegion].Add(containerProvider.Resolve<CommodityHamburgerMenuItem>());
-            _regionManager.RegisterViewWithRegion<CurrentGoodsGrid>(RegionNames.CommodityGridRegion);
-            _regionManager.RegisterViewWithRegion<GoodsForSaleGrid>(RegionNames.CommodityGridRegion);
+            _regionManager.RegisterViewWithRegion<CurrentGoodsGrid>(RegionNames.CommodityTabControlRegion);
+            _regionManager.RegisterViewWithRegion<GoodsForSaleGrid>(RegionNames.CommodityTabControlRegion);
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
@@ -33,6 +35,7 @@ namespace PawnShop.Modules.Commodity
             containerRegistry.RegisterForNavigation<CurrentGoodsGrid, CurrentGoodsGridViewModel>();
             containerRegistry.RegisterForNavigation<GoodsForSaleGrid, GoodsForSaleGridViewModel>();
             containerRegistry.Register<CommodityHamburgerMenuItem>();
+            containerRegistry.RegisterDialog<PreviewPutOnSaleDialog, PreviewPutOnSaleDialogViewModel>();
 
         }
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MahApps.Metro.Controls;
 using PawnShop.Controls.BaseTaskbar.Views;
+using PawnShop.Controls.ContractItemViews.ViewModels;
 using PawnShop.Controls.Dialogs.ViewModels;
 using PawnShop.Controls.Dialogs.Views;
 using PawnShop.Controls.Validators;
@@ -56,22 +57,23 @@ namespace PawnShop
         {
             containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
             containerRegistry.Register<IUnitOfWork, UnitOfWork>();
-            containerRegistry.RegisterSingleton<IUIService, UIService>();
-            containerRegistry.RegisterSingleton<IShellService, ShellService>();
+            containerRegistry.Register<IUIService, UIService>();
+            containerRegistry.Register<IShellService, ShellService>();
             containerRegistry.RegisterSingleton<ISessionContext, SessionContext>();
             containerRegistry.RegisterSingleton<IConfigData, ConfigData>();
             containerRegistry.RegisterSingleton<IUserSettings, UserSettings>();
-            containerRegistry.RegisterSingleton<IValidatorService, ValidatorService>();
+            containerRegistry.Register<IValidatorService, ValidatorService>();
             containerRegistry.Register<IClientService, ClientService>();
-            containerRegistry.RegisterSingleton<IContractItemService, ContractItemService>();
-            containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();
-            containerRegistry.RegisterSingleton<IPrintService, PrintService>();
-            containerRegistry.RegisterSingleton<AddClientValidator>();
+            containerRegistry.Register<IContractItemService, ContractItemService>();
+            containerRegistry.Register<IConfigurationService, ConfigurationService>();
+            containerRegistry.Register<IPrintService, PrintService>();
+            containerRegistry.Register<AddClientValidator>();
             containerRegistry.RegisterInstance<ISettingsService<UserSettings>>(new SettingsService<UserSettings>(Constants.UserSettingsFileName));
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
             containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();
             containerRegistry.RegisterDialog<AddClientDialog, AddClientDialogViewModel>();
+            containerRegistry.RegisterForNavigation<Controls.ContractItemViews.Views.Laptop, LaptopViewModel>();
             ConfigureMapper(containerRegistry);
         }
 
@@ -93,6 +95,7 @@ namespace PawnShop
                 cfg.AddProfile<WorkerBossToLoginPrivilegesData>();
                 cfg.AddProfile<SaleViewModelToContractItemQueryData>();
                 cfg.AddProfile<CommodityViewModelToContractItemQueryData>();
+                cfg.AddProfile<ContractItemToPreviewSaleDialogViewModel>();
             });
             var mapper = configuration.CreateMapper();
 

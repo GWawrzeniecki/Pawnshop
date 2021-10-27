@@ -57,5 +57,11 @@ namespace PawnShop.Core.Dialogs
             var dialogParameters = new DialogParameters { { "title", title }, { "workerDialogMode", workerDialogMode } };
             dialogService.ShowDialog(DialogNames.WorkerDialog, dialogParameters, callBack);
         }
+
+        public static void ShowPreviewPutOnSaleDialog(this IDialogService dialogService, Action<IDialogResult> callBack, string title, PreviewPutOnSaleDialogMode dialogMode, ContractItem contractItem)
+        {
+            var dialogParameters = new DialogParameters { { "title", title }, { "dialogMode", dialogMode }, { "contractItem", contractItem } };
+            dialogService.ShowDialog(DialogNames.PreviewPutOnSaleDialog, dialogParameters, callBack);
+        }
     }
 }

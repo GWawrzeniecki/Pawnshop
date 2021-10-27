@@ -1,5 +1,7 @@
 ﻿using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Core.Dialogs;
+using PawnShop.Core.Enums;
 using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Core.ViewModel;
 using PawnShop.Exceptions.DBExceptions;
@@ -7,6 +9,7 @@ using PawnShop.Modules.Commodity.Events;
 using Prism;
 using Prism.Events;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,8 +18,10 @@ namespace PawnShop.Modules.Commodity.Base
 {
     public abstract class GoodsBaseViewModel : BindableBase, ITabItemViewModel, IActiveAware
     {
+
         #region PrivateMembers
 
+        private readonly IDialogService _dialogService;
         private IList<ContractItem> _contractItems;
         private ContractItem _selectedContractItem;
         private bool _isBusy;
@@ -25,11 +30,13 @@ namespace PawnShop.Modules.Commodity.Base
 
         #region Constructor
 
-        protected GoodsBaseViewModel(IEventAggregator eventAggregator, string headerName)
+        protected GoodsBaseViewModel(IEventAggregator eventAggregator, IDialogService dialogService, string headerName)
         {
+            _dialogService = dialogService;
             Header = headerName;
             ContractItems = new List<ContractItem>();
             eventAggregator.GetEvent<RefreshDataGridEvent>().Subscribe(RefreshDataGrid);
+            eventAggregator.GetEvent<TaskBarButtonClickEvent>().Subscribe(TaskBarButtonClick);
         }
 
         #endregion
@@ -93,6 +100,19 @@ namespace PawnShop.Modules.Commodity.Base
 
         #endregion
 
+        #region TaskBarButtonClickEvent
+
+        private void TaskBarButtonClick(PreviewPutOnSaleDialogMode dialogMode)
+        {
+            if (!IsActive || SelectedContractItem is null)
+                return;
+
+            _dialogService.ShowPreviewPutOnSaleDialog(null, "Podgląd towaru", dialogMode, SelectedContractItem);
+
+        }
+
+        #endregion
+
         #region ProtectedMethods
 
         protected async void LoadContractItems()
@@ -130,6 +150,5 @@ namespace PawnShop.Modules.Commodity.Base
         public bool IsActive { get; set; }
 
         #endregion
-
     }
 }

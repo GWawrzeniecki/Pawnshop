@@ -38,6 +38,8 @@ namespace PawnShop.Modules.Commodity.ViewModels
         private readonly IMapper _mapper;
         private readonly IContainerProvider _containerProvider;
         private readonly RefreshDataGridEvent _refreshDataGridEvent;
+        private readonly TaskBarButtonClickEvent _taskBarButtonClickEvent;
+        private DelegateCommand _previewCommand;
 
         #endregion
 
@@ -47,6 +49,7 @@ namespace PawnShop.Modules.Commodity.ViewModels
             _mapper = mapper;
             _containerProvider = containerProvider;
             _refreshDataGridEvent = eventAggregator.GetEvent<RefreshDataGridEvent>();
+            _taskBarButtonClickEvent = eventAggregator.GetEvent<TaskBarButtonClickEvent>();
             LoadStartupData();
         }
 
@@ -131,6 +134,8 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
 
+        public DelegateCommand PreviewCommand => _previewCommand ??= new DelegateCommand(ShowPreview);
+
         #endregion
 
         #region CommandsMethods
@@ -142,7 +147,6 @@ namespace PawnShop.Modules.Commodity.ViewModels
                 case RefreshOptions.Clean:
                     CleanSearchProperties();
                     break;
-
                 case RefreshOptions.CleanAndRefresh:
                     CleanSearchProperties();
                     RefreshCommand.Execute();
@@ -157,6 +161,11 @@ namespace PawnShop.Modules.Commodity.ViewModels
         {
             var goodsQueryData = _mapper.Map<ContractItemQueryData>(this);
             _refreshDataGridEvent.Publish(goodsQueryData);
+        }
+
+        private void ShowPreview()
+        {
+            _taskBarButtonClickEvent.Publish(PreviewPutOnSaleDialogMode.Preview);
         }
 
         #endregion

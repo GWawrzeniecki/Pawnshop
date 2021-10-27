@@ -9,6 +9,7 @@
         public const string SettingsTabControlRegion = "SettingsTabControlRegion";
         public const string ClientTabControlRegion = "ClientTabControlRegion";
         public const string WorkerTabControlRegion = "WorkerTabControlRegion";
-        public const string CommodityGridRegion = "CommodityGridRegion";
+        public const string CommodityTabControlRegion = "CommodityTabControlRegion";
+        public const string PreviewPutOnSaleDialogContentRegion = "PreviewPutOnSaleDialogContentRegion";
     }
 }

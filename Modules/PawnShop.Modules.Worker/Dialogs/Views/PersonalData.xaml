@@ -11,182 +11,182 @@
     <AdornerDecorator>
         <Grid Margin="0,0,0,5">
 
-        <Grid.Resources>
+            <Grid.Resources>
 
-            <converters:WorkerTabControlRegionContextToIsReadOnlyConverter x:Key="RegionContextToIsReadOnlyConverter" />
-            <converters:WorkerTabControlRegionContextToIsEnabledConverter x:Key="RegionContextToIsEnabledConverter" />
+                <converters:WorkerTabControlRegionContextToIsReadOnlyConverter x:Key="RegionContextToIsReadOnlyConverter" />
+                <converters:WorkerTabControlRegionContextToIsEnabledConverter x:Key="RegionContextToIsEnabledConverter" />
 
-            <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">
-                <Setter Property="Margin" Value="5,5,5,5" />
-                <Setter Property="Padding" Value="5" />
-            </Style>
+                <Style BasedOn="{StaticResource Pawnshop.Styles.TextBlock.Global}" TargetType="TextBlock">
+                    <Setter Property="Margin" Value="5,5,5,5" />
+                    <Setter Property="Padding" Value="5" />
+                </Style>
 
-            <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
-                <Setter Property="Margin" Value="0,5,5,5" />
-                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
-                <Setter Property="Padding" Value="5" />
-                <Setter Property="IsReadOnly" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsReadOnlyConverter}}" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
-            </Style>
+                <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
+                    <Setter Property="Margin" Value="0,5,5,5" />
+                    <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="IsReadOnly" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsReadOnlyConverter}}" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                </Style>
 
-            <Style BasedOn="{StaticResource MahApps.Styles.DatePicker}" TargetType="DatePicker">
-                <Setter Property="Margin" Value="0,5,5,5" />
-                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
-                <Setter Property="IsEnabled" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsEnabledConverter}}" />
-                <Setter Property="Padding" Value="5" />
-            </Style>
+                <Style BasedOn="{StaticResource MahApps.Styles.DatePicker}" TargetType="DatePicker">
+                    <Setter Property="Margin" Value="0,5,5,5" />
+                    <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                    <Setter Property="IsEnabled" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsEnabledConverter}}" />
+                    <Setter Property="Padding" Value="5" />
+                </Style>
 
-            <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
-                <Setter Property="IsEnabled" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsEnabledConverter}}" />
-                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
-            </Style>
-
-
-        </Grid.Resources>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+                <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
+                    <Setter Property="IsEnabled" Value="{Binding WorkerTabControlRegionContext, Converter={StaticResource RegionContextToIsEnabledConverter}}" />
+                    <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                </Style>
 
 
-        <TextBlock
-            Grid.Row="0"
-            Grid.Column="0"
-            Text="Imię:" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="0"
-            Text="Nazwisko:" />
-        <TextBlock
-            Grid.Row="2"
-            Grid.Column="0"
-            Text="Ulica:" />
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="0"
-            Text="Numer domu:" />
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="2"
-            Margin="0,5,5,5"
-            Text="Numer lokalu:" />
+            </Grid.Resources>
 
-        <TextBlock
-            Grid.Row="4"
-            Grid.Column="0"
-            Text="Miejscowość:" />
-        <TextBlock
-            Grid.Row="4"
-            Grid.Column="2"
-            Margin="0,5,5,5"
-            Text="Kod pocztowy:" />
-        <TextBlock
-            Grid.Row="5"
-            Grid.Column="0"
-            Text="Kraj:" />
-        <TextBlock
-            Grid.Row="6"
-            Grid.Column="0"
-            Text="Data urodzenia:" />
-        <TextBlock
-            Grid.Row="7"
-            Grid.Column="0"
-            Text="Pesel:" />
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
 
-        <TextBox
-            Grid.Row="0"
-            Grid.Column="1"
-            Grid.ColumnSpan="3"
-            Text="{Binding FirstName, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="Imię:" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="Nazwisko:" />
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Text="Ulica:" />
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                Text="Numer domu:" />
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="2"
+                Margin="0,5,5,5"
+                Text="Numer lokalu:" />
 
-        <TextBox
-            Grid.Row="1"
-            Grid.Column="1"
-            Grid.ColumnSpan="3"
-            Text="{Binding LastName, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Text="Miejscowość:" />
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="2"
+                Margin="0,5,5,5"
+                Text="Kod pocztowy:" />
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="0"
+                Text="Kraj:" />
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="0"
+                Text="Data urodzenia:" />
+            <TextBlock
+                Grid.Row="7"
+                Grid.Column="0"
+                Text="Pesel:" />
 
-        <TextBox
-            Grid.Row="2"
-            Grid.Column="1"
-            Grid.ColumnSpan="3"
-            Text="{Binding Street, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBox
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="0,5,5,5"
-            Text="{Binding HouseNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox
+                Grid.Row="0"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Text="{Binding FirstName, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBox
-            Grid.Row="3"
-            Grid.Column="3"
-            Margin="0,5,5,5"
-            Text="{Binding ApartmentNumber, Mode=TwoWay}" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Text="{Binding LastName, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
-        <ComboBox
-            Grid.Row="4"
-            Grid.Column="1"
-            Margin="0,5,5,5"
-            DisplayMemberPath="City1"
-            IsEditable="True"
-            IsTextSearchEnabled="True"
-            ItemsSource="{Binding Cities}"
-            SelectedItem="{Binding SelectedCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            StaysOpenOnEdit="True"
-            Text="{Binding City, Mode=TwoWay, Delay=100, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-            TextSearch.TextPath="City1" />
+            <TextBox
+                Grid.Row="2"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Text="{Binding Street, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="3"
-            MinWidth="80"
-            Margin="0,5,5,5"
-            Text="{Binding PostCode, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox
+                Grid.Row="3"
+                Grid.Column="1"
+                Margin="0,5,5,5"
+                Text="{Binding HouseNumber, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
-        <ComboBox
-            Grid.Row="5"
-            Grid.Column="1"
-            Grid.ColumnSpan="3"
-            Margin="0,5,5,5"
-            DisplayMemberPath="Country1"
-            IsEditable="True"
-            IsTextSearchEnabled="True"
-            ItemsSource="{Binding Countries}"
-            SelectedItem="{Binding SelectedCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            StaysOpenOnEdit="True"
-            Text="{Binding Country, Mode=TwoWay, Delay=100, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-            TextSearch.TextPath="Country1" />
+            <TextBox
+                Grid.Row="3"
+                Grid.Column="3"
+                Margin="0,5,5,5"
+                Text="{Binding ApartmentNumber, Mode=TwoWay}" />
 
-        <DatePicker
-            Grid.Row="6"
-            Grid.Column="1"
-            Grid.ColumnSpan="3"
-            mah:TextBoxHelper.ClearTextButton="True"
-            mah:TextBoxHelper.Watermark="Wybierz date"
-            SelectedDate="{Binding BirthDate, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+            <ComboBox
+                Grid.Row="4"
+                Grid.Column="1"
+                Margin="0,5,5,5"
+                DisplayMemberPath="City1"
+                IsEditable="True"
+                IsTextSearchEnabled="True"
+                ItemsSource="{Binding Cities}"
+                SelectedItem="{Binding SelectedCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                StaysOpenOnEdit="True"
+                Text="{Binding City, Mode=TwoWay, Delay=100, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                TextSearch.TextPath="City1" />
 
-        <TextBox
-            Grid.Row="7"
-            Grid.Column="1"
-            Grid.ColumnSpan="3"
-            Text="{Binding Pesel, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
-    </Grid>
+            <TextBox
+                Grid.Row="4"
+                Grid.Column="3"
+                MinWidth="80"
+                Margin="0,5,5,5"
+                Text="{Binding PostCode, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
-        </AdornerDecorator>
+            <ComboBox
+                Grid.Row="5"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Margin="0,5,5,5"
+                DisplayMemberPath="Country1"
+                IsEditable="True"
+                IsTextSearchEnabled="True"
+                ItemsSource="{Binding Countries}"
+                SelectedItem="{Binding SelectedCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                StaysOpenOnEdit="True"
+                Text="{Binding Country, Mode=TwoWay, Delay=100, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                TextSearch.TextPath="Country1" />
+
+            <DatePicker
+                Grid.Row="6"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.Watermark="Wybierz date"
+                SelectedDate="{Binding BirthDate, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBox
+                Grid.Row="7"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Text="{Binding Pesel, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+
+    </AdornerDecorator>
 
 </base:WorkerDialogViewBase>

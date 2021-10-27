@@ -76,8 +76,7 @@
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
                     mah:TextBoxHelper.Watermark="Od daty:"
-                    SelectedDate="{Binding FromDate, Mode=TwoWay}" >
-                </DatePicker>
+                    SelectedDate="{Binding FromDate, Mode=TwoWay}" />
 
                 <DatePicker
                     Grid.Row="0"
@@ -86,8 +85,7 @@
                     mah:TextBoxHelper.ClearTextButton="True"
                     mah:TextBoxHelper.UseFloatingWatermark="True"
                     mah:TextBoxHelper.Watermark="Do daty:"
-                    SelectedDate="{Binding ToDate, Mode=TwoWay}" >
-                </DatePicker>
+                    SelectedDate="{Binding ToDate, Mode=TwoWay}" />
 
                 <mah:DropDownButton
                     Grid.Row="0"
@@ -204,7 +202,7 @@
             Grid.Row="1"
             Grid.Column="0"
             Header="Lista towarów">
-            <TabControl prism:RegionManager.RegionName="{x:Static regions:RegionNames.CommodityGridRegion}" Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
+            <TabControl prism:RegionManager.RegionName="{x:Static regions:RegionNames.CommodityTabControlRegion}" Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
         </GroupBox>
 
 

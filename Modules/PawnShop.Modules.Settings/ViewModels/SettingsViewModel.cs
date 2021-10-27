@@ -1,6 +1,4 @@
-﻿using Prism.Ioc;
-using Prism.Mvvm;
-using Prism.Regions;
+﻿using Prism.Mvvm;
 
 namespace PawnShop.Modules.Settings.ViewModels
 {
