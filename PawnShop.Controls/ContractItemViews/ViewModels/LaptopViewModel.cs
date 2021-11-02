@@ -1,9 +1,12 @@
-﻿using PawnShop.Controls.ContractItemViews.Validators;
+﻿using AutoMapper;
+using PawnShop.Controls.ContractItemViews.Validators;
+using PawnShop.Core.Enums;
 using PawnShop.Core.ViewModel.Base;
+using Prism.Regions;
 
 namespace PawnShop.Controls.ContractItemViews.ViewModels
 {
-    public class LaptopViewModel : ViewModelBase<LaptopViewModel>
+    public class LaptopViewModel : ViewModelBase<LaptopViewModel>, INavigationAware
     {
         #region PrivateMembers
 
@@ -13,15 +16,16 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
         private string _driveType;
         private string _massStorage;
         private string _descriptionKit;
+        private readonly IMapper _mapper;
+        private bool _isViewReadOnly;
+
         #endregion
 
+        #region constructor
 
-        #region constructor 
-
-        public LaptopViewModel(LaptopValidator laptopValidator) : base(laptopValidator)
+        public LaptopViewModel(IMapper mapper, LaptopValidator laptopValidator) : base(laptopValidator)
         {
-
-
+            _mapper = mapper;
         }
 
         #endregion
@@ -47,13 +51,11 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
             set => SetProperty(ref _ram, value);
         }
 
-
         public string DriveType
         {
             get => _driveType;
             set => SetProperty(ref _driveType, value);
         }
-
 
         public string MassStorage
         {
@@ -61,13 +63,17 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
             set => SetProperty(ref _massStorage, value);
         }
 
-
         public string DescriptionKit
         {
-            get { return _descriptionKit; }
-            set { SetProperty(ref _descriptionKit, value); }
+            get => _descriptionKit;
+            set => SetProperty(ref _descriptionKit, value);
         }
 
+        public bool IsViewReadOnly
+        {
+            get => _isViewReadOnly;
+            set => SetProperty(ref _isViewReadOnly, value);
+        }
 
         #endregion
 
@@ -80,6 +86,31 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
 
         #endregion viewModelBase
 
+        #region INavigationAware
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            var laptopHasValue = navigationContext.Parameters.TryGetValue<Business.Models.Laptop>("laptop", out var laptop);
+            if (laptopHasValue)
+                _mapper.Map(laptop, this);
+            var dialogModeHasValue =
+                navigationContext.Parameters.TryGetValue<PreviewPutOnSaleDialogMode>("dialogMode", out var dialogMode);
+            if (dialogModeHasValue)
+                IsViewReadOnly = dialogMode == PreviewPutOnSaleDialogMode.Preview;
+
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+
+        }
+
+        #endregion
 
     }
 }

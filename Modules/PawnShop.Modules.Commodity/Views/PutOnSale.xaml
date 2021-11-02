@@ -1,0 +1,144 @@
+﻿<UserControl
+    x:Class="PawnShop.Modules.Commodity.Views.PutOnSale"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid x:Name="Grid">
+
+        <Grid.Resources>
+            <Style BasedOn="{StaticResource MahApps.Styles.TextBlock}" TargetType="TextBlock">
+                <Setter Property="Margin" Value="5,5,5,5" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                <Setter Property="Padding" Value="5" />
+            </Style>
+
+
+            <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
+                <Setter Property="Margin" Value="0,5,5,15" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="J.m:" />
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="Cena:" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Text="Regał:" />
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="0"
+            Text="Link do aukcji:" />
+
+        <Grid Grid.Row="0" Grid.Column="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <ComboBox
+                Grid.Column="0"
+                Margin="0,5,0,15"
+                ItemsSource="{Binding ContractItemUnitMeasures}"
+                SelectedItem="{Binding SelectedContractItemUnitMeasure, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Measure}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                Text="Ilość:" />
+            <TextBox
+                Grid.Column="2"
+                Margin="0,5,5,15"
+                Text="{Binding ContractItemQuantity, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+
+        <Grid Grid.Row="1" Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox
+                Grid.Column="0"
+                Margin="0,5,0,15"
+                Text="{Binding Price, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock
+                Grid.Column="1"
+                Margin="0,5,0,15"
+                VerticalAlignment="Center"
+                Text="PLN" />
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.Column="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <TextBox
+                Grid.Column="0"
+                Margin="0,5,0,15"
+                Text="{Binding Rack, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                Text="Ilość:" />
+            <TextBox
+                Grid.Column="2"
+                Margin="0,5,5,15"
+                Text="{Binding ContractItemQuantity, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+
+        <Grid Grid.Row="3" Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ComboBox
+                Grid.Column="0"
+                Margin="0,5,0,15"
+                ItemsSource="{Binding ContractItemUnitMeasures}"
+                SelectedItem="{Binding SelectedContractItemUnitMeasure, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Measure}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button
+                Grid.Column="1"
+                Margin="10,5,5,15"
+                Content="Dodaj" />
+        </Grid>
+
+    </Grid>
+</UserControl>

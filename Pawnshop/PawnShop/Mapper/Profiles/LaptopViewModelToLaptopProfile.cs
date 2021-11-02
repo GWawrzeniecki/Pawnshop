@@ -9,7 +9,8 @@ namespace PawnShop.Mapper.Profiles
 
         public LaptopViewModelToLaptopProfile()
         {
-            CreateMap<LaptopViewModel, Laptop>();
+            CreateMap<LaptopViewModel, Laptop>()
+                .ReverseMap();
         }
     }
 }

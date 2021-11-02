@@ -35,12 +35,11 @@
         <Grid
             Grid.Row="1"
             Grid.Column="0"
-            Margin="0,0,0,5"
-            Visibility="{Binding ButtonGridVisibility}">
+            Margin="0,0,0,11">
 
             <Grid.Resources>
                 <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-                    <Setter Property="Margin" Value="5,0,15,0" />
+                    <Setter Property="Margin" Value="5,0,8,0" />
                 </Style>
             </Grid.Resources>
 
@@ -58,14 +57,17 @@
 
             <Button
                 Grid.Column="2"
+                Margin="5,0,5,0"
                 Command="{Binding CreateWorkerCommand}"
                 Content="Utwórz"
                 Visibility="{Binding CreateWorkerButtonVisibility}" />
             <Button
                 Grid.Column="2"
+                Margin="5,0,5,0"
                 Command="{Binding UpdateWorkerCommand}"
                 Content="Zapisz"
                 Visibility="{Binding UpdateWorkerButtonVisibility}" />
+
             <Button
                 Grid.Column="3"
                 Command="{Binding CancelCommand}"

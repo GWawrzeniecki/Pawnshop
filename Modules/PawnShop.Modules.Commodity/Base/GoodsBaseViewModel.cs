@@ -108,7 +108,6 @@ namespace PawnShop.Modules.Commodity.Base
                 return;
 
             _dialogService.ShowPreviewPutOnSaleDialog(null, "Podgląd towaru", dialogMode, SelectedContractItem);
-
         }
 
         #endregion

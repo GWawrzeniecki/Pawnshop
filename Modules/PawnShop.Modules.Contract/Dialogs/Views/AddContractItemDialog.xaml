@@ -29,14 +29,14 @@
 
 
             <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
-                <Setter Property="Margin" Value="0,5,50,15" />
+                <Setter Property="Margin" Value="0,5,5,15" />
                 <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
                 <Setter Property="VerticalContentAlignment" Value="Center" />
 
             </Style>
 
             <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
-                <Setter Property="Margin" Value="0,15,50,15" />
+                <Setter Property="Margin" Value="0,15,5,15" />
                 <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
             </Style>
 
@@ -117,7 +117,7 @@
                     Grid.Column="1"
                     MinWidth="370"
                     MinHeight="80"
-                    Margin="0,0,50,0"
+                    Margin="0,0,5,0"
                     VerticalAlignment="Stretch"
                     VerticalContentAlignment="Top"
                     AcceptsReturn="True"
@@ -126,7 +126,7 @@
                 <ComboBox
                     Grid.Row="2"
                     Grid.Column="1"
-                    Margin="0,15,50,15"
+                    Margin="0,15,5,15"
                     ItemsSource="{Binding ContractItemCategories}"
                     SelectedItem="{Binding SelectedContractItemCategory, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
@@ -138,7 +138,7 @@
                 <ComboBox
                     Grid.Row="3"
                     Grid.Column="1"
-                    Margin="0,0,50,15"
+                    Margin="0,0,5,15"
                     ItemsSource="{Binding ContractItemStates}"
                     SelectedItem="{Binding SelectedContractItemState, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
@@ -152,7 +152,7 @@
                     Grid.Column="1"
                     MinWidth="370"
                     MinHeight="80"
-                    Margin="0,0,50,0"
+                    Margin="0,0,5,0"
                     VerticalAlignment="Stretch"
                     VerticalContentAlignment="Top"
                     AcceptsReturn="True"
@@ -161,7 +161,7 @@
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="2*" />
                     </Grid.ColumnDefinitions>
                     <ComboBox
@@ -182,7 +182,7 @@
                         Text="Ilość:" />
                     <TextBox
                         Grid.Column="2"
-                        Margin="0,15,50,15"
+                        Margin="0,15,5,15"
                         Text="{Binding ContractItemQuantity, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
 
@@ -197,11 +197,12 @@
                     <TextBox
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
-                        Margin="0,0,5,5"
+                        Margin="0,0,0,5"
                         Text="{Binding ContractItemEstimatedValue, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock
                         Grid.Column="2"
-                        Margin="5,5,50,5"
+                        VerticalAlignment="Center"
+                        Margin="0,0,0,5"
                         Text="PLN" />
 
                 </Grid>

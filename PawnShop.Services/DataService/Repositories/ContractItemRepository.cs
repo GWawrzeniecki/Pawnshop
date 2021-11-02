@@ -64,6 +64,9 @@ namespace PawnShop.Services.DataService.Repositories
                 .Include(c => c.ContractItemState)
                 .Include(c => c.Category)
                 .ThenInclude(c => c.Measure)
+                .Include(c => c.Laptop)
+                .Include(c => c.Telephone)
+                .Include(c => c.GoldProduct)
                 .Where(c => c.ContractNumber.ContractStateId != notBoughtContractState.Id)
                 .Take(count)
                 .AsQueryable();
@@ -83,6 +86,9 @@ namespace PawnShop.Services.DataService.Repositories
                 .Include(c => c.ContractItemState)
                 .Include(c => c.Category)
                 .ThenInclude(c => c.Measure)
+                .Include(c => c.Laptop)
+                .Include(c => c.Telephone)
+                .Include(c => c.GoldProduct)
                 .Where(c => c.ContractNumber.ContractStateId == notBoughtContractState.Id)
                 .Take(count)
                 .AsQueryable();

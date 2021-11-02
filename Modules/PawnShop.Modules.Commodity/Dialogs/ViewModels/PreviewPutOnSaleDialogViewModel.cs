@@ -4,7 +4,9 @@ using PawnShop.Business.Models;
 using PawnShop.Core.Constants;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Regions;
+using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Commodity.Views;
 using PawnShop.Services.Interfaces;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -16,12 +18,11 @@ using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
 {
-    public class PreviewPutOnSaleDialogViewModel : BindableBase, IDialogAware
+    public class PreviewPutOnSaleDialogViewModel : BindableBase, IDialogAware, IRegionManagerAware
     {
 
         #region PrivateMembers
 
-        private readonly IRegionManager _regionManager;
         private readonly IMapper _mapper;
         private readonly IContractItemService _contractItemService;
         private string _title;
@@ -42,9 +43,8 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
 
         #region Constructor
 
-        public PreviewPutOnSaleDialogViewModel(IRegionManager regionManager, IMapper mapper, IContractItemService contractItemService)
+        public PreviewPutOnSaleDialogViewModel(IMapper mapper, IContractItemService contractItemService)
         {
-            _regionManager = regionManager;
             _mapper = mapper;
             _contractItemService = contractItemService;
             LoadStartupData();
@@ -126,6 +126,12 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
             set => SetProperty(ref _dialogMode, value);
         }
 
+        public IRegionManager RegionManager
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region IDialogAware
@@ -137,7 +143,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
 
         public void OnDialogClosed()
         {
-            _regionManager.Regions.Remove(RegionNames.PreviewPutOnSaleDialogContentRegion);
+
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
@@ -160,7 +166,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
             {
                 await TryToLoadContractItemCategories();
                 await TryToLoadUnitMeasures();
-                MapContractItemToVM();
+                MapContractItemToVm();
                 MapCategoryAndMeasureFromCurrentDbContext();
             }
             catch (LoadingContractItemCategoriesException loadingContractItemCategoriesException)
@@ -212,6 +218,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
                     SetSecondGroupBoxHeaderName("Informacje dodatkowe");
                     break;
                 case PreviewPutOnSaleDialogMode.Sale:
+                    NavigateToSale();
                     SetSecondGroupBoxHeaderName("Sprzedaż");
                     break;
                 default:
@@ -221,17 +228,23 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
 
         private void NavigateToAdditionalInfo()
         {
+
             switch (_contractItem.Category.Category)
             {
                 case Constants.Laptop:
-                    _regionManager.RequestNavigate(RegionNames.PreviewPutOnSaleDialogContentRegion, Constants.Laptop); // tutaj
+                    RegionManager.RequestNavigate(RegionNames.PreviewPutOnSaleDialogContentRegion, Constants.Laptop, new NavigationParameters { { "dialogMode", _dialogMode }, { "laptop", _contractItem.Laptop } }); // tutaj
                     break;
                 default:
                     throw new NotImplementedException(_contractItem.Category.Category);
             }
         }
 
-        private void MapContractItemToVM()
+        private void NavigateToSale()
+        {
+            RegionManager.RequestNavigate(RegionNames.PreviewPutOnSaleDialogContentRegion, nameof(PutOnSale), new NavigationParameters { { "dialogMode", _dialogMode }, { "laptop", _contractItem.Laptop } });
+        }
+
+        private void MapContractItemToVm()
         {
             _mapper.Map(_contractItem, this);
         }

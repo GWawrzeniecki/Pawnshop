@@ -34,6 +34,7 @@ namespace PawnShop.Modules.Commodity
             containerRegistry.RegisterForNavigation<Views.Commodity, CommodityViewModel>();
             containerRegistry.RegisterForNavigation<CurrentGoodsGrid, CurrentGoodsGridViewModel>();
             containerRegistry.RegisterForNavigation<GoodsForSaleGrid, GoodsForSaleGridViewModel>();
+            containerRegistry.RegisterForNavigation<PutOnSale, PutOnSaleViewModel>();
             containerRegistry.Register<CommodityHamburgerMenuItem>();
             containerRegistry.RegisterDialog<PreviewPutOnSaleDialog, PreviewPutOnSaleDialogViewModel>();
 

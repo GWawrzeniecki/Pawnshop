@@ -1,20 +1,20 @@
 ﻿using Prism.Common;
 using System.Windows.Controls;
 
-namespace PawnShop.Controls.ContractItemViews.Views
+namespace PawnShop.Modules.Commodity.Views
 {
     /// <summary>
-    /// Interaction logic for Laptop
+    /// Interaction logic for Sale
     /// </summary>
-    public partial class Laptop : UserControl
+    public partial class PutOnSale : UserControl
     {
-        public Laptop()
+        public PutOnSale()
         {
             InitializeComponent();
-            this.Loaded += Laptop_Loaded;
+            this.Loaded += PutOnSale_Loaded;
         }
 
-        private void Laptop_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void PutOnSale_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             ObservableObject<object> viewRegionContext = Prism.Regions.RegionContext.GetObservableContext(this);
             viewRegionContext.Value = Grid.ColumnDefinitions[0].ActualWidth;

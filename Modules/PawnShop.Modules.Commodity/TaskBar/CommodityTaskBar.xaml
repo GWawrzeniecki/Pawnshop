@@ -22,6 +22,7 @@
         <Button
             Grid.Column="1"
             Margin="0,0,20,0"
+            Command="{Binding PutOnSaleCommand}"
             Content="Wystaw na sprzedaż" />
 
         <views:NotificationsIcon Grid.Column="3" />

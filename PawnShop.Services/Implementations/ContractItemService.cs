@@ -32,8 +32,6 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-
-
         public async Task<IList<UnitMeasure>> GetUnitMeasures()
         {
             try

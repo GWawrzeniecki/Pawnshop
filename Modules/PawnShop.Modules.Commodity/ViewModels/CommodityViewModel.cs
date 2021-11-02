@@ -40,6 +40,7 @@ namespace PawnShop.Modules.Commodity.ViewModels
         private readonly RefreshDataGridEvent _refreshDataGridEvent;
         private readonly TaskBarButtonClickEvent _taskBarButtonClickEvent;
         private DelegateCommand _previewCommand;
+        private DelegateCommand _putOnSaleCommand;
 
         #endregion
 
@@ -136,6 +137,8 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         public DelegateCommand PreviewCommand => _previewCommand ??= new DelegateCommand(ShowPreview);
 
+        public DelegateCommand PutOnSaleCommand => _putOnSaleCommand ??= new DelegateCommand(PutOnSale);
+
         #endregion
 
         #region CommandsMethods
@@ -166,6 +169,11 @@ namespace PawnShop.Modules.Commodity.ViewModels
         private void ShowPreview()
         {
             _taskBarButtonClickEvent.Publish(PreviewPutOnSaleDialogMode.Preview);
+        }
+
+        private void PutOnSale()
+        {
+            _taskBarButtonClickEvent.Publish(PreviewPutOnSaleDialogMode.Sale);
         }
 
         #endregion

@@ -55,7 +55,7 @@
 
             <GroupBox
                 Grid.Row="0"
-                Margin="0,0,0,15"
+                Margin="0,0,0,10"
                 Header="Dane klienta">
 
                 <Grid>
@@ -228,11 +228,11 @@
             <Grid
                 Grid.Row="1"
                 Grid.Column="0"
-                Margin="0,0,0,15">
+                Margin="0,0,0,10">
 
                 <Grid.Resources>
                     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-                        <Setter Property="Margin" Value="5,0,15,0" />
+                        <Setter Property="Margin" Value="5,0,0,0" />
                     </Style>
                 </Grid.Resources>
 
