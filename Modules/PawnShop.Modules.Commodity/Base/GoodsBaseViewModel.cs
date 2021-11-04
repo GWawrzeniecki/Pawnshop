@@ -18,7 +18,6 @@ namespace PawnShop.Modules.Commodity.Base
 {
     public abstract class GoodsBaseViewModel : BindableBase, ITabItemViewModel, IActiveAware
     {
-
         #region PrivateMembers
 
         private readonly IDialogService _dialogService;

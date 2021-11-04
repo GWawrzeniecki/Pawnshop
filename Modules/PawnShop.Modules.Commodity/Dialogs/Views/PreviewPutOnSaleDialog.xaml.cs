@@ -31,6 +31,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.Views
         {
             if (e.NewItems is null)
                 return;
+
             _childView = e.NewItems.OfType<DependencyObject>().First();
             ObservableObject<object> viewRegionContext = RegionContext.GetObservableContext((DependencyObject)_childView);
             viewRegionContext.PropertyChanged += this.ViewRegionContext_OnPropertyChangedEvent;

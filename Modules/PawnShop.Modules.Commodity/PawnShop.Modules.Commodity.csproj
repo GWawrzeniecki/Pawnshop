@@ -11,6 +11,7 @@
     <Folder Include="MenuItem\" />
     <Folder Include="Base\" />
     <Folder Include="Events\" />
+    <Folder Include="Validators\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PawnShop.Controls\PawnShop.Controls.csproj" />

@@ -232,14 +232,13 @@
 
             <Button
                 Grid.Column="2"
-                Command="{Binding UpdateWorkerCommand}"
+                Command="{Binding PutOnSaleCommand}"
                 Content="Dodaj"
-                Visibility="{Binding UpdateWorkerButtonVisibility}" />
+                Visibility="{Binding PutOnSaleButtonVisibility}" />
             <Button
                 Grid.Column="3"
                 Command="{Binding CancelCommand}"
-                Content="Anuluj"
-                Visibility="{Binding CancelClientButtonVisibility}" />
+                Content="Anuluj" />
 
         </Grid>
 

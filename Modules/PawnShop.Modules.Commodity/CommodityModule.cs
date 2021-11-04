@@ -3,6 +3,7 @@ using PawnShop.Core.Regions;
 using PawnShop.Modules.Commodity.Dialogs.ViewModels;
 using PawnShop.Modules.Commodity.Dialogs.Views;
 using PawnShop.Modules.Commodity.MenuItem;
+using PawnShop.Modules.Commodity.Validators;
 using PawnShop.Modules.Commodity.ViewModels;
 using PawnShop.Modules.Commodity.Views;
 using Prism.Ioc;
@@ -36,6 +37,7 @@ namespace PawnShop.Modules.Commodity
             containerRegistry.RegisterForNavigation<GoodsForSaleGrid, GoodsForSaleGridViewModel>();
             containerRegistry.RegisterForNavigation<PutOnSale, PutOnSaleViewModel>();
             containerRegistry.Register<CommodityHamburgerMenuItem>();
+            containerRegistry.Register<PutOnSaleValidator>();
             containerRegistry.RegisterDialog<PreviewPutOnSaleDialog, PreviewPutOnSaleDialogViewModel>();
 
         }

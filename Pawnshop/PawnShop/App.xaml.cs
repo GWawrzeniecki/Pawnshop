@@ -159,7 +159,6 @@ namespace PawnShop
             #endregion registering views
 
             #endregion Login
-
         }
         private void LoadModules(IModuleManager moduleManager, ISessionContext sessionContext)
         {

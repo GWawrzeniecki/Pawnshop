@@ -61,6 +61,7 @@
             <ComboBox
                 Grid.Column="0"
                 Margin="0,5,0,15"
+                IsEnabled="True"
                 ItemsSource="{Binding ContractItemUnitMeasures}"
                 SelectedItem="{Binding SelectedContractItemUnitMeasure, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBox.ItemTemplate>
@@ -110,11 +111,11 @@
             <TextBlock
                 Grid.Column="1"
                 HorizontalAlignment="Center"
-                Text="Ilość:" />
+                Text="Półka:" />
             <TextBox
                 Grid.Column="2"
                 Margin="0,5,5,15"
-                Text="{Binding ContractItemQuantity, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Shelf, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
         <Grid Grid.Row="3" Column="1">
@@ -126,17 +127,22 @@
             <ComboBox
                 Grid.Column="0"
                 Margin="0,5,0,15"
-                ItemsSource="{Binding ContractItemUnitMeasures}"
-                SelectedItem="{Binding SelectedContractItemUnitMeasure, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
+                IsEditable="True"
+                IsEnabled="True"
+                TextSearch.TextPath="Link"
+                ItemsSource="{Binding SaleLinks,Mode=TwoWay}"
+                SelectedItem="{Binding SelectedSaleLink, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                Text="{Binding SaleLinkText, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Measure}" />
+                        <TextBlock Text="{Binding Link1}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Button
                 Grid.Column="1"
                 Margin="10,5,5,15"
+                Command="{Binding AddLinkCommand}"
                 Content="Dodaj" />
         </Grid>
 

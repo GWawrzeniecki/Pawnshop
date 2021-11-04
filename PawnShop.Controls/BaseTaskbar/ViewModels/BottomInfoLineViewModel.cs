@@ -11,29 +11,27 @@ using System.Windows.Threading;
 
 namespace PawnShop.Controls.BaseTaskbar.ViewModels
 {
-    public class BottomInfoLineViewModel : BindableBase  // To do bindeableBase w/wo session context
+    public class BottomInfoLineViewModel : BindableBase
     {
-
-
-        #region private methods
+        #region private members
 
         private readonly IContainerProvider _containerProvider;
         private readonly DispatcherTimer _dispatcherTimer;
         private DateTime _actualDateTime;
         private ISessionContext _sessionContext;
 
-        #endregion private methods
+        #endregion private members
 
         #region constructor
 
         public BottomInfoLineViewModel(ISessionContext sessionContext, IEventAggregator eventAggregator, IContainerProvider containerProvider)
         {
             _containerProvider = containerProvider;
-
             _dispatcherTimer = new DispatcherTimer();
             UpdateActualDateTime();
             SessionContext = sessionContext;
             eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Subscribe(MoneyBalanceChanged);
+            eventAggregator.GetEvent<UserChangedEvent>().Subscribe(() => RaisePropertyChanged(nameof(FullName)));
         }
 
         #endregion constructor

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PawnShop.Services.DataService.Repositories
 {
-    public class SaleRepository : GenericRepository<SaleRepository>
+    public class SaleRepository : GenericRepository<Sale>
     {
         public SaleRepository(PawnshopContext context) : base(context)
         {

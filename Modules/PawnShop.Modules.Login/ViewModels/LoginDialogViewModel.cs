@@ -1,5 +1,6 @@
 ﻿using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Core.Events;
 using PawnShop.Core.Extensions;
 using PawnShop.Core.Interfaces;
 using PawnShop.Core.ViewModel.Base;
@@ -7,6 +8,7 @@ using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Login.Validators;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Services.Dialogs;
 using System;
 using System.Security;
@@ -20,6 +22,7 @@ namespace PawnShop.Modules.Login.ViewModels
 
         private readonly ILoginService _loginService;
         private readonly IUIService _uiService;
+        private readonly IEventAggregator _eventAggregator;
         private bool _userNameHasText;
         private bool _passwordBoxHasText;
         private bool _passwordTag;
@@ -37,18 +40,19 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #endregion public members
 
-        #region commands
+        #region constructor
 
-        public DelegateCommand<object> LoginCommand =>
-            _loginCommand ??= new DelegateCommand<object>(LoginAsync, CanLogin)
-                .ObservesProperty(() => UserNameHasText)
-                .ObservesProperty(() => PasswordBoxHasText)
-                .ObservesProperty(() => LoginButtonIsBusy);
+        public LoginDialogViewModel(ILoginService loginService, IUIService uService, IEventAggregator eventAggregator, LoginDialogValidator loginDialogValidator) : base(loginDialogValidator)
+        {
+            _loginService = loginService;
+            _uiService = uService;
+            _eventAggregator = eventAggregator;
+            PasswordTag = true;
+        }
 
-        #endregion commands
+        #endregion constructor
 
         #region public properties
-
         public bool UserNameHasText
         {
             get => _userNameHasText;
@@ -81,17 +85,15 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #endregion public properties
 
-        #region constructor
+        #region commands
 
-        public LoginDialogViewModel(ILoginService loginService, IUIService uService,
-            LoginDialogValidator loginDialogValidator) : base(loginDialogValidator)
-        {
-            _loginService = loginService;
-            _uiService = uService;
-            PasswordTag = true;
-        }
+        public DelegateCommand<object> LoginCommand =>
+            _loginCommand ??= new DelegateCommand<object>(LoginAsync, CanLogin)
+                .ObservesProperty(() => UserNameHasText)
+                .ObservesProperty(() => PasswordBoxHasText)
+                .ObservesProperty(() => LoginButtonIsBusy);
 
-        #endregion constructor
+        #endregion commands
 
         #region iDialogAware
 
@@ -126,6 +128,7 @@ namespace PawnShop.Modules.Login.ViewModels
                 if (success)
                 {
                     await TryToStartStartupProcedures(loggedUser);
+                    _eventAggregator.GetEvent<UserChangedEvent>().Publish();
                     CloseDialogWithSuccess();
                 }
 
