@@ -97,7 +97,7 @@
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
                             <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
                             <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:DropDownButton}}, Path=DataContext.DateSearchOptionCommand}" />
-                            <Setter Property="CommandParameter" Value="{Binding SearchOption}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
                         </Style>
                     </mah:DropDownButton.ItemContainerStyle>
                 </mah:DropDownButton>
@@ -129,7 +129,7 @@
                     <TextBox
                         Grid.Row="0"
                         Grid.Column="0"
-                        Margin="{StaticResource ControlMargin}"
+                        Margin="5,5,5,5"
                         mah:TextBoxHelper.ClearTextButton="True"
                         mah:TextBoxHelper.UseFloatingWatermark="True"
                         mah:TextBoxHelper.Watermark="Cena"
@@ -211,9 +211,13 @@
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding ContractItem.Name}" Header="Nazwa towaru" />
+                        <DataGridTextColumn Binding="{Binding ContractItem.Category.Category}" Header="Kategoria towaru" />
+                        <DataGridTextColumn Binding="{Binding ContractItem.EstimatedValue}" Header="Przyjety za" />
                         <DataGridTextColumn Binding="{Binding SalePrice}" Header="Cena sprzedaży" />
+                        <DataGridTextColumn Binding="{Binding ContractItem.Amount}" Header="Ilosc" />
+                        <DataGridTextColumn Binding="{Binding PutOnSaleDate, StringFormat=d}" Header="Wystawiony na sprzedaz" />
                         <DataGridTextColumn Binding="{Binding ContractItem.ContractItemState.State}" Header="Stan towaru" />
-                        <DataGridTextColumn Binding="{Binding ContractItem.ContractItemCategory.Category}" Header="Kategoria towaru" />
+                        <DataGridTextColumn Binding="{Binding ContractItem.ContractNumberId}" Header="Numer umowy" />
                     </DataGrid.Columns>
                 </DataGrid>
                 <views:BusyControl />

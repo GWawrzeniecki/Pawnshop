@@ -99,7 +99,7 @@
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
                             <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
                             <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:DropDownButton}}, Path=DataContext.DateSearchOptionCommand}" />
-                            <Setter Property="CommandParameter" Value="{Binding SearchOption}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
                         </Style>
                     </mah:DropDownButton.ItemContainerStyle>
                 </mah:DropDownButton>

@@ -6,6 +6,7 @@ using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Core.ViewModel;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Commodity.Events;
+using PawnShop.Modules.Commodity.RegionContext;
 using Prism;
 using Prism.Events;
 using Prism.Mvvm;
@@ -24,6 +25,8 @@ namespace PawnShop.Modules.Commodity.Base
         private IList<ContractItem> _contractItems;
         private ContractItem _selectedContractItem;
         private bool _isBusy;
+        private CommodityTabRegionContext _commodityTabRegionContext;
+        private bool _isActive;
 
         #endregion
 
@@ -51,12 +54,23 @@ namespace PawnShop.Modules.Commodity.Base
         public ContractItem SelectedContractItem
         {
             get => _selectedContractItem;
-            set => SetProperty(ref _selectedContractItem, value);
+            set
+            {
+                SetProperty(ref _selectedContractItem, value);
+                CommodityTabRegionContext.CanExecute = value is not null && IsActive;
+            }
         }
+
         public bool IsBusy
         {
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
+        }
+
+        public CommodityTabRegionContext CommodityTabRegionContext
+        {
+            get => _commodityTabRegionContext;
+            set => SetProperty(ref _commodityTabRegionContext, value);
         }
 
         #endregion
@@ -140,12 +154,24 @@ namespace PawnShop.Modules.Commodity.Base
 
         #endregion
 
+        #region PrivateMethods
+
+        #endregion
+
         #region IActiveAware
 
 #pragma warning disable CS0067 // The event 'GoodsBaseViewModel.IsActiveChanged' is never used
         public event EventHandler IsActiveChanged;
 #pragma warning restore CS0067 // The event 'GoodsBaseViewModel.IsActiveChanged' is never used
-        public bool IsActive { get; set; }
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                _isActive = value;
+                CommodityTabRegionContext.CanExecute = SelectedContractItem is not null && IsActive;
+            }
+        }
 
         #endregion
     }

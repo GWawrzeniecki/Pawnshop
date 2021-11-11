@@ -33,7 +33,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.Views
                 return;
 
             _childView = e.NewItems.OfType<DependencyObject>().First();
-            ObservableObject<object> viewRegionContext = RegionContext.GetObservableContext((DependencyObject)_childView);
+            ObservableObject<object> viewRegionContext = Prism.Regions.RegionContext.GetObservableContext((DependencyObject)_childView);
             viewRegionContext.PropertyChanged += this.ViewRegionContext_OnPropertyChangedEvent;
             _scopedRegionManager.Regions[RegionNames.PreviewPutOnSaleDialogContentRegion].Views.CollectionChanged -= Views_CollectionChanged;
         }

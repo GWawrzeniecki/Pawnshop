@@ -14,14 +14,15 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         private IList<UnitMeasure> _contractItemUnitMeasures;
         private UnitMeasure _selectedContractItemUnitMeasure;
-        private int _contractItemQuantity;
-        private decimal _price;
+        private int? _contractItemQuantity;
+        private decimal? _price;
         private string _rack;
-        private int _shelf;
+        private int? _shelf;
         private IList<Link> _saleLinks;
         private Link _selectedSaleLink;
         private string _saleLinkText;
         private DelegateCommand _addLinkCommand;
+        private DelegateCommand _putOnSaleCommand;
 
         #endregion
 
@@ -48,13 +49,13 @@ namespace PawnShop.Modules.Commodity.ViewModels
             set => SetProperty(ref _selectedContractItemUnitMeasure, value);
         }
 
-        public int ContractItemQuantity
+        public int? ContractItemQuantity
         {
             get => _contractItemQuantity;
             set => SetProperty(ref _contractItemQuantity, value);
         }
 
-        public decimal Price
+        public decimal? Price
         {
             get => _price;
             set => SetProperty(ref _price, value);
@@ -66,7 +67,7 @@ namespace PawnShop.Modules.Commodity.ViewModels
             set => SetProperty(ref _rack, value);
         }
 
-        public int Shelf
+        public int? Shelf
         {
             get => _shelf;
             set => SetProperty(ref _shelf, value);
@@ -90,9 +91,11 @@ namespace PawnShop.Modules.Commodity.ViewModels
             set => SetProperty(ref _saleLinkText, value);
         }
 
+        public bool CanExecutePutOnSale => !HasErrors;
+
         #endregion
 
-        #region CommandMethods
+        #region Commands
 
         public DelegateCommand AddLinkCommand =>
             _addLinkCommand ??= new DelegateCommand(AddLink, CanExecuteAddLink)
@@ -100,7 +103,7 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         #endregion
 
-        #region Commands
+        #region CommandMethods
 
         private void AddLink()
         {
@@ -120,6 +123,11 @@ namespace PawnShop.Modules.Commodity.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             ContractItemUnitMeasures = navigationContext.Parameters.GetValue<IList<UnitMeasure>>("measures");
+            _putOnSaleCommand = navigationContext.Parameters.GetValue<DelegateCommand>("putOnSaleCommand");
+            _putOnSaleCommand.ObservesCanExecute(() => CanExecutePutOnSale);
+            Commands.Add(_putOnSaleCommand);
+            _putOnSaleCommand.RaiseCanExecuteChanged();
+
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

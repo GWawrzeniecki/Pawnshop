@@ -77,7 +77,7 @@
             <TextBox
                 Grid.Column="2"
                 Margin="0,5,5,15"
-                Text="{Binding ContractItemQuantity, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding ContractItemQuantity, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged,TargetNullValue=''}" />
         </Grid>
 
         <Grid Grid.Row="1" Column="1">
@@ -89,7 +89,7 @@
             <TextBox
                 Grid.Column="0"
                 Margin="0,5,0,15"
-                Text="{Binding Price, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Price, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged,TargetNullValue=''}" />
             <TextBlock
                 Grid.Column="1"
                 Margin="0,5,0,15"
@@ -107,7 +107,7 @@
             <TextBox
                 Grid.Column="0"
                 Margin="0,5,0,15"
-                Text="{Binding Rack, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Rack, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged,TargetNullValue={x:Null}}" />
             <TextBlock
                 Grid.Column="1"
                 HorizontalAlignment="Center"
@@ -115,7 +115,7 @@
             <TextBox
                 Grid.Column="2"
                 Margin="0,5,5,15"
-                Text="{Binding Shelf, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Shelf, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged,TargetNullValue=''}" />
         </Grid>
 
         <Grid Grid.Row="3" Column="1">

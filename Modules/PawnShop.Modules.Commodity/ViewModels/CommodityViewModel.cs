@@ -4,13 +4,15 @@ using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.DropDownButtonModels;
 using PawnShop.Core.Models.QueryDataModels;
+using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Commodity.Events;
+using PawnShop.Modules.Commodity.RegionContext;
+using PawnShop.Modules.Commodity.Validators;
 using PawnShop.Services.DataService;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
-using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Commodity.ViewModels
 {
-    public class CommodityViewModel : BindableBase
+    public class CommodityViewModel : ViewModelBase<CommodityViewModel>
     {
         #region PrivateMembers
 
@@ -41,16 +43,19 @@ namespace PawnShop.Modules.Commodity.ViewModels
         private readonly TaskBarButtonClickEvent _taskBarButtonClickEvent;
         private DelegateCommand _previewCommand;
         private DelegateCommand _putOnSaleCommand;
+        private DelegateCommand<DateSearchOption> _dateSearchOptionCommand;
+        private CommodityTabRegionContext _commodityTabRegionContext;
 
         #endregion
 
         #region Constructor
-        public CommodityViewModel(IMapper mapper, IEventAggregator eventAggregator, IContainerProvider containerProvider)
+        public CommodityViewModel(IMapper mapper, IEventAggregator eventAggregator, IContainerProvider containerProvider, CommodityValidator commodityValidator) : base(commodityValidator)
         {
             _mapper = mapper;
             _containerProvider = containerProvider;
             _refreshDataGridEvent = eventAggregator.GetEvent<RefreshDataGridEvent>();
             _taskBarButtonClickEvent = eventAggregator.GetEvent<TaskBarButtonClickEvent>();
+            CommodityTabRegionContext = new CommodityTabRegionContext();
             LoadStartupData();
         }
 
@@ -124,20 +129,40 @@ namespace PawnShop.Modules.Commodity.ViewModels
             set => SetProperty(ref _priceOptions, value);
         }
 
+        public CommodityTabRegionContext CommodityTabRegionContext
+        {
+            get => _commodityTabRegionContext;
+            set => SetProperty(ref _commodityTabRegionContext, value);
+        }
+
         public SearchPriceOption SelectedPriceOption { get; set; }
 
         #endregion
 
+        #region ViewModelBase
+
+        protected override CommodityViewModel GetInstance()
+        {
+            return this;
+        }
+
+        #endregion viewModelBase
+
         #region Commands
+        public DelegateCommand<DateSearchOption> DateSearchOptionCommand =>
+            _dateSearchOptionCommand ??= new DelegateCommand<DateSearchOption>(ModelsLoader.SetSearchOption);
 
         public DelegateCommand<object> RefreshButtonOptionCommand =>
             _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
 
-        public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid);
+        public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGrid, CanExecuteRefresh)
+                .ObservesProperty(() => HasErrors);
 
-        public DelegateCommand PreviewCommand => _previewCommand ??= new DelegateCommand(ShowPreview);
+        public DelegateCommand PreviewCommand => _previewCommand ??= new DelegateCommand(ShowPreview, CanExecutePreviewPutOnSale)
+                .ObservesProperty(() => CommodityTabRegionContext.CanExecute);
 
-        public DelegateCommand PutOnSaleCommand => _putOnSaleCommand ??= new DelegateCommand(PutOnSale);
+        public DelegateCommand PutOnSaleCommand => _putOnSaleCommand ??= new DelegateCommand(PutOnSale, CanExecutePreviewPutOnSale)
+            .ObservesProperty(() => CommodityTabRegionContext.CanExecute);
 
         #endregion
 
@@ -174,6 +199,11 @@ namespace PawnShop.Modules.Commodity.ViewModels
         private void PutOnSale()
         {
             _taskBarButtonClickEvent.Publish(PreviewPutOnSaleDialogMode.Sale);
+        }
+
+        private bool CanExecuteRefresh()
+        {
+            return !HasErrors;
         }
 
         #endregion
@@ -223,7 +253,11 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         private void LoadDateSearchOptions()
         {
-            DateSearchOptions = ModelsLoader.LoadDateSearchOptions();
+            DateSearchOptions = ModelsLoader.LoadDateSearchOptions((fromDate, toDate) =>
+            {
+                FromDate = fromDate;
+                ToDate = toDate;
+            });
         }
 
         private void LoadPriceOptions()
@@ -241,6 +275,11 @@ namespace PawnShop.Modules.Commodity.ViewModels
             ItemName = string.Empty;
             SelectedContractItemCategory = null;
             SelectedPriceOption = null;
+        }
+
+        private bool CanExecutePreviewPutOnSale()
+        {
+            return CommodityTabRegionContext.CanExecute;
         }
 
         #endregion

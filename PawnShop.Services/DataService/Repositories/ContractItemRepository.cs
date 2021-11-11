@@ -52,12 +52,19 @@ namespace PawnShop.Services.DataService.Repositories
 
         private async Task<IQueryable<ContractItem>> GetTopContractItemNotForSaleAsQueryableAsync(int count)
         {
+            var boughtContractState = await context
+                .ContractStates
+                .FirstOrDefaultAsync(c => c.State.Equals("Wykupiona"));
+
+            if (boughtContractState is null)
+                throw new Exception("Nie znaleziono statusu umowy o nazwie: Wykupiona");
+
             var notBoughtContractState = await context
                 .ContractStates
                 .FirstOrDefaultAsync(c => c.State.Equals("Niewykupiona"));
 
             if (notBoughtContractState is null)
-                throw new Exception("Nie znaleziono statusu umowy o nazwie: Niewykupion");
+                throw new Exception("Nie znaleziono statusu umowy o nazwie: Niewykupiona");
 
             return context
                 .ContractItems
@@ -67,7 +74,7 @@ namespace PawnShop.Services.DataService.Repositories
                 .Include(c => c.Laptop)
                 .Include(c => c.Telephone)
                 .Include(c => c.GoldProduct)
-                .Where(c => c.ContractNumber.ContractStateId != notBoughtContractState.Id)
+                .Where(c => c.ContractNumber.ContractStateId != boughtContractState.Id && c.ContractNumber.ContractStateId != notBoughtContractState.Id)
                 .Take(count)
                 .AsQueryable();
         }
@@ -79,7 +86,7 @@ namespace PawnShop.Services.DataService.Repositories
                 .FirstOrDefaultAsync(c => c.State.Equals("Niewykupiona"));
 
             if (notBoughtContractState is null)
-                throw new Exception("Nie znaleziono statusu umowy o nazwie: Niewykupion");
+                throw new Exception("Nie znaleziono statusu umowy o nazwie: Niewykupiona");
 
             return context
                 .ContractItems
@@ -89,7 +96,7 @@ namespace PawnShop.Services.DataService.Repositories
                 .Include(c => c.Laptop)
                 .Include(c => c.Telephone)
                 .Include(c => c.GoldProduct)
-                .Where(c => c.ContractNumber.ContractStateId == notBoughtContractState.Id)
+                .Where(c => c.ContractNumber.ContractStateId == notBoughtContractState.Id && c.Sales.Count == 0)
                 .Take(count)
                 .AsQueryable();
         }

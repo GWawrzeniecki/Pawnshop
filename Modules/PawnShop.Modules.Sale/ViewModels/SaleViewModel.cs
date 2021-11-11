@@ -37,6 +37,7 @@ namespace PawnShop.Modules.Sale.ViewModels
         private DelegateCommand _refreshCommand;
         private string _contractNumber;
         private IList<SearchPriceOption> _priceOptions;
+        private DelegateCommand<DateSearchOption> _dateSearchOptionCommand;
         private readonly IContainerProvider _containerProvider;
         private readonly IMapper _mapper;
 
@@ -146,10 +147,13 @@ namespace PawnShop.Modules.Sale.ViewModels
 
         #region Commands
 
+        public DelegateCommand<DateSearchOption> DateSearchOptionCommand => _dateSearchOptionCommand ??= new DelegateCommand<DateSearchOption>(ModelsLoader.SetSearchOption);
+
         public DelegateCommand<object> RefreshButtonOptionCommand =>
             _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
 
-        public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGridAsync);
+        public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGridAsync, CanExecuteRefresh)
+                .ObservesProperty(() => HasErrors);
 
         #endregion
 
@@ -203,6 +207,11 @@ namespace PawnShop.Modules.Sale.ViewModels
             }
         }
 
+        private bool CanExecuteRefresh()
+        {
+            return !HasErrors;
+        }
+
         #endregion
 
         #region PrivateMethods
@@ -244,7 +253,11 @@ namespace PawnShop.Modules.Sale.ViewModels
 
         private void LoadDateSearchOptions()
         {
-            DateSearchOptions = ModelsLoader.LoadDateSearchOptions();
+            DateSearchOptions = ModelsLoader.LoadDateSearchOptions((fromDate, toDate) =>
+            {
+                FromDate = fromDate;
+                ToDate = toDate;
+            });
         }
 
         private void LoadPriceOptions()

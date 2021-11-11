@@ -7,7 +7,6 @@ using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
-using PawnShop.Modules.Contract.Extensions;
 using PawnShop.Modules.Contract.Validators;
 using PawnShop.Modules.Contract.Views;
 using PawnShop.Modules.Contract.Windows.Views;
@@ -36,7 +35,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private IList<LendingRate> _lendingRates;
         private IList<ContractState> _contractStates;
         private IList<DateSearchOption> _dateSearchOptions;
-        private DelegateCommand<object> _dateSearchOptionCommand;
+        private DelegateCommand<DateSearchOption> _dateSearchOptionCommand;
         private DelegateCommand<object> _refreshButtonCommand;
         private IList<RefreshButtonOption> _refreshButtonOptions;
         private DateTime? _fromDate;
@@ -89,7 +88,6 @@ namespace PawnShop.Modules.Contract.ViewModels
             get => _contracts;
             set => SetProperty(ref _contracts, value);
         }
-
 
         public Business.Models.Contract SelectedContract
         {
@@ -162,6 +160,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             get => _lendingRate;
             set => SetProperty(ref _lendingRate, value);
         }
+
         public bool IsBusy
         {
             get => _isBusy;
@@ -172,16 +171,18 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region commands
 
-        public DelegateCommand<object> DateSearchOptionCommand =>
-            _dateSearchOptionCommand ??= new DelegateCommand<object>(SetSearchOption);
-
-        public DelegateCommand<object> RefreshButtonOptionCommand =>
-            _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
-
+        public DelegateCommand<DateSearchOption> DateSearchOptionCommand => _dateSearchOptionCommand ??= new DelegateCommand<DateSearchOption>(ModelsLoader.SetSearchOption);
+        public DelegateCommand<object> RefreshButtonOptionCommand => _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
         public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGridAsync);
         public DelegateCommand CreateContractCommand => _createContractCommand ??= new DelegateCommand(CreateContract);
-        public DelegateCommand RenewContractCommand => _renewContractCommand ??= new DelegateCommand(RenewContract);
-        public DelegateCommand BuyBackContractCommand => _buyBackContractCommand ??= new DelegateCommand(BuyBackContract);
+
+        public DelegateCommand RenewContractCommand => _renewContractCommand ??=
+            new DelegateCommand(RenewContract, CanExecuteRenewBuyBackContract)
+                .ObservesProperty(() => SelectedContract);
+
+        public DelegateCommand BuyBackContractCommand => _buyBackContractCommand ??=
+            new DelegateCommand(BuyBackContract, CanExecuteRenewBuyBackContract)
+                .ObservesProperty(() => SelectedContract);
 
         #endregion commands
 
@@ -241,65 +242,16 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private void LoadDateSearchOptions()
         {
-            DateSearchOptions = ModelsLoader.LoadDateSearchOptions();
+            DateSearchOptions = ModelsLoader.LoadDateSearchOptions((fromDate, toDate) =>
+            {
+                FromDate = fromDate;
+                ToDate = toDate;
+            });
         }
 
         private void LoadRefreshButtonOptions()
         {
             RefreshButtonOptions = ModelsLoader.LoadRefreshButtonOptions();
-        }
-
-        private void SetSearchOption(object searchOption)
-        {
-            switch (searchOption)
-            {
-                case SearchOptions.Clean:
-                    FromDate = null;
-                    ToDate = null;
-                    break;
-                case SearchOptions.Today:
-                    FromDate = DateTime.Today;
-                    ToDate = DateTime.Today;
-                    break;
-                case SearchOptions.Yesterday:
-                    FromDate = DateTime.Today.Yesterday();
-                    ToDate = DateTime.Today.Yesterday();
-                    break;
-                case SearchOptions.CurrentWeek:
-                    FromDate = DateTime.Today.Monday();
-                    ToDate = DateTime.Today.Sunday();
-                    break;
-                case SearchOptions.PastWeek:
-                    FromDate = DateTime.Today.PastMonday();
-                    ToDate = DateTime.Today.PastSunday();
-                    break;
-                case SearchOptions.CurrentMonth:
-                    FromDate = DateTime.Today.BeginningOfCurrentMonth();
-                    ToDate = DateTime.Today.EndOfCurrentMonth();
-                    break;
-                case SearchOptions.PastMonth:
-                    FromDate = DateTime.Today.BeginningOfPastMonth();
-                    ToDate = DateTime.Today.EndOfPastMonth();
-                    break;
-                case SearchOptions.CurrentQuarter:
-                    FromDate = DateTime.Today.BeginningOfCurrentQuarter();
-                    ToDate = DateTime.Today.EndOfCurrentQuarter();
-                    break;
-                case SearchOptions.PastQuarter:
-                    FromDate = DateTime.Today.BeginningOfPastQuarter();
-                    ToDate = DateTime.Today.EndOfPastQuarter();
-                    break;
-                case SearchOptions.CurrentYear:
-                    FromDate = DateTime.Today.BeginningOfCurrentYear();
-                    ToDate = DateTime.Today.EndOfCurrentYear();
-                    break;
-                case SearchOptions.PastYear:
-                    FromDate = DateTime.Today.BeginningOfPastYear();
-                    ToDate = DateTime.Today.EndOfPastYear();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(searchOption), searchOption, null);
-            }
         }
 
         private void SetRefreshButtonOption(object refreshOption)
@@ -415,17 +367,18 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private void RenewContract()
         {
-            if (SelectedContract is null || SelectedContract.ContractState.State.Equals(Constants.BuyBackContractState))
-                return;
             _shellService.ShowShell<RenewContractWindow>(nameof(RenewContractData), new NavigationParameters { { "contract", SelectedContract }, { "CallBack", RefreshDataGridCallBack() } });
-
         }
 
         private void BuyBackContract()
         {
-            if (SelectedContract is null || SelectedContract.ContractState.State.Equals(Constants.BuyBackContractState))
-                return;
             _shellService.ShowShell<BuyBackContractWindow>(nameof(BuyBackContractData), new NavigationParameters { { "contract", SelectedContract }, { "CallBack", RefreshDataGridCallBack() } });
+        }
+
+        private bool CanExecuteRenewBuyBackContract()
+        {
+            return SelectedContract is not null &&
+                    !SelectedContract.ContractState.State.Equals(Constants.BuyBackContractState);
         }
 
         #endregion private methods

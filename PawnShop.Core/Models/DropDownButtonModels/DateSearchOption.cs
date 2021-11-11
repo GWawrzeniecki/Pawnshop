@@ -1,4 +1,5 @@
 ﻿using PawnShop.Core.Enums;
+using System;
 
 namespace PawnShop.Core.Models.DropDownButtonModels
 {
@@ -6,5 +7,6 @@ namespace PawnShop.Core.Models.DropDownButtonModels
     {
         public string Name { get; set; }
         public SearchOptions SearchOption { get; set; }
+        public Action<DateTime?, DateTime?> FillPropertiesAction { get; set; }
     }
 }

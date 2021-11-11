@@ -1,25 +1,27 @@
 ﻿using PawnShop.Core.Enums;
+using PawnShop.Core.Extensions;
+using System;
 using System.Collections.Generic;
 
 namespace PawnShop.Core.Models.DropDownButtonModels
 {
     public static class ModelsLoader
     {
-        public static List<DateSearchOption> LoadDateSearchOptions()
+        public static List<DateSearchOption> LoadDateSearchOptions(Action<DateTime?, DateTime?> fillPropertiesAction)
         {
             return new List<DateSearchOption>
             {
-                new() {Name = "Wyczyść", SearchOption = SearchOptions.Clean},
-                new() {Name = "Dzisiaj", SearchOption = SearchOptions.Today},
-                new() {Name = "Wczoraj", SearchOption = SearchOptions.Yesterday},
-                new() {Name = "Bieżący tydzien", SearchOption = SearchOptions.CurrentWeek},
-                new() {Name = "Poprzedni tydzien", SearchOption = SearchOptions.PastWeek},
-                new() {Name = "Bieżący miesiąc", SearchOption = SearchOptions.CurrentMonth},
-                new() {Name = "Poprzedni miesiąc", SearchOption = SearchOptions.PastMonth},
-                new() {Name = "Bieżący kwartał", SearchOption = SearchOptions.CurrentQuarter},
-                new() {Name = "Poprzedni kwartał", SearchOption = SearchOptions.PastQuarter},
-                new() {Name = "Bieżący rok", SearchOption = SearchOptions.CurrentYear},
-                new() {Name = "Poprzedni rok", SearchOption = SearchOptions.PastYear}
+                new() {Name = "Wyczyść", SearchOption = SearchOptions.Clean, FillPropertiesAction = fillPropertiesAction},
+                new() {Name = "Dzisiaj", SearchOption = SearchOptions.Today, FillPropertiesAction = fillPropertiesAction},
+                new() {Name = "Wczoraj", SearchOption = SearchOptions.Yesterday, FillPropertiesAction = fillPropertiesAction},
+                new() {Name = "Bieżący tydzien", SearchOption = SearchOptions.CurrentWeek, FillPropertiesAction = fillPropertiesAction},
+                new() {Name = "Poprzedni tydzien", SearchOption = SearchOptions.PastWeek, FillPropertiesAction = fillPropertiesAction},
+                new() {Name = "Bieżący miesiąc", SearchOption = SearchOptions.CurrentMonth, FillPropertiesAction = fillPropertiesAction},
+                new() {Name = "Poprzedni miesiąc", SearchOption = SearchOptions.PastMonth, FillPropertiesAction = fillPropertiesAction},
+                new() {Name = "Bieżący kwartał", SearchOption = SearchOptions.CurrentQuarter, FillPropertiesAction = fillPropertiesAction},
+                new() {Name = "Poprzedni kwartał", SearchOption = SearchOptions.PastQuarter, FillPropertiesAction = fillPropertiesAction},
+                new() {Name = "Bieżący rok", SearchOption = SearchOptions.CurrentYear, FillPropertiesAction = fillPropertiesAction},
+                new() {Name = "Poprzedni rok", SearchOption = SearchOptions.PastYear, FillPropertiesAction = fillPropertiesAction}
             };
         }
 
@@ -40,6 +42,48 @@ namespace PawnShop.Core.Models.DropDownButtonModels
                 new() {Name = "Wyczyść filtr", RefreshOption = RefreshOptions.Clean},
                 new() {Name = "Wyczyść filtr i odśwież", RefreshOption = RefreshOptions.CleanAndRefresh}
             };
+        }
+
+        public static void SetSearchOption(DateSearchOption dateSearchOption)
+        {
+            switch (dateSearchOption.SearchOption)
+            {
+                case SearchOptions.Clean:
+                    dateSearchOption.FillPropertiesAction(null, null);
+                    break;
+                case SearchOptions.Today:
+                    dateSearchOption.FillPropertiesAction(DateTime.Today, DateTime.Today);
+                    break;
+                case SearchOptions.Yesterday:
+                    dateSearchOption.FillPropertiesAction(DateTime.Today.Yesterday(), DateTime.Today.Yesterday());
+                    break;
+                case SearchOptions.CurrentWeek:
+                    dateSearchOption.FillPropertiesAction(DateTime.Today.Monday(), DateTime.Today.Sunday());
+                    break;
+                case SearchOptions.PastWeek:
+                    dateSearchOption.FillPropertiesAction(DateTime.Today.PastMonday(), DateTime.Today.PastSunday());
+                    break;
+                case SearchOptions.CurrentMonth:
+                    dateSearchOption.FillPropertiesAction(DateTime.Today.BeginningOfCurrentMonth(), DateTime.Today.EndOfCurrentMonth());
+                    break;
+                case SearchOptions.PastMonth:
+                    dateSearchOption.FillPropertiesAction(DateTime.Today.BeginningOfPastMonth(), DateTime.Today.EndOfPastMonth());
+                    break;
+                case SearchOptions.CurrentQuarter:
+                    dateSearchOption.FillPropertiesAction(DateTime.Today.BeginningOfCurrentQuarter(), DateTime.Today.EndOfCurrentQuarter());
+                    break;
+                case SearchOptions.PastQuarter:
+                    dateSearchOption.FillPropertiesAction(DateTime.Today.BeginningOfPastQuarter(), DateTime.Today.EndOfPastQuarter());
+                    break;
+                case SearchOptions.CurrentYear:
+                    dateSearchOption.FillPropertiesAction(DateTime.Today.BeginningOfCurrentYear(), DateTime.Today.EndOfCurrentYear());
+                    break;
+                case SearchOptions.PastYear:
+                    dateSearchOption.FillPropertiesAction(DateTime.Today.BeginningOfPastYear(), DateTime.Today.EndOfPastYear());
+                    break;
+                default:
+                    throw new ArgumentException(nameof(dateSearchOption));
+            }
         }
     }
 }

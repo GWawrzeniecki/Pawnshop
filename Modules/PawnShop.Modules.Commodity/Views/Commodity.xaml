@@ -99,7 +99,7 @@
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
                             <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
                             <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:DropDownButton}}, Path=DataContext.DateSearchOptionCommand}" />
-                            <Setter Property="CommandParameter" Value="{Binding SearchOption}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
                         </Style>
                     </mah:DropDownButton.ItemContainerStyle>
                 </mah:DropDownButton>
@@ -131,7 +131,7 @@
                     <TextBox
                         Grid.Row="0"
                         Grid.Column="0"
-                        Margin="{StaticResource ControlMargin}"
+                        Margin="5,5,5,5"
                         mah:TextBoxHelper.ClearTextButton="True"
                         mah:TextBoxHelper.UseFloatingWatermark="True"
                         mah:TextBoxHelper.Watermark="Cena"
@@ -202,7 +202,10 @@
             Grid.Row="1"
             Grid.Column="0"
             Header="Lista towarów">
-            <TabControl prism:RegionManager.RegionName="{x:Static regions:RegionNames.CommodityTabControlRegion}" Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
+            <TabControl
+                prism:RegionManager.RegionContext="{Binding CommodityTabRegionContext, Mode=TwoWay}"
+                prism:RegionManager.RegionName="{x:Static regions:RegionNames.CommodityTabControlRegion}"
+                Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
         </GroupBox>
 
 

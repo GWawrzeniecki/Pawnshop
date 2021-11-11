@@ -3,14 +3,17 @@ using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Constants;
 using PawnShop.Core.Enums;
+using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Core.Regions;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
+using PawnShop.Modules.Commodity.Events;
 using PawnShop.Modules.Commodity.ViewModels;
 using PawnShop.Modules.Commodity.Views;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -30,6 +33,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
 
         private readonly IMapper _mapper;
         private readonly IContractItemService _contractItemService;
+        private readonly IEventAggregator _eventAggregator;
         private readonly IContainerProvider _containerProvider;
         private string _title;
         private PreviewPutOnSaleDialogMode _dialogMode;
@@ -46,15 +50,17 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
         private string _secondGroupBoxHeaderName;
         private Visibility _putOnSaleButtonVisibility;
         private DelegateCommand _cancelCommand;
+        private DelegateCommand _putOnSaleCommand;
 
         #endregion
 
         #region Constructor
 
-        public PreviewPutOnSaleDialogViewModel(IMapper mapper, IContractItemService contractItemService, IContainerProvider containerProvider)
+        public PreviewPutOnSaleDialogViewModel(IMapper mapper, IContractItemService contractItemService, IEventAggregator eventAggregator, IContainerProvider containerProvider)
         {
             _mapper = mapper;
             _contractItemService = contractItemService;
+            _eventAggregator = eventAggregator;
             _containerProvider = containerProvider;
             ContractItemUnitMeasures = new List<UnitMeasure>();
             LoadStartupData();
@@ -153,7 +159,8 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
         #region Commands
 
         public DelegateCommand PutOnSaleCommand =>
-            _cancelCommand ??= new DelegateCommand(PutOnSale);
+            _putOnSaleCommand ??= new DelegateCommand(PutOnSale);
+
 
         public DelegateCommand CancelCommand =>
             _cancelCommand ??= new DelegateCommand(Cancel);
@@ -166,13 +173,23 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
         {
             try
             {
-                //await TryToPutOnSale();
+                await TryToPutOnSale();
+                MaterialMessageBox.Show("Pomyślnie wystawiono towar na sprzedaż.");
+                _eventAggregator.GetEvent<RefreshDataGridEvent>().Publish(new ContractItemQueryData());
+                CloseDialog(new DialogResult(ButtonResult.OK));
+            }
+            catch (InsertSaleException insertSaleException)
+            {
+                MaterialMessageBox.ShowError(
+                    $"{insertSaleException.Message}{Environment.NewLine}Błąd: {insertSaleException.InnerException?.Message}",
+                    "Błąd");
             }
             catch (Exception e)
             {
-
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
             }
-
         }
 
         private void Cancel()
@@ -294,7 +311,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
 
         private void NavigateToSale()
         {
-            RegionManager.RequestNavigate(RegionNames.PreviewPutOnSaleDialogContentRegion, nameof(PutOnSale), new NavigationParameters { { "measures", ContractItemUnitMeasures } });
+            RegionManager.RequestNavigate(RegionNames.PreviewPutOnSaleDialogContentRegion, nameof(PutOnSale), new NavigationParameters { { "measures", ContractItemUnitMeasures }, { "putOnSaleCommand", PutOnSaleCommand }, });
         }
 
         private void MapContractItemToVm()
@@ -312,16 +329,21 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
                 .OfType<PutOnSale>().First();
             var putOnSaleViewModel = putOnSale.DataContext as PutOnSaleViewModel;
             var sale = CreateAndMapSellEntity(putOnSaleViewModel);
-
+            await TryToInsertSale(sale);
         }
 
         private async Task TryToInsertSale(Sale sale)
         {
-
-
-            using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
-            await unitOfWork.SaleRepository.InsertAsync(sale);
-            await unitOfWork.SaveChangesAsync();
+            try
+            {
+                using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
+                await unitOfWork.SaleRepository.InsertAsync(sale);
+                await unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new InsertSaleException("Wystapil blad podczas wystawiania towaaru na sprzedaz", e);
+            }
         }
 
         private void SetPutOnSaleButtonVisibility(Visibility visibility) => PutOnSaleButtonVisibility = visibility;
@@ -331,11 +353,16 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
             return new Sale()
             {
                 ContractItemId = _contractItem.ContractItemId,
-                SalePrice = putOnSaleViewModel.Price,
+                SalePrice = putOnSaleViewModel.Price.GetValueOrDefault(),
                 PutOnSaleDate = DateTime.Now,
-                LocalSale = new LocalSale() { Rack = putOnSaleViewModel.Rack, Shelf = putOnSaleViewModel.Shelf },
+                LocalSale = new LocalSale() { Rack = putOnSaleViewModel.Rack, Shelf = putOnSaleViewModel.Shelf.GetValueOrDefault() },
                 Links = putOnSaleViewModel.SaleLinks
             };
+        }
+
+        private void CloseDialog(IDialogResult dialogResult)
+        {
+            RequestClose.Invoke(dialogResult);
         }
 
         #endregion

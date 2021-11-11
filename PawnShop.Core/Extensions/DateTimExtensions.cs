@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PawnShop.Modules.Contract.Extensions
+namespace PawnShop.Core.Extensions
 {
     public static class DateTimExtensions
     {
