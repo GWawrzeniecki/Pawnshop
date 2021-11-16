@@ -257,7 +257,8 @@ namespace PawnShop.Controls.Dialogs.ViewModels
                 ClientNavigation = new Person { Address = new Address(), Client = new Client() }
             };
             MapClientToVmBasedOnClientMode();
-            await LoadStartupData();
+            var success = await LoadStartupData();
+            if (!success) return;
             MapCountryCityBasedOnClientMode();
             SetButtonBasedOnClientMode();
             AttachClient();
@@ -323,11 +324,14 @@ namespace PawnShop.Controls.Dialogs.ViewModels
             }
         }
 
-        private async Task LoadStartupData()
+        private async Task<bool> LoadStartupData()
         {
+            var success = false;
+
             try
             {
                 await TryToLoadStartupData();
+                success = true;
             }
             catch (Exception e)
             {
@@ -336,6 +340,8 @@ namespace PawnShop.Controls.Dialogs.ViewModels
                     "Błąd");
                 RequestClose.Invoke(new DialogResult(ButtonResult.Abort));
             }
+
+            return success;
         }
 
         private async Task TryToLoadStartupData()

@@ -1,10 +1,15 @@
-﻿using PawnShop.Business.Models;
+﻿using BespokeFusion;
+using PawnShop.Business.Models;
 using PawnShop.Core.ViewModel.Base;
+using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Commodity.Validators;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Regions;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Commodity.ViewModels
 {
@@ -12,6 +17,7 @@ namespace PawnShop.Modules.Commodity.ViewModels
     {
         #region PrivateMembers
 
+        private readonly IContractItemService _contractItemService;
         private IList<UnitMeasure> _contractItemUnitMeasures;
         private UnitMeasure _selectedContractItemUnitMeasure;
         private int? _contractItemQuantity;
@@ -28,8 +34,9 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         #region Constructor
 
-        public PutOnSaleViewModel(PutOnSaleValidator putOnSaleValidator) : base(putOnSaleValidator)
+        public PutOnSaleViewModel(IContractItemService contractItemService, PutOnSaleValidator putOnSaleValidator) : base(putOnSaleValidator)
         {
+            _contractItemService = contractItemService;
             SaleLinks = new ObservableCollection<Link>();
         }
 
@@ -97,9 +104,8 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         #region Commands
 
-        public DelegateCommand AddLinkCommand =>
-            _addLinkCommand ??= new DelegateCommand(AddLink, CanExecuteAddLink)
-                .ObservesProperty(() => SaleLinkText);
+        public DelegateCommand AddLinkCommand => _addLinkCommand ??= new DelegateCommand(AddLink, CanExecuteAddLink)
+            .ObservesProperty(() => SaleLinkText);
 
         #endregion
 
@@ -122,12 +128,11 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            ContractItemUnitMeasures = navigationContext.Parameters.GetValue<IList<UnitMeasure>>("measures");
             _putOnSaleCommand = navigationContext.Parameters.GetValue<DelegateCommand>("putOnSaleCommand");
             _putOnSaleCommand.ObservesCanExecute(() => CanExecutePutOnSale);
             Commands.Add(_putOnSaleCommand);
             _putOnSaleCommand.RaiseCanExecuteChanged();
-
+            LoadStartupData();
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -138,6 +143,34 @@ namespace PawnShop.Modules.Commodity.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
 
+        }
+
+        #endregion
+
+        #region PrivateMethods
+
+        private async void LoadStartupData()
+        {
+            try
+            {
+                await TryToLoadUnitMeasures();
+            }
+            catch (LoadingUnitMeasuresException loadingUnitMeasuresException)
+            {
+                MaterialMessageBox.ShowError(
+                    $"{loadingUnitMeasuresException.Message}{Environment.NewLine}Błąd: {loadingUnitMeasuresException.InnerException?.Message}",
+                    "Błąd");
+            }
+            catch (Exception e)
+            {
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
+            }
+        }
+        private async Task TryToLoadUnitMeasures()
+        {
+            ContractItemUnitMeasures = await _contractItemService.GetUnitMeasures();
         }
 
         #endregion

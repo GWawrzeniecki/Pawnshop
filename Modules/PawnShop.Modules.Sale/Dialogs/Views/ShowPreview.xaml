@@ -1,0 +1,23 @@
+﻿<UserControl
+    x:Class="PawnShop.Modules.Sale.Dialogs.Views.ShowPreview"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:regions="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
+            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="ShowInTaskbar" Value="True" />
+            <Setter Property="SizeToContent" Value="WidthAndHeight" />
+            <Setter Property="Title" Value="{Binding Title}" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+    <TabControl
+        Margin="10,10,10,0"
+        prism:RegionManager.RegionName="{x:Static regions:RegionNames.PreviewSaleTabControlRegion}"
+        Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
+</UserControl>

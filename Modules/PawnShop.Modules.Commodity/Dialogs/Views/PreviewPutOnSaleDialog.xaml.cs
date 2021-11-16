@@ -22,7 +22,8 @@ namespace PawnShop.Modules.Commodity.Dialogs.Views
         {
             InitializeComponent();
             _scopedRegionManager = regionManager.CreateRegionManager();
-            RegionManager.SetRegionManager(ContentControl, _scopedRegionManager);
+            RegionManager.SetRegionManager(PreviewPutOnSaleContentControl, _scopedRegionManager);
+            RegionManager.SetRegionManager(SaleBasicInfoContentControl, _scopedRegionManager);
             RegionManagerAware.SetRegionManagerAware(this, _scopedRegionManager);
             _scopedRegionManager.Regions[RegionNames.PreviewPutOnSaleDialogContentRegion].Views.CollectionChanged += Views_CollectionChanged;
         }
@@ -47,10 +48,15 @@ namespace PawnShop.Modules.Commodity.Dialogs.Views
 
             var hasValue = double.TryParse(context.Value.ToString(), out var width);
 
-            if (hasValue && Grid.ColumnDefinitions[0].ActualWidth < width)
+            var basicInfoGrid = SaleBasicInfoContentControl.FindChild<Grid>("Grid");
+
+            if (basicInfoGrid is null)
+                return;
+
+            if (hasValue && basicInfoGrid.ColumnDefinitions[0].ActualWidth < width)
             {
-                Grid.ColumnDefinitions[0].MinWidth = width;
-                Grid.ColumnDefinitions[0].MaxWidth = width;
+                basicInfoGrid.ColumnDefinitions[0].MinWidth = width;
+                basicInfoGrid.ColumnDefinitions[0].MaxWidth = width;
             }
             else
             {
@@ -62,8 +68,8 @@ namespace PawnShop.Modules.Commodity.Dialogs.Views
                 if (grid is null)
                     return;
 
-                grid.ColumnDefinitions[0].MinWidth = Grid.ColumnDefinitions[0].ActualWidth;
-                grid.ColumnDefinitions[0].MaxWidth = Grid.ColumnDefinitions[0].ActualWidth;
+                grid.ColumnDefinitions[0].MinWidth = basicInfoGrid.ColumnDefinitions[0].ActualWidth;
+                grid.ColumnDefinitions[0].MaxWidth = basicInfoGrid.ColumnDefinitions[0].ActualWidth;
 
             }
         }

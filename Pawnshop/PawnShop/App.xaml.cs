@@ -4,6 +4,7 @@ using PawnShop.Controls.BaseTaskbar.Views;
 using PawnShop.Controls.ContractItemViews.ViewModels;
 using PawnShop.Controls.Dialogs.ViewModels;
 using PawnShop.Controls.Dialogs.Views;
+using PawnShop.Controls.SharedViews.ViewModels;
 using PawnShop.Controls.Validators;
 using PawnShop.Core;
 using PawnShop.Core.Constants;
@@ -74,6 +75,7 @@ namespace PawnShop
             containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();
             containerRegistry.RegisterDialog<AddClientDialog, AddClientDialogViewModel>();
             containerRegistry.RegisterForNavigation<Controls.ContractItemViews.Views.Laptop, LaptopViewModel>();
+            containerRegistry.RegisterForNavigation<Controls.SharedViews.Views.SaleBaseInfo, SaleBasicInfoViewModel>();
             ConfigureMapper(containerRegistry);
         }
 
@@ -95,7 +97,7 @@ namespace PawnShop
                 cfg.AddProfile<WorkerBossToLoginPrivilegesData>();
                 cfg.AddProfile<SaleViewModelToContractItemQueryData>();
                 cfg.AddProfile<CommodityViewModelToContractItemQueryData>();
-                cfg.AddProfile<ContractItemToPreviewSaleDialogViewModel>();
+                cfg.AddProfile<ContractItemToSaleBasicInfoViewModel>();
             });
             var mapper = configuration.CreateMapper();
 

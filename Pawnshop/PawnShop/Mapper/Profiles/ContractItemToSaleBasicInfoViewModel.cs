@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using PawnShop.Business.Models;
-using PawnShop.Modules.Commodity.Dialogs.ViewModels;
+using PawnShop.Controls.SharedViews.ViewModels;
 
 namespace PawnShop.Mapper.Profiles
 {
-    public class ContractItemToPreviewSaleDialogViewModel : Profile
+    public class ContractItemToSaleBasicInfoViewModel : Profile
     {
-        public ContractItemToPreviewSaleDialogViewModel()
+        public ContractItemToSaleBasicInfoViewModel()
         {
-            CreateMap<ContractItem, PreviewPutOnSaleDialogViewModel>()
+            CreateMap<ContractItem, SaleBasicInfoViewModel>()
                 .ForMember(d => d.ContractItemName, opt => opt.MapFrom(s => s.Name))
                 .ForMember(d => d.ContractItemDescription, opt => opt.MapFrom(s => s.Description))
                 .ForMember(d => d.ContractItemEstimatedValue, opt => opt.MapFrom(s => s.EstimatedValue))

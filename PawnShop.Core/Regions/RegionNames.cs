@@ -11,5 +11,7 @@
         public const string WorkerTabControlRegion = "WorkerTabControlRegion";
         public const string CommodityTabControlRegion = "CommodityTabControlRegion";
         public const string PreviewPutOnSaleDialogContentRegion = "PreviewPutOnSaleDialogContentRegion";
+        public const string PreviewSaleTabControlRegion = "PreviewSaleTabControlRegion";
+        public const string PreviewPutOnSaleDialogBasicInfoRegion = "PreviewPutOnSaleDialogBasicInfoRegion";
     }
 }

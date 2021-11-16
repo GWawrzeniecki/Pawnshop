@@ -149,8 +149,8 @@ namespace PawnShop.Modules.Sale.ViewModels
 
         public DelegateCommand<DateSearchOption> DateSearchOptionCommand => _dateSearchOptionCommand ??= new DelegateCommand<DateSearchOption>(ModelsLoader.SetSearchOption);
 
-        public DelegateCommand<object> RefreshButtonOptionCommand =>
-            _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
+        public DelegateCommand<object> RefreshButtonOptionCommand => _refreshButtonCommand ??= new DelegateCommand<object>(SetRefreshButtonOption);
+
 
         public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGridAsync, CanExecuteRefresh)
                 .ObservesProperty(() => HasErrors);

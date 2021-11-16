@@ -1,5 +1,7 @@
 ﻿using PawnShop.Core.Attributes;
 using PawnShop.Core.Regions;
+using PawnShop.Modules.Sale.Dialogs.ViewModels;
+using PawnShop.Modules.Sale.Dialogs.Views;
 using PawnShop.Modules.Sale.MenuItem;
 using PawnShop.Modules.Sale.Validators;
 using PawnShop.Modules.Sale.ViewModels;
@@ -29,6 +31,7 @@ namespace PawnShop.Modules.Sale
         {
             containerRegistry.RegisterForNavigation<Views.Sale, SaleViewModel>();
             containerRegistry.Register<SaleValidator>();
+            containerRegistry.RegisterDialog<ShowPreview, ShowPreviewViewModel>();
         }
     }
 }
