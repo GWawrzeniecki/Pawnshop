@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="PawnShop.Modules.Sale.Dialogs.Views.ShowPreview"
+    x:Class="PawnShop.Modules.Sale.Dialogs.Views.PreviewSaleDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:prism="http://prismlibrary.com/"
@@ -18,6 +18,7 @@
 
     <TabControl
         Margin="10,10,10,0"
+        prism:RegionManager.RegionContext="{Binding Sale}"
         prism:RegionManager.RegionName="{x:Static regions:RegionNames.PreviewSaleTabControlRegion}"
         Style="{DynamicResource MahApps.Styles.TabControl.Animated}" />
 </UserControl>

@@ -193,12 +193,12 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         private void ShowPreview()
         {
-            _taskBarButtonClickEvent.Publish(PreviewPutOnSaleDialogMode.Preview);
+            _taskBarButtonClickEvent.Publish(DialogMode.ReadOnly);
         }
 
         private void PutOnSale()
         {
-            _taskBarButtonClickEvent.Publish(PreviewPutOnSaleDialogMode.Sale);
+            _taskBarButtonClickEvent.Publish(DialogMode.Editable);
         }
 
         private bool CanExecuteRefresh()

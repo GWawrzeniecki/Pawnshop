@@ -5,6 +5,7 @@ using PawnShop.Modules.Sale.Dialogs.Views;
 using PawnShop.Modules.Sale.MenuItem;
 using PawnShop.Modules.Sale.Validators;
 using PawnShop.Modules.Sale.ViewModels;
+using PawnShop.Modules.Sale.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -25,13 +26,16 @@ namespace PawnShop.Modules.Sale
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager.Regions[RegionNames.MenuRegion].Add(containerProvider.Resolve<SaleHamburgerMenuItem>());
+            _regionManager.RegisterViewWithRegion<SaleBasicInfo>(RegionNames.PreviewSaleTabControlRegion);
+            _regionManager.RegisterViewWithRegion<SaleAdditionalInfo>(RegionNames.PreviewSaleTabControlRegion);
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<Views.Sale, SaleViewModel>();
             containerRegistry.Register<SaleValidator>();
-            containerRegistry.RegisterDialog<ShowPreview, ShowPreviewViewModel>();
+            containerRegistry.RegisterDialog<PreviewSaleDialog, PreviewSaleDialogViewModel>();
+
         }
     }
 }

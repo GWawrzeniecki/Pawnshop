@@ -28,6 +28,7 @@ namespace PawnShop.Controls.SharedViews.ViewModels
         private readonly IMapper _mapper;
         private readonly IContractItemService _contractItemService;
         private ContractItem _contractItem;
+        private Sale _sale;
 
         #endregion
 
@@ -102,8 +103,18 @@ namespace PawnShop.Controls.SharedViews.ViewModels
 
         public async void OnNavigatedTo(NavigationContext navigationContext)
         {
-            _contractItem = navigationContext.Parameters.GetValue<ContractItem>("contractItem");
-            MapContractItemToVm();
+            if (navigationContext.Parameters.TryGetValue<ContractItem>("contractItem", out var contractItem))
+            {
+                _contractItem = contractItem;
+                MapContractItemToVm();
+
+            }
+            else if (navigationContext.Parameters.TryGetValue<Sale>("sale", out var sale))
+            {
+                _sale = sale;
+                MapSaleToVm();
+            }
+
             var success = await LoadStartupData();
             if (!success) return;
             MapCategoryAndMeasureFromCurrentDbContext();
@@ -177,6 +188,11 @@ namespace PawnShop.Controls.SharedViews.ViewModels
 
             SelectedContractItemUnitMeasure = ContractItemUnitMeasures
                 .First(cim => cim.Id == SelectedContractItemUnitMeasure.Id);
+        }
+
+        private void MapSaleToVm()
+        {
+            _mapper.Map(_sale, this);
         }
 
         #endregion

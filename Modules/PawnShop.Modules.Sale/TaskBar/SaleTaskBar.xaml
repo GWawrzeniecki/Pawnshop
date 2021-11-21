@@ -17,10 +17,12 @@
         <Button
             Grid.Column="0"
             Margin="0,0,20,0"
+            Command="{Binding ShowPreviewCommand}"
             Content="Podgląd" />
         <Button
             Grid.Column="1"
             Margin="0,0,20,0"
+            Command="{Binding SellCommand}"
             Content="Sprzedaj" />
 
         <views:NotificationsIcon Grid.Column="3" />

@@ -1,11 +1,12 @@
 ﻿<base:SaleInfoViewBase
-    x:Class="PawnShop.Modules.Sale.Views.SaleBasicInfo"
+    x:Class="PawnShop.Modules.Sale.Views.SaleAdditionalInfo"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:base="clr-namespace:PawnShop.Modules.Sale.Base"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:regionNames="clr-namespace:PawnShop.Core.Regions;assembly=PawnShop.Core"
     prism:ViewModelLocator.AutoWireViewModel="True">
+
     <Grid>
 
         <Grid.Resources>
@@ -37,20 +38,21 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <GroupBox
             Grid.Row="0"
             Margin="0,0,0,10"
-            Header="Towar">
-            <ContentControl x:Name="SaleBasicInfoContentControl" prism:RegionManager.RegionName="{x:Static regionNames:RegionNames.ShowPreviewSaleBasicInfoRegion}" />
+            Header="{Binding ItemInfoGroupBoxHeaderName, Mode=TwoWay}">
+            <ContentControl x:Name="AdditionalInfoContentControl" prism:RegionManager.RegionName="{x:Static regionNames:RegionNames.ShowPreviewSaleBasicItemInfoRegion}" />
         </GroupBox>
         <GroupBox
             Name="SellGroupBox"
             Grid.Row="1"
             Margin="0,0,0,10"
             Header="Sprzedaż">
-            <ContentControl x:Name="SaleInfoContentControl" prism:RegionManager.RegionName="{x:Static regionNames:RegionNames.ShowPreviewSaleInfoRegion}" />
+            <ContentControl x:Name="SaleInfoContentControl" prism:RegionManager.RegionName="{x:Static regionNames:RegionNames.ShowPreviewAdditionalSaleInfoRegion}" />
         </GroupBox>
 
     </Grid>
+
+
 </base:SaleInfoViewBase>

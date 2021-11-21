@@ -115,7 +115,7 @@ namespace PawnShop.Modules.Commodity.Base
 
         #region TaskBarButtonClickEvent
 
-        private void TaskBarButtonClick(PreviewPutOnSaleDialogMode dialogMode)
+        private void TaskBarButtonClick(DialogMode dialogMode)
         {
             if (!IsActive || SelectedContractItem is null)
                 return;

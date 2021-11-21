@@ -13,6 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MenuItem\" />
+    <Folder Include="Base\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 </Project>

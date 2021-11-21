@@ -23,6 +23,8 @@ namespace PawnShop.Modules.Commodity.Base
         private void ViewRegionContext_OnPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             var context = (ObservableObject<object>)sender;
+            if (context is null)
+                return;
             var commodityTabRegionContext = context.Value as CommodityTabRegionContext;
             _commodityTabRegionContext = commodityTabRegionContext;
             PassRegionContextToDataContext();

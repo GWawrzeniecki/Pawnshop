@@ -76,6 +76,7 @@ namespace PawnShop
             containerRegistry.RegisterDialog<AddClientDialog, AddClientDialogViewModel>();
             containerRegistry.RegisterForNavigation<Controls.ContractItemViews.Views.Laptop, LaptopViewModel>();
             containerRegistry.RegisterForNavigation<Controls.SharedViews.Views.SaleBaseInfo, SaleBasicInfoViewModel>();
+            containerRegistry.RegisterForNavigation<Controls.SharedViews.Views.SaleInfo, SaleInfoViewModel>();
             ConfigureMapper(containerRegistry);
         }
 
@@ -98,6 +99,8 @@ namespace PawnShop
                 cfg.AddProfile<SaleViewModelToContractItemQueryData>();
                 cfg.AddProfile<CommodityViewModelToContractItemQueryData>();
                 cfg.AddProfile<ContractItemToSaleBasicInfoViewModel>();
+                cfg.AddProfile<SaleToSaleBasicInfoViewModel>();
+                cfg.AddProfile<SaleToSaleInfoViewModel>();
             });
             var mapper = configuration.CreateMapper();
 

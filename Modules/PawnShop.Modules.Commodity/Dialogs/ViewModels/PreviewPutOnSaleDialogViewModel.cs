@@ -31,7 +31,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly IContainerProvider _containerProvider;
         private string _title;
-        private PreviewPutOnSaleDialogMode _dialogMode;
+        private DialogMode _dialogMode;
         private ContractItem _contractItem;
         private string _secondGroupBoxHeaderName;
         private Visibility _putOnSaleButtonVisibility;
@@ -64,7 +64,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
             set => SetProperty(ref _secondGroupBoxHeaderName, value);
         }
 
-        public PreviewPutOnSaleDialogMode DialogMode
+        public DialogMode DialogMode
         {
             get => _dialogMode;
             set => SetProperty(ref _dialogMode, value);
@@ -142,7 +142,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
         public void OnDialogOpened(IDialogParameters parameters)
         {
             Title = parameters.GetValue<string>("title");
-            DialogMode = parameters.GetValue<PreviewPutOnSaleDialogMode>("dialogMode");
+            DialogMode = parameters.GetValue<DialogMode>("dialogMode");
             _contractItem = parameters.GetValue<ContractItem>("contractItem");
             NavigateToBasicInfo();
             OnDialogMode(DialogMode);
@@ -158,16 +158,16 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
             RegionManager.RequestNavigate(RegionNames.PreviewPutOnSaleDialogBasicInfoRegion, nameof(Controls.SharedViews.Views.SaleBaseInfo), new NavigationParameters { { "contractItem", _contractItem } });
         }
 
-        private void OnDialogMode(PreviewPutOnSaleDialogMode dialogMode)
+        private void OnDialogMode(DialogMode dialogMode)
         {
             switch (dialogMode)
             {
-                case PreviewPutOnSaleDialogMode.Preview:
+                case DialogMode.ReadOnly:
                     NavigateToAdditionalInfo();
                     SetSecondGroupBoxHeaderName("Informacje dodatkowe");
                     SetPutOnSaleButtonVisibility(Visibility.Hidden);
                     break;
-                case PreviewPutOnSaleDialogMode.Sale:
+                case DialogMode.Editable:
                     NavigateToSale();
                     SetSecondGroupBoxHeaderName("Sprzedaż");
                     SetPutOnSaleButtonVisibility(Visibility.Visible);

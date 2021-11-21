@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BespokeFusion;
 using PawnShop.Business.Models;
+using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.DropDownButtonModels;
 using PawnShop.Core.Models.QueryDataModels;
@@ -10,10 +11,12 @@ using PawnShop.Modules.Sale.Validators;
 using PawnShop.Services.DataService;
 using Prism.Commands;
 using Prism.Ioc;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace PawnShop.Modules.Sale.ViewModels
 {
@@ -40,15 +43,19 @@ namespace PawnShop.Modules.Sale.ViewModels
         private DelegateCommand<DateSearchOption> _dateSearchOptionCommand;
         private readonly IContainerProvider _containerProvider;
         private readonly IMapper _mapper;
+        private readonly IDialogService _dialogService;
+        private DelegateCommand _showPreviewCommand;
+        private DelegateCommand _sellCommand;
 
         #endregion
 
         #region Constructor
 
-        public SaleViewModel(IContainerProvider containerProvider, IMapper mapper, SaleValidator saleValidator) : base(saleValidator)
+        public SaleViewModel(IContainerProvider containerProvider, IMapper mapper, IDialogService dialogService, SaleValidator saleValidator) : base(saleValidator)
         {
             _containerProvider = containerProvider;
             _mapper = mapper;
+            _dialogService = dialogService;
             Sales = new List<Business.Models.Sale>();
             LoadStartupData();
         }
@@ -155,6 +162,12 @@ namespace PawnShop.Modules.Sale.ViewModels
         public DelegateCommand RefreshCommand => _refreshCommand ??= new DelegateCommand(RefreshDataGridAsync, CanExecuteRefresh)
                 .ObservesProperty(() => HasErrors);
 
+        public DelegateCommand ShowPreviewCommand => _showPreviewCommand ??= new DelegateCommand(ShowPreview, () => SelectedSale is not null)
+            .ObservesProperty(() => SelectedSale);
+
+        public DelegateCommand SellCommand => _sellCommand ??= new DelegateCommand(Sell);
+
+
         #endregion
 
         #region viewModelBase
@@ -210,6 +223,16 @@ namespace PawnShop.Modules.Sale.ViewModels
         private bool CanExecuteRefresh()
         {
             return !HasErrors;
+        }
+
+        private void ShowPreview()
+        {
+            _dialogService.ShowPreviewSaleDialog(null, "Podgląd sprzedawanego towaru", SelectedSale);
+        }
+
+        private void Sell()
+        {
+
         }
 
         #endregion

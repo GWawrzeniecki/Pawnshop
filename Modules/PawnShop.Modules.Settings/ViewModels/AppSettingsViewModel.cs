@@ -101,10 +101,5 @@ namespace PawnShop.Modules.Settings.ViewModels
 
 
         #endregion
-
-
-
-
-
     }
 }

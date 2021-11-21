@@ -3,7 +3,7 @@ using Prism.Events;
 
 namespace PawnShop.Modules.Commodity.Events
 {
-    public class TaskBarButtonClickEvent : PubSubEvent<PreviewPutOnSaleDialogMode>
+    public class TaskBarButtonClickEvent : PubSubEvent<DialogMode>
     {
 
     }

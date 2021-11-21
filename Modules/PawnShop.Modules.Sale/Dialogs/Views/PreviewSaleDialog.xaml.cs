@@ -5,9 +5,9 @@ namespace PawnShop.Modules.Sale.Dialogs.Views
     /// <summary>
     /// Interaction logic for ShowPreview
     /// </summary>
-    public partial class ShowPreview : UserControl
+    public partial class PreviewSaleDialog : UserControl
     {
-        public ShowPreview()
+        public PreviewSaleDialog()
         {
             InitializeComponent();
         }

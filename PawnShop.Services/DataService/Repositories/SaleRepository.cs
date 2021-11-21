@@ -92,6 +92,17 @@ namespace PawnShop.Services.DataService.Repositories
                 .ThenInclude(c => c.Category)
                 .Include(s => s.ContractItem)
                 .ThenInclude(c => c.ContractItemState)
+                .Include(s => s.ContractItem)
+                .ThenInclude(c => c.Category)
+                .ThenInclude(cc => cc.Measure)
+                .Include(s => s.LocalSale)
+                .Include(s => s.Links)
+                .Include(s => s.ContractItem)
+                .ThenInclude(s => s.Laptop)
+                .Include(s => s.ContractItem)
+                .ThenInclude(s => s.Telephone)
+                .Include(s => s.ContractItem)
+                .ThenInclude(s => s.GoldProduct)
                 .Take(count)
                 .AsQueryable();
         }

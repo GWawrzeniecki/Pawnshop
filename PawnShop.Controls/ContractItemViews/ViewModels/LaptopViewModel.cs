@@ -93,10 +93,9 @@ namespace PawnShop.Controls.ContractItemViews.ViewModels
             var laptopHasValue = navigationContext.Parameters.TryGetValue<Business.Models.Laptop>("laptop", out var laptop);
             if (laptopHasValue)
                 _mapper.Map(laptop, this);
-            var dialogModeHasValue =
-                navigationContext.Parameters.TryGetValue<PreviewPutOnSaleDialogMode>("dialogMode", out var dialogMode);
+            var dialogModeHasValue = navigationContext.Parameters.TryGetValue<DialogMode>("dialogMode", out var dialogMode);
             if (dialogModeHasValue)
-                IsViewReadOnly = dialogMode == PreviewPutOnSaleDialogMode.Preview;
+                IsViewReadOnly = dialogMode == DialogMode.ReadOnly;
 
         }
 
