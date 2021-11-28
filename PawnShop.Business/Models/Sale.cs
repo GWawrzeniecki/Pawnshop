@@ -15,7 +15,11 @@ namespace PawnShop.Business.Models
         public int SaleId { get; set; }
         public int ContractItemId { get; set; }
         public decimal SalePrice { get; set; }
+        public decimal? SoldPrice { get; set; }
+
         public DateTime PutOnSaleDate { get; set; }
+        public int Quantity { get; set; }
+        public bool IsSold { get; set; }
 
         public virtual ContractItem ContractItem { get; set; }
         public virtual LocalSale LocalSale { get; set; }

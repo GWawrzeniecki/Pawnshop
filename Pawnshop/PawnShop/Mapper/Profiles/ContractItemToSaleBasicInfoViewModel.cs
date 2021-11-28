@@ -16,6 +16,8 @@ namespace PawnShop.Mapper.Profiles
                 .ForMember(d => d.ContractItemTechnicalCondition, opt => opt.MapFrom(s => s.TechnicalCondition))
                 .ForMember(d => d.SelectedContractItemCategory, opt => opt.MapFrom(s => s.Category))
                 .ForMember(d => d.SelectedContractItemUnitMeasure, opt => opt.MapFrom(s => s.Category.Measure));
+
+
         }
     }
 }

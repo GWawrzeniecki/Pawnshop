@@ -11,5 +11,6 @@
         public const string WorkerDialog = "WorkerDialog";
         public const string PreviewPutOnSaleDialog = "PreviewPutOnSaleDialog";
         public const string PreviewSaleDialog = "PreviewSaleDialog";
+        public const string SellDialog = "SellDialog";
     }
 }

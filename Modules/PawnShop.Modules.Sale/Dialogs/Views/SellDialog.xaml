@@ -1,0 +1,328 @@
+﻿<UserControl
+    x:Class="PawnShop.Modules.Sale.Dialogs.Views.SellDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:viewmodels="clr-namespace:PawnShop.Modules.Sale.Dialogs.ViewModels"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
+            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="ShowInTaskbar" Value="True" />
+            <Setter Property="SizeToContent" Value="WidthAndHeight" />
+            <Setter Property="Title" Value="{Binding Title}" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+    <Grid Margin="10,10,10,0">
+
+        <Grid.Resources>
+
+            <Style BasedOn="{StaticResource MahApps.Styles.TextBlock}" TargetType="TextBlock">
+                <Setter Property="Margin" Value="5,5,5,5" />
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+            </Style>
+
+
+            <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
+                <Setter Property="Margin" Value="0,5,5,15" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="IsReadOnly" Value="True" />
+            </Style>
+
+            <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
+                <Setter Property="Margin" Value="0,5,5,15" />
+                <Setter Property="FontSize" Value="{StaticResource FontSizeRegular}" />
+                <Setter Property="IsEnabled" Value="False" />
+            </Style>
+
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+
+        </Grid.RowDefinitions>
+
+        <GroupBox
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            Header="Informacje o produkcie">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" MinWidth="300" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Nazwa towaru:" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="J.m:" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="Przyjęty za:" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Text="Cena wystawiona:" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Text="Regał:" />
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Text="Link do aukcji:" />
+
+                <TextBox
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="{Binding ItemName}" />
+
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox
+                        Grid.Column="0"
+                        Margin="0,5,0,15"
+                        IsEnabled="True"
+                        ItemsSource="{Binding ContractItemUnitMeasures}"
+                        SelectedItem="{Binding SelectedContractItemUnitMeasure, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Measure}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Grid.Column="1" Text="Ilość:" />
+                    <TextBox Grid.Column="2" Text="{Binding ItemQuantity}" />
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Grid.Column="0"
+                        Margin="0,5,0,15"
+                        Text="{Binding BoughtPrice}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="0,5,0,15"
+                        Text="PLN" />
+                </Grid>
+
+                <Grid Grid.Row="3" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Grid.Column="0"
+                        Margin="0,5,0,15"
+                        Text="{Binding SellPrice}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="0,5,0,15"
+                        Text="PLN" />
+                </Grid>
+
+                <Grid Grid.Row="4" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Text="{Binding Rack}" />
+                    <TextBlock Grid.Column="1" Text="Półka:" />
+                    <TextBox Grid.Column="2" Text="{Binding Shelf}" />
+                </Grid>
+
+                <ComboBox
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    IsEnabled="True"
+                    ItemsSource="{Binding SaleLinks, Mode=TwoWay}"
+                    SelectedIndex="0"
+                    SelectedItem="{Binding SelectedSaleLink, Mode=TwoWay}"
+                    Text="{Binding SaleLinkText, Mode=TwoWay}"
+                    TextSearch.TextPath="Link">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Link1}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+            </Grid>
+
+
+
+        </GroupBox>
+        <GroupBox
+            Grid.Row="1"
+            Margin="0,0,0,10"
+            Header="Sprzedaż">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="J.m:" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Cena sprzedaży:" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="Zysk:" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Text="Typ płatności:" />
+
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox
+                        Grid.Column="0"
+                        Margin="0,5,0,15"
+                        IsEnabled="True"
+                        ItemsSource="{Binding ContractItemUnitMeasures}"
+                        SelectedItem="{Binding SelectedContractItemUnitMeasureForSale, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Measure}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Grid.Column="1" Text="Ilość:" />
+                    <TextBox Grid.Column="2" Text="{Binding SellItemAmount, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+
+                </Grid>
+
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Grid.Column="0"
+                        Margin="0,5,0,15"
+                        IsReadOnly="False"
+                        Text="{Binding SoldPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="0,5,0,15"
+                        Text="PLN" />
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Grid.Column="0"
+                        Margin="0,5,0,15"
+                        Text="{Binding Profit, Mode=OneWay}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="0,5,0,15"
+                        Text="PLN" />
+                </Grid>
+
+                <ComboBox
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    IsEnabled="True"
+                    ItemsSource="{Binding PaymentTypes}"
+                    SelectedItem="{Binding SelectedPaymentType, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Type}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+            </Grid>
+
+
+        </GroupBox>
+
+        <Grid
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="0,0,0,10">
+
+            <Grid.Resources>
+                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                    <Setter Property="Margin" Value="5,0,0,0" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+
+
+            <Button
+                Grid.Column="2"
+                Command="{Binding SellCommand}"
+                Content="Sprzedaj" />
+            <Button
+                Grid.Column="3"
+                Command="{Binding CancelCommand}"
+                Content="Anuluj" />
+
+        </Grid>
+
+    </Grid>
+</UserControl>

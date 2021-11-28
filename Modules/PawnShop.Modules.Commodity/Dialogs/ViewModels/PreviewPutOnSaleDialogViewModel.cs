@@ -191,13 +191,14 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
 
         private void NavigateToSale()
         {
-            RegionManager.RequestNavigate(RegionNames.PreviewPutOnSaleDialogContentRegion, nameof(PutOnSale), new NavigationParameters { { "putOnSaleCommand", PutOnSaleCommand }, });
+            RegionManager.RequestNavigate(RegionNames.PreviewPutOnSaleDialogContentRegion, nameof(PutOnSale), new NavigationParameters { { "putOnSaleCommand", PutOnSaleCommand }, { "contractItem", _contractItem } });
         }
 
         private void SetSecondGroupBoxHeaderName(string name)
         {
             SecondGroupBoxHeaderName = name;
         }
+
         private async Task TryToPutOnSale()
         {
             var putOnSale = RegionManager.Regions[RegionNames.PreviewPutOnSaleDialogContentRegion].ActiveViews
@@ -231,7 +232,8 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
                 SalePrice = putOnSaleViewModel.Price.GetValueOrDefault(),
                 PutOnSaleDate = DateTime.Now,
                 LocalSale = new LocalSale() { Rack = putOnSaleViewModel.Rack, Shelf = putOnSaleViewModel.Shelf.GetValueOrDefault() },
-                Links = putOnSaleViewModel.SaleLinks
+                Links = putOnSaleViewModel.SaleLinks,
+                Quantity = putOnSaleViewModel.ContractItemQuantity ?? throw new InsertSaleException("Produkt nie ma wpisanej ilości.")
             };
         }
 

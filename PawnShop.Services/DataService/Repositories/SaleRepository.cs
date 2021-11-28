@@ -3,6 +3,7 @@ using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.DataAccess.Data;
+using Prism.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,6 +90,8 @@ namespace PawnShop.Services.DataService.Repositories
             return context
                 .Sales
                 .Include(s => s.ContractItem)
+                .ThenInclude(s => s.Sales)
+                .Include(s => s.ContractItem)
                 .ThenInclude(c => c.Category)
                 .Include(s => s.ContractItem)
                 .ThenInclude(c => c.ContractItemState)
@@ -105,6 +108,19 @@ namespace PawnShop.Services.DataService.Repositories
                 .ThenInclude(s => s.GoldProduct)
                 .Take(count)
                 .AsQueryable();
+        }
+
+        public async Task Sell(Sale sale, decimal soldPrice, PaymentType paymentType, IContainerProvider containerProvider, decimal profit)
+        {
+            context.Sales.Attach(sale);
+            sale.SoldPrice = soldPrice;
+            sale.IsSold = true;
+            var payment = new Payment { PaymentTypeId = paymentType.Id, Amount = soldPrice, Date = DateTime.Today };
+            using var unitOfWork = containerProvider.Resolve<IUnitOfWork>();
+            var moneyBalance = await unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
+            var dealDocument = new DealDocument { MoneyBalanceId = moneyBalance.TodayDate, Payment = payment, RepaymentCapital = soldPrice, Profit = profit };
+            await context.DealDocuments.AddAsync(dealDocument);
+            await context.SaveChangesAsync();
         }
 
     }

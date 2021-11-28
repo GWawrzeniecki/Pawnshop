@@ -96,7 +96,8 @@ namespace PawnShop.Services.DataService.Repositories
                 .Include(c => c.Laptop)
                 .Include(c => c.Telephone)
                 .Include(c => c.GoldProduct)
-                .Where(c => c.ContractNumber.ContractStateId == notBoughtContractState.Id && c.Sales.Count == 0)
+                .Include(c => c.Sales)
+                .Where(c => c.ContractNumber.ContractStateId == notBoughtContractState.Id && c.Sales.Sum(s => s.Quantity) < c.Amount)
                 .Take(count)
                 .AsQueryable();
         }

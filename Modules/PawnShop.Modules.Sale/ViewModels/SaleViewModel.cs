@@ -165,7 +165,8 @@ namespace PawnShop.Modules.Sale.ViewModels
         public DelegateCommand ShowPreviewCommand => _showPreviewCommand ??= new DelegateCommand(ShowPreview, () => SelectedSale is not null)
             .ObservesProperty(() => SelectedSale);
 
-        public DelegateCommand SellCommand => _sellCommand ??= new DelegateCommand(Sell);
+        public DelegateCommand SellCommand => _sellCommand ??= new DelegateCommand(Sell, () => SelectedSale is not null && !SelectedSale.IsSold)
+            .ObservesProperty(() => SelectedSale);
 
 
         #endregion
@@ -220,6 +221,27 @@ namespace PawnShop.Modules.Sale.ViewModels
             }
         }
 
+        private async Task RefreshDataGrid()
+        {
+            try
+            {
+                var salesQueryData = _mapper.Map<ContractItemQueryData>(this);
+                await TryToLoadSales(salesQueryData);
+            }
+            catch (LoadingSalesException loadingSalesException)
+            {
+                MaterialMessageBox.ShowError(
+                    $"{loadingSalesException.Message}{Environment.NewLine}Błąd: {loadingSalesException.InnerException?.Message}",
+                    "Błąd");
+            }
+            catch (Exception e)
+            {
+                MaterialMessageBox.ShowError(
+                    $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
+                    "Błąd");
+            }
+        }
+
         private bool CanExecuteRefresh()
         {
             return !HasErrors;
@@ -230,9 +252,19 @@ namespace PawnShop.Modules.Sale.ViewModels
             _dialogService.ShowPreviewSaleDialog(null, "Podgląd sprzedawanego towaru", SelectedSale);
         }
 
-        private void Sell()
+        private async void Sell()
         {
+            var dialogResult = ButtonResult.Cancel;
+            _dialogService.ShowSaleDialog((result =>
+            {
+                dialogResult = result.Result;
 
+            }), "Sprzedaż towaru", SelectedSale);
+
+            if (dialogResult != ButtonResult.OK) return;
+            IsBusy = true;
+            await RefreshDataGrid();
+            IsBusy = false;
         }
 
         #endregion

@@ -35,7 +35,8 @@ namespace PawnShop.Modules.Sale
             containerRegistry.RegisterForNavigation<Views.Sale, SaleViewModel>();
             containerRegistry.Register<SaleValidator>();
             containerRegistry.RegisterDialog<PreviewSaleDialog, PreviewSaleDialogViewModel>();
-
+            containerRegistry.RegisterDialog<SellDialog, SellDialogViewModel>();
+            containerRegistry.Register<SellDialogValidator>();
         }
     }
 }

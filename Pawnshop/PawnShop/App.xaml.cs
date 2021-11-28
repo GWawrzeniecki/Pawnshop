@@ -101,6 +101,7 @@ namespace PawnShop
                 cfg.AddProfile<ContractItemToSaleBasicInfoViewModel>();
                 cfg.AddProfile<SaleToSaleBasicInfoViewModel>();
                 cfg.AddProfile<SaleToSaleInfoViewModel>();
+                cfg.AddProfile<SellToSellDialogViewModel>();
             });
             var mapper = configuration.CreateMapper();
 

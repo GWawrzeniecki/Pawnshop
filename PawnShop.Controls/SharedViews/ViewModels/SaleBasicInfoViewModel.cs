@@ -29,6 +29,7 @@ namespace PawnShop.Controls.SharedViews.ViewModels
         private readonly IContractItemService _contractItemService;
         private ContractItem _contractItem;
         private Sale _sale;
+        private int _contractItemQuantityForSale;
 
         #endregion
 
@@ -53,6 +54,12 @@ namespace PawnShop.Controls.SharedViews.ViewModels
         {
             get => _contractItemQuantity;
             set => SetProperty(ref _contractItemQuantity, value);
+        }
+
+        public int ContractItemQuantityForSale
+        {
+            get => _contractItemQuantityForSale;
+            set => SetProperty(ref _contractItemQuantityForSale, value);
         }
 
         public string ContractItemDescription
@@ -179,6 +186,7 @@ namespace PawnShop.Controls.SharedViews.ViewModels
         private void MapContractItemToVm()
         {
             _mapper.Map(_contractItem, this);
+            ContractItemQuantityForSale = _contractItem.Amount - _contractItem.Sales.Sum(c => c.Quantity);
         }
 
         private void MapCategoryAndMeasureFromCurrentDbContext()
@@ -193,6 +201,7 @@ namespace PawnShop.Controls.SharedViews.ViewModels
         private void MapSaleToVm()
         {
             _mapper.Map(_sale, this);
+            ContractItemQuantityForSale = _sale.ContractItem.Amount - _sale.ContractItem.Sales.Sum(s => s.Quantity);
         }
 
         #endregion

@@ -9,6 +9,7 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Commodity.ViewModels
@@ -29,6 +30,7 @@ namespace PawnShop.Modules.Commodity.ViewModels
         private string _saleLinkText;
         private DelegateCommand _addLinkCommand;
         private DelegateCommand _putOnSaleCommand;
+        private int? _contractItemQuantityForSale;
 
         #endregion
 
@@ -60,6 +62,12 @@ namespace PawnShop.Modules.Commodity.ViewModels
         {
             get => _contractItemQuantity;
             set => SetProperty(ref _contractItemQuantity, value);
+        }
+
+        public int? ContractItemQuantityForSale
+        {
+            get => _contractItemQuantityForSale;
+            set => SetProperty(ref _contractItemQuantityForSale, value);
         }
 
         public decimal? Price
@@ -100,6 +108,8 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         public bool CanExecutePutOnSale => !HasErrors;
 
+        public ContractItem ContractItem { get; private set; }
+
         #endregion
 
         #region Commands
@@ -128,6 +138,8 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            ContractItem = navigationContext.Parameters.GetValue<ContractItem>("contractItem");
+            ContractItemQuantityForSale = ContractItem.Amount - ContractItem.Sales.Sum(s => s.Quantity);
             _putOnSaleCommand = navigationContext.Parameters.GetValue<DelegateCommand>("putOnSaleCommand");
             _putOnSaleCommand.ObservesCanExecute(() => CanExecutePutOnSale);
             Commands.Add(_putOnSaleCommand);

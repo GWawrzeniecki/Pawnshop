@@ -110,11 +110,11 @@
         <ComboBox
             Grid.Row="3"
             Grid.Column="1"
+            IsEnabled="True"
             ItemsSource="{Binding SaleLinks, Mode=TwoWay}"
+            SelectedIndex="0"
             SelectedItem="{Binding SelectedSaleLink, Mode=TwoWay}"
             Text="{Binding SaleLinkText, Mode=TwoWay}"
-            SelectedIndex="0"
-            IsEnabled="True"
             TextSearch.TextPath="Link">
             <ComboBox.ItemTemplate>
                 <DataTemplate>

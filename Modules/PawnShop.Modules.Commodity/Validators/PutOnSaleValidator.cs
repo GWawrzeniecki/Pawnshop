@@ -16,6 +16,10 @@ namespace PawnShop.Modules.Commodity.Validators
                 .NotEmpty()
                 .WithMessage("Pole nie posiada wartości.");
 
+            RuleFor(view => view.ContractItemQuantity)
+                .LessThanOrEqualTo(view => view.ContractItemQuantityForSale)
+                .WithMessage("Produkt jest dostepny w mniejszej ilości");
+
             RuleFor(view => view.Price)
                 .NotEmpty()
                 .WithMessage("Pole nie posiada wartości.");

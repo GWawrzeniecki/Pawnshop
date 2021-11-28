@@ -212,9 +212,11 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding ContractItem.Name}" Header="Nazwa towaru" />
                         <DataGridTextColumn Binding="{Binding ContractItem.Category.Category}" Header="Kategoria towaru" />
-                        <DataGridTextColumn Binding="{Binding ContractItem.EstimatedValue}" Header="Przyjety za" />
+                        <DataGridTextColumn Binding="{Binding ContractItem.Amount}" Header="Ilość" />
+                        <DataGridTextColumn Binding="{Binding ContractItem.EstimatedValue}" Header="Kwota umowy" />
+                        <DataGridTextColumn Binding="{Binding Quantity}" Header="Ilość wystawiona na sprzedaż" />
                         <DataGridTextColumn Binding="{Binding SalePrice}" Header="Cena sprzedaży" />
-                        <DataGridTextColumn Binding="{Binding ContractItem.Amount}" Header="Ilosc" />
+                        <DataGridCheckBoxColumn Binding="{Binding IsSold}" Header="Sprzedany" />
                         <DataGridTextColumn Binding="{Binding PutOnSaleDate, StringFormat=d}" Header="Wystawiony na sprzedaz" />
                         <DataGridTextColumn Binding="{Binding ContractItem.ContractItemState.State}" Header="Stan towaru" />
                         <DataGridTextColumn Binding="{Binding ContractItem.ContractNumberId}" Header="Numer umowy" />
