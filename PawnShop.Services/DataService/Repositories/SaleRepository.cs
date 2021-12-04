@@ -3,6 +3,7 @@ using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.DataAccess.Data;
+using PawnShop.Services.DataService.Dtos;
 using Prism.Ioc;
 using System;
 using System.Collections.Generic;
@@ -115,12 +116,26 @@ namespace PawnShop.Services.DataService.Repositories
             context.Sales.Attach(sale);
             sale.SoldPrice = soldPrice;
             sale.IsSold = true;
+            sale.SaleDate = DateTime.Today;
             var payment = new Payment { PaymentTypeId = paymentType.Id, Amount = soldPrice, Date = DateTime.Today };
             using var unitOfWork = containerProvider.Resolve<IUnitOfWork>();
             var moneyBalance = await unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
             var dealDocument = new DealDocument { MoneyBalanceId = moneyBalance.TodayDate, Payment = payment, RepaymentCapital = soldPrice, Profit = profit };
             await context.DealDocuments.AddAsync(dealDocument);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<IList<SaleChartDto>> GetSaleInDays(DateTime startDate, DateTime endDate)
+        {
+            return await context.Sales
+                .Where(s => s.IsSold && DateTime.Compare(s.SaleDate.Value, startDate) >= 0 &&
+                            DateTime.Compare(s.SaleDate.Value, endDate) <= 0)
+                .GroupBy(s => s.SaleDate)
+                .Select(s => new SaleChartDto()
+                {
+                    SaleDate = s.Key.Value,
+                    SoldPriceSum = s.Sum(s2 => s2.SoldPrice.Value)
+                }).ToListAsync();
         }
 
     }

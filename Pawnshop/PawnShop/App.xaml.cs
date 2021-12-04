@@ -68,6 +68,7 @@ namespace PawnShop
             containerRegistry.Register<IContractItemService, ContractItemService>();
             containerRegistry.Register<IConfigurationService, ConfigurationService>();
             containerRegistry.Register<IPrintService, PrintService>();
+            containerRegistry.Register<IApiService, ApiService>();
             containerRegistry.Register<AddClientValidator>();
             containerRegistry.RegisterInstance<ISettingsService<UserSettings>>(new SettingsService<UserSettings>(Constants.UserSettingsFileName));
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();

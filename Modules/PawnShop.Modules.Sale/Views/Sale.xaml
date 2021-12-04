@@ -216,8 +216,9 @@
                         <DataGridTextColumn Binding="{Binding ContractItem.EstimatedValue}" Header="Kwota umowy" />
                         <DataGridTextColumn Binding="{Binding Quantity}" Header="Ilość wystawiona na sprzedaż" />
                         <DataGridTextColumn Binding="{Binding SalePrice}" Header="Cena sprzedaży" />
-                        <DataGridCheckBoxColumn Binding="{Binding IsSold}" Header="Sprzedany" />
                         <DataGridTextColumn Binding="{Binding PutOnSaleDate, StringFormat=d}" Header="Wystawiony na sprzedaz" />
+                        <DataGridCheckBoxColumn Binding="{Binding IsSold}" Header="Sprzedany" />
+                        <DataGridTextColumn Binding="{Binding SaleDate, StringFormat=d}" Header="Data sprzedazy" />
                         <DataGridTextColumn Binding="{Binding ContractItem.ContractItemState.State}" Header="Stan towaru" />
                         <DataGridTextColumn Binding="{Binding ContractItem.ContractNumberId}" Header="Numer umowy" />
                     </DataGrid.Columns>

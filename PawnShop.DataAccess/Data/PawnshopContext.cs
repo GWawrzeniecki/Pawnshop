@@ -722,6 +722,8 @@ namespace PawnShop.DataAccess.Data
 
                 entity.Property(e => e.PutOnSaleDate).HasColumnType("date");
 
+                entity.Property(e => e.SaleDate).HasColumnType("date");
+
                 entity.Property(e => e.SalePrice).HasColumnType("decimal(10, 2)");
 
                 entity.Property(e => e.SoldPrice).HasColumnType("decimal(10, 2)");

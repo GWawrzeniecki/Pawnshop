@@ -18,6 +18,7 @@ namespace PawnShop.Business.Models
         public decimal? SoldPrice { get; set; }
 
         public DateTime PutOnSaleDate { get; set; }
+        public DateTime? SaleDate { get; set; }
         public int Quantity { get; set; }
         public bool IsSold { get; set; }
 
