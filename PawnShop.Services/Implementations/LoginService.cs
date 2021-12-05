@@ -195,7 +195,7 @@ namespace PawnShop.Services.Implementations
         }
         private void NavigateToContractScreen()
         {
-            _applicationCommands.SetMenuItemCommand.Execute("Contract");
+            _applicationCommands.SetMenuItemCommand.Execute("Home");
         }
 
         #endregion private method

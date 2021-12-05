@@ -13,6 +13,7 @@ using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Windows;
+using PawnShop.Modules.Home.MenuItem;
 
 namespace PawnShop.ViewModels
 {
@@ -96,6 +97,7 @@ namespace PawnShop.ViewModels
             SelectedItem = navigationPath switch
             {
                 "Contract" => _containerProvider.Resolve<ContractHamburgerMenuItem>(),
+                "Home" => _containerProvider.Resolve<HomeHamburgerMenuItem>(),
                 _ => throw new NotImplementedException(navigationPath)
             };
         }

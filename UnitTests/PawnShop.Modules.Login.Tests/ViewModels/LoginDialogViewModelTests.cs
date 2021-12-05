@@ -1,10 +1,18 @@
-﻿using Moq;
+﻿using System.Security;
+using System.Threading.Tasks;
+using Microsoft.VisualBasic;
+using Moq;
+using PawnShop.Business.Models;
+using PawnShop.Core.Events;
 using PawnShop.Core.Extensions;
 using PawnShop.Core.Interfaces;
+using PawnShop.Core.SharedVariables;
 using PawnShop.Modules.Login.Validators;
 using PawnShop.Modules.Login.ViewModels;
+using PawnShop.Services.Implementations;
 using PawnShop.Services.Interfaces;
 using Prism.Events;
+using Prism.Services.Dialogs;
 using Xunit;
 
 namespace PawnShop.Modules.Login.Tests.ViewModels
@@ -15,35 +23,93 @@ namespace PawnShop.Modules.Login.Tests.ViewModels
         [StaFact]
         public void LoginButtonShouldNotBeEnabledWithoutEnteredData()
         {
+            //Arrange
             var loginServiceMoc = new Mock<ILoginService>();
             var uiServiceMock = new Mock<IUIService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var loginDialogValidatorMock = new Mock<LoginDialogValidator>();
             var havePasswordMock = new Mock<IHavePassword>();
+
+            //Act
             var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object);
 
+            //Assert
             Assert.False(vm.LoginCommand.CanExecute(havePasswordMock));
         }
 
-        [StaFact]
-        public void PasswordTagShouldBeFalseOnFailedLogin()
+        [StaTheory]
+        [InlineData("a", "b")]
+        public void PasswordTagShouldBeFalseOnFailedLogin(string login, string password)
         {
-
+            //Arrange
             var loginServiceMoc = new Mock<ILoginService>();
-            loginServiceMoc.Setup(s => s.LoginAsync("a", "a".ToSecureString())).ReturnsAsync((false, null));
             var uiServiceMock = new Mock<IUIService>();
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var loginDialogValidatorMock = new Mock<LoginDialogValidator>();
             var havePasswordMock = new Mock<IHavePassword>();
-            havePasswordMock.SetupGet(c => c.Password).Returns("a".ToSecureString());
+            havePasswordMock.SetupGet(c => c.Password).Returns(password.ToSecureString());
             var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object)
             {
-                UserName = "a"
+                UserName = login
             };
+            loginServiceMoc.Setup(s => s.LoginAsync(vm.UserName, havePasswordMock.Object.Password)).ReturnsAsync((false, null));
 
+            //Act
             vm.LoginCommand.Execute(havePasswordMock.Object);
 
+            //Assert
             Assert.False(vm.PasswordTag);
+        }
+
+        [StaFact]
+        public void UserChangedEventShouldBePublishedAfterSuccessfullyLogin()
+        {
+            //Arrange
+            var eventAggregatorMock = new Mock<IEventAggregator>();
+            var userChangedEventMock = new Mock<UserChangedEvent>();
+            var loginServiceMoc = new Mock<ILoginService>();
+            loginServiceMoc.Setup(l => l.LoginAsync(It.IsAny<string>(), It.IsAny<SecureString>()))
+                .Returns(Task.FromResult((true, new WorkerBoss())));
+            var uiServiceMock = new Mock<IUIService>();
+            var havePasswordMock = new Mock<IHavePassword>();
+            havePasswordMock.SetupGet(c => c.Password).Returns("test".ToSecureString);
+            var loginDialogValidatorMock = new Mock<LoginDialogValidator>();
+            eventAggregatorMock.
+                Setup(x => x.GetEvent<UserChangedEvent>()).
+                Returns(userChangedEventMock.Object);
+            var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object);
+
+            //Act
+            vm.LoginCommand.Execute(havePasswordMock.Object);
+
+            //Assert
+            userChangedEventMock.Verify(x => x.Publish());
+        }
+
+        [StaFact]
+        public void StartupProceduresShouldBeInvokedAfterSuccessfullyLogin()
+        {
+            //Arrange
+            var eventAggregatorMock = new Mock<IEventAggregator>();
+            var userChangedEventMock = new Mock<UserChangedEvent>();
+            var loginServiceMoc = new Mock<ILoginService>();
+            var workerBoss = new WorkerBoss();
+            loginServiceMoc.Setup(l => l.LoginAsync(It.IsAny<string>(), It.IsAny<SecureString>()))
+                .Returns(Task.FromResult((true, workerBoss)));
+            var uiServiceMock = new Mock<IUIService>();
+            var havePasswordMock = new Mock<IHavePassword>();
+            havePasswordMock.SetupGet(c => c.Password).Returns("test".ToSecureString);
+            var loginDialogValidatorMock = new Mock<LoginDialogValidator>();
+            eventAggregatorMock.
+                Setup(x => x.GetEvent<UserChangedEvent>()).
+                Returns(userChangedEventMock.Object);
+            var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object);
+
+            //Act
+            vm.LoginCommand.Execute(havePasswordMock.Object);
+
+            //Assert
+            loginServiceMoc.Verify(x => x.LoadStartupData(workerBoss));
         }
     }
 }

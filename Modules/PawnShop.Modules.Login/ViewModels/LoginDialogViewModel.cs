@@ -121,7 +121,7 @@ namespace PawnShop.Modules.Login.ViewModels
                 LoginButtonIsBusy = true;
                 var iHavePassword = view as IHavePassword;
                 var password = iHavePassword.Password.Copy();
-                password = AutoLoginAdmin(); // for testing purpose
+                //password = AutoLoginAdmin(); // for testing purpose
                 password.MakeReadOnly(); ;
                 _uiService.SetMouseBusyCursor();
                 var (success, loggedUser) = await TryToLoginAsync(UserName, password);
@@ -184,8 +184,8 @@ namespace PawnShop.Modules.Login.ViewModels
 
         private bool CanLogin(object view)
         {
-            //return UserNameHasText && PasswordBoxHasText && !LoginButtonIsBusy;
-            return true && !LoginButtonIsBusy; // For fast login while developing
+            return UserNameHasText && PasswordBoxHasText && !LoginButtonIsBusy;
+            //return true && !LoginButtonIsBusy; // For fast login while developing
         }
 
         private async Task<(bool, WorkerBoss)> TryToLoginAsync(string userName, SecureString password)
