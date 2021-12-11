@@ -1,4 +1,5 @@
-﻿using PawnShop.Business.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PawnShop.Business.Models;
 using PawnShop.DataAccess.Data;
 using PawnShop.Services.DataService.Repositories;
 using Prism.Ioc;
@@ -13,7 +14,7 @@ namespace PawnShop.Services.DataService
         #region private members
 
         private readonly IContainerProvider _containerProvider;
-        public readonly PawnshopContext _context = new();
+        public readonly PawnshopContext _context;
         private WorkerBossRepository _workerBossRepository;
         private GenericRepository<Person> _personRepository;
         private MoneyBalanceRepository _moneyBalanceRepository;
@@ -35,18 +36,23 @@ namespace PawnShop.Services.DataService
 
         #endregion private members
 
-        #region Constructor
+        #region Constructors
 
         public UnitOfWork(IContainerProvider containerProvider)
         {
             _containerProvider = containerProvider;
+            _context = new();
+        }
+
+        public UnitOfWork(IContainerProvider containerProvider, DbContextOptions<PawnshopContext> options)
+        {
+            _containerProvider = containerProvider;
+            _context = new PawnshopContext(options);
         }
 
         #endregion
 
         #region public properties
-
-        public PawnshopContext Test => _context;
 
         public WorkerBossRepository WorkerBossRepository
         {

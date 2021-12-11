@@ -95,17 +95,13 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Commands
 
-
         public DelegateCommand CreateContractCommand =>
             _createContractCommand ??= new DelegateCommand(CreateContract);
-
-
-
-
 
         #endregion
 
         #region CommandMethods
+
         private async void CreateContract()
         {
             try

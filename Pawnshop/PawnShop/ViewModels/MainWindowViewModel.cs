@@ -6,6 +6,7 @@ using PawnShop.Core.HamburgerMenu.Implementations;
 using PawnShop.Core.Regions;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Modules.Contract.MenuItem;
+using PawnShop.Modules.Home.MenuItem;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
@@ -13,7 +14,6 @@ using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Windows;
-using PawnShop.Modules.Home.MenuItem;
 
 namespace PawnShop.ViewModels
 {
@@ -63,7 +63,6 @@ namespace PawnShop.ViewModels
         public DelegateCommand<string> SetSelectedMenuItemCommand =>
             _setSelectedMenuItemCommand ??= new DelegateCommand<string>(SetSelectedMenuItem);
         #endregion
-
 
         #region constructors
 

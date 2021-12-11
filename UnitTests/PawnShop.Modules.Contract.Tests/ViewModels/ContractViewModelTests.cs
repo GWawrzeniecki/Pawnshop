@@ -6,7 +6,7 @@ using Prism.Ioc;
 using Prism.Services.Dialogs;
 using Xunit;
 
-namespace PawnShop.Modules.Contract.Tests.ViewModels
+namespace PawnShop.Modules.Contract.UnitTests.ViewModels
 {
     public class ContractViewModelTests
     {
@@ -16,12 +16,12 @@ namespace PawnShop.Modules.Contract.Tests.ViewModels
             //Arrange
             var contractServiceMock = new Mock<IContractService>();
             var dialogServiceMock = new Mock<IDialogService>();
-            var shellserviceMock = new Mock<IShellService>();
+            var shellServiceMock = new Mock<IShellService>();
             var containerProviderMock = new Mock<IContainerProvider>();
             var sessionContextMock = new Mock<ISessionContext>();
 
-            var vm = new ContractViewModel(contractServiceMock.Object, dialogServiceMock.Object,shellserviceMock.Object,containerProviderMock.Object, new Validators.ContractValidator(),sessionContextMock.Object);
-            
+            var vm = new ContractViewModel(contractServiceMock.Object, dialogServiceMock.Object, shellServiceMock.Object, containerProviderMock.Object, new Validators.ContractValidator(), sessionContextMock.Object);
+
             //Act
             vm.ContractNumber = "01x2021";
 
@@ -30,7 +30,7 @@ namespace PawnShop.Modules.Contract.Tests.ViewModels
 
             //Act
             vm.ContractNumber = "01/2021";
-            
+
             //Assert
             Assert.True(!vm.HasErrors);
 

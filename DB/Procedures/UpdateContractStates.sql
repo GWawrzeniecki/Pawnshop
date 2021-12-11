@@ -1,4 +1,4 @@
-ALTER PROCEDURE [Pawnshop].UpdateContractStates
+﻿ALTER PROCEDURE [Pawnshop].UpdateContractStates
 AS
 BEGIN
 	UPDATE Pawnshop.Contract 
@@ -11,7 +11,7 @@ BEGIN
 			(ContractStateID = (
 				SELECT ID
 				FROM Pawnshop.ContractState
-				WHERE State = 'Zalozona'
+				WHERE State = 'Założona'
 				) -- contract created not renewed and StartDate plus Lending rate days is older than actual date
 			AND datediff(day, DATEADD(day, (
 						SELECT lr.Days
@@ -22,7 +22,7 @@ BEGIN
 				ContractStateID = (
 					SELECT ID
 					FROM Pawnshop.ContractState
-					WHERE State = 'Przedluzona'
+					WHERE State = 'Przedłużona'
 					) -- contract renewed and last StarDate from the latest renew plus Lending rate days is older than actual date
 				AND (DATEDIFF(day, dateadd(day, (
 							SELECT lr.Days

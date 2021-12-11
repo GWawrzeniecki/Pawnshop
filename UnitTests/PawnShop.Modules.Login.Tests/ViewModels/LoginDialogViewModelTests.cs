@@ -1,21 +1,17 @@
-﻿using System.Security;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic;
-using Moq;
+﻿using Moq;
 using PawnShop.Business.Models;
 using PawnShop.Core.Events;
 using PawnShop.Core.Extensions;
 using PawnShop.Core.Interfaces;
-using PawnShop.Core.SharedVariables;
 using PawnShop.Modules.Login.Validators;
 using PawnShop.Modules.Login.ViewModels;
-using PawnShop.Services.Implementations;
 using PawnShop.Services.Interfaces;
 using Prism.Events;
-using Prism.Services.Dialogs;
+using System.Security;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace PawnShop.Modules.Login.Tests.ViewModels
+namespace PawnShop.Modules.Login.UnitTests.ViewModels
 {
 
     public class LoginDialogViewModelTests
@@ -83,7 +79,7 @@ namespace PawnShop.Modules.Login.Tests.ViewModels
             vm.LoginCommand.Execute(havePasswordMock.Object);
 
             //Assert
-            userChangedEventMock.Verify(x => x.Publish());
+            userChangedEventMock.Verify(x => x.Publish(), Times.Once);
         }
 
         [StaFact]
@@ -109,7 +105,7 @@ namespace PawnShop.Modules.Login.Tests.ViewModels
             vm.LoginCommand.Execute(havePasswordMock.Object);
 
             //Assert
-            loginServiceMoc.Verify(x => x.LoadStartupData(workerBoss));
+            loginServiceMoc.Verify(x => x.LoadStartupData(workerBoss), Times.Once);
         }
     }
 }
