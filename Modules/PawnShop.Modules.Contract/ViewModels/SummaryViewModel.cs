@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Constants;
 using PawnShop.Core.Events;
@@ -34,6 +33,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IMapper _mapper;
         private readonly IShellService _shellService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IMessageBoxService _messageBoxService;
         private Business.Models.Contract _contract;
         private bool _isPrintDealDocument;
         private DelegateCommand _createContractCommand;
@@ -44,7 +44,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         #region Constructor
 
         public SummaryViewModel(ICalculateService calculateService, ISessionContext sessionContext,
-             IContractService contractService, IMapper mapper, IShellService shellService, IEventAggregator eventAggregator)
+             IContractService contractService, IMapper mapper, IShellService shellService, IEventAggregator eventAggregator, IMessageBoxService messageBoxService)
         {
             _calculateService = calculateService;
             _sessionContext = sessionContext;
@@ -52,6 +52,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             _mapper = mapper;
             _shellService = shellService;
             _eventAggregator = eventAggregator;
+            _messageBoxService = messageBoxService;
             Contract = new Business.Models.Contract();
         }
         #endregion
@@ -110,26 +111,27 @@ namespace PawnShop.Modules.Contract.ViewModels
                     vm.IsBusy = true;
                 await TryToInsertContractAsync();
                 _eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Publish();
-                MaterialMessageBox.Show("Pomyślnie utworzono umowę.", "Sukces");
+                _messageBoxService.Show("Pomyślnie utworzono umowę.", "Sukces");
                 if (IsPrintDealDocument)
                     await TryToPrintDealDocumentAsync();
-                await _callBack.Invoke();
+                if (_callBack is not null)
+                    await _callBack.Invoke();
             }
             catch (CreateContractException createContractException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{createContractException.Message}{Environment.NewLine}Błąd: {createContractException.InnerException?.Message}",
                     "Błąd");
             }
             catch (PrintDealDocumentException printDealDocumentException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{printDealDocumentException.Message}{Environment.NewLine}Błąd: {printDealDocumentException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -165,16 +167,14 @@ namespace PawnShop.Modules.Contract.ViewModels
             var contractItems = navigationContext.Parameters.GetValue<IList<ContractItem>>("ContractItems");
             if (contractItems is not null && contractItems.Any())
                 Contract.ContractItems = new Collection<ContractItem>(contractItems);
-            Contract.LendingRate = navigationContext.Parameters.GetValue<LendingRate>("LendingRate") ??
-                                   Contract.LendingRate;
+            Contract.LendingRate = navigationContext.Parameters.GetValue<LendingRate>("LendingRate") ?? Contract.LendingRate;
             Contract.LendingRateId = Contract.LendingRate.Id;
             Contract.DealMaker = navigationContext.Parameters.GetValue<Client>("DealMaker") ?? Contract.DealMaker;
             Contract.DealMakerId = Contract.DealMaker.ClientId;
             var startDate = navigationContext.Parameters.GetValue<DateTime>("StartDate");
             if (DateTime.Compare(startDate, DateTime.MinValue) > 0)
                 Contract.StartDate = startDate;
-            Contract.ContractNumberId = navigationContext.Parameters.GetValue<string>("ContractNumber") ??
-                                        Contract.ContractNumberId;
+            Contract.ContractNumberId = navigationContext.Parameters.GetValue<string>("ContractNumber") ?? Contract.ContractNumberId;
             Contract.AmountContract = SumOfEstimatedValues;
             Contract.WorkerBossId = _sessionContext.LoggedPerson.WorkerBossId;
             _callBack = navigationContext.Parameters.GetValue<Func<Task>>("CallBack");

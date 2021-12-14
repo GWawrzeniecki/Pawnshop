@@ -5,7 +5,7 @@
         //
         public const string PepperAesKeySecret = "PepperAesKey";
         public const string IterationsKeySecret = "Iterations";
-        public const string DBSchemaName = "Pawnshop";
+        public const string DbSchemaName = "Pawnshop";
 
         //Contract Item Categories
         public const string Laptop = "Laptop";
@@ -15,19 +15,19 @@
         public const string CreditCardPaymentType = "Karta";
 
         //ContractStates
-        public const string CreatedContractState = "Zalozona";
-        public const string RenewContractState = "Przedluzona";
+        public const string CreatedContractState = "Założona";
+        public const string RenewContractState = "Przedłużona";
         public const string BuyBackContractState = "Wykupiona";
 
         //UserSettings.json names
-        public const string ThemeNameSection = "UserSettings:ThemeName";
+        //public const string ThemeNameSection = "UserSettings:ThemeName";
 
         //usersettings.json file name
         public const string UserSettingsFileName = "usersettings.json";
 
         //usersettings.json key names
-        public const string VatPercentKey = "VATPercent";
-        public const string DealDocumentPathKey = "DealDocumentPath";
-        public const string DealDocumentsFolderPathKey = "DealDocumentsFolderPath";
+        //public const string VatPercentKey = "VATPercent";
+        //public const string DealDocumentPathKey = "DealDocumentPath";
+        //public const string DealDocumentsFolderPathKey = "DealDocumentsFolderPath";
     }
 }

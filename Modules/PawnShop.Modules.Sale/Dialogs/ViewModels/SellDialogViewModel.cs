@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
@@ -25,6 +24,7 @@ namespace PawnShop.Modules.Sale.Dialogs.ViewModels
         private readonly IMapper _mapper;
         private readonly IContractService _contractService;
         private readonly IContainerProvider _containerProvider;
+        private readonly IMessageBoxService _messageBoxService;
         private string _itemName;
         private IList<UnitMeasure> _contractItemUnitMeasures;
         private UnitMeasure _selectedContractItemUnitMeasure;
@@ -48,11 +48,12 @@ namespace PawnShop.Modules.Sale.Dialogs.ViewModels
 
         #region Constructor
 
-        public SellDialogViewModel(IMapper mapper, IContractService contractService, IContainerProvider containerProvider, SellDialogValidator sellDialogValidator) : base(sellDialogValidator)
+        public SellDialogViewModel(IMapper mapper, IContractService contractService, IContainerProvider containerProvider, SellDialogValidator sellDialogValidator, IMessageBoxService messageBoxService) : base(sellDialogValidator)
         {
             _mapper = mapper;
             _contractService = contractService;
             _containerProvider = containerProvider;
+            _messageBoxService = messageBoxService;
             LoadStartupData();
         }
 
@@ -204,18 +205,18 @@ namespace PawnShop.Modules.Sale.Dialogs.ViewModels
             try
             {
                 await TryToSellAsync();
-                MaterialMessageBox.Show("Produkt sprzedany pomyślnie", "Sukces");
+                _messageBoxService.Show("Produkt sprzedany pomyślnie", "Sukces");
                 RequestClose.Invoke(new DialogResult(ButtonResult.OK));
             }
             catch (SellItemException sellItemException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{sellItemException.Message}{Environment.NewLine}Błąd: {sellItemException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -272,7 +273,7 @@ namespace PawnShop.Modules.Sale.Dialogs.ViewModels
 
             catch (LoadingPaymentTypesException loadingPaymentTypesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingPaymentTypesException.Message}{Environment.NewLine}Błąd: {loadingPaymentTypesException.InnerException?.Message}",
                     "Błąd");
             }

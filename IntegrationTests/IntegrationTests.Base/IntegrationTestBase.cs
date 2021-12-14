@@ -5,6 +5,12 @@ using PawnShop.Core;
 using PawnShop.Core.SharedVariables;
 using PawnShop.DataAccess.Data;
 using PawnShop.Mapper.Profiles;
+using PawnShop.Modules.Contract.Dialogs.ViewModels;
+using PawnShop.Modules.Contract.Dialogs.Views;
+using PawnShop.Modules.Contract.MenuItem;
+using PawnShop.Modules.Contract.Validators;
+using PawnShop.Modules.Contract.ViewModels;
+using PawnShop.Modules.Contract.Views;
 using PawnShop.Modules.Login.Validators;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Implementations;
@@ -23,7 +29,8 @@ namespace IntegrationTests.Base
     {
         protected T ViewModel;
         protected UnityContainerExtension ContainerProvider;
-
+        private DbContextOptionsBuilder<PawnshopContext> _dbContextOptionsBuilder;
+        protected PawnshopContext PawnshopContext => new(_dbContextOptionsBuilder.Options);
         protected IntegrationTestBase()
         {
             Setup();
@@ -55,13 +62,46 @@ namespace IntegrationTests.Base
             ContainerProvider.RegisterSingleton<IHashService, HashService>();
             ContainerProvider.RegisterSingleton<IAesService, AesService>();
             ContainerProvider.Register<ILoginService, LoginService>();
-            ContainerProvider.RegisterSingleton<LoginDialogValidator>();
+            ContainerProvider.Register<LoginDialogValidator>();
+            ContainerProvider.Register<ICalculateService, CalculateService>();
+            ContainerProvider.Register<IMessageBoxService, FakeMessageBoxService>();
+            ContainerProvider.Register<IContractService, ContractService>();
+            ContainerProvider.Register<IPdfService, PdfService>();
+            ContainerProvider.RegisterForNavigation<Contract, ContractViewModel>();
+            ContainerProvider.RegisterForNavigation<ClientData, ClientDataViewModel>();
+            ContainerProvider.RegisterForNavigation<ContractData, ContractDataViewModel>();
+            ContainerProvider.Register<SummaryViewModel>();
+            ContainerProvider.RegisterForNavigation<Summary, SummaryViewModel>();
+            ContainerProvider.RegisterForNavigation<RenewContractData, RenewContractDataViewModel>();
+            ContainerProvider.RegisterForNavigation<RenewContractPayment, RenewContractPaymentViewModel>();
+            ContainerProvider.RegisterForNavigation<BuyBackContractData, BuyBackContractDataViewModel>();
+            ContainerProvider.RegisterForNavigation<BuyBackContractItems, BuyBackContractItemsViewModel>();
+            ContainerProvider.RegisterForNavigation<BuyBackContractPayment, BuyBackContractPaymentViewModel>();
+            ContainerProvider.RegisterSingleton<ClientDataHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<ContractDataHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<SummaryHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<RenewContractDataHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<RenewContractPaymentHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<BuyBackContractDataHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<BuyBackContractItemsHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<BuyBackContactPaymentHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<ContractValidator>();
+            ContainerProvider.RegisterSingleton<CreateContractValidator>();
+            ContainerProvider.RegisterSingleton<AddContractItemValidator>();
+            ContainerProvider.RegisterSingleton<ContractHamburgerMenuItem>();
+            ContainerProvider.Register<IContractService, ContractService>();
+            ContainerProvider.RegisterSingleton<ICalculateService, CalculateService>();
+            ContainerProvider.RegisterSingleton<IConfigurationService, ConfigurationService>();
+            ContainerProvider.RegisterSingleton<IPdfService, PdfService>();
+            ContainerProvider.RegisterDialog<AddContractItemDialog, AddContractItemDialogViewModel>();
+
 
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<PawnshopContext>();
             dbContextOptionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["PawnShopDatabaseTests"].ConnectionString);
+            _dbContextOptionsBuilder = dbContextOptionsBuilder;
             ContainerProvider.Register<IUnitOfWork>(() => new UnitOfWork(ContainerProvider, dbContextOptionsBuilder.Options));
-            ViewModel = ContainerProvider.Resolve<T>();
             ConfigureMapper(ContainerProvider);
+            ViewModel = ContainerProvider.Resolve<T>();
         }
 
         private void ConfigureMapper(IContainerRegistry containerRegistry)

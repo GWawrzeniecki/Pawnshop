@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.Interfaces;
@@ -24,16 +23,18 @@ namespace PawnShop.Modules.Contract.ViewModels
         private LendingRate _actualLendingRate;
         private readonly ICalculateService _calculateService;
         private readonly IContractService _contractService;
+        private readonly IMessageBoxService _messageBoxService;
         private DateTime _contractStartDate;
         private Func<Task> _callBack;
 
         #endregion
 
         #region Constructor
-        public BuyBackContractDataViewModel(ICalculateService calculateService, IContractService contractService)
+        public BuyBackContractDataViewModel(ICalculateService calculateService, IContractService contractService, IMessageBoxService messageBoxService)
         {
             _calculateService = calculateService;
             _contractService = contractService;
+            _messageBoxService = messageBoxService;
             Contract = new Business.Models.Contract { ContractItems = new List<ContractItem>(), LendingRate = new LendingRate() };
             LoadStartupData();
         }
@@ -156,7 +157,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
             catch (LoadingLendingRatesException loadingLendingRatesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingLendingRatesException.Message}{Environment.NewLine}Błąd: {loadingLendingRatesException.InnerException?.Message}",
                     "Błąd");
             }

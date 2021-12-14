@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Events;
 using PawnShop.Core.Extensions;
 using PawnShop.Core.Interfaces;
@@ -23,6 +22,7 @@ namespace PawnShop.Modules.Login.ViewModels
         private readonly ILoginService _loginService;
         private readonly IUIService _uiService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IMessageBoxService _messageBoxService;
         private bool _userNameHasText;
         private bool _passwordBoxHasText;
         private bool _passwordTag;
@@ -42,11 +42,12 @@ namespace PawnShop.Modules.Login.ViewModels
 
         #region constructor
 
-        public LoginDialogViewModel(ILoginService loginService, IUIService uService, IEventAggregator eventAggregator, LoginDialogValidator loginDialogValidator) : base(loginDialogValidator)
+        public LoginDialogViewModel(ILoginService loginService, IUIService uService, IEventAggregator eventAggregator, LoginDialogValidator loginDialogValidator, IMessageBoxService messageBoxService) : base(loginDialogValidator)
         {
             _loginService = loginService;
             _uiService = uService;
             _eventAggregator = eventAggregator;
+            _messageBoxService = messageBoxService;
             PasswordTag = true;
         }
 
@@ -138,7 +139,7 @@ namespace PawnShop.Modules.Login.ViewModels
             {
                 _uiService.ResetMouseCursor();
 
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loginException.Message}{Environment.NewLine}Błąd: {loginException.InnerException?.Message}",
                     "Błąd");
             }
@@ -146,7 +147,7 @@ namespace PawnShop.Modules.Login.ViewModels
             {
                 _uiService.ResetMouseCursor();
 
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingStartupDataException.Message}{Environment.NewLine}Błąd: {loadingStartupDataException.InnerException?.Message}",
                     "Błąd");
             }
@@ -154,7 +155,7 @@ namespace PawnShop.Modules.Login.ViewModels
             {
                 _uiService.ResetMouseCursor();
 
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{updatingContractException.Message}{Environment.NewLine}Błąd: {updatingContractException.InnerException.Message}",
                     "Błąd");
             }
@@ -162,7 +163,7 @@ namespace PawnShop.Modules.Login.ViewModels
             {
                 _uiService.ResetMouseCursor();
 
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

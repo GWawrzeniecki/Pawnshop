@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.Interfaces;
@@ -17,6 +16,7 @@ namespace PawnShop.Controls.SharedViews.ViewModels
         #region PrivateMembers
 
         private readonly IMapper _mapper;
+        private readonly IMessageBoxService _messageBoxService;
         private readonly IContractItemService _contractItemService;
         private IList<UnitMeasure> _contractItemUnitMeasures;
         private UnitMeasure _selectedContractItemUnitMeasure;
@@ -34,10 +34,11 @@ namespace PawnShop.Controls.SharedViews.ViewModels
 
         #region Constructor
 
-        public SaleInfoViewModel(IContractItemService contractItemService, IMapper mapper)
+        public SaleInfoViewModel(IContractItemService contractItemService, IMapper mapper, IMessageBoxService messageBoxService)
         {
             _contractItemService = contractItemService;
             _mapper = mapper;
+            _messageBoxService = messageBoxService;
         }
 
         #endregion
@@ -142,13 +143,13 @@ namespace PawnShop.Controls.SharedViews.ViewModels
             }
             catch (LoadingUnitMeasuresException loadingUnitMeasuresException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingUnitMeasuresException.Message}{Environment.NewLine}Błąd: {loadingUnitMeasuresException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

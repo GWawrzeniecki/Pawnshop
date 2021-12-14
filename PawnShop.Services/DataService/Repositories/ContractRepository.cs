@@ -29,7 +29,7 @@ namespace PawnShop.Services.DataService.Repositories
             _mapper = _containerProvider.Resolve<IMapper>();
         }
 
-        public async Task UpdateContractStates() => await _context.Database.ExecuteSqlRawAsync($"Exec [{DBSchemaName}].[{_updateContractStatesProcedureName}]");
+        public async Task UpdateContractStates() => await _context.Database.ExecuteSqlRawAsync($"Exec [{DbSchemaName}].[{_updateContractStatesProcedureName}]");
 
         public async Task<string> GetNextContractNumber()
         {
@@ -130,7 +130,6 @@ namespace PawnShop.Services.DataService.Repositories
             contract.CreateContractDealDocument = dealDocument;
             await _context.Contracts.AddAsync(contract);
             await _context.SaveChangesAsync();
-
             return contract;
         }
 

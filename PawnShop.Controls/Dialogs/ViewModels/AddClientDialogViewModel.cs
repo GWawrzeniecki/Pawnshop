@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Controls.Validators;
 using PawnShop.Core.Enums;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
@@ -29,6 +29,7 @@ namespace PawnShop.Controls.Dialogs.ViewModels
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IContainerProvider _containerProvider;
+        private readonly IMessageBoxService _messageBoxService;
         private ClientMode _mode;
         private DelegateCommand _updateClientCommand;
         private Visibility _createClientButtonVisibility;
@@ -216,11 +217,12 @@ namespace PawnShop.Controls.Dialogs.ViewModels
 
         #region constructor
 
-        public AddClientDialogViewModel(AddClientValidator addClientValidator, IMapper mapper, IUnitOfWork unitOfWork, IContainerProvider containerProvider) : base(addClientValidator)
+        public AddClientDialogViewModel(AddClientValidator addClientValidator, IMapper mapper, IUnitOfWork unitOfWork, IContainerProvider containerProvider, IMessageBoxService messageBoxService) : base(addClientValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _containerProvider = containerProvider;
+            _messageBoxService = messageBoxService;
             CreateClientButtonVisibility = Visibility.Hidden;
             UpdateClientButtonVisibility = Visibility.Hidden;
         }
@@ -283,19 +285,19 @@ namespace PawnShop.Controls.Dialogs.ViewModels
             try
             {
                 await TryToCreateClient();
-                MaterialMessageBox.Show("Pomyślnie utworzono klienta.", "Sukces");
+                _messageBoxService.Show("Pomyślnie utworzono klienta.", "Sukces");
                 RequestClose?.Invoke(new DialogResult(ButtonResult.OK, new DialogParameters { { "client", Client } }));
             }
             catch (CreateClientException e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{e.Message}.{Environment.NewLine}Błąd: {e.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
 
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -306,19 +308,19 @@ namespace PawnShop.Controls.Dialogs.ViewModels
             try
             {
                 await TryToUpdateClient();
-                MaterialMessageBox.Show("Pomyślnie zapisano zmiany.", "Sukces");
+                _messageBoxService.Show("Pomyślnie zapisano zmiany.", "Sukces");
                 RequestClose?.Invoke(new DialogResult(ButtonResult.OK, new DialogParameters { { "client", Client } }));
             }
             catch (UpdateClientException e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{e.Message}.{Environment.NewLine}Błąd: {e.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
 
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -335,7 +337,7 @@ namespace PawnShop.Controls.Dialogs.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Wystąpił problem podczas pobierania listy krajów i miast.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
                 RequestClose.Invoke(new DialogResult(ButtonResult.Abort));

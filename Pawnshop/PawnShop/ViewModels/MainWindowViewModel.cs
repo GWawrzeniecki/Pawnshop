@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using ControlzEx.Theming;
 using PawnShop.Core;
 using PawnShop.Core.HamburgerMenu.Implementations;
@@ -28,6 +27,7 @@ namespace PawnShop.ViewModels
         private readonly ISettingsService<UserSettings> _userSettingsService;
         private readonly IMapper _mapper;
         private readonly IContainerProvider _containerProvider;
+        private readonly IMessageBoxService _messageBoxService;
         private bool _isPaneOpen;
         private DelegateCommand<string> _setSelectedMenuItemCommand;
         private ModuleHamburgerMenuItemBase _selectedItem;
@@ -67,7 +67,7 @@ namespace PawnShop.ViewModels
         #region constructors
 
         public MainWindowViewModel(IRegionManager regionManager, IApplicationCommands applicationCommands, IUserSettings userSettings
-        , ISettingsService<UserSettings> userSettingsService, IMapper mapper, IContainerProvider containerProvider)
+        , ISettingsService<UserSettings> userSettingsService, IMapper mapper, IContainerProvider containerProvider, IMessageBoxService messageBoxService)
         {
             applicationCommands.NavigateCommand.RegisterCommand(NavigateCommand);
             applicationCommands.SetMenuItemCommand.RegisterCommand(SetSelectedMenuItemCommand);
@@ -76,6 +76,7 @@ namespace PawnShop.ViewModels
             _userSettingsService = userSettingsService;
             _mapper = mapper;
             _containerProvider = containerProvider;
+            _messageBoxService = messageBoxService;
             LoadUserSettings();
             SetTheme();
         }
@@ -116,8 +117,8 @@ namespace PawnShop.ViewModels
                         VatPercent = 23,
                         AutomaticSearchingEndedContractsDay = 14,
                         ThemeName = "Light.Blue",
-                        DealDocumentsFolderPath = @"C:\Users\Kogut\Documents\PawnShop\DealDocuments",
-                        DealDocumentPath = @"C:\Users\Kogut\iCloudDrive\Documents\Inżynierka\Umowa\UMOWA KUPNA-SPRZEDAZY_V3-Form.pdf"
+                        DealDocumentsFolderPath = @"C:\Users\Kogut\Documents\PawnShop\DealDocuments"
+                        // DealDocumentPath = @"C:\Users\Kogut\iCloudDrive\Documents\Inżynierka\Umowa\UMOWA KUPNA-SPRZEDAZY_V3-Form.pdf"
                     });
                 }
 
@@ -125,7 +126,7 @@ namespace PawnShop.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Nie udało się wczytać ustawień użytkownika.{Environment.NewLine}Błąd: {e.Message}{Environment.NewLine}Aplikacja zostanie wyłączona.{Environment.NewLine}Skontaktuj się z administratorem.",
                     "Krytyczny błąd");
                 Application.Current.Shutdown();

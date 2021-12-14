@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using CloneExtensions;
+﻿using CloneExtensions;
 using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.ViewModel.Base;
@@ -21,6 +20,7 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
         private readonly IContractService _contractService;
         private readonly ILendingRateService _lendingRateService;
         private readonly IDialogService _dialogService;
+        private readonly IMessageBoxService _messageBoxService;
         private IList<LendingRate> _lendingRates;
         private DelegateCommand _addLendingRateCommand;
         private DelegateCommand _deleteLendingRateCommand;
@@ -34,11 +34,12 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
         #endregion
 
         #region Constructor
-        public LendingRateSettingsDialogViewModel(IContractService contractService, ILendingRateService lendingRateService, IDialogService dialogService, LendingRateSettingsDialogValidator addEditLendingRateValidator) : base(addEditLendingRateValidator)
+        public LendingRateSettingsDialogViewModel(IContractService contractService, ILendingRateService lendingRateService, IDialogService dialogService, LendingRateSettingsDialogValidator addEditLendingRateValidator, IMessageBoxService messageBoxService) : base(addEditLendingRateValidator)
         {
             _contractService = contractService;
             _lendingRateService = lendingRateService;
             _dialogService = dialogService;
+            _messageBoxService = messageBoxService;
             LoadStartupDataAsync();
         }
 
@@ -119,18 +120,18 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
                 await _lendingRateService.AddLendingRate(Days.Value, Percentage.Value);
                 Days = null;
                 Percentage = null;
-                MaterialMessageBox.Show("Pomyślnie dodano oprocentowanie.", "Sukces");
+                _messageBoxService.Show("Pomyślnie dodano oprocentowanie.", "Sukces");
                 LoadStartupDataAsync();
             }
             catch (AddingLendingRateException addingLendingRateException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{addingLendingRateException.Message}{Environment.NewLine}Błąd: {addingLendingRateException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -160,19 +161,19 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
             try
             {
                 await _lendingRateService.DeleteLendingRate(SelectedLendingRate);
-                MaterialMessageBox.Show("Pomyślnie usunięto oprocentowanie.", "Sukces");
+                _messageBoxService.Show("Pomyślnie usunięto oprocentowanie.", "Sukces");
                 SelectedLendingRate = null;
                 LoadStartupDataAsync();
             }
             catch (DeletingLendingRateException deletingLendingRateException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{deletingLendingRateException.Message}{Environment.NewLine}Błąd: {deletingLendingRateException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -199,13 +200,13 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
             }
             catch (LoadingLendingRatesException laodingLendingRateException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{laodingLendingRateException.Message}{Environment.NewLine}Błąd: {laodingLendingRateException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

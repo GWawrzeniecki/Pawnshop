@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.QueryDataModels;
@@ -7,6 +6,7 @@ using PawnShop.Core.ViewModel;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Commodity.Events;
 using PawnShop.Modules.Commodity.RegionContext;
+using PawnShop.Services.Interfaces;
 using Prism;
 using Prism.Events;
 using Prism.Mvvm;
@@ -22,6 +22,7 @@ namespace PawnShop.Modules.Commodity.Base
         #region PrivateMembers
 
         private readonly IDialogService _dialogService;
+        private readonly IMessageBoxService _messageBoxService;
         private IList<ContractItem> _contractItems;
         private ContractItem _selectedContractItem;
         private bool _isBusy;
@@ -32,9 +33,10 @@ namespace PawnShop.Modules.Commodity.Base
 
         #region Constructor
 
-        protected GoodsBaseViewModel(IEventAggregator eventAggregator, IDialogService dialogService, string headerName)
+        protected GoodsBaseViewModel(IEventAggregator eventAggregator, IDialogService dialogService, string headerName, IMessageBoxService messageBoxService)
         {
             _dialogService = dialogService;
+            _messageBoxService = messageBoxService;
             Header = headerName;
             ContractItems = new List<ContractItem>();
             eventAggregator.GetEvent<RefreshDataGridEvent>().Subscribe(RefreshDataGrid);
@@ -95,13 +97,13 @@ namespace PawnShop.Modules.Commodity.Base
             }
             catch (LoadingContractItemsException loadingContractItemsException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractItemsException.Message}{Environment.NewLine}Błąd: {loadingContractItemsException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -135,13 +137,13 @@ namespace PawnShop.Modules.Commodity.Base
             }
             catch (LoadingContractItemsException loadingContractItemsException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractItemsException.Message}{Environment.NewLine}Błąd: {loadingContractItemsException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

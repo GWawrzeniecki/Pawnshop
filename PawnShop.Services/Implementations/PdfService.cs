@@ -66,8 +66,22 @@ namespace PawnShop.Services.Implementations
             await Task.Factory
                 .StartNew(() => PrintPdf(pdfPath), CancellationToken.None, TaskCreationOptions.None,
                     TaskScheduler.FromCurrentSynchronizationContext());
+        }
 
+        public bool CheckIfPdfIsFillAble(string pdfPath)
+        {
+            if (string.IsNullOrEmpty(pdfPath)) throw new ArgumentException($"'{nameof(pdfPath)}' cannot be null or empty.", nameof(pdfPath));
+            if (!File.Exists(pdfPath)) throw new FileNotFoundException($"Plik: {pdfPath} nie istnieje lub nie maasz do niego uprawnień.");
 
+            var pdfDoc = new PdfDocument(new PdfReader(pdfPath));
+            var form = PdfAcroForm.GetAcroForm(pdfDoc, false);
+
+            return form is not null;
+        }
+
+        public async Task<bool> CheckIfPdfIsFillAbleAsync(string pdfPath)
+        {
+            return await Task.Run(() => CheckIfPdfIsFillAble(pdfPath));
         }
     }
 

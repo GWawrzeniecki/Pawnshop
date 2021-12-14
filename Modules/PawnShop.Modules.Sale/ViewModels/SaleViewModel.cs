@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
@@ -9,6 +8,7 @@ using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Sale.Validators;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
@@ -44,6 +44,7 @@ namespace PawnShop.Modules.Sale.ViewModels
         private readonly IContainerProvider _containerProvider;
         private readonly IMapper _mapper;
         private readonly IDialogService _dialogService;
+        private readonly IMessageBoxService _messageBoxService;
         private DelegateCommand _showPreviewCommand;
         private DelegateCommand _sellCommand;
 
@@ -51,11 +52,12 @@ namespace PawnShop.Modules.Sale.ViewModels
 
         #region Constructor
 
-        public SaleViewModel(IContainerProvider containerProvider, IMapper mapper, IDialogService dialogService, SaleValidator saleValidator) : base(saleValidator)
+        public SaleViewModel(IContainerProvider containerProvider, IMapper mapper, IDialogService dialogService, SaleValidator saleValidator, IMessageBoxService messageBoxService) : base(saleValidator)
         {
             _containerProvider = containerProvider;
             _mapper = mapper;
             _dialogService = dialogService;
+            _messageBoxService = messageBoxService;
             Sales = new List<Business.Models.Sale>();
             LoadStartupData();
         }
@@ -209,13 +211,13 @@ namespace PawnShop.Modules.Sale.ViewModels
             }
             catch (LoadingSalesException loadingSalesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingSalesException.Message}{Environment.NewLine}Błąd: {loadingSalesException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -230,13 +232,13 @@ namespace PawnShop.Modules.Sale.ViewModels
             }
             catch (LoadingSalesException loadingSalesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingSalesException.Message}{Environment.NewLine}Błąd: {loadingSalesException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -283,19 +285,19 @@ namespace PawnShop.Modules.Sale.ViewModels
             }
             catch (LoadingSalesException loadingSalesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingSalesException.Message}{Environment.NewLine}Błąd: {loadingSalesException.InnerException?.Message}",
                     "Błąd");
             }
             catch (LoadingContractItemCategoriesException loadingContractItemCategoriesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractItemCategoriesException.Message}{Environment.NewLine}Błąd: {loadingContractItemCategoriesException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

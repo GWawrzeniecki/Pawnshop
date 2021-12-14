@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Core.ViewModel;
@@ -11,6 +10,7 @@ using Prism.Commands;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
 using System;
+using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Settings.ViewModels
 {
@@ -22,8 +22,10 @@ namespace PawnShop.Modules.Settings.ViewModels
         private DelegateCommand _saveSearchContractsDayCommand;
         private IUserSettings _userSettings;
         private readonly ISettingsService<UserSettings> _settingsService;
+        private readonly IPdfService _pdfService;
         private readonly IDialogService _dialogService;
         private readonly IContainerProvider _containerProvider;
+        private readonly IMessageBoxService _messageBoxService;
         private DelegateCommand _chooseDealDocumentFilePathCommand;
         private int _automaticSearchingEndedContractsDay;
         private string _dealDocumentPath;
@@ -34,13 +36,15 @@ namespace PawnShop.Modules.Settings.ViewModels
 
         #region Constructor
 
-        public PawnShopSettingsViewModel(IUserSettings userSettings, ISettingsService<UserSettings> settingsService,
-            IDialogService dialogService, IContainerProvider containerProvider, PawnShopSettingsValidator pawnShopSettingsValidator) : base(pawnShopSettingsValidator)
+        public PawnShopSettingsViewModel(IUserSettings userSettings, ISettingsService<UserSettings> settingsService, IPdfService pdfService,
+            IDialogService dialogService, IContainerProvider containerProvider, PawnShopSettingsValidator pawnShopSettingsValidator, IMessageBoxService messageBoxService) : base(pawnShopSettingsValidator)
         {
             UserSettings = userSettings;
             _settingsService = settingsService;
+            _pdfService = pdfService;
             _dialogService = dialogService;
             _containerProvider = containerProvider;
+            _messageBoxService = messageBoxService;
             Header = "Lombard";
         }
 
@@ -106,10 +110,10 @@ namespace PawnShop.Modules.Settings.ViewModels
             SaveUserSettings();
         }
 
-        private void ChooseDealDocumentTemplateFilePath()
+        private async void ChooseDealDocumentTemplateFilePath()
         {
 
-            if (ChooseDealDocumentTemplate())
+            if (await ChooseDealDocumentTemplateAsync())
                 SaveUserSettings();
         }
 
@@ -132,11 +136,11 @@ namespace PawnShop.Modules.Settings.ViewModels
             try
             {
                 TryToSaveUserSettings();
-                MaterialMessageBox.Show("Zapisano pomyślnie", "Sukces");
+                _messageBoxService.Show("Zapisano pomyślnie", "Sukces");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Wystąpił błąd podczas zapisu ustawień. {Environment.NewLine}Błąd: {e.Message}", "Błąd");
             }
         }
@@ -146,24 +150,30 @@ namespace PawnShop.Modules.Settings.ViewModels
             _settingsService.SaveSettings(UserSettings as UserSettings);
         }
 
-        private bool ChooseDealDocumentTemplate()
+        private async Task<bool> ChooseDealDocumentTemplateAsync()
         {
             try
             {
-                return TryToChooseDealDocumentTemplate();
+                return await TryToChooseDealDocumentTemplateAsync();
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Wystąpił błąd podczas wybierania szablonu umowy. {Environment.NewLine}Błąd: {e.Message}", "Błąd");
                 return false;
             }
         }
 
-        private bool TryToChooseDealDocumentTemplate()
+        private async Task<bool> TryToChooseDealDocumentTemplateAsync()
         {
             OpenFileDialog openFileDialog = new() { Filter = "Pdf files (*.pdf)|*.pdf" };
             if (openFileDialog.ShowDialog() != true) return false;
+
+            var exist = await _pdfService.CheckIfPdfIsFillAbleAsync(openFileDialog.FileName);
+
+            if (!exist)
+                throw new Exception("Wybrany plik pdf nie posiada żadnych pól do wypełnienia.");
+
             DealDocumentPath = openFileDialog.FileName;
             return true;
 

@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Events;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions;
@@ -28,6 +27,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IContractService _contractService;
         private readonly IShellService _shellService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IMessageBoxService _messageBoxService;
         private decimal _renewPrice;
         private Business.Models.Contract _contractToRenew;
         private DelegateCommand _saveCommand;
@@ -39,11 +39,12 @@ namespace PawnShop.Modules.Contract.ViewModels
         #endregion
 
         #region Constructor
-        public RenewContractPaymentViewModel(IContractService contractService, IShellService shellService, IEventAggregator eventAggregator)
+        public RenewContractPaymentViewModel(IContractService contractService, IShellService shellService, IEventAggregator eventAggregator, IMessageBoxService messageBoxService)
         {
             _contractService = contractService;
             _shellService = shellService;
             _eventAggregator = eventAggregator;
+            _messageBoxService = messageBoxService;
             LoadStartupData();
         }
 
@@ -114,7 +115,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 await TryToRenewContract(_contractToRenew, insertContractRenew, SelectedPaymentType, RenewPrice, null,
                     RenewPrice);
                 _eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Publish();
-                MaterialMessageBox.Show("Pomyślnie przedłużono umowę.", "Sukces");
+                _messageBoxService.Show("Pomyślnie przedłużono umowę.", "Sukces");
                 if (IsPrintDealDocument)
                     await TryToPrintDealDocumentAsync();
                 await _callBack.Invoke();
@@ -122,13 +123,13 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (RenewContractException renewContractException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{renewContractException.Message}{Environment.NewLine}Błąd: {renewContractException.InnerException?.Message}",
                     "Błąd");
             }
             catch (PrintDealDocumentException dealDocumentException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{dealDocumentException.Message}{Environment.NewLine}Błąd: {dealDocumentException.InnerException?.Message}",
                     "Błąd");
             }
@@ -156,7 +157,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
             catch (LoadingPaymentTypesException loadingPaymentTypesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingPaymentTypesException.Message}{Environment.NewLine}Błąd: {loadingPaymentTypesException.InnerException?.Message}",
                     "Błąd");
             }

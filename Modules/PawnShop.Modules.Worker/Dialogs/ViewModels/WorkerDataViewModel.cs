@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Modules.Worker.Base;
 using PawnShop.Modules.Worker.Validators;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using System;
 using System.Collections.Generic;
@@ -25,15 +25,17 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         private IList<WorkerBossType> _workerBossTypes;
         private WorkerBossType _selectedWorkerBossType;
         private readonly IContainerProvider _containerProvider;
+        private readonly IMessageBoxService _messageBoxService;
         private Task _loadWorkerBossTypesTask;
 
         #endregion
 
         #region Constructor
 
-        public WorkerDataViewModel(IMapper mapper, IContainerProvider containerProvider, WorkerDataViewModelValidator validator) : base(mapper, validator)
+        public WorkerDataViewModel(IMapper mapper, IContainerProvider containerProvider, WorkerDataViewModelValidator validator, IMessageBoxService messageBoxService) : base(mapper, validator)
         {
             _containerProvider = containerProvider;
+            _messageBoxService = messageBoxService;
             Header = "Dane pracownika";
             LoadWorkerBossTypes();
         }
@@ -117,7 +119,7 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Wystąpił problem podczas pobierania rodzajów pracownika.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

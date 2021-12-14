@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.HamburgerMenu.Implementations;
 using PawnShop.Core.HamburgerMenu.Interfaces;
@@ -27,6 +26,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IContractService _contractService;
         private readonly IDialogService _dialogService;
         private readonly ICalculateService _calculateService;
+        private readonly IMessageBoxService _messageBoxService;
         private string _contractNumber;
         private LendingRate _selectedLendingRate;
         private DateTime? _rePurchaseDateTime;
@@ -39,11 +39,12 @@ namespace PawnShop.Modules.Contract.ViewModels
         #region constructor
 
         public ContractDataViewModel(IContractService contractService,
-            IDialogService dialogService, ICalculateService calculateService, IContainerProvider containerProvider)
+            IDialogService dialogService, ICalculateService calculateService, IContainerProvider containerProvider, IMessageBoxService messageBoxService)
         {
             _contractService = contractService;
             _dialogService = dialogService;
             _calculateService = calculateService;
+            _messageBoxService = messageBoxService;
             HamburgerMenuItem = containerProvider.Resolve<SummaryHamburgerMenuItem>();
             BoughtContractItems = new List<ContractItem>();
             LoadStartupData();
@@ -180,13 +181,13 @@ namespace PawnShop.Modules.Contract.ViewModels
 
             catch (LoadingLendingRatesException loadingLendingRatesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingLendingRatesException.Message}{Environment.NewLine}Błąd: {loadingLendingRatesException.InnerException?.Message}",
                     "Błąd");
             }
             catch (GetNextContractNumberException getNextContractNumberException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{getNextContractNumberException.Message}{Environment.NewLine}Błąd: {getNextContractNumberException.InnerException?.Message}",
                     "Błąd");
             }

@@ -39,7 +39,7 @@ namespace PawnShop.Controls.Validators
                 .DependentRules(() =>
                 {
                     RuleFor(view => view.Street)
-                        .Matches(@"^\p{Lu}{1}\D+$")
+                        .Matches(@"^(\d\s)?(\p{Lu}{1}\p{Ll}+){1}([\s-]\p{Lu}{1}\p{Ll}+)*$")
                         .When(view => !string.IsNullOrEmpty(view.Street))
                         .WithMessage("Nieprawidłowe nazwa ulicy.");
                 });

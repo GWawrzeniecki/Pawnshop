@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.HamburgerMenu.Implementations;
 using PawnShop.Core.HamburgerMenu.Interfaces;
 using PawnShop.Core.ScopedRegion;
@@ -22,6 +21,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private readonly ICalculateService _calculateService;
         private readonly IContractService _contractService;
+        private readonly IMessageBoxService _messageBoxService;
         private bool _isDelayed;
         private int _howManyDaysLate;
         private Business.Models.Contract _contract;
@@ -37,10 +37,11 @@ namespace PawnShop.Modules.Contract.ViewModels
         #region Constructor
 
         public RenewContractDataViewModel(ICalculateService calculateService, IContractService contractService,
-            IContainerProvider containerProvider)
+            IContainerProvider containerProvider, IMessageBoxService messageBoxService)
         {
             _calculateService = calculateService;
             _contractService = contractService;
+            _messageBoxService = messageBoxService;
             Contract = new Business.Models.Contract { ContractItems = new List<ContractItem>(), LendingRate = new LendingRate() };
             HamburgerMenuItem = containerProvider.Resolve<RenewContractPaymentHamburgerMenuItem>();
             LoadStartupData();
@@ -194,7 +195,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
             catch (LoadingLendingRatesException loadingLendingRatesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingLendingRatesException.Message}{Environment.NewLine}Błąd: {loadingLendingRatesException.InnerException?.Message}",
                     "Błąd");
             }

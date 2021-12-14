@@ -1,7 +1,7 @@
-﻿using BespokeFusion;
-using PawnShop.Core.Events;
+﻿using PawnShop.Core.Events;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
@@ -16,6 +16,7 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
         #region private members
 
         private readonly IContainerProvider _containerProvider;
+        private readonly IMessageBoxService _messageBoxService;
         private readonly DispatcherTimer _dispatcherTimer;
         private DateTime _actualDateTime;
         private ISessionContext _sessionContext;
@@ -24,9 +25,10 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
 
         #region constructor
 
-        public BottomInfoLineViewModel(ISessionContext sessionContext, IEventAggregator eventAggregator, IContainerProvider containerProvider)
+        public BottomInfoLineViewModel(ISessionContext sessionContext, IEventAggregator eventAggregator, IContainerProvider containerProvider, IMessageBoxService messageBoxService)
         {
             _containerProvider = containerProvider;
+            _messageBoxService = messageBoxService;
             _dispatcherTimer = new DispatcherTimer();
             UpdateActualDateTime();
             SessionContext = sessionContext;
@@ -84,7 +86,7 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
             }
             catch (Exception)
             {
-                MaterialMessageBox.Show($"Nie udało się odświeżyć stanu kasy.{Environment.NewLine}Uruchom ponownie aplikacje.", "Błąd");
+                _messageBoxService.ShowError($"Nie udało się odświeżyć stanu kasy.{Environment.NewLine}Uruchom ponownie aplikacje.", "Błąd");
 
             }
         }

@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Settings.Validators;
@@ -15,6 +14,7 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
         #region PrivateMembers
 
         private readonly ILendingRateService _lendingRateService;
+        private readonly IMessageBoxService _messageBoxService;
         private int? _days;
         private int? _percentage;
         private bool _hasDaysText;
@@ -25,9 +25,10 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
         #endregion
 
         #region Constuctor
-        public EditLendingRateDialogViewModel(ILendingRateService lendingRateService, EditLendingRateDialogValidator editLendingRateDialogValidator) : base(editLendingRateDialogValidator)
+        public EditLendingRateDialogViewModel(ILendingRateService lendingRateService, EditLendingRateDialogValidator editLendingRateDialogValidator, IMessageBoxService messageBoxService) : base(editLendingRateDialogValidator)
         {
             _lendingRateService = lendingRateService;
+            _messageBoxService = messageBoxService;
         }
 
         #endregion
@@ -89,19 +90,19 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
                 LendingRate.Days = Days.Value;
                 LendingRate.Procent = Percentage.Value;
                 await _lendingRateService.EditLendingRate(LendingRate);
-                MaterialMessageBox.Show("Pomyślnie zaktualizowano oprocentowanie.", "Sukces");
+                _messageBoxService.Show("Pomyślnie zaktualizowano oprocentowanie.", "Sukces");
                 RequestClose.Invoke(new DialogResult(ButtonResult.OK));
             }
             catch (EditingLendingRateException editingLendingRateException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{editingLendingRateException.Message}{Environment.NewLine}Błąd: {editingLendingRateException.InnerException?.Message}",
                     "Błąd");
 
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using ControlzEx.Theming;
+﻿using ControlzEx.Theming;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Core.ViewModel;
 using PawnShop.Modules.Settings.Models;
@@ -21,14 +20,16 @@ namespace PawnShop.Modules.Settings.ViewModels
         private bool _isAppThemeChangedByUser;
         private readonly ISettingsService<UserSettings> _userSettingsService;
         private readonly IUserSettings _userSettings;
+        private readonly IMessageBoxService _messageBoxService;
 
         #endregion
 
         #region Constructor
-        public AppSettingsViewModel(ISettingsService<UserSettings> userSettingsService, IUserSettings userSettings)
+        public AppSettingsViewModel(ISettingsService<UserSettings> userSettingsService, IUserSettings userSettings, IMessageBoxService messageBoxService)
         {
             _userSettingsService = userSettingsService;
             _userSettings = userSettings;
+            _messageBoxService = messageBoxService;
             Header = "Aplikacja";
             LoadAppThemes();
             LoadActualAppTheme();
@@ -89,7 +90,7 @@ namespace PawnShop.Modules.Settings.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Wystąpił błąd podczas zapisywania motywu do ustawień. {Environment.NewLine}Błąd: {e.Message}", "Błąd");
             }
         }

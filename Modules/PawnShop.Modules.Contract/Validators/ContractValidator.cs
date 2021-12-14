@@ -19,7 +19,7 @@ namespace PawnShop.Modules.Contract.Validators
                 .WithMessage("Nieprawidłowy format kwoty umowy.");
 
             RuleFor(contract => contract.Client)
-                .Matches(@"^(\p{Lu}{1}\p{Ll}+)*(\s\p{Lu}{1}\p{Ll}+)+$")
+                .Matches(@"^(\p{Lu}?\p{Ll}+){1}((\s)\p{Lu}?\p{Ll}+)*$")
                 .When(contract => !string.IsNullOrEmpty(contract.Client))
                 .WithMessage("Nieprawidłowa nazwa klienta.");
         }

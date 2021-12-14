@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Controls.ContractItemViews.ViewModels;
 using PawnShop.Core.Constants;
@@ -42,17 +41,19 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
         private readonly IContractItemService _contractItemService;
         private readonly IContainerProvider _containerProvider;
         private readonly IMapper _mapper;
+        private readonly IMessageBoxService _messageBoxService;
 
         #endregion
 
         #region Constructor
 
         public AddContractItemDialogViewModel(IContractItemService contractItemService, AddContractItemValidator addContractItemValidator,
-            IContainerProvider containerProvider, IMapper mapper) : base(addContractItemValidator)
+            IContainerProvider containerProvider, IMapper mapper, IMessageBoxService messageBoxService) : base(addContractItemValidator)
         {
             _contractItemService = contractItemService;
             _containerProvider = containerProvider;
             _mapper = mapper;
+            _messageBoxService = messageBoxService;
             Title = "Dodanie towaru do umowy";
             LoadStartupData();
 
@@ -210,25 +211,25 @@ namespace PawnShop.Modules.Contract.Dialogs.ViewModels
             }
             catch (LoadingContractItemCategoriesException loadingContractItemCategoriesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractItemCategoriesException.Message}{Environment.NewLine}Błąd: {loadingContractItemCategoriesException.InnerException?.Message}",
                     "Błąd");
             }
             catch (LoadingUnitMeasuresException loadingUnitMeasuresException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingUnitMeasuresException.Message}{Environment.NewLine}Błąd: {loadingUnitMeasuresException.InnerException?.Message}",
                     "Błąd");
             }
             catch (LoadingContractItemStatesException loadingContractItemStatesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractItemStatesException.Message}{Environment.NewLine}Błąd: {loadingContractItemStatesException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

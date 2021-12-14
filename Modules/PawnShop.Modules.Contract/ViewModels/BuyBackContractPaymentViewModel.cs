@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Events;
 using PawnShop.Core.ScopedRegion;
 using PawnShop.Exceptions;
@@ -30,6 +29,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly IContainerProvider _containerProvider;
         private readonly IPrintService _printService;
+        private readonly IMessageBoxService _messageBoxService;
         private decimal _buyBackPrice;
         private Business.Models.Contract _contractToBuyBack;
         private IList<PaymentType> _paymentTypes;
@@ -43,13 +43,14 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Constructor
 
-        public BuyBackContractPaymentViewModel(IContractService contractService, IShellService shellService, IEventAggregator eventAggregator, IContainerProvider containerProvider, IPrintService printService)
+        public BuyBackContractPaymentViewModel(IContractService contractService, IShellService shellService, IEventAggregator eventAggregator, IContainerProvider containerProvider, IPrintService printService, IMessageBoxService messageBoxService)
         {
             _contractService = contractService;
             _shellService = shellService;
             _eventAggregator = eventAggregator;
             _containerProvider = containerProvider;
             _printService = printService;
+            _messageBoxService = messageBoxService;
             LoadStartupData();
         }
 
@@ -151,7 +152,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                     BuyBackPrice, BuyBackPrice - SumOfEstimatedValues);
 
                 _eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Publish();
-                MaterialMessageBox.Show("Pomyślnie przedłużono umowę.", "Sukces");
+                _messageBoxService.Show("Pomyślnie wykupiono umowę.", "Sukces");
 
                 if (IsPrintDealDocument)
                     await TryToPrintDealDocumentAsync();
@@ -162,31 +163,31 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (RenewContractException renewContractException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{renewContractException.Message}{Environment.NewLine}Błąd: {renewContractException.InnerException?.Message}",
                     "Błąd");
             }
             catch (PrintDealDocumentException dealDocumentException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{dealDocumentException.Message}{Environment.NewLine}Błąd: {dealDocumentException.InnerException?.Message}",
                     "Błąd");
             }
             catch (BuyBackContractException buyBackContractException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{buyBackContractException.Message}{Environment.NewLine}Błąd: {buyBackContractException.InnerException?.Message}",
                     "Błąd");
             }
             catch (PrintVisualElementException printVisualElementException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{printVisualElementException.Message}{Environment.NewLine}Błąd: {printVisualElementException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -211,7 +212,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
             catch (LoadingPaymentTypesException loadingPaymentTypesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingPaymentTypesException.Message}{Environment.NewLine}Błąd: {loadingPaymentTypesException.InnerException?.Message}",
                     "Błąd");
             }

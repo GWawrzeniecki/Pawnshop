@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Modules.Worker.Base;
 using PawnShop.Modules.Worker.Validators;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,7 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
         #region PrivateMembers
 
         private readonly IContainerProvider _containerProvider;
+        private readonly IMessageBoxService _messageBoxService;
         private string _city;
         private string _country;
         private IList<Country> _countries;
@@ -38,9 +39,10 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
 
         #region Constructor
 
-        public PersonalDataViewModel(IMapper mapper, IContainerProvider containerProvider, PersonalDataViewModelValidator validator) : base(mapper, validator)
+        public PersonalDataViewModel(IMapper mapper, IContainerProvider containerProvider, PersonalDataViewModelValidator validator, IMessageBoxService messageBoxService) : base(mapper, validator)
         {
             _containerProvider = containerProvider;
+            _messageBoxService = messageBoxService;
             Header = "Dane personalne";
             LoadStartupData();
         }
@@ -178,7 +180,7 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Wystąpił problem podczas pobierania listy krajów i miast.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

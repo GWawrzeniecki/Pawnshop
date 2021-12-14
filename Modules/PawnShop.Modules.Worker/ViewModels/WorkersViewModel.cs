@@ -1,10 +1,10 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Mvvm;
@@ -24,6 +24,7 @@ namespace PawnShop.Modules.Worker.ViewModels
         private readonly IContainerProvider _containerProvider;
         private readonly IDialogService _dialogService;
         private readonly ISessionContext _sessionContext;
+        private readonly IMessageBoxService _messageBoxService;
         private DelegateCommand _showWorkerCommand;
         private DelegateCommand _createWorkerCommand;
         private DelegateCommand _editWorkerCommand;
@@ -34,11 +35,12 @@ namespace PawnShop.Modules.Worker.ViewModels
 
         #region Constructor
 
-        public WorkersViewModel(IContainerProvider containerProvider, IDialogService dialogService, ISessionContext sessionContext)
+        public WorkersViewModel(IContainerProvider containerProvider, IDialogService dialogService, ISessionContext sessionContext, IMessageBoxService messageBoxService)
         {
             _containerProvider = containerProvider;
             _dialogService = dialogService;
             _sessionContext = sessionContext;
+            _messageBoxService = messageBoxService;
             WorkerBosses = new List<WorkerBoss>();
             LoadStartupData();
         }
@@ -145,26 +147,26 @@ namespace PawnShop.Modules.Worker.ViewModels
             {
                 if (_sessionContext.LoggedPerson.WorkerBossId == SelectedWorkerBoss.WorkerBossId)
                 {
-                    MaterialMessageBox.ShowError("Nie możesz usunąc aktualnie zalogowanego pracownika.", "Uwaga!");
+                    _messageBoxService.ShowError("Nie możesz usunąc aktualnie zalogowanego pracownika.", "Uwaga!");
                 }
                 else
                 {
                     IsBusy = true;
                     await TryToDeleteWorker();
-                    MaterialMessageBox.Show("Pracownik został pomyślnie usunięty.", "Sukces");
+                    _messageBoxService.Show("Pracownik został pomyślnie usunięty.", "Sukces");
                     await RefreshData();
                 }
             }
             catch (DeleteWorkerException e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{e.Message}.{Environment.NewLine}Błąd: {e.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
 
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -187,7 +189,7 @@ namespace PawnShop.Modules.Worker.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Wystąpił błąd podczas ładowania listy pracowników.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -201,7 +203,7 @@ namespace PawnShop.Modules.Worker.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Wystąpił błąd podczas odświeżania listy pracowników.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

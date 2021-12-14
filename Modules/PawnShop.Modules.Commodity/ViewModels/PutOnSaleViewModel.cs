@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Commodity.Validators;
@@ -19,6 +18,7 @@ namespace PawnShop.Modules.Commodity.ViewModels
         #region PrivateMembers
 
         private readonly IContractItemService _contractItemService;
+        private readonly IMessageBoxService _messageBoxService;
         private IList<UnitMeasure> _contractItemUnitMeasures;
         private UnitMeasure _selectedContractItemUnitMeasure;
         private int? _contractItemQuantity;
@@ -36,9 +36,10 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         #region Constructor
 
-        public PutOnSaleViewModel(IContractItemService contractItemService, PutOnSaleValidator putOnSaleValidator) : base(putOnSaleValidator)
+        public PutOnSaleViewModel(IContractItemService contractItemService, PutOnSaleValidator putOnSaleValidator, IMessageBoxService messageBoxService) : base(putOnSaleValidator)
         {
             _contractItemService = contractItemService;
+            _messageBoxService = messageBoxService;
             SaleLinks = new ObservableCollection<Link>();
         }
 
@@ -169,13 +170,13 @@ namespace PawnShop.Modules.Commodity.ViewModels
             }
             catch (LoadingUnitMeasuresException loadingUnitMeasuresException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingUnitMeasuresException.Message}{Environment.NewLine}Błąd: {loadingUnitMeasuresException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

@@ -2,6 +2,7 @@
 using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Modules.Commodity.Base;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
@@ -20,7 +21,7 @@ namespace PawnShop.Modules.Commodity.ViewModels
 
         #region Constructor
 
-        public CurrentGoodsGridViewModel(IContainerProvider containerProvider, IEventAggregator eventAggregator, IDialogService dialogService) : base(eventAggregator, dialogService, "Bieżące")
+        public CurrentGoodsGridViewModel(IContainerProvider containerProvider, IEventAggregator eventAggregator, IDialogService dialogService, IMessageBoxService messageBoxService) : base(eventAggregator, dialogService, "Bieżące", messageBoxService)
         {
             _containerProvider = containerProvider;
             LoadContractItems();

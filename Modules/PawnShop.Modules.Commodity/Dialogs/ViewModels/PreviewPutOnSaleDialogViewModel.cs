@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Constants;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.QueryDataModels;
@@ -10,6 +9,7 @@ using PawnShop.Modules.Commodity.Events;
 using PawnShop.Modules.Commodity.ViewModels;
 using PawnShop.Modules.Commodity.Views;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
@@ -30,6 +30,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
 
         private readonly IEventAggregator _eventAggregator;
         private readonly IContainerProvider _containerProvider;
+        private readonly IMessageBoxService _messageBoxService;
         private string _title;
         private DialogMode _dialogMode;
         private ContractItem _contractItem;
@@ -42,10 +43,11 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
 
         #region Constructor
 
-        public PreviewPutOnSaleDialogViewModel(IEventAggregator eventAggregator, IContainerProvider containerProvider)
+        public PreviewPutOnSaleDialogViewModel(IEventAggregator eventAggregator, IContainerProvider containerProvider, IMessageBoxService messageBoxService)
         {
             _eventAggregator = eventAggregator;
             _containerProvider = containerProvider;
+            _messageBoxService = messageBoxService;
         }
 
         #endregion
@@ -102,19 +104,19 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
             try
             {
                 await TryToPutOnSale();
-                MaterialMessageBox.Show("Pomyślnie wystawiono towar na sprzedaż.");
+                _messageBoxService.Show("Pomyślnie wystawiono towar na sprzedaż.", "Sukces");
                 _eventAggregator.GetEvent<RefreshDataGridEvent>().Publish(new ContractItemQueryData());
                 CloseDialog(new DialogResult(ButtonResult.OK));
             }
             catch (InsertSaleException insertSaleException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{insertSaleException.Message}{Environment.NewLine}Błąd: {insertSaleException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

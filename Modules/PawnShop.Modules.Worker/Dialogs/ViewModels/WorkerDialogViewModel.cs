@@ -1,10 +1,10 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Worker.Base;
 using PawnShop.Modules.Worker.RegionContext;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -21,6 +21,7 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
 
         private string _title;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMessageBoxService _messageBoxService;
         private WorkerTabControlRegionContext _workerTabControlRegionContext;
         private Visibility _createWorkerButtonVisibility;
         private Visibility _updateWorkerButtonVisibility;
@@ -33,9 +34,10 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
 
         #region Constructor
 
-        public WorkerDialogViewModel(IUnitOfWork unitOfWork)
+        public WorkerDialogViewModel(IUnitOfWork unitOfWork, IMessageBoxService messageBoxService)
         {
             _unitOfWork = unitOfWork;
+            _messageBoxService = messageBoxService;
         }
 
         #endregion
@@ -127,19 +129,19 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             try
             {
                 await TryToCreateWorkerAsync();
-                MaterialMessageBox.Show("Pracownik zostal pomyslnie dodany.", "Sukces");
+                _messageBoxService.Show("Pracownik zostal pomyslnie dodany.", "Sukces");
                 RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
             }
             catch (CreateWorkerException e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{e.Message}.{Environment.NewLine}Błąd: {e.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
 
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -150,19 +152,19 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             try
             {
                 await TryToUpdateWorkerAsync();
-                MaterialMessageBox.Show("Pomyślnie zapisano zmiany.", "Sukces");
+                _messageBoxService.Show("Pomyślnie zapisano zmiany.", "Sukces");
                 RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
             }
             catch (UpdateWorkerException e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{e.Message}.{Environment.NewLine}Błąd: {e.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
 
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

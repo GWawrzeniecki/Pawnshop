@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using LiveChartsCore;
+﻿using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using PawnShop.Core.Models.ApiModels;
@@ -20,6 +19,7 @@ namespace PawnShop.Modules.Home.ViewModels
         #region PrivateMembers
 
         private readonly IContainerProvider _containerProvider;
+        private readonly IMessageBoxService _messageBoxService;
         private IList<ISeries> _renews;
         private IList<ISeries> _sales;
         private IList<ISeries> _exchangeRates;
@@ -31,9 +31,10 @@ namespace PawnShop.Modules.Home.ViewModels
 
         #region Constructor
 
-        public HomeViewModel(IContainerProvider containerProvider)
+        public HomeViewModel(IContainerProvider containerProvider, IMessageBoxService messageBoxService)
         {
             _containerProvider = containerProvider;
+            _messageBoxService = messageBoxService;
             Sales = new List<ISeries>();
             Renews = new List<ISeries>();
             ExchangeRates = new List<ISeries>();
@@ -105,7 +106,7 @@ namespace PawnShop.Modules.Home.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError($"Wystąpił błąd podczas ładowania wykresu sprzedaży.{Environment.NewLine}Błąd: {e.Message}",
+                _messageBoxService.ShowError($"Wystąpił błąd podczas ładowania wykresu sprzedaży.{Environment.NewLine}Błąd: {e.Message}",
                     "Wykres sprzedaży - błąd");
             }
         }
@@ -141,7 +142,7 @@ namespace PawnShop.Modules.Home.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError($"Wystąpił błąd podczas ładowania wykresu przedłużeń.{Environment.NewLine}Błąd: {e.Message}",
+                _messageBoxService.ShowError($"Wystąpił błąd podczas ładowania wykresu przedłużeń.{Environment.NewLine}Błąd: {e.Message}",
                     "Wykres przedłużeń - błąd");
             }
         }
@@ -177,7 +178,7 @@ namespace PawnShop.Modules.Home.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError($"Wystąpił błąd podczas ładowania wykresu walut.{Environment.NewLine}Błąd: {e.Message}",
+                _messageBoxService.ShowError($"Wystąpił błąd podczas ładowania wykresu walut.{Environment.NewLine}Błąd: {e.Message}",
                     "Wykres sprzedazy - blad");
             }
         }
@@ -257,7 +258,7 @@ namespace PawnShop.Modules.Home.ViewModels
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError($"Wystąpił błąd podczas ładowania wykresu złota.{Environment.NewLine}Błąd: {e.Message}",
+                _messageBoxService.ShowError($"Wystąpił błąd podczas ładowania wykresu złota.{Environment.NewLine}Błąd: {e.Message}",
                     "Wykres złota - blad");
             }
         }

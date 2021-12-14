@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.DropDownButtonModels;
@@ -10,6 +9,7 @@ using PawnShop.Modules.Commodity.Events;
 using PawnShop.Modules.Commodity.RegionContext;
 using PawnShop.Modules.Commodity.Validators;
 using PawnShop.Services.DataService;
+using PawnShop.Services.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
@@ -39,6 +39,7 @@ namespace PawnShop.Modules.Commodity.ViewModels
         private IList<SearchPriceOption> _priceOptions;
         private readonly IMapper _mapper;
         private readonly IContainerProvider _containerProvider;
+        private readonly IMessageBoxService _messageBoxService;
         private readonly RefreshDataGridEvent _refreshDataGridEvent;
         private readonly TaskBarButtonClickEvent _taskBarButtonClickEvent;
         private DelegateCommand _previewCommand;
@@ -49,10 +50,11 @@ namespace PawnShop.Modules.Commodity.ViewModels
         #endregion
 
         #region Constructor
-        public CommodityViewModel(IMapper mapper, IEventAggregator eventAggregator, IContainerProvider containerProvider, CommodityValidator commodityValidator) : base(commodityValidator)
+        public CommodityViewModel(IMapper mapper, IEventAggregator eventAggregator, IContainerProvider containerProvider, CommodityValidator commodityValidator, IMessageBoxService messageBoxService) : base(commodityValidator)
         {
             _mapper = mapper;
             _containerProvider = containerProvider;
+            _messageBoxService = messageBoxService;
             _refreshDataGridEvent = eventAggregator.GetEvent<RefreshDataGridEvent>();
             _taskBarButtonClickEvent = eventAggregator.GetEvent<TaskBarButtonClickEvent>();
             CommodityTabRegionContext = new CommodityTabRegionContext();
@@ -221,13 +223,13 @@ namespace PawnShop.Modules.Commodity.ViewModels
             }
             catch (LoadingContractItemCategoriesException loadingContractItemCategoriesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractItemCategoriesException.Message}{Environment.NewLine}Błąd: {loadingContractItemCategoriesException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

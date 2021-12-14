@@ -10,7 +10,7 @@ namespace IntegrationTests.Base
 
         public override void Before(MethodInfo methodUnderTest)
         {
-            _transactionScope = new TransactionScope();
+            _transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
         }
 
         public override void After(MethodInfo methodUnderTest)

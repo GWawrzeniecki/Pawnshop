@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Constants;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.DropDownButtonModels;
@@ -17,7 +16,6 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Contract.ViewModels
@@ -29,9 +27,11 @@ namespace PawnShop.Modules.Contract.ViewModels
         private IList<Business.Models.Contract> _contracts;
         private readonly IContractService _contractService;
         private readonly IDialogService _dialogService;
+        private readonly IUserSettings _userSettings;
         private readonly IShellService _shellService;
         private readonly IContainerProvider _containerProvider;
         private readonly ISessionContext _sessionContext;
+        private readonly IMessageBoxService _messageBoxService;
         private IList<LendingRate> _lendingRates;
         private IList<ContractState> _contractStates;
         private IList<DateSearchOption> _dateSearchOptions;
@@ -56,16 +56,18 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region constructor
 
-        public ContractViewModel(IContractService contractService, IDialogService dialogService,
-            IShellService shellService, IContainerProvider containerProvider, ContractValidator contractValidator, ISessionContext sessionContext) :
+        public ContractViewModel(IContractService contractService, IDialogService dialogService, IUserSettings userSettings,
+            IShellService shellService, IContainerProvider containerProvider, ContractValidator contractValidator, ISessionContext sessionContext, IMessageBoxService messageBoxService) :
             base(contractValidator)
         {
             Contracts = new List<Business.Models.Contract>();
             _contractService = contractService;
             _dialogService = dialogService;
+            _userSettings = userSettings;
             _shellService = shellService;
             _containerProvider = containerProvider;
             _sessionContext = sessionContext;
+            _messageBoxService = messageBoxService;
             LoadStartupData();
 
         }
@@ -200,25 +202,25 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (LoadingContractStatesException loadingContractStateException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractStateException.Message}{Environment.NewLine}Błąd: {loadingContractStateException.InnerException?.Message}",
                     "Błąd");
             }
             catch (LoadingLendingRatesException laodingLendingRateException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{laodingLendingRateException.Message}{Environment.NewLine}Błąd: {laodingLendingRateException.InnerException?.Message}",
                     "Błąd");
             }
             catch (LoadingContractsException loadingContractsException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -236,8 +238,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private async Task TryToLoadContracts()
         {
-            Contracts = (await _contractService.LoadContracts(100))
-                .ToList();
+            Contracts = (await _contractService.LoadContracts(100));
         }
 
         private void LoadDateSearchOptions()
@@ -302,13 +303,13 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (LoadingContractsException loadingContractsException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -334,13 +335,13 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (LoadingContractsException loadingContractsException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -357,7 +358,10 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private void CreateContract()
         {
-            _shellService.ShowShell<CreateContractWindow>(nameof(ClientData), new NavigationParameters { { "CallBack", RefreshDataGridCallBack() } });
+            if (CheckIfDealDocumentPathIsSet())
+                _shellService.ShowShell<CreateContractWindow>(nameof(ClientData), new NavigationParameters { { "CallBack", RefreshDataGridCallBack() } });
+            else
+                _messageBoxService.ShowError($"Ścieżka do szablonu umowy nie jest ustawiona.{Environment.NewLine}Ustaw ją w ustawieniach.", "Uwaga!");
         }
 
         private Func<Task> RefreshDataGridCallBack()
@@ -379,6 +383,12 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             return SelectedContract is not null &&
                     !SelectedContract.ContractState.State.Equals(Constants.BuyBackContractState);
+        }
+
+        private bool CheckIfDealDocumentPathIsSet()
+        {
+            return !string.IsNullOrEmpty(_userSettings.DealDocumentPath);
+
         }
 
         #endregion private methods

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Business.Models;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.Interfaces;
@@ -27,6 +26,7 @@ namespace PawnShop.Controls.SharedViews.ViewModels
         private string _contractItemTechnicalCondition;
         private readonly IMapper _mapper;
         private readonly IContractItemService _contractItemService;
+        private readonly IMessageBoxService _messageBoxService;
         private ContractItem _contractItem;
         private Sale _sale;
         private int _contractItemQuantityForSale;
@@ -35,10 +35,11 @@ namespace PawnShop.Controls.SharedViews.ViewModels
 
         #region Constructor
 
-        public SaleBasicInfoViewModel(IMapper mapper, IContractItemService contractItemService)
+        public SaleBasicInfoViewModel(IMapper mapper, IContractItemService contractItemService, IMessageBoxService messageBoxService)
         {
             _mapper = mapper;
             _contractItemService = contractItemService;
+            _messageBoxService = messageBoxService;
         }
 
         #endregion
@@ -153,19 +154,19 @@ namespace PawnShop.Controls.SharedViews.ViewModels
             }
             catch (LoadingContractItemCategoriesException loadingContractItemCategoriesException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractItemCategoriesException.Message}{Environment.NewLine}Błąd: {loadingContractItemCategoriesException.InnerException?.Message}",
                     "Błąd");
             }
             catch (LoadingUnitMeasuresException loadingUnitMeasuresException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingUnitMeasuresException.Message}{Environment.NewLine}Błąd: {loadingUnitMeasuresException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

@@ -25,9 +25,10 @@ namespace PawnShop.Modules.Login.UnitTests.ViewModels
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var loginDialogValidatorMock = new Mock<LoginDialogValidator>();
             var havePasswordMock = new Mock<IHavePassword>();
+            var messageBoxService = new Mock<IMessageBoxService>();
 
             //Act
-            var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object);
+            var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object, messageBoxService.Object);
 
             //Assert
             Assert.False(vm.LoginCommand.CanExecute(havePasswordMock));
@@ -43,8 +44,9 @@ namespace PawnShop.Modules.Login.UnitTests.ViewModels
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var loginDialogValidatorMock = new Mock<LoginDialogValidator>();
             var havePasswordMock = new Mock<IHavePassword>();
+            var messageBoxService = new Mock<IMessageBoxService>();
             havePasswordMock.SetupGet(c => c.Password).Returns(password.ToSecureString());
-            var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object)
+            var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object, messageBoxService.Object)
             {
                 UserName = login
             };
@@ -70,10 +72,11 @@ namespace PawnShop.Modules.Login.UnitTests.ViewModels
             var havePasswordMock = new Mock<IHavePassword>();
             havePasswordMock.SetupGet(c => c.Password).Returns("test".ToSecureString);
             var loginDialogValidatorMock = new Mock<LoginDialogValidator>();
+            var messageBoxService = new Mock<IMessageBoxService>();
             eventAggregatorMock.
                 Setup(x => x.GetEvent<UserChangedEvent>()).
                 Returns(userChangedEventMock.Object);
-            var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object);
+            var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object, messageBoxService.Object);
 
             //Act
             vm.LoginCommand.Execute(havePasswordMock.Object);
@@ -96,10 +99,11 @@ namespace PawnShop.Modules.Login.UnitTests.ViewModels
             var havePasswordMock = new Mock<IHavePassword>();
             havePasswordMock.SetupGet(c => c.Password).Returns("test".ToSecureString);
             var loginDialogValidatorMock = new Mock<LoginDialogValidator>();
+            var messageBoxService = new Mock<IMessageBoxService>();
             eventAggregatorMock.
                 Setup(x => x.GetEvent<UserChangedEvent>()).
                 Returns(userChangedEventMock.Object);
-            var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object);
+            var vm = new LoginDialogViewModel(loginServiceMoc.Object, uiServiceMock.Object, eventAggregatorMock.Object, loginDialogValidatorMock.Object, messageBoxService.Object);
 
             //Act
             vm.LoginCommand.Execute(havePasswordMock.Object);

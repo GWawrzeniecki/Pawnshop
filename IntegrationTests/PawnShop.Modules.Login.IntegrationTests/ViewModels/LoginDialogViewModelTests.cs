@@ -5,12 +5,10 @@ using PawnShop.Business.Models;
 using PawnShop.Core.Extensions;
 using PawnShop.Core.Interfaces;
 using PawnShop.Core.SharedVariables;
-using PawnShop.DataAccess.Data;
 using PawnShop.Modules.Login.ViewModels;
 using PawnShop.Services.Implementations;
 using Prism.Ioc;
 using System;
-using System.Configuration;
 using System.Linq;
 using Xunit;
 
@@ -24,9 +22,7 @@ namespace PawnShop.Modules.Login.IntegrationTests.ViewModels
         public void UserShouldBeLoggedInAfterEnteringValidDataAsync(string login, string password)
         {
             //Arrange         
-            var dbContextOptionsBuilder = new DbContextOptionsBuilder<PawnshopContext>();
-            dbContextOptionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["PawnShopDatabaseTests"].ConnectionString);
-            using var pawnshopContext = new PawnshopContext(dbContextOptionsBuilder.Options);
+            using var pawnshopContext = PawnshopContext;
             var country = new Business.Models.Country() { Country1 = "Test" };
             var worker = pawnshopContext.WorkerBosses.Add(new Business.Models.WorkerBoss
             {
@@ -69,9 +65,7 @@ namespace PawnShop.Modules.Login.IntegrationTests.ViewModels
         public void MoneyBalanceShouldBeCreatedAfterSuccessfullyLogin(string login, string password)
         {
             //Arrange         
-            var dbContextOptionsBuilder = new DbContextOptionsBuilder<PawnshopContext>();
-            dbContextOptionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["PawnShopDatabaseTests"].ConnectionString);
-            using var pawnshopContext = new PawnshopContext(dbContextOptionsBuilder.Options);
+            using var pawnshopContext = PawnshopContext;
             var country = new Business.Models.Country() { Country1 = "Test" };
             pawnshopContext.WorkerBosses.Add(new Business.Models.WorkerBoss
             {
@@ -121,9 +115,7 @@ namespace PawnShop.Modules.Login.IntegrationTests.ViewModels
         public void ContractStatesShouldBeUpdatedAfterSuccessfullyLogin(string login, string password)
         {
             //Arrange         
-            var dbContextOptionsBuilder = new DbContextOptionsBuilder<PawnshopContext>();
-            dbContextOptionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["PawnShopDatabaseTests"].ConnectionString);
-            using var pawnshopContext = new PawnshopContext(dbContextOptionsBuilder.Options);
+            using var pawnshopContext = PawnshopContext;
             var country = new Business.Models.Country() { Country1 = "Test" };
             pawnshopContext.ContractStates.Add(new ContractState() { State = "Niewykupiona" });
             pawnshopContext.ContractStates.Add(new ContractState() { State = "Przedłużona" });

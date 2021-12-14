@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BespokeFusion;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.DropDownButtonModels;
@@ -27,6 +26,7 @@ namespace PawnShop.Modules.Client.ViewModels
         private readonly IClientService _clientService;
         private readonly IMapper _mapper;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IMessageBoxService _messageBoxService;
         private DelegateCommand _createClientCommand;
         private DelegateCommand<Business.Models.Client> _editClientCommand;
         private string _firstName;
@@ -46,12 +46,13 @@ namespace PawnShop.Modules.Client.ViewModels
 
         #region Constructor
 
-        public ClientViewModel(IDialogService dialogService, IClientService clientService, IMapper mapper, IEventAggregator eventAggregator, ClientViewModelValidator clientViewModelValidator) : base(clientViewModelValidator)
+        public ClientViewModel(IDialogService dialogService, IClientService clientService, IMapper mapper, IEventAggregator eventAggregator, ClientViewModelValidator clientViewModelValidator, IMessageBoxService messageBoxService) : base(clientViewModelValidator)
         {
             _dialogService = dialogService;
             _clientService = clientService;
             _mapper = mapper;
             _eventAggregator = eventAggregator;
+            _messageBoxService = messageBoxService;
             Clients = new List<Business.Models.Client>();
             LoadStartupData();
         }
@@ -212,13 +213,13 @@ namespace PawnShop.Modules.Client.ViewModels
             }
             catch (SearchClientsException loadingContractsException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
@@ -237,7 +238,7 @@ namespace PawnShop.Modules.Client.ViewModels
             }
             catch (LoadingClientsException loadingClientsException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingClientsException.Message}{Environment.NewLine}Błąd: {loadingClientsException.InnerException?.Message}",
                     "Błąd");
             }
@@ -295,13 +296,13 @@ namespace PawnShop.Modules.Client.ViewModels
             }
             catch (SearchClientsException loadingContractsException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

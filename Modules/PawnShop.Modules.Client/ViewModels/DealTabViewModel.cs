@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.ViewModel;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Client.Events;
@@ -19,14 +18,16 @@ namespace PawnShop.Modules.Client.ViewModels
 
         private IList<Contract> _contracts;
         private readonly IContractService _contractService;
+        private readonly IMessageBoxService _messageBoxService;
 
         #endregion
 
         #region Constructor
 
-        public DealTabViewModel(IEventAggregator eventAggregator, IContractService contractService)
+        public DealTabViewModel(IEventAggregator eventAggregator, IContractService contractService, IMessageBoxService messageBoxService)
         {
             _contractService = contractService;
+            _messageBoxService = messageBoxService;
             Header = "Umowy";
             Contracts = new List<Contract>();
             eventAggregator.GetEvent<SelectedClientChangedEvent>().Subscribe(LoadContracts);
@@ -60,13 +61,13 @@ namespace PawnShop.Modules.Client.ViewModels
             }
             catch (LoadingContractsException loadingContractsException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{loadingContractsException.Message}{Environment.NewLine}Błąd: {loadingContractsException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }

@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using PawnShop.Business.Models;
+﻿using PawnShop.Business.Models;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Enums;
 using PawnShop.Core.HamburgerMenu.Implementations;
@@ -27,6 +26,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private readonly IDialogService _dialogService;
         private readonly IClientService _clientService;
+        private readonly IMessageBoxService _messageBoxService;
         private IList<ClientSearchOption> _clientSearchOptions;
         private ClientSearchOption _selectedClientSearchOption;
         private IList<Client> _searchedClients;
@@ -42,14 +42,13 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region constructor
 
-        public ClientDataViewModel(IDialogService dialogService,
-             IContainerProvider containerProvider, IClientService clientService)
+        public ClientDataViewModel(IDialogService dialogService, IContainerProvider containerProvider, IClientService clientService, IMessageBoxService messageBoxService)
         {
             _dialogService = dialogService;
             _clientService = clientService;
+            _messageBoxService = messageBoxService;
             HamburgerMenuItem = containerProvider.Resolve<ContractDataHamburgerMenuItem>();
             LoadClientSearchOptions();
-
         }
 
         #endregion constructor
@@ -83,8 +82,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             ClientSearchOptions = new List<ClientSearchOption>
             {
-                new ClientSearchOption {Name = "Po nazwisku", SearchOption = Enums.ClientSearchOption.Surname},
-                new ClientSearchOption {Name = "Po peselu", SearchOption = Enums.ClientSearchOption.Pesel}
+                new() {Name = "Po nazwisku", SearchOption = Enums.ClientSearchOption.Surname},
+                new() {Name = "Po peselu", SearchOption = Enums.ClientSearchOption.Pesel}
             };
         }
 
@@ -149,24 +148,24 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (SearchClientsException searchClientsException)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"{searchClientsException.Message}{Environment.NewLine}Błąd: {searchClientsException.InnerException?.Message}",
                     "Błąd");
             }
             catch (Exception e)
             {
-                MaterialMessageBox.ShowError(
+                _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
         }
 
-        private async Task TryToSearchClient(string surname)
+        private async Task TryToSearchClient(string value)
         {
             SearchedClients = SelectedClientSearchOption.SearchOption switch
             {
-                Enums.ClientSearchOption.Surname => await _clientService.GetClientBySurname(surname),
-                Enums.ClientSearchOption.Pesel => await _clientService.GetClientByPesel(surname),
+                Enums.ClientSearchOption.Surname => await _clientService.GetClientBySurname(value),
+                Enums.ClientSearchOption.Pesel => await _clientService.GetClientByPesel(value),
                 _ => throw new ArgumentOutOfRangeException(nameof(SelectedClientSearchOption.SearchOption))
             };
 

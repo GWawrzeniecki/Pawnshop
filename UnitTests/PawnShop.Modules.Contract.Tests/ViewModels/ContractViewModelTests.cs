@@ -19,8 +19,10 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var shellServiceMock = new Mock<IShellService>();
             var containerProviderMock = new Mock<IContainerProvider>();
             var sessionContextMock = new Mock<ISessionContext>();
+            var userSettings = new Mock<IUserSettings>();
+            var messageBoxService = new Mock<IMessageBoxService>();
 
-            var vm = new ContractViewModel(contractServiceMock.Object, dialogServiceMock.Object, shellServiceMock.Object, containerProviderMock.Object, new Validators.ContractValidator(), sessionContextMock.Object);
+            var vm = new ContractViewModel(contractServiceMock.Object, dialogServiceMock.Object, userSettings.Object, shellServiceMock.Object, containerProviderMock.Object, new Validators.ContractValidator(), sessionContextMock.Object, messageBoxService.Object);
 
             //Act
             vm.ContractNumber = "01x2021";
@@ -75,6 +77,31 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
 
             //Assert
             Assert.True(!(vm.HasErrors));
+
+            //Act
+            vm.Client = "Adam";
+
+            //Assert
+            Assert.True(!vm.HasErrors);
+
+            //Act
+            vm.Client = "Nowak";
+
+            //Assert
+            Assert.True(!vm.HasErrors);
+
+            //Act
+            vm.Client = "NowakK";
+
+            //Assert
+            Assert.True(vm.HasErrors);
+
+            //Act
+            vm.Client = "Adam NowakK";
+
+            //Assert
+            Assert.True(vm.HasErrors);
+
 
         }
     }
