@@ -33,9 +33,9 @@ namespace PawnShop.Modules.Contract
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<Views.Contract, ContractViewModel>();
-            containerRegistry.RegisterForNavigation<ClientData, ClientDataViewModel>();
-            containerRegistry.RegisterForNavigation<ContractData, ContractDataViewModel>();
-            containerRegistry.RegisterForNavigation<Summary, SummaryViewModel>();
+            containerRegistry.RegisterForNavigation<CreateContractClientData, CreateContractClientDataViewModel>();
+            containerRegistry.RegisterForNavigation<CreateContractContractData, CreateContractContractDataViewModel>();
+            containerRegistry.RegisterForNavigation<CreateContractSummary, CreateContractSummaryViewModel>();
             containerRegistry.RegisterForNavigation<RenewContractData, RenewContractDataViewModel>();
             containerRegistry.RegisterForNavigation<RenewContractPayment, RenewContractPaymentViewModel>();
             containerRegistry.RegisterForNavigation<BuyBackContractData, BuyBackContractDataViewModel>();

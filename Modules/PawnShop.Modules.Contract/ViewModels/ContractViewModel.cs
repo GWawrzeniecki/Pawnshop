@@ -359,7 +359,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private void CreateContract()
         {
             if (CheckIfDealDocumentPathIsSet())
-                _shellService.ShowShell<CreateContractWindow>(nameof(ClientData), new NavigationParameters { { "CallBack", RefreshDataGridCallBack() } });
+                _shellService.ShowShell<CreateContractWindow>(nameof(CreateContractClientData), new NavigationParameters { { "CallBack", RefreshDataGridCallBack() } });
             else
                 _messageBoxService.ShowError($"Ścieżka do szablonu umowy nie jest ustawiona.{Environment.NewLine}Ustaw ją w ustawieniach.", "Uwaga!");
         }

@@ -43,8 +43,8 @@ namespace IntegrationTests.Base
             ContainerProvider.Register<IModuleCatalog, ModuleCatalog>();
             ContainerProvider.Register<IModuleManager, ModuleManager>();
             ContainerProvider.Register<IModuleInitializer, ModuleInitializer>();
-            ContainerProvider.Register<IEventAggregator, EventAggregator>();
-            ContainerProvider.Register<IRegionManager, RegionManager>();
+            ContainerProvider.RegisterSingleton<IEventAggregator, EventAggregator>();
+            ContainerProvider.RegisterSingleton<IRegionManager, RegionManager>();
             ContainerProvider.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
             ContainerProvider.Register<IUIService, UIService>();
             ContainerProvider.Register<IShellService, ShellService>();
@@ -68,10 +68,10 @@ namespace IntegrationTests.Base
             ContainerProvider.Register<IContractService, ContractService>();
             ContainerProvider.Register<IPdfService, PdfService>();
             ContainerProvider.RegisterForNavigation<Contract, ContractViewModel>();
-            ContainerProvider.RegisterForNavigation<ClientData, ClientDataViewModel>();
-            ContainerProvider.RegisterForNavigation<ContractData, ContractDataViewModel>();
-            ContainerProvider.Register<SummaryViewModel>();
-            ContainerProvider.RegisterForNavigation<Summary, SummaryViewModel>();
+            ContainerProvider.RegisterForNavigation<CreateContractClientData, CreateContractClientDataViewModel>();
+            ContainerProvider.RegisterForNavigation<CreateContractContractData, CreateContractContractDataViewModel>();
+            ContainerProvider.Register<CreateContractSummaryViewModel>();
+            ContainerProvider.RegisterForNavigation<CreateContractSummary, CreateContractSummaryViewModel>();
             ContainerProvider.RegisterForNavigation<RenewContractData, RenewContractDataViewModel>();
             ContainerProvider.RegisterForNavigation<RenewContractPayment, RenewContractPaymentViewModel>();
             ContainerProvider.RegisterForNavigation<BuyBackContractData, BuyBackContractDataViewModel>();

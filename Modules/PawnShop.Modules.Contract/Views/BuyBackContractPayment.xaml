@@ -172,8 +172,8 @@
                 Content="Wstecz" />
             <Button
                 Grid.Column="2"
-                Command="{Binding SaveCommand}"
-                Content="Zapisz" />
+                Command="{Binding BuyBackContractCommand}"
+                Content="Wykup" />
             <Button
                 Grid.Column="3"
                 Command="{Binding DataContext.CloseShellCommand, RelativeSource={RelativeSource AncestorType=views:BuyBackContractWindow}}"

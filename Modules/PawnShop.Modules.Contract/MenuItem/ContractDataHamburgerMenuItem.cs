@@ -18,7 +18,7 @@ namespace PawnShop.Modules.Contract.MenuItem
 
         }
 
-        public override string DefaultNavigationPath => nameof(ContractData);
+        public override string DefaultNavigationPath => nameof(CreateContractContractData);
 
         public IRegionManager RegionManager { get; set; }
 

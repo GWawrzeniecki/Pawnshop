@@ -192,8 +192,8 @@
                 Content="Wstecz" />
             <Button
                 Grid.Column="2"
-                Command="{Binding SaveCommand}"
-                Content="Zapisz" />
+                Command="{Binding RenewContractCommand}"
+                Content="Przedłuż" />
             <Button
                 Grid.Column="3"
                 Command="{Binding DataContext.CloseShellCommand, RelativeSource={RelativeSource AncestorType=views:RenewContractWindow}}"

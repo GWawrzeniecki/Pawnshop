@@ -30,7 +30,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IMessageBoxService _messageBoxService;
         private decimal _renewPrice;
         private Business.Models.Contract _contractToRenew;
-        private DelegateCommand _saveCommand;
+        private DelegateCommand _renewContractCommand;
         private bool _isPrintDealDocument;
         private LendingRate _renewLendingRate;
         private DateTime _startDate;
@@ -84,20 +84,20 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Commands
 
-        public DelegateCommand SaveCommand =>
-            _saveCommand ??=
-                new DelegateCommand(Save, CanExecuteMethodSave).ObservesProperty(() => SelectedPaymentType);
+        public DelegateCommand RenewContractCommand =>
+            _renewContractCommand ??=
+                new DelegateCommand(RenewContract, CanExecuteRenewContract).ObservesProperty(() => SelectedPaymentType);
 
         #endregion Commands
 
         #region CommandMethods
 
-        private bool CanExecuteMethodSave()
+        private bool CanExecuteRenewContract()
         {
             return SelectedPaymentType is not null;
         }
 
-        private async void Save()
+        private async void RenewContract()
         {
             try
             {
@@ -118,7 +118,8 @@ namespace PawnShop.Modules.Contract.ViewModels
                 _messageBoxService.Show("Pomyślnie przedłużono umowę.", "Sukces");
                 if (IsPrintDealDocument)
                     await TryToPrintDealDocumentAsync();
-                await _callBack.Invoke();
+                if (_callBack is not null)
+                    await _callBack.Invoke();
 
             }
             catch (RenewContractException renewContractException)

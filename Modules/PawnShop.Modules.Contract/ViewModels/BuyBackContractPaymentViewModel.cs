@@ -128,20 +128,20 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Commands
 
-        public DelegateCommand SaveCommand =>
+        public DelegateCommand BuyBackContractCommand =>
             _saveCommand ??=
-                new DelegateCommand(Save, CanExecuteMethodSave).ObservesProperty(() => SelectedPaymentType);
+                new DelegateCommand(BuyBackContract, CanExecuteBuyBackContract).ObservesProperty(() => SelectedPaymentType);
 
         #endregion Commands
 
         #region CommandMethods
 
-        private bool CanExecuteMethodSave()
+        private bool CanExecuteBuyBackContract()
         {
             return SelectedPaymentType is not null;
         }
 
-        private async void Save()
+        private async void BuyBackContract()
         {
             try
             {
@@ -249,7 +249,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
             catch (Exception e)
             {
-                throw new PrintVisualElementException("Wystapil blad podczas drukowania towarow do wyjecia.", e);
+                throw new PrintVisualElementException("Wystąpił błąd podczas drukowania towarów do wyjęcia.", e);
             }
         }
 

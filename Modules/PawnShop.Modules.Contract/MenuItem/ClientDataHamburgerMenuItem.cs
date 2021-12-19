@@ -17,7 +17,7 @@ namespace PawnShop.Modules.Contract.MenuItem
             Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Account };
         }
 
-        public override string DefaultNavigationPath => nameof(ClientData);
+        public override string DefaultNavigationPath => nameof(CreateContractClientData);
 
         public IRegionManager RegionManager { get; set; }
 
