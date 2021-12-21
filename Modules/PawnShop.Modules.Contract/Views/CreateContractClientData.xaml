@@ -86,7 +86,6 @@
                     Grid.Column="2"
                     Margin="{StaticResource ControlMargin}"
                     Command="{Binding SearchClientCommand}"
-                    CommandParameter="{Binding ElementName=ClientSearchComboBox, Path=Text}"
                     Content="Szukaj" />
                 <Button
                     Grid.Row="0"
@@ -216,7 +215,6 @@
                     Grid.Column="3"
                     Margin="{StaticResource ControlMargin}"
                     Command="{Binding EditClientCommand}"
-                    CommandParameter="{Binding SelectedClient}"
                     Content="Edytuj dane klienta" />
 
                 <TextBlock Grid.Row="4" Grid.Column="3" />
@@ -254,7 +252,7 @@
                 x:Name="test"
                 Grid.Column="2"
                 Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
-                CommandParameter="{x:Type menuItem:ContractDataHamburgerMenuItem}"
+                CommandParameter="{x:Type menuItem:CreateContractContractDataHamburgerMenuItem}"
                 Content="Dalej"
                 IsEnabled="{Binding IsNextButtonEnabled}" />
             <Button

@@ -150,7 +150,9 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
             var param = new NavigationParameters()
             {
                 { "contract", contract.Entity },
-                { "renewLendingRate", lendingRate.Entity }
+                { "renewLendingRate", lendingRate.Entity },
+                {"renewPrice",paymentAmount},
+                {"startDate",contractStartDate.AddDays(lendingRate.Entity.Days+1)}
             };
             var navigationService =
                 new RegionNavigationService(ContainerProvider, new RegionNavigationContentLoader(ContainerProvider), new RegionNavigationJournal())
@@ -170,29 +172,35 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
             });
 
             //Assert
-            var renewedContract = pawnShopContext.Contracts
+            var updatedContract = pawnShopContext.Contracts
                 .AsNoTracking()
                 .Include(c => c.ContractState)
+                .First(c => c.ContractNumberId.Equals(contract.Entity.ContractNumberId));
+
+            var renewedContract = pawnShopContext.ContractRenews
+                .AsNoTracking()
                 .Include(c => c.LendingRate)
-                .Include(c => c.CreateContractDealDocument)
+                .Include(c => c.DealDocument)
                 .ThenInclude(d => d.Payment)
                 .ThenInclude(p => p.PaymentType)
-                .Include(c => c.CreateContractDealDocument)
+                .Include(c => c.DealDocument)
                 .ThenInclude(d => d.MoneyBalance)
                 .First(c => c.ContractNumberId.Equals(contract.Entity.ContractNumberId));
 
+            Assert.NotNull(updatedContract);
             Assert.NotNull(renewedContract);
-            Assert.Equal(Core.Constants.Constants.RenewContractState, renewedContract.ContractState.State);
-            Assert.Equal(contractAmount, renewedContract.AmountContract);
-
-            //Assert.Equal(contractAmount, insertedContract.CreateContractDealDocument.Cost);
-            //Assert.Null(insertedContract.CreateContractDealDocument.Income);
-            //Assert.Null(insertedContract.CreateContractDealDocument.RepaymentCapital);
-            //Assert.Null(insertedContract.CreateContractDealDocument.Profit);
-            //Assert.Equal(Core.Constants.Constants.CashPaymentType, insertedContract.CreateContractDealDocument.Payment.PaymentType.Type);
-            //Assert.Equal(contractAmount, insertedContract.CreateContractDealDocument.Payment.Amount);
-            //Assert.Null(insertedContract.CreateContractDealDocument.Payment.ClientId);
-            //Assert.Equal(moneyBalanceAmount - contractAmount, insertedContract.CreateContractDealDocument.MoneyBalance.MoneyBalance1);
+            Assert.Equal(Core.Constants.Constants.RenewContractState, updatedContract.ContractState.State);
+            Assert.Equal(contractAmount, updatedContract.AmountContract);
+            Assert.Equal(contractStartDate.AddDays(lendingRate.Entity.Days + 1), renewedContract.StartDate);
+            Assert.Equal(renewedContract.LendingRateId, lendingRate.Entity.Id);
+            Assert.Equal(dealMaker.Entity.ClientId, renewedContract.DealDocument.Payment.ClientId);
+            Assert.Equal(paymentAmount, renewedContract.DealDocument.Payment.Amount);
+            Assert.NotNull(renewedContract.DealDocument.Payment.ClientId);
+            Assert.Null(renewedContract.DealDocument.Cost);
+            Assert.Null(renewedContract.DealDocument.RepaymentCapital);
+            Assert.Null(renewedContract.DealDocument.Profit);
+            Assert.Equal(paymentAmount, renewedContract.DealDocument.Income);
+            Assert.Equal(moneyBalanceAmount + paymentAmount, renewedContract.DealDocument.MoneyBalance.MoneyBalance1);
         }
     }
 }

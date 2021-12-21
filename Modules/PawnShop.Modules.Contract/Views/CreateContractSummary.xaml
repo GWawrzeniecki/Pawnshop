@@ -238,7 +238,7 @@
             <Button
                 Grid.Column="1"
                 Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
-                CommandParameter="{x:Type menuItem:ContractDataHamburgerMenuItem}"
+                CommandParameter="{x:Type menuItem:CreateContractContractDataHamburgerMenuItem}"
                 Content="Wstecz" />
             <Button
                 Grid.Column="2"

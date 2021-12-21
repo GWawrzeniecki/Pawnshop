@@ -46,7 +46,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             _dialogService = dialogService;
             _calculateService = calculateService;
             _messageBoxService = messageBoxService;
-            HamburgerMenuItem = containerProvider.Resolve<SummaryHamburgerMenuItem>();
+            HamburgerMenuItem = containerProvider.Resolve<CreateContractSummaryHamburgerMenuItem>();
             BoughtContractItems = new List<ContractItem>();
             LendingRates = NotifyTask.Create(LoadLendingRates);
             ContractNumber = NotifyTask.Create(GetNextContractNumber);

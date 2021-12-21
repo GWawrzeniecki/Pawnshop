@@ -182,12 +182,12 @@
             <Button
                 Grid.Column="1"
                 Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
-                CommandParameter="{x:Type menuItem:ClientDataHamburgerMenuItem}"
+                CommandParameter="{x:Type menuItem:CreateContractClientDataHamburgerMenuItem}"
                 Content="Wstecz" />
             <Button
                 Grid.Column="2"
                 Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=views:CreateContractWindow}}"
-                CommandParameter="{x:Type menuItem:SummaryHamburgerMenuItem}"
+                CommandParameter="{x:Type menuItem:CreateContractSummaryHamburgerMenuItem}"
                 Content="Dalej"
                 IsEnabled="{Binding IsNextButtonEnabled}" />
             <Button

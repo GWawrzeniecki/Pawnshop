@@ -76,7 +76,7 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
             //Act
             Nito.AsyncEx.AsyncContext.Run(() =>
             {
-                ViewModel.SearchClientCommand.Execute(ViewModel.ClientSearchComboBoxText);
+                ViewModel.SearchClientCommand.Execute();
             });
 
             //Assert

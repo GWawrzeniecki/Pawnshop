@@ -20,6 +20,10 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
         public void BuyBackContractCommandShouldBuyBackContractInDb()
         {
             using var pawnShopContext = PawnshopContext;
+            var contractAmount = 1000;
+            var moneyBalanceAmount = 1200;
+            var buyBackPrice = 1258;
+            var contractStartDate = DateTime.Today.AddDays(-30);
             var country = new Country() { Country1 = "Test" };
             var contractState = pawnShopContext.ContractStates.Add(new ContractState()
             {
@@ -91,13 +95,13 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
                     }
                 }
             });
-            var moneyBalance = pawnShopContext.MoneyBalances.Add(new MoneyBalance() { TodayDate = DateTime.Today, MoneyBalance1 = 1000 });
+            var moneyBalance = pawnShopContext.MoneyBalances.Add(new MoneyBalance() { TodayDate = DateTime.Today, MoneyBalance1 = moneyBalanceAmount });
 
             var contract = pawnShopContext.Contracts.Add(new Business.Models.Contract()
             {
-                StartDate = DateTime.Today.AddDays(-60),
+                StartDate = contractStartDate,
                 ContractNumberId = "01/2021",
-                AmountContract = 1000,
+                AmountContract = contractAmount,
                 WorkerBoss = workerBoss.Entity,
                 WorkerBossId = workerBoss.Entity.WorkerBossId,
                 ContractItems = new List<ContractItem>(){new ContractItem()
@@ -111,7 +115,7 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
                     Amount = 1,
                     Description = "Test",
                     TechnicalCondition = "Test",
-                    EstimatedValue = 100,
+                    EstimatedValue = contractAmount,
                     Laptop = new Laptop()
                     {
                         Brand = "Test",
@@ -133,7 +137,7 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
                     Payment = new Payment()
                     {
                         Date = DateTime.Today,
-                        Amount = 2000,
+                        Amount = buyBackPrice,
                         PaymentType = cashPaymentType.Entity
                     }
                 }
@@ -144,7 +148,7 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
             var param = new NavigationParameters()
             {
                 { "contract", contract.Entity },
-                { "renewLendingRate", lendingRate.Entity }
+                { "buyBackPrice", buyBackPrice }
             };
             var navigationService =
                 new RegionNavigationService(ContainerProvider, new RegionNavigationContentLoader(ContainerProvider), new RegionNavigationJournal())
@@ -165,13 +169,32 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
 
             //Assert
             var boughtBackContract = pawnShopContext.Contracts
-                .Include(c => c.ContractState)
                 .AsNoTracking()
+                .Include(c => c.ContractState)
+                .Include(c => c.LendingRate)
+                .Include(c => c.BuyBackDealDocument)
+                .ThenInclude(d => d.Payment)
+                .ThenInclude(p => p.PaymentType)
+                .Include(c => c.BuyBackDealDocument)
+                .ThenInclude(d => d.MoneyBalance)
                 .First(c => c.ContractNumberId.Equals(contract.Entity.ContractNumberId));
 
 
             //Assert
             Assert.Equal(Core.Constants.Constants.BuyBackContractState, boughtBackContract.ContractState.State);
+            Assert.NotNull(boughtBackContract.BuyBackId);
+            Assert.NotNull(boughtBackContract.BuyBackDealDocumentId);
+            Assert.NotNull(boughtBackContract.BuyBackDealDocument.Payment.ClientId);
+            Assert.Equal(dealMaker.Entity.ClientId, boughtBackContract.BuyBackDealDocument.Payment.ClientId);
+            Assert.Equal(cashPaymentType.Entity.Id, boughtBackContract.BuyBackDealDocument.Payment.PaymentTypeId);
+            Assert.Equal(DateTime.Today, boughtBackContract.BuyBackDealDocument.Payment.Date);
+            Assert.Null(boughtBackContract.BuyBackDealDocument.Cost);
+            Assert.Null(boughtBackContract.BuyBackDealDocument.Income);
+            Assert.Equal(buyBackPrice, boughtBackContract.BuyBackDealDocument.RepaymentCapital);
+            Assert.Equal(buyBackPrice - contractAmount, boughtBackContract.BuyBackDealDocument.Profit);
+            Assert.Equal(moneyBalanceAmount + buyBackPrice, boughtBackContract.BuyBackDealDocument.MoneyBalance.MoneyBalance1);
+            Assert.Equal(DateTime.Today, boughtBackContract.BuyBackDealDocument.MoneyBalanceId);
+
         }
     }
 }

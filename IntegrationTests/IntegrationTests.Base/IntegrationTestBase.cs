@@ -77,9 +77,9 @@ namespace IntegrationTests.Base
             ContainerProvider.RegisterForNavigation<BuyBackContractData, BuyBackContractDataViewModel>();
             ContainerProvider.RegisterForNavigation<BuyBackContractItems, BuyBackContractItemsViewModel>();
             ContainerProvider.RegisterForNavigation<BuyBackContractPayment, BuyBackContractPaymentViewModel>();
-            ContainerProvider.RegisterSingleton<ClientDataHamburgerMenuItem>();
-            ContainerProvider.RegisterSingleton<ContractDataHamburgerMenuItem>();
-            ContainerProvider.RegisterSingleton<SummaryHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<CreateContractClientDataHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<CreateContractContractDataHamburgerMenuItem>();
+            ContainerProvider.RegisterSingleton<CreateContractSummaryHamburgerMenuItem>();
             ContainerProvider.RegisterSingleton<RenewContractDataHamburgerMenuItem>();
             ContainerProvider.RegisterSingleton<RenewContractPaymentHamburgerMenuItem>();
             ContainerProvider.RegisterSingleton<BuyBackContractDataHamburgerMenuItem>();

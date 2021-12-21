@@ -30,11 +30,11 @@ namespace PawnShop.Modules.Contract.ViewModels
         private IList<ClientSearchOption> _clientSearchOptions;
         private ClientSearchOption _selectedClientSearchOption;
         private IList<Client> _searchedClients;
-        private DelegateCommand<string> _searchClientCommand;
+        private DelegateCommand _searchClientCommand;
         private string _clientSearchComboBoxText;
         private Client _selectedClient;
         private DelegateCommand _addClientCommand;
-        private DelegateCommand<Client> _editClientCommand;
+        private DelegateCommand _editClientCommand;
         private bool _clientSearchComboBoxIsOpen;
         private Func<Task> _callBack;
 
@@ -47,7 +47,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             _dialogService = dialogService;
             _clientService = clientService;
             _messageBoxService = messageBoxService;
-            HamburgerMenuItem = containerProvider.Resolve<ContractDataHamburgerMenuItem>();
+            HamburgerMenuItem = containerProvider.Resolve<CreateContractContractDataHamburgerMenuItem>();
             LoadClientSearchOptions();
         }
 
@@ -55,17 +55,17 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region Commands
 
-        public DelegateCommand<string> SearchClientCommand =>
+        public DelegateCommand SearchClientCommand =>
             _searchClientCommand ??=
-                new DelegateCommand<string>(SearchClient, CanExecuteSearchClient)
+                new DelegateCommand(SearchClient, CanExecuteSearchClient)
             .ObservesProperty(() => ClientSearchComboBoxText)
             .ObservesProperty(() => SelectedClientSearchOption);
 
         public DelegateCommand AddClientCommand =>
             _addClientCommand ??= new DelegateCommand(AddClient);
 
-        public DelegateCommand<Client> EditClientCommand =>
-            _editClientCommand ??= new DelegateCommand<Client>(EditClient, CanExecuteEditClient)
+        public DelegateCommand EditClientCommand =>
+            _editClientCommand ??= new DelegateCommand(EditClient, CanExecuteEditClient)
                 .ObservesProperty(() => SelectedClient);
 
         #endregion Commands
@@ -140,11 +140,11 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region commandMethods
 
-        private async void SearchClient(string surname)
+        private async void SearchClient()
         {
             try
             {
-                await TryToSearchClient(surname);
+                await TryToSearchClient(ClientSearchComboBoxText);
             }
             catch (SearchClientsException searchClientsException)
             {
@@ -175,10 +175,10 @@ namespace PawnShop.Modules.Contract.ViewModels
                 ClientSearchComboBoxIsOpen = true;
         }
 
-        private bool CanExecuteSearchClient(string arg)
+        private bool CanExecuteSearchClient()
 
         {
-            return !string.IsNullOrEmpty(arg) && !string.IsNullOrWhiteSpace(arg) && SelectedClientSearchOption != null;
+            return !string.IsNullOrEmpty(ClientSearchComboBoxText) && !string.IsNullOrWhiteSpace(ClientSearchComboBoxText) && SelectedClientSearchOption != null;
         }
 
 
@@ -196,7 +196,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             });
         }
 
-        private void EditClient(Client client)
+        private void EditClient()
         {
             _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", ClientMode.UpdateClient, dialogResult =>
             {
@@ -205,10 +205,10 @@ namespace PawnShop.Modules.Contract.ViewModels
                     SelectedClient = null;
                     SelectedClient = dialogResult.Parameters.GetValue<Client>("client");
                 }
-            }, client);
+            }, SelectedClient);
         }
 
-        private bool CanExecuteEditClient(Client arg) => SelectedClient != null;
+        private bool CanExecuteEditClient() => SelectedClient != null;
 
         #endregion commandMethods
 

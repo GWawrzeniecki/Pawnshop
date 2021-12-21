@@ -24,9 +24,9 @@ namespace PawnShop.Modules.Contract.Windows.Views
 
         public void RegisterViews(IContainerProvider containerProvider, IRegionManager scopedRegionManager)
         {
-            var clientDataHamburgerMenuItem = containerProvider.Resolve<ClientDataHamburgerMenuItem>();
-            var contractDataHamburgerMenuItem = containerProvider.Resolve<ContractDataHamburgerMenuItem>();
-            var summaryHamburgerMenuItem = containerProvider.Resolve<SummaryHamburgerMenuItem>();
+            var clientDataHamburgerMenuItem = containerProvider.Resolve<CreateContractClientDataHamburgerMenuItem>();
+            var contractDataHamburgerMenuItem = containerProvider.Resolve<CreateContractContractDataHamburgerMenuItem>();
+            var summaryHamburgerMenuItem = containerProvider.Resolve<CreateContractSummaryHamburgerMenuItem>();
 
             RegionManagerAware.SetRegionManagerAware(clientDataHamburgerMenuItem,
                 scopedRegionManager); // adding here because hmi doesn't have view model
@@ -41,8 +41,8 @@ namespace PawnShop.Modules.Contract.Windows.Views
 
         private void DisabledHamburgerMenuItemsOnStart(IContainerProvider containerProvider)
         {
-            var contractDataHamburgerMenuItem = containerProvider.Resolve<ContractDataHamburgerMenuItem>();
-            var summaryHamburgerMenuItem = containerProvider.Resolve<SummaryHamburgerMenuItem>();
+            var contractDataHamburgerMenuItem = containerProvider.Resolve<CreateContractContractDataHamburgerMenuItem>();
+            var summaryHamburgerMenuItem = containerProvider.Resolve<CreateContractSummaryHamburgerMenuItem>();
             contractDataHamburgerMenuItem.IsEnabled = false;
             summaryHamburgerMenuItem.IsEnabled = false;
         }

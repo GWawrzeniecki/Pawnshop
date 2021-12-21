@@ -8,9 +8,9 @@ using Prism.Regions;
 
 namespace PawnShop.Modules.Contract.MenuItem
 {
-    public class ContractDataHamburgerMenuItem : HamburgerMenuItemBase, IRegionManagerAware
+    public class CreateContractContractDataHamburgerMenuItem : HamburgerMenuItemBase, IRegionManagerAware
     {
-        public ContractDataHamburgerMenuItem()
+        public CreateContractContractDataHamburgerMenuItem()
         {
             Command = new DelegateCommand(Navigate);
             Label = "Dane umowy";

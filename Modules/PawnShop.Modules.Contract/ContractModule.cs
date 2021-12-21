@@ -41,9 +41,9 @@ namespace PawnShop.Modules.Contract
             containerRegistry.RegisterForNavigation<BuyBackContractData, BuyBackContractDataViewModel>();
             containerRegistry.RegisterForNavigation<BuyBackContractItems, BuyBackContractItemsViewModel>();
             containerRegistry.RegisterForNavigation<BuyBackContractPayment, BuyBackContractPaymentViewModel>();
-            containerRegistry.RegisterSingleton<ClientDataHamburgerMenuItem>();
-            containerRegistry.RegisterSingleton<ContractDataHamburgerMenuItem>();
-            containerRegistry.RegisterSingleton<SummaryHamburgerMenuItem>();
+            containerRegistry.RegisterSingleton<CreateContractClientDataHamburgerMenuItem>();
+            containerRegistry.RegisterSingleton<CreateContractContractDataHamburgerMenuItem>();
+            containerRegistry.RegisterSingleton<CreateContractSummaryHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<RenewContractDataHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<RenewContractPaymentHamburgerMenuItem>();
             containerRegistry.RegisterSingleton<BuyBackContractDataHamburgerMenuItem>();
