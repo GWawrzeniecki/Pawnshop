@@ -204,7 +204,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             navigationContext.Parameters.Add("ContractItems", BoughtContractItems);
             navigationContext.Parameters.Add("LendingRate", SelectedLendingRate);
             navigationContext.Parameters.Add("StartDate", DateTime.Now);
-            navigationContext.Parameters.Add("ContractNumber", ContractNumber);
+            navigationContext.Parameters.Add("ContractNumber", ContractNumber.Result);
             navigationContext.Parameters.Add("DealMaker", _dealMaker);
             navigationContext.Parameters.Add("CallBack", _callBack);
         }

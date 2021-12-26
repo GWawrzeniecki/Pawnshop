@@ -61,7 +61,7 @@
                     IsTextSearchEnabled="True"
                     ItemsSource="{Binding SearchedClients}"
                     SelectedItem="{Binding SelectedClient}"
-                    Text="{Binding ClientSearchComboBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=200}"
+                    Text="{Binding ClientSearchComboBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=100}"
                     TextSearch.TextPath="ClientNavigation.FullName">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -74,10 +74,7 @@
                     </ComboBox.ItemTemplate>
 
                     <ComboBox.InputBindings>
-                        <KeyBinding
-                            Key="Return"
-                            Command="{Binding SearchClientCommand}"
-                            CommandParameter="{Binding ElementName=ClientSearchComboBox, Path=Text}" />
+                        <KeyBinding Key="Return" Command="{Binding SearchClientCommand}" />
                     </ComboBox.InputBindings>
                 </ComboBox>
 

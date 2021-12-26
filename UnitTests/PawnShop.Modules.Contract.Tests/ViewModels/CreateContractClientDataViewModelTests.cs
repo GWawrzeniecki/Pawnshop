@@ -1,14 +1,11 @@
-﻿using System.Linq;
-using MahApps.Metro.Controls;
-using MaterialDesignThemes.Wpf;
-using Moq;
+﻿using Moq;
 using PawnShop.Business.Models;
 using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.ViewModels;
-using PawnShop.Modules.Contract.Views;
 using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
+using System.Linq;
 using Xunit;
 
 namespace PawnShop.Modules.Contract.UnitTests.ViewModels

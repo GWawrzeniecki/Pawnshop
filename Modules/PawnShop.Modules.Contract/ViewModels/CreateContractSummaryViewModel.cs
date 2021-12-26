@@ -83,9 +83,6 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public decimal PCC => SumOfEstimatedValues >= 1000 ? SumOfEstimatedValues * 2 / 100 : 0;
 
-
-
-
         #endregion
 
         #region IRegionManagerAware
