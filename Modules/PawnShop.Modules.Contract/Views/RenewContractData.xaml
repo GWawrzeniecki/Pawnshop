@@ -107,7 +107,7 @@
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
-                            Text="{Binding HowManyDaysLateCalculated, Mode=OneWay}" />
+                            Text="{Binding HowManyDaysLateCalculated.Result, Mode=OneWay}" />
 
 
 
@@ -211,7 +211,7 @@
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
-                            Text="{Binding RenewPrice, Mode=OneWay}" />
+                            Text="{Binding RenewPrice.Result, Mode=OneWay}" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -243,7 +243,7 @@
                             Grid.Row="0"
                             Grid.Column="4"
                             Margin="0,0,0,5"
-                            ItemsSource="{Binding LendingRates}"
+                            ItemsSource="{Binding LendingRates.Result}"
                             SelectedItem="{Binding SelectedNewRepurchaseDateLendingRate, Mode=TwoWay}">
 
                             <ComboBox.ItemTemplate>

@@ -1,5 +1,6 @@
 ﻿using Moq;
 using PawnShop.Business.Models;
+using PawnShop.Core.Tasks;
 using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Modules.Contract.ViewModels;
 using PawnShop.Services.Interfaces;
@@ -8,13 +9,14 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace PawnShop.Modules.Contract.UnitTests.ViewModels
 {
     public class RenewContractDataViewModelTests
     {
-        private static LendingRate _sevenDaysLendingRate = new LendingRate() { Days = 7, Procent = 7 };
+        private static LendingRate _oneWeekLendingRate = new LendingRate() { Days = 7, Procent = 7 };
         private static LendingRate _twoWeeksLendingRate = new LendingRate() { Days = 14, Procent = 16 };
         private static LendingRate _monthLendingRate = new LendingRate() { Days = 30, Procent = 21 };
 
@@ -186,9 +188,10 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
         {
             return new List<object[]>
             {
+                new object[] { null,null },
                 new object[] { _monthLendingRate,DateTime.Today.AddDays(30).AddDays(_monthLendingRate.Days) },
                 new object[] { _twoWeeksLendingRate,DateTime.Today.AddDays(30).AddDays(_twoWeeksLendingRate.Days) },
-                new object[] { _sevenDaysLendingRate,DateTime.Today.AddDays(30).AddDays(_sevenDaysLendingRate.Days) }
+                new object[] { _oneWeekLendingRate,DateTime.Today.AddDays(30).AddDays(_oneWeekLendingRate.Days) }
             };
         }
 
@@ -198,7 +201,7 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             {   new object[] { null,0},
                 new object[] { _monthLendingRate,_monthLendingRate.Days},
                 new object[] { _twoWeeksLendingRate,_twoWeeksLendingRate.Days },
-                new object[] { _sevenDaysLendingRate,_sevenDaysLendingRate.Days },
+                new object[] { _oneWeekLendingRate,_oneWeekLendingRate.Days },
                 new object[] { new LendingRate() {Days = 10},10},
 
             };
@@ -219,7 +222,7 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
                 {
                     RenewContractId = 1,
                     StartDate = GetContract().StartDate.AddDays(30),
-                    LendingRate = _sevenDaysLendingRate
+                    LendingRate = _oneWeekLendingRate
                 }),1086 },
                 new object[] { GetContractWithContractRenews(new ContractRenew()
                 {
@@ -230,7 +233,7 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
                 {
                     RenewContractId = 2,
                     StartDate = GetContract().StartDate.AddDays(30).AddDays(14),
-                    LendingRate = _sevenDaysLendingRate
+                    LendingRate = _oneWeekLendingRate
                 }),1086 }
             };
         }
@@ -289,6 +292,24 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             };
         }
 
+        public static IEnumerable<object[]> GetDelayAndExpectedRenewPrice()
+        {
+            return new List<object[]>
+            {
+                new object[]{new LendingRate() { Days = 10},500}
+            };
+        }
+
+        public static IEnumerable<object[]> GetNewLendingRateAndExpectedContractAmountAndMoqTimes()
+        {
+            return new List<object[]>
+            {
+                new object[]{null,0,Times.Never()},
+                new object[]{new LendingRate(){Days = 14, Procent = 16},1258,Times.Once()}
+            };
+        }
+
+
         public static IEnumerable<object[]> GetContractGeneratorWithExpectedLateness()
         {
             var contract = GetContract();
@@ -296,40 +317,40 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             return new List<object[]>
             {
                 new object[] { GetContract(), 0 },
-                new object[] { GetContract(new DateTime(2021,11,25)), 1 },
-                new object[] { GetContract(new DateTime(2021,11,24)), 2 },
-                new object[] { GetContract(new DateTime(2021,11,14)), 12 },
-                new object[] { GetContract(new DateTime(2021,10,14)), 43 },
-                new object[] { GetContract(new DateTime(2021,7,5)), 144 },
+                new object[] { GetContract(new DateTime(2021,11,25)), DateTime.Today.Subtract(new DateTime(2021,11,25).AddDays(_monthLendingRate.Days)).Days },
+                new object[] { GetContract(new DateTime(2021,11,24)), DateTime.Today.Subtract(new DateTime(2021,11,24).AddDays(_monthLendingRate.Days)).Days },
+                new object[] { GetContract(new DateTime(2021,11,14)), DateTime.Today.Subtract(new DateTime(2021,11,14).AddDays(_monthLendingRate.Days)).Days },
+                new object[] { GetContract(new DateTime(2021,10,14)), DateTime.Today.Subtract(new DateTime(2021,10,14).AddDays(_monthLendingRate.Days)).Days },
+                new object[] { GetContract(new DateTime(2021,7,5)), DateTime.Today.Subtract(new DateTime(2021,7,5).AddDays(_monthLendingRate.Days)).Days },
                 new object[] { GetContractWithContractRenews(new DateTime(2021,11,25), new ContractRenew()
                 {
                     RenewContractId = 1,
-                    LendingRate = new LendingRate() {Days = 7},
+                    LendingRate = _oneWeekLendingRate,
                     StartDate = new DateTime(2021,11,25).AddDays(30)
                 }), 0 },
                 new object[] { GetContractWithContractRenews(new DateTime(2021,10,25), new ContractRenew()
                 {
                     RenewContractId = 1,
-                    LendingRate = new LendingRate() {Days = 7},
+                    LendingRate = _oneWeekLendingRate,
                     StartDate = new DateTime(2021,10,25).AddDays(30)
-                }), 25 },
+                }), DateTime.Today.Subtract(new DateTime(2021,10,25).AddDays(_monthLendingRate.Days).AddDays(_oneWeekLendingRate.Days)).Days },
                 new object[] { GetContractWithContractRenews(new DateTime(2021,10,25), new ContractRenew()
                 {
                     RenewContractId = 1,
-                    LendingRate = new LendingRate() {Days = 30},
+                    LendingRate = _monthLendingRate,
                     StartDate = new DateTime(2021,10,25).AddDays(30)
-                }), 2 },
+                }), DateTime.Today.Subtract(new DateTime(2021,10,25).AddDays(_monthLendingRate.Days).AddDays(_monthLendingRate.Days)).Days },
                 new object[] { GetContractWithContractRenews(new DateTime(2021,10,25), new ContractRenew()
                 {
                     RenewContractId = 1,
-                    LendingRate = new LendingRate() {Days = 7},
+                    LendingRate = _oneWeekLendingRate,
                     StartDate = new DateTime(2021,10,25).AddDays(30)
                 }, new ContractRenew()
                 {
                     RenewContractId = 2,
-                    LendingRate = new LendingRate() {Days = 7},
+                    LendingRate = _oneWeekLendingRate,
                     StartDate = new DateTime(2021,10,25).AddDays(37)
-                }), 18 }
+                }), DateTime.Today.Subtract(new DateTime(2021,10,25).AddDays(_monthLendingRate.Days).AddDays(_oneWeekLendingRate.Days).AddDays(_oneWeekLendingRate.Days)).Days }
             };
         }
 
@@ -384,7 +405,7 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
 
         [Theory]
         [MemberData(nameof(GetContractGeneratorWithExpectedLateness))]
-        public void HowManyDaysLateCalculatedShouldReturnLateness(Business.Models.Contract contract, int expectedLateness)
+        public async Task HowManyDaysLateCalculatedShouldReturnLatenessAsync(Business.Models.Contract contract, int expectedLateness)
         {
             //Arrange
             var calculateServiceMock = new Mock<ICalculateService>();
@@ -403,7 +424,7 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             }));
 
             //Assert
-            Assert.Equal(expectedLateness, vm.HowManyDaysLateCalculated);
+            Assert.Equal(expectedLateness, await vm.HowManyDaysLateCalculated.Task);
         }
 
         [Theory]
@@ -444,7 +465,7 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var vm = new RenewContractDataViewModel(calculateServiceMock.Object, contractServiceMock.Object,
                 containerProviderMock.Object, messageBoxServiceMock.Object);
             calculateServiceMock
-                .Setup(s => s.CalculateContractAmount(1000, _sevenDaysLendingRate)).Returns(1086);
+                .Setup(s => s.CalculateContractAmount(1000, _oneWeekLendingRate)).Returns(1086);
             calculateServiceMock
                 .Setup(s => s.CalculateContractAmount(1000, _twoWeeksLendingRate)).Returns(1197);
             calculateServiceMock
@@ -537,7 +558,7 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
 
             //Assert
             Assert.True(wasNewRepurchaseDateRaised);
-            Assert.True(wasNewRepurchaseDateRaised);
+            Assert.True(wasNewRePurchasePrice);
             Assert.True(wasIsNextButtonEnabled);
         }
 
@@ -605,6 +626,147 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             Assert.True(wasRenewPriceRaised);
         }
 
+        [Fact]
+        public async Task RenewPriceShouldReturn0WhenActualLendingRateIsNullAndLendingRatesAsync()
+        {
+            //Arrange
+            var calculateServiceMock = new Mock<ICalculateService>();
+            var contractServiceMock = new Mock<IContractService>();
+            var containerProviderMock = new Mock<IContainerProvider>();
+            var messageBoxServiceMock = new Mock<IMessageBoxService>();
+            var regionNavigateServiceMock = new Mock<IRegionNavigationService>();
+            regionNavigateServiceMock.Setup(p => p.Region).Returns(new Region());
+            calculateServiceMock.Setup(s => s.CalculateRenewCost(It.IsAny<decimal>(), It.IsNotNull<LendingRate>(),
+                    It.IsAny<int?>(), It.IsNotNull<IList<LendingRate>>()))
+                .Returns(500);
+            var vm = new RenewContractDataViewModel(calculateServiceMock.Object, contractServiceMock.Object,
+                containerProviderMock.Object, messageBoxServiceMock.Object);
+            vm.OnNavigatedTo(new NavigationContext(regionNavigateServiceMock.Object, new Uri("Test", UriKind.RelativeOrAbsolute), new NavigationParameters()
+            {
+                {"contract", GetContract()}
+            }));
 
+            //Act
+            //_ = vm.ContractDate;
+            vm.LendingRates = null;
+
+            //Assert
+            Assert.Equal(0, await vm.RenewPrice.Task);
+
+            _ = vm.ContractDate;
+            Assert.Equal(0, await vm.RenewPrice.Task);
+
+            vm.LendingRates = NotifyTask.Create(async () =>
+           {
+               return await Task.Run(() => (IList<LendingRate>)new List<LendingRate>()
+               {
+                    new LendingRate(){Procent = 16, Days = 14}
+               });
+           });
+
+            await vm.LendingRates.Task;
+
+            Assert.Equal(500, await vm.RenewPrice.Task);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDelayAndExpectedRenewPrice))]
+        public async Task RenewPriceShouldChangeOnSelectingSelectedDelayLendingRate(LendingRate delay, decimal expectedRenewPrice)
+        {
+            //Arrange
+            var calculateServiceMock = new Mock<ICalculateService>();
+            var contractServiceMock = new Mock<IContractService>();
+            var containerProviderMock = new Mock<IContainerProvider>();
+            var messageBoxServiceMock = new Mock<IMessageBoxService>();
+            var regionNavigateServiceMock = new Mock<IRegionNavigationService>();
+            regionNavigateServiceMock.Setup(p => p.Region).Returns(new Region());
+
+            var vm = new RenewContractDataViewModel(calculateServiceMock.Object, contractServiceMock.Object,
+                containerProviderMock.Object, messageBoxServiceMock.Object);
+            vm.OnNavigatedTo(new NavigationContext(regionNavigateServiceMock.Object, new Uri("Test", UriKind.RelativeOrAbsolute), new NavigationParameters()
+            {
+                {"contract", GetContract()}
+            }));
+            await vm.LendingRates.Task;
+            calculateServiceMock.Setup(s => s.CalculateRenewCost(1000, _monthLendingRate, 0, vm.LendingRates.Result))
+                .Returns(258);
+            calculateServiceMock.Setup(s => s.CalculateRenewCost(1000, _monthLendingRate, delay.Days, vm.LendingRates.Result))
+                .Returns(expectedRenewPrice);
+
+            //Act
+            _ = vm.ContractDate;
+
+
+            //Assert
+            Assert.Equal(258, await vm.RenewPrice.Task);
+
+            //Act
+            vm.SelectedDelayLendingRate = delay;
+
+            //Assert
+            Assert.Equal(expectedRenewPrice, await vm.RenewPrice.Task);
+        }
+
+        [StaTheory]
+        [MemberData(nameof(GetNewLendingRateAndExpectedContractAmountAndMoqTimes))]
+        public void NewRepurchasePriceShouldBe0WhenSelectedNewRepurchaseDateLendingRateIsNull(LendingRate selectedNewRepurchaseDateLendingRate, decimal expectedValue, Moq.Times expectedTimes)
+        {
+            //Arrange
+            var calculateServiceMock = new Mock<ICalculateService>();
+            var contractServiceMock = new Mock<IContractService>();
+            var containerProviderMock = new Mock<IContainerProvider>();
+            var messageBoxServiceMock = new Mock<IMessageBoxService>();
+            var regionNavigateServiceMock = new Mock<IRegionNavigationService>();
+            regionNavigateServiceMock.Setup(p => p.Region).Returns(new Region());
+            calculateServiceMock.Setup(s => s.CalculateContractAmount(1000, selectedNewRepurchaseDateLendingRate))
+                .Returns(expectedValue);
+            containerProviderMock.Setup(c => c.Resolve(typeof(RenewContractPaymentHamburgerMenuItem)))
+                .Returns(new RenewContractPaymentHamburgerMenuItem());
+            var vm = new RenewContractDataViewModel(calculateServiceMock.Object, contractServiceMock.Object,
+                containerProviderMock.Object, messageBoxServiceMock.Object);
+            vm.OnNavigatedTo(new NavigationContext(regionNavigateServiceMock.Object, new Uri("Test", UriKind.RelativeOrAbsolute), new NavigationParameters()
+            {
+                {"contract", GetContract()}
+            }));
+
+            //Act
+            _ = vm.ContractDate;
+            vm.SelectedNewRepurchaseDateLendingRate = selectedNewRepurchaseDateLendingRate;
+
+            //Assert
+            Assert.Equal(expectedValue, vm.NewRePurchasePrice);
+            calculateServiceMock.Verify(v => v.CalculateContractAmount(1000, selectedNewRepurchaseDateLendingRate), expectedTimes);
+        }
+
+        [StaFact]
+        public void IsNextButtonEnabledShouldBeNullWhenNewRepurchaseDateIsNull()
+        {
+            //Arrange
+            var calculateServiceMock = new Mock<ICalculateService>();
+            var contractServiceMock = new Mock<IContractService>();
+            var containerProviderMock = new Mock<IContainerProvider>();
+            var messageBoxServiceMock = new Mock<IMessageBoxService>();
+            var regionNavigateServiceMock = new Mock<IRegionNavigationService>();
+            regionNavigateServiceMock.Setup(p => p.Region).Returns(new Region());
+            containerProviderMock.Setup(c => c.Resolve(typeof(RenewContractPaymentHamburgerMenuItem)))
+                .Returns(new RenewContractPaymentHamburgerMenuItem());
+            var vm = new RenewContractDataViewModel(calculateServiceMock.Object, contractServiceMock.Object,
+                containerProviderMock.Object, messageBoxServiceMock.Object);
+            calculateServiceMock
+                .Setup(s => s.CalculateContractAmount(1000, _oneWeekLendingRate)).Returns(1086);
+            calculateServiceMock
+                .Setup(s => s.CalculateContractAmount(1000, _twoWeeksLendingRate)).Returns(1197);
+            calculateServiceMock
+                .Setup(s => s.CalculateContractAmount(1000, _monthLendingRate)).Returns(1258);
+
+            //Act
+
+            //Assert
+            Assert.False(vm.IsNextButtonEnabled);
+
+            //Act
+            vm.SelectedNewRepurchaseDateLendingRate = new LendingRate();
+            Assert.True(vm.IsNextButtonEnabled);
+        }
     }
 }

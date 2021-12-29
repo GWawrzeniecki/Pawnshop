@@ -2,6 +2,7 @@
 using PawnShop.Core.HamburgerMenu.Implementations;
 using PawnShop.Core.HamburgerMenu.Interfaces;
 using PawnShop.Core.ScopedRegion;
+using PawnShop.Core.Tasks;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.MenuItem;
 using PawnShop.Services.Interfaces;
@@ -25,7 +26,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private bool _isDelayed;
         private int _howManyDaysLate;
         private Business.Models.Contract _contract;
-        private IList<LendingRate> _lendingRates;
+        private NotifyTask<IList<LendingRate>> _lendingRates;
         private LendingRate _selectedNewRepurchaseDateLendingRate;
         private LendingRate _selectedDelayLendingRate;
         private LendingRate _actualLendingRate;
@@ -44,7 +45,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             _messageBoxService = messageBoxService;
             Contract = new Business.Models.Contract { ContractItems = new List<ContractItem>(), LendingRate = new LendingRate() };
             HamburgerMenuItem = containerProvider.Resolve<RenewContractPaymentHamburgerMenuItem>();
-            LoadStartupData();
+            LendingRates = NotifyTask.Create(LoadLendingRate);
         }
 
         #endregion
@@ -94,20 +95,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
         }
 
-        public int HowManyDaysLateCalculated
-        {
-            get
-            {
-                var days = DateTime.Compare(ContractDate, DateTime.Now) < 0
-                    ? DateTime.Today.Subtract(ContractDate).Days
-                    : 0;
-                IsDelayed = days > 0;
-                HowManyDaysLate = days;
-                SelectedDelayLendingRate =
-                    LendingRates?.FirstOrDefault(lr => lr.Days == days) ?? new LendingRate { Days = days };
-                return days;
-            }
-        }
+        public NotifyTask<int> HowManyDaysLateCalculated => NotifyTask.Create(GetHowManyDaysCalculated);
 
         public decimal SumOfEstimatedValues => Contract.ContractItems.Sum(c => c.EstimatedValue);
 
@@ -137,17 +125,14 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
         }
 
-        public decimal RenewPrice => _actualLendingRate is not null && LendingRates is not null
-            ? _calculateService.CalculateRenewCost(SumOfEstimatedValues, _actualLendingRate, HowManyDaysLate,
-                LendingRates)
-            : 0;
+        public NotifyTask<decimal> RenewPrice => NotifyTask.Create(GetRenewPrice);
 
         public decimal NewRePurchasePrice => SelectedNewRepurchaseDateLendingRate is not null
             ? _calculateService.CalculateContractAmount(SumOfEstimatedValues,
                 SelectedNewRepurchaseDateLendingRate)
             : 0;
 
-        public IList<LendingRate> LendingRates
+        public NotifyTask<IList<LendingRate>> LendingRates
         {
             get => _lendingRates;
             set
@@ -186,24 +171,40 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region PrivateMethods
 
-        private async void LoadStartupData()
+        private async Task<IList<LendingRate>> LoadLendingRate()
         {
             try
             {
-                await TryToLoadLendingRate();
+                return await _contractService.LoadLendingRates();
             }
-
             catch (LoadingLendingRatesException loadingLendingRatesException)
             {
                 _messageBoxService.ShowError(
                     $"{loadingLendingRatesException.Message}{Environment.NewLine}Błąd: {loadingLendingRatesException.InnerException?.Message}",
                     "Błąd");
             }
+
+            return Enumerable.Empty<LendingRate>().ToList();
         }
 
-        private async Task TryToLoadLendingRate()
+        private async Task<int> GetHowManyDaysCalculated()
         {
-            LendingRates = await _contractService.LoadLendingRates();
+            var days = DateTime.Compare(ContractDate, DateTime.Now) < 0
+                ? DateTime.Today.Subtract(ContractDate).Days
+                : 0;
+            IsDelayed = days > 0;
+            HowManyDaysLate = days;
+            SelectedDelayLendingRate =
+                (await LendingRates.Task)?.FirstOrDefault(lr => lr.Days == days) ?? new LendingRate { Days = days };
+            return days;
+        }
+
+        private async Task<decimal> GetRenewPrice()
+        {
+            return _actualLendingRate is not null && LendingRates is not null
+                  ? _calculateService.CalculateRenewCost(SumOfEstimatedValues, _actualLendingRate, HowManyDaysLate,
+                     await LendingRates.Task)
+                  : 0;
         }
 
         #endregion
