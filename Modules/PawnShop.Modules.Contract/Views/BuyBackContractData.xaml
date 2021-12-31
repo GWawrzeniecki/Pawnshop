@@ -111,7 +111,7 @@
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
-                            Text="{Binding HowManyDaysLateCalculated, Mode=OneWay}" />
+                            Text="{Binding HowManyDaysLateCalculated.Result, Mode=OneWay}" />
 
                         <TextBlock
                             Grid.Row="0"
@@ -150,7 +150,7 @@
                             Grid.Column="4"
                             Margin="0,0,0,0"
                             IsEditable="True"
-                            ItemsSource="{Binding LendingRates}"
+                            ItemsSource="{Binding LendingRates.Result}"
                             Text="{Binding SelectedDelayLendingRate, Mode=TwoWay, Delay=100, Converter={StaticResource LendingRateConverter}}"
                             TextSearch.TextPath="Days">
                             <ComboBox.ItemTemplate>
@@ -172,7 +172,7 @@
                             Grid.Column="1"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Left"
-                            Text="{Binding BuyBackPrice, Mode=OneWay}" />
+                            Text="{Binding BuyBackPrice.Result, Mode=OneWay}" />
 
                         <TextBlock
                             Grid.Row="5"

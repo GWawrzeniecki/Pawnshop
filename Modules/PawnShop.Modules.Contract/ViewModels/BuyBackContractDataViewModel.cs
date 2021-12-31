@@ -1,5 +1,6 @@
 ﻿using PawnShop.Business.Models;
 using PawnShop.Core.ScopedRegion;
+using PawnShop.Core.Tasks;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Services.Interfaces;
 using Prism.Mvvm;
@@ -16,7 +17,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         #region PrivateMembers
 
         private Business.Models.Contract _contract;
-        private IList<LendingRate> _lendingRates;
+        private NotifyTask<IList<LendingRate>> _lendingRates;
         private bool _isDelayed;
         private int _howManyDaysLate;
         private LendingRate _selectedDelayLendingRate;
@@ -36,7 +37,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             _contractService = contractService;
             _messageBoxService = messageBoxService;
             Contract = new Business.Models.Contract { ContractItems = new List<ContractItem>(), LendingRate = new LendingRate() };
-            LoadStartupData();
+            LendingRates = NotifyTask.Create(LoadLendingRate);
         }
 
         #endregion
@@ -90,17 +91,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             set => SetProperty(ref _contractStartDate, value);
         }
 
-        public int HowManyDaysLateCalculated
-        {
-            get
-            {
-                var days = DateTime.Compare(ContractDate, DateTime.Now) < 0 ? DateTime.Today.Subtract(ContractDate).Days : 0;
-                IsDelayed = days > 0;
-                HowManyDaysLate = days;
-                SelectedDelayLendingRate = LendingRates?.FirstOrDefault(lr => lr.Days == days) ?? new LendingRate { Days = days };
-                return days;
-            }
-        }
+        public NotifyTask<int> HowManyDaysLateCalculated => NotifyTask.Create(GetHowManyDaysCalculated);
 
         public bool IsDelayed
         {
@@ -120,7 +111,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         public decimal SumOfEstimatedValues => Contract.ContractItems.Sum(c => c.EstimatedValue);
 
-        public IList<LendingRate> LendingRates
+        public NotifyTask<IList<LendingRate>> LendingRates
         {
             get => _lendingRates;
             set
@@ -140,32 +131,42 @@ namespace PawnShop.Modules.Contract.ViewModels
             }
         }
 
-        public decimal BuyBackPrice => ActualLendingRate is not null && LendingRates is not null
-            ? _calculateService.CalculateBuyBackCost(SumOfEstimatedValues, ActualLendingRate, HowManyDaysLate, LendingRates)
-            : 0;
+        public NotifyTask<decimal> BuyBackPrice => NotifyTask.Create(GetBuyBackPrice);
 
         #endregion
 
         #region PrivateMethods
-        private async void LoadStartupData()
+
+        private async Task<IList<LendingRate>> LoadLendingRate()
         {
             try
             {
-                await TryToLoadLendingRate();
-
+                return await _contractService.LoadLendingRates();
             }
-
             catch (LoadingLendingRatesException loadingLendingRatesException)
             {
                 _messageBoxService.ShowError(
                     $"{loadingLendingRatesException.Message}{Environment.NewLine}Błąd: {loadingLendingRatesException.InnerException?.Message}",
                     "Błąd");
             }
+
+            return Enumerable.Empty<LendingRate>().ToList();
         }
 
-        private async Task TryToLoadLendingRate()
+        private async Task<int> GetHowManyDaysCalculated()
         {
-            LendingRates = await _contractService.LoadLendingRates();
+            var days = DateTime.Compare(ContractDate, DateTime.Now) < 0 ? DateTime.Today.Subtract(ContractDate).Days : 0;
+            IsDelayed = days > 0;
+            HowManyDaysLate = days;
+            SelectedDelayLendingRate = (await LendingRates.Task)?.FirstOrDefault(lr => lr.Days == days) ?? new LendingRate { Days = days };
+            return days;
+        }
+
+        private async Task<decimal> GetBuyBackPrice()
+        {
+            return ActualLendingRate is not null && LendingRates is not null
+                 ? _calculateService.CalculateBuyBackCost(SumOfEstimatedValues, ActualLendingRate, HowManyDaysLate, await LendingRates.Task)
+                 : 0;
         }
 
         #endregion
@@ -194,7 +195,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             navigationContext.Parameters.Add("contract", Contract);
-            navigationContext.Parameters.Add("buyBackPrice", BuyBackPrice);
+            navigationContext.Parameters.Add("buyBackPrice", BuyBackPrice.Result);
             navigationContext.Parameters.Add("CallBack", _callBack);
         }
 

@@ -90,7 +90,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                 _actualLendingRate = lastRenew.LendingRate;
                 RaisePropertyChanged(nameof(RenewPrice));
                 RaisePropertyChanged(nameof(RePurchasePrice));
-                ContractStartDate = Contract.StartDate;
+                ContractStartDate = lastRenew.StartDate;
                 return lastRenew.StartDate.AddDays(lastRenew.LendingRate.Days);
             }
         }
@@ -233,7 +233,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             navigationContext.Parameters.Add("contract", Contract);
-            navigationContext.Parameters.Add("renewPrice", RenewPrice);
+            navigationContext.Parameters.Add("renewPrice", RenewPrice.Result);
             navigationContext.Parameters.Add("renewLendingRate", SelectedNewRepurchaseDateLendingRate);
             navigationContext.Parameters.Add("startDate", ContractDate);
             navigationContext.Parameters.Add("CallBack", _callBack);

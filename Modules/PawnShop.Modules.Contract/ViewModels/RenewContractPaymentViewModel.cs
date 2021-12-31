@@ -1,6 +1,7 @@
 ﻿using PawnShop.Business.Models;
 using PawnShop.Core.Events;
 using PawnShop.Core.ScopedRegion;
+using PawnShop.Core.Tasks;
 using PawnShop.Exceptions;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Contract.Windows.ViewModels;
@@ -13,6 +14,7 @@ using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PawnShop.Modules.Contract.ViewModels
@@ -23,7 +25,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         #region PrivateMembers
 
         private PaymentType _selectedPaymentType;
-        private IList<PaymentType> _paymentTypes;
+        private NotifyTask<IList<PaymentType>> _paymentTypes;
         private readonly IContractService _contractService;
         private readonly IShellService _shellService;
         private readonly IEventAggregator _eventAggregator;
@@ -45,7 +47,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             _shellService = shellService;
             _eventAggregator = eventAggregator;
             _messageBoxService = messageBoxService;
-            LoadStartupData();
+            PaymentTypes = NotifyTask.Create(LoadPaymentTypes);
         }
 
         #endregion
@@ -60,7 +62,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         }
 
 
-        public IList<PaymentType> PaymentTypes
+        public NotifyTask<IList<PaymentType>> PaymentTypes
         {
             get => _paymentTypes;
             set => SetProperty(ref _paymentTypes, value);
@@ -148,14 +150,12 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         #region PrivateMethods
 
-        private async void LoadStartupData()
+        private async Task<IList<PaymentType>> LoadPaymentTypes()
         {
             try
             {
-                await TryToLoadPaymentTypes();
-
+                return await _contractService.LoadPaymentTypes();
             }
-
             catch (LoadingPaymentTypesException loadingPaymentTypesException)
             {
                 _messageBoxService.ShowError(
@@ -163,11 +163,7 @@ namespace PawnShop.Modules.Contract.ViewModels
                     "Błąd");
             }
 
-        }
-
-        private async Task TryToLoadPaymentTypes()
-        {
-            PaymentTypes = await _contractService.LoadPaymentTypes();
+            return Enumerable.Empty<PaymentType>().ToList();
         }
 
         private async Task TryToRenewContract(Business.Models.Contract contractToRenew, InsertContractRenew insertContractRenew, PaymentType paymentType, decimal paymentAmount,

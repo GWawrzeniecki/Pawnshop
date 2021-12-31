@@ -77,7 +77,7 @@
                         <ComboBox
                             Grid.Row="1"
                             Grid.Column="1"
-                            ItemsSource="{Binding PaymentTypes}"
+                            ItemsSource="{Binding PaymentTypes.Result}"
                             SelectedItem="{Binding SelectedPaymentType}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
