@@ -10,7 +10,6 @@ namespace PawnShop.Services.Implementations
 {
     public class CalculateService : ICalculateService
     {
-
         #region PrivateMembers
 
         private readonly IUserSettings _userSettings;
@@ -42,35 +41,46 @@ namespace PawnShop.Services.Implementations
                 : GetNetStorageCost(estimatedValue, lendingRate);
         }
 
-        public decimal CalculateNetRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay, IList<LendingRate> lendingRates)
+        public decimal CalculateNetRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay,
+            IList<LendingRate> lendingRates)
         {
-            return lendingRate == null
-                ? throw new ArgumentNullException(nameof(lendingRate))
-                : GetNetRenewCost(estimatedValue, lendingRate, delay, lendingRates);
+            if (lendingRate == null) throw new ArgumentNullException(nameof(lendingRate));
+            if (lendingRates == null) throw new ArgumentNullException(nameof(lendingRates));
+            if (lendingRates.Count == 0) throw new ArgumentException(nameof(lendingRates));
+
+            return GetNetRenewCost(estimatedValue, lendingRate, delay, lendingRates);
         }
 
-        public decimal CalculateRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay, IList<LendingRate> lendingRates)
+        public decimal CalculateRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay,
+            IList<LendingRate> lendingRates)
         {
-            return lendingRate == null
-                ? throw new ArgumentNullException(nameof(lendingRate))
-                : decimal.Round(AddVat(CalculateNetRenewCost(estimatedValue, lendingRate, delay, lendingRates)));
+            if (lendingRate == null) throw new ArgumentNullException(nameof(lendingRate));
+            if (lendingRates == null) throw new ArgumentNullException(nameof(lendingRates));
+            if (lendingRates.Count == 0) throw new ArgumentException(nameof(lendingRates));
+            return decimal.Round(AddVat(CalculateNetRenewCost(estimatedValue, lendingRate, delay, lendingRates)));
         }
 
-        public decimal CalculateBuyBackCost(decimal estimatedValue, LendingRate lendingRate, int? delay, IList<LendingRate> lendingRates)
+        public decimal CalculateBuyBackCost(decimal estimatedValue, LendingRate lendingRate, int? delay,
+            IList<LendingRate> lendingRates)
         {
-            return lendingRate == null
-                ? throw new ArgumentNullException(nameof(lendingRate))
-                : decimal.Round(AddVat(CalculateNetRenewCost(estimatedValue, lendingRate, delay, lendingRates))) + estimatedValue;
+            if (lendingRate == null) throw new ArgumentNullException(nameof(lendingRate));
+            if (lendingRates == null) throw new ArgumentNullException(nameof(lendingRates));
+            if (lendingRates.Count == 0) throw new ArgumentException(nameof(lendingRates));
+            return decimal.Round(AddVat(CalculateNetRenewCost(estimatedValue, lendingRate, delay, lendingRates))) +
+              estimatedValue;
         }
 
         #endregion
 
         #region PrivateMethods
 
-        private static decimal GetNetStorageCost(decimal estimatedValue, LendingRate lendingRate) => estimatedValue * lendingRate.Procent / 100;
+        private static decimal GetNetStorageCost(decimal estimatedValue, LendingRate lendingRate) =>
+            estimatedValue * lendingRate.Procent / 100;
+
         private decimal AddVat(decimal netAmount) => (netAmount * _userSettings.VatPercent / 100) + netAmount;
 
-        private static decimal GetNetRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay, IList<LendingRate> lendingRates)
+        private static decimal GetNetRenewCost(decimal estimatedValue, LendingRate lendingRate, int? delay,
+            IList<LendingRate> lendingRates)
         {
             if (delay is null or 0)
             {
@@ -113,15 +123,15 @@ namespace PawnShop.Services.Implementations
             }
 
             if (delay > 0)
-                subtractedLendingRates.AddRange(lendingRates.Where(l => l.Days == lendingRates.Where(l2 => l2.Days >= delay)
-                   .Min(l3 => l3.Days)));
+                subtractedLendingRates
+                    .AddRange(lendingRates
+                        .Where(l => l.Days == lendingRates
+                            .Where(l2 => l2.Days >= delay)
+                            .Min(l3 => l3.Days)));
 
             return subtractedLendingRates;
         }
 
         #endregion
-
-
-
     }
 }

@@ -12,6 +12,7 @@ using Xunit;
 
 namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
 {
+    [Collection("Sequential")]
     public class CreateContractSummaryViewModelTests : IntegrationTestBase<CreateContractSummaryViewModel>
     {
         [StaFact]

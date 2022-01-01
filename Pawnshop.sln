@@ -49,7 +49,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Modules.Login.Inte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests.Base", "IntegrationTests\IntegrationTests.Base\IntegrationTests.Base.csproj", "{A618DDD6-C3D9-4A37-9665-F0FE7CDA7D55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnShop.Modules.Contract.IntegrationTests", "IntegrationTests\PawnShop.Modules.Contract.IntegrationTests\PawnShop.Modules.Contract.IntegrationTests.csproj", "{D3B37631-6D85-451E-9BD9-788A492A0A1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Modules.Contract.IntegrationTests", "IntegrationTests\PawnShop.Modules.Contract.IntegrationTests\PawnShop.Modules.Contract.IntegrationTests.csproj", "{D3B37631-6D85-451E-9BD9-788A492A0A1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnShop.Services.UnitTests", "UnitTests\PawnShop.Services.UnitTests\PawnShop.Services.UnitTests.csproj", "{4AE416C9-1EFD-492F-A631-3E5462B98F2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +143,10 @@ Global
 		{D3B37631-6D85-451E-9BD9-788A492A0A1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3B37631-6D85-451E-9BD9-788A492A0A1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3B37631-6D85-451E-9BD9-788A492A0A1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AE416C9-1EFD-492F-A631-3E5462B98F2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AE416C9-1EFD-492F-A631-3E5462B98F2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AE416C9-1EFD-492F-A631-3E5462B98F2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AE416C9-1EFD-492F-A631-3E5462B98F2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +165,7 @@ Global
 		{5FD3F5A8-1128-47DB-A5ED-521398A6C962} = {6A6A5711-2B14-422C-A6AF-4CE18227AD14}
 		{A618DDD6-C3D9-4A37-9665-F0FE7CDA7D55} = {6A6A5711-2B14-422C-A6AF-4CE18227AD14}
 		{D3B37631-6D85-451E-9BD9-788A492A0A1C} = {6A6A5711-2B14-422C-A6AF-4CE18227AD14}
+		{4AE416C9-1EFD-492F-A631-3E5462B98F2F} = {269E35E1-2A0F-4D32-BFCB-5891C4455E84}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5606074-19E1-41E2-9357-80CDE5DA40C1}

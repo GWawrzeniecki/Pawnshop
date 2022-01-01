@@ -13,6 +13,7 @@ using Xunit;
 
 namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
 {
+    [Collection("Sequential")]
     public class BuyBackContractPaymentViewModelTests : IntegrationTestBase<BuyBackContractPaymentViewModel>
     {
         [Fact]

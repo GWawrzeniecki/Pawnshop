@@ -8,6 +8,7 @@ using ClientSearchOption = PawnShop.Modules.Contract.Enums.ClientSearchOption;
 
 namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
 {
+    [Collection("Sequential")]
     public class CreateContractClientDataViewModelTests : IntegrationTestBase<CreateContractClientDataViewModel>
     {
         [StaTheory]
