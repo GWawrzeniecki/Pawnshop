@@ -44,10 +44,7 @@ namespace PawnShop.Core.ViewModel.Base
             get
             {
                 RaisePropertyChanged(nameof(HasErrors));
-                foreach (var delegateCommand in Commands)
-                {
-                    delegateCommand.RaiseCanExecuteChanged();
-                }
+                RaiseAllCommands();
                 var prop = new[] { columnName };
                 var context = new ValidationContext<T>(GetInstance(), new PropertyChain(), new MemberNameValidatorSelector(prop));
                 var validationResult = _validator.Validate(context);
@@ -81,7 +78,16 @@ namespace PawnShop.Core.ViewModel.Base
 
         #region IRaiseCanExecuteChanged 
 
-        public IList<DelegateCommand> Commands { get; set; } // to do maybe change it in future
+        public IList<DelegateCommand> Commands { get; set; }
+
+        public void RaiseAllCommands()
+        {
+            if (Commands is null)
+                return;
+
+            foreach (var command in Commands)
+                command.RaiseCanExecuteChanged();
+        }
 
         #endregion
     }

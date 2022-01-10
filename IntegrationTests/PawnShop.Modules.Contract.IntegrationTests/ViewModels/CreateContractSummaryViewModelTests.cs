@@ -74,6 +74,10 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
             {
                 Pesel = "11111111111",
                 Login = "test",
+                WorkerBossType = new WorkerBossType()
+                {
+                    Type = "Pracownik"
+                },
                 Hash = ContainerProvider.Resolve<HashService>().Hash("test".ToSecureString()),
                 Privilege = new Business.Models.Privilege { PawnShopTabs = true },
                 WorkerBossNavigation = new Business.Models.Person

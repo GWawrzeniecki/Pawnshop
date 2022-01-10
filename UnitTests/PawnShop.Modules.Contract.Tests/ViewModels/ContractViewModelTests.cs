@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using AutoMapper;
+using Moq;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Modules.Contract.ViewModels;
 using PawnShop.Services.Interfaces;
@@ -21,8 +22,9 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var sessionContextMock = new Mock<ISessionContext>();
             var userSettings = new Mock<IUserSettings>();
             var messageBoxService = new Mock<IMessageBoxService>();
+            var mapperMock = new Mock<IMapper>();
 
-            var vm = new ContractViewModel(contractServiceMock.Object, dialogServiceMock.Object, userSettings.Object, shellServiceMock.Object, containerProviderMock.Object, new Validators.ContractValidator(), sessionContextMock.Object, messageBoxService.Object);
+            var vm = new ContractViewModel(contractServiceMock.Object, dialogServiceMock.Object, userSettings.Object, shellServiceMock.Object, containerProviderMock.Object, new Validators.ContractValidator(), sessionContextMock.Object, messageBoxService.Object, mapperMock.Object);
 
             //Act
             vm.ContractNumber = "01x2021";

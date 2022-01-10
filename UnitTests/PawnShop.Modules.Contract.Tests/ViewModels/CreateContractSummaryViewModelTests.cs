@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Moq;
+using PawnShop.Business.Dtos;
 using PawnShop.Business.Models;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Modules.Contract.ViewModels;
@@ -56,7 +57,7 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var messageBoxServiceMock = new Mock<IMessageBoxService>();
             var regionNavigateServiceMock = new Mock<IRegionNavigationService>();
             regionNavigateServiceMock.Setup(p => p.Region).Returns(new Region());
-            sessionContextMock.Setup(s => s.LoggedPerson).Returns(new WorkerBoss());
+            sessionContextMock.Setup(s => s.LoggedPerson).Returns(new WorkerBossLoginDto());
             var vm = new CreateContractSummaryViewModel(calculateServiceMock.Object, sessionContextMock.Object,
                 contractServiceMock.Object,
                 mapperMock.Object, shellServiceMock.Object, eventAggregatorMock.Object, messageBoxServiceMock.Object);
@@ -65,7 +66,9 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var wasNetStorageCostRaised = false;
             var wasRePurchasePriceRaised = false;
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             vm.PropertyChanged += delegate (object? sender, PropertyChangedEventArgs args)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             {
                 switch (args.PropertyName)
                 {

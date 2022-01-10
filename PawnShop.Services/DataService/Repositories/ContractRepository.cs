@@ -29,7 +29,7 @@ namespace PawnShop.Services.DataService.Repositories
             _mapper = _containerProvider.Resolve<IMapper>();
         }
 
-        public async Task UpdateContractStates() => await _context.Database.ExecuteSqlRawAsync($"Exec [{DbSchemaName}].[{_updateContractStatesProcedureName}]");
+        public async Task UpdateContractStates() => await _context.Database.ExecuteSqlRawAsync($"Exec [{ProceduresSchemaName}].[{_updateContractStatesProcedureName}]");
 
         public async Task<string> GetNextContractNumber()
         {
@@ -143,7 +143,7 @@ namespace PawnShop.Services.DataService.Repositories
             var dealDocument = new DealDocument { MoneyBalanceId = moneyBalance.TodayDate, Payment = payment, Cost = cost, Income = income, RepaymentCapital = repaymentCapital, Profit = profit };
             var renewContract = _mapper.Map<ContractRenew>(insertContractRenew);
             renewContract.DealDocument = dealDocument;
-            var contractState = await _context.ContractStates.AsNoTracking().FirstOrDefaultAsync(c => c.State.Equals(RenewContractState));
+            var contractState = await _context.ContractStates.AsNoTracking().FirstOrDefaultAsync(c => c.State.Equals(RenewedContractState));
             Attach(contractToRenew);
             contractToRenew.ContractStateId = contractState.Id;
             contractToRenew.ContractRenews.Add(renewContract);
@@ -158,7 +158,7 @@ namespace PawnShop.Services.DataService.Repositories
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
             var moneyBalance = await unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();
             var dealDocument = new DealDocument { MoneyBalanceId = moneyBalance.TodayDate, Payment = payment, Cost = cost, Income = income, RepaymentCapital = repaymentCapital, Profit = profit };
-            var contractState = await _context.ContractStates.AsNoTracking().FirstOrDefaultAsync(c => c.State.Equals(BuyBackContractState));
+            var contractState = await _context.ContractStates.AsNoTracking().FirstOrDefaultAsync(c => c.State.Equals(BoughtBackContractState));
             Attach(contractToBuyBack);
             contractToBuyBack.ContractStateId = contractState.Id;
             contractToBuyBack.BuyBackId = contractToBuyBack.DealMakerId;

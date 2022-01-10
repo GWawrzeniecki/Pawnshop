@@ -10,11 +10,10 @@ namespace PawnShop.Business.Models
         public WorkerBoss()
         {
             Contracts = new HashSet<Contract>();
-            WorkerBossContractItems = new HashSet<WorkerBossContractItem>();
         }
 
         public int WorkerBossId { get; set; }
-        public int? WorkerBossTypeId { get; set; }
+        public int WorkerBossTypeId { get; set; }
         public int PrivilegeId { get; set; }
         public DateTime? HireDate { get; set; }
         public DateTime? DatePhysicalCheckUp { get; set; }
@@ -28,6 +27,5 @@ namespace PawnShop.Business.Models
         public virtual Person WorkerBossNavigation { get; set; }
         public virtual WorkerBossType WorkerBossType { get; set; }
         public virtual ICollection<Contract> Contracts { get; set; }
-        public virtual ICollection<WorkerBossContractItem> WorkerBossContractItems { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PawnShop.Business.Dtos;
 using PawnShop.Business.Models;
 using PawnShop.DataAccess.Data;
-using PawnShop.Services.DataService.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

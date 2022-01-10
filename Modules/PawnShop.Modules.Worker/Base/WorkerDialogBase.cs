@@ -38,6 +38,8 @@ namespace PawnShop.Modules.Worker.Base
             }
         }
 
+        public virtual bool IsValidForm => !HasErrors;
+
         #endregion
 
         #region ITabItemViewModel
@@ -69,7 +71,7 @@ namespace PawnShop.Modules.Worker.Base
 
         #endregion
 
-        #region ProtectedMethpods
+        #region ProtectedMethods
 
         protected virtual void MapWorkerBossToVm()
         {

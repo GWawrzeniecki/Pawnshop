@@ -17,11 +17,12 @@ namespace PawnShop.Modules.Login
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<ISecretManagerService, SecretManagerService>();
-            containerRegistry.RegisterSingleton<IHashService, HashService>();
-            containerRegistry.RegisterSingleton<IAesService, AesService>();
+            containerRegistry.Register<ISecretManagerService, SecretManagerService>();
+            containerRegistry.Register<IEnvironmentVariableService, EnvironmentVariableService>();
+            containerRegistry.Register<IHashService, HashService>();
+            containerRegistry.Register<IAesService, AesService>();
             containerRegistry.Register<ILoginService, LoginService>();
-            containerRegistry.RegisterSingleton<LoginDialogValidator>();
+            containerRegistry.Register<LoginDialogValidator>();
         }
     }
 }

@@ -93,6 +93,7 @@ namespace IntegrationTests.Base
             ContainerProvider.RegisterSingleton<ICalculateService, CalculateService>();
             ContainerProvider.RegisterSingleton<IConfigurationService, ConfigurationService>();
             ContainerProvider.RegisterSingleton<IPdfService, PdfService>();
+            ContainerProvider.Register<IEnvironmentVariableService, EnvironmentVariableService>();
             ContainerProvider.RegisterDialog<AddContractItemDialog, AddContractItemDialogViewModel>();
 
 

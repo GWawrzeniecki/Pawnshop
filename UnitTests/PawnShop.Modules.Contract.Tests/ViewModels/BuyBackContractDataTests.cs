@@ -84,7 +84,9 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var wasBuyBackPriceRaised = false;
 
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             vm.PropertyChanged += delegate (object? sender, PropertyChangedEventArgs args)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             {
                 wasBuyBackPriceRaised = args.PropertyName switch
                 {
@@ -221,7 +223,9 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var wasBuyBackPriceRaised = false;
 
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             vm.PropertyChanged += delegate (object? sender, PropertyChangedEventArgs args)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             {
                 wasBuyBackPriceRaised = args.PropertyName switch
                 {
@@ -273,9 +277,9 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
                 {"contract", ContractDataGenerator.GetContract()}
             }));
             await vm.LendingRates.Task;
-            calculateServiceMock.Setup(s => s.CalculateBuyBackCost(1000, ContractDataGenerator._monthLendingRate, 0, vm.LendingRates.Result))
+            calculateServiceMock.Setup(s => s.CalculateBuyBackCost(1000, ContractDataGenerator.MonthLendingRate, 0, vm.LendingRates.Result))
                 .Returns(1258);
-            calculateServiceMock.Setup(s => s.CalculateBuyBackCost(1000, ContractDataGenerator._monthLendingRate, delay.Days, vm.LendingRates.Result))
+            calculateServiceMock.Setup(s => s.CalculateBuyBackCost(1000, ContractDataGenerator.MonthLendingRate, delay.Days, vm.LendingRates.Result))
                 .Returns(expectedBuyBackPrice);
 
             //Act

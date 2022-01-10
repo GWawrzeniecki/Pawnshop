@@ -17,7 +17,7 @@ namespace PawnShop.Services.DataService.Repositories
             _context = context;
         }
 
-        public async Task CreateTodayMoneyBalance() => await _context.Database.ExecuteSqlRawAsync($"Exec [{DbSchemaName}].[{_getTodayMoneyBalanceProcedureName}]");
+        public async Task CreateTodayMoneyBalance() => await _context.Database.ExecuteSqlRawAsync($"Exec [{ProceduresSchemaName}].[{_getTodayMoneyBalanceProcedureName}]");
 
         public async Task<MoneyBalance> GetTodayMoneyBalanceAsync()
         {

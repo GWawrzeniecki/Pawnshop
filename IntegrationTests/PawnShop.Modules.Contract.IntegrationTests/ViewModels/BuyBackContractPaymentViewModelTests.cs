@@ -32,7 +32,7 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
             });
             var buyBackContractState = pawnShopContext.ContractStates.Add(new ContractState()
             {
-                State = Core.Constants.Constants.BuyBackContractState
+                State = Core.Constants.Constants.BoughtBackContractState
             });
             var cashPaymentType = pawnShopContext.PaymentTypes.Add(new PaymentType()
             {
@@ -79,6 +79,10 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
             {
                 Pesel = "11111111111",
                 Login = "test",
+                WorkerBossType = new WorkerBossType()
+                {
+                    Type = "Pracownik"
+                },
                 Hash = ContainerProvider.Resolve<HashService>().Hash("test".ToSecureString()),
                 Privilege = new Business.Models.Privilege { PawnShopTabs = true },
                 WorkerBossNavigation = new Business.Models.Person
@@ -182,7 +186,7 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
 
 
             //Assert
-            Assert.Equal(Core.Constants.Constants.BuyBackContractState, boughtBackContract.ContractState.State);
+            Assert.Equal(Core.Constants.Constants.BoughtBackContractState, boughtBackContract.ContractState.State);
             Assert.NotNull(boughtBackContract.BuyBackId);
             Assert.NotNull(boughtBackContract.BuyBackDealDocumentId);
             Assert.NotNull(boughtBackContract.BuyBackDealDocument.Payment.ClientId);

@@ -1,5 +1,8 @@
-﻿using PawnShop.Services.Interfaces;
+﻿using PawnShop.Core.Extensions;
+using PawnShop.Services.Interfaces;
 using System;
+using System.Security;
+using System.Text.RegularExpressions;
 
 namespace PawnShop.Services.Implementations
 {
@@ -53,6 +56,27 @@ namespace PawnShop.Services.Implementations
             }
 
             return bResult;
+        }
+
+        public bool IsValidPassword(SecureString secureString)
+        {
+            if (secureString is null)
+                throw new ArgumentNullException(nameof(secureString));
+
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasMinimum8Chars = new Regex(@".{10,}");
+            var hasSpecialCharacter = new Regex("^[a-zA-Z0-9 ]+$");
+
+            var pw = secureString.ConvertToString();
+
+            if (pw is null)
+                return false;
+
+            var result = hasNumber.IsMatch(pw) && hasUpperChar.IsMatch(pw) && hasMinimum8Chars.IsMatch(pw) && !hasSpecialCharacter.IsMatch(pw);
+
+            pw = null;
+            return result;
         }
     }
 }

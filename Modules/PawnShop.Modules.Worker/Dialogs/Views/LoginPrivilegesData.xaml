@@ -120,7 +120,7 @@
                             mah:PasswordBoxHelper.CapsLockWarningToolTip="CapsLock jest włączony"
                             mah:TextBoxHelper.HasText="{Binding PasswordBoxHasText, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource ModernPasswordBoxLook}"
-                            Tag="{Binding PasswordTag, ValidatesOnDataErrors=True}"
+                            Tag="{Binding PasswordTag,Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                             Visibility="{Binding WorkerTabControlRegionContext, Converter={StaticResource PasswordVisibilityRegionContextConverter}}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="PasswordChanged">

@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PawnShop.Business.Dtos;
 using PawnShop.Business.Models;
 using PawnShop.DataAccess.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace PawnShop.Services.DataService.Repositories
 {
@@ -30,6 +32,25 @@ namespace PawnShop.Services.DataService.Repositories
         {
             return await GetWorkerBossAsQueryable()
                 .ToListAsync();
+        }
+
+        public async Task<WorkerBossLoginDto> GetWorkerBossLogin(string login)
+        {
+            return await _context
+                .WorkerBosses
+                .Include(w => w.Privilege)
+                .Include(w => w.WorkerBossNavigation)
+                .Select(w => new WorkerBossLoginDto()
+                {
+                    WorkerBossNavigation = w.WorkerBossNavigation,
+                    WorkerBossId = w.WorkerBossId,
+                    WorkerBossTypeId = w.WorkerBossTypeId,
+                    Login = w.Login,
+                    Hash = w.Hash,
+                    Privilege = w.Privilege,
+                    PrivilegeId = w.PrivilegeId
+                })
+                .FirstOrDefaultAsync(w => w.Login.Equals(login));
         }
 
         #endregion

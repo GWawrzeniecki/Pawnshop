@@ -12,7 +12,7 @@ namespace PawnShop.Services.UnitTests
 {
     public class CalculateServiceTests
     {
-        private IList<LendingRate> _lendingRates;
+        private readonly IList<LendingRate> _lendingRates;
         public CalculateServiceTests()
         {
             _lendingRates = new List<LendingRate>()

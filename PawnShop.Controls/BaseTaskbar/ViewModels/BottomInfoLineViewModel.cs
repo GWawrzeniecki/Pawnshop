@@ -1,4 +1,5 @@
 ﻿using PawnShop.Core.Events;
+using PawnShop.Core.Extensions;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
@@ -52,7 +53,7 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
             set => SetProperty(ref _sessionContext, value);
         }
 
-        public string FullName => $"{SessionContext.LoggedPerson.WorkerBossNavigation?.FirstName} {SessionContext.LoggedPerson.WorkerBossNavigation?.LastName}";
+        public string FullName => $"{SessionContext.LoggedPerson.WorkerBossNavigation?.GetFullName()}";
 
         #endregion public properties
 

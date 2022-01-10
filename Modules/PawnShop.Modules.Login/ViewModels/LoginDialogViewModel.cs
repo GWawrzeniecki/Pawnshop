@@ -1,4 +1,4 @@
-﻿using PawnShop.Business.Models;
+﻿using PawnShop.Business.Dtos;
 using PawnShop.Core.Events;
 using PawnShop.Core.Extensions;
 using PawnShop.Core.Interfaces;
@@ -12,6 +12,7 @@ using Prism.Services.Dialogs;
 using System;
 using System.Security;
 using System.Threading.Tasks;
+
 
 namespace PawnShop.Modules.Login.ViewModels
 {
@@ -121,9 +122,8 @@ namespace PawnShop.Modules.Login.ViewModels
             {
                 LoginButtonIsBusy = true;
                 var iHavePassword = view as IHavePassword;
-                var password = iHavePassword.Password.Copy();
+                using var password = iHavePassword.Password.Copy();
                 //password = AutoLoginAdmin(); // for testing purpose
-                password.MakeReadOnly(); ;
                 _uiService.SetMouseBusyCursor();
                 var (success, loggedUser) = await TryToLoginAsync(UserName, password);
                 if (success)
@@ -173,7 +173,7 @@ namespace PawnShop.Modules.Login.ViewModels
             }
         }
 
-        private async Task TryToStartStartupProcedures(WorkerBoss loggedUser)
+        private async Task TryToStartStartupProcedures(WorkerBossLoginDto loggedUser)
         {
             await _loginService.LoadStartupData(loggedUser);
             await _loginService.UpdateContractStates();
@@ -189,9 +189,9 @@ namespace PawnShop.Modules.Login.ViewModels
             //return true && !LoginButtonIsBusy; // For fast login while developing
         }
 
-        private async Task<(bool, WorkerBoss)> TryToLoginAsync(string userName, SecureString password)
+        private async Task<(bool, WorkerBossLoginDto)> TryToLoginAsync(string userName, SecureString password)
         {
-            (bool success, WorkerBoss loggedUser) = await _loginService.LoginAsync(userName, password);
+            (bool success, WorkerBossLoginDto loggedUser) = await _loginService.LoginAsync(userName, password);
             PasswordTag = success;
 
             return (success, loggedUser);

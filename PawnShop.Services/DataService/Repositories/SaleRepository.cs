@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PawnShop.Business.Dtos;
 using PawnShop.Business.Models;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.DataAccess.Data;
-using PawnShop.Services.DataService.Dtos;
 using Prism.Ioc;
 using System;
 using System.Collections.Generic;

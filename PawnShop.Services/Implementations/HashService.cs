@@ -15,16 +15,16 @@ namespace PawnShop.Services.Implementations
         private const int SaltSize = 16; // 128 bit
         private const int KeySize = 32; // 256 bit
         private readonly ISecretManagerService _secretManagerService;
-        private readonly IAesService _aesService;
+        private readonly IEnvironmentVariableService _environmentVariableService;
 
         #endregion private members
 
         #region constructor
 
-        public HashService(ISecretManagerService secretManagerService, IAesService aesService)
+        public HashService(ISecretManagerService secretManagerService, IEnvironmentVariableService environmentVariableService)
         {
             _secretManagerService = secretManagerService;
-            _aesService = aesService;
+            _environmentVariableService = environmentVariableService;
         }
 
         #endregion constructor
@@ -38,15 +38,13 @@ namespace PawnShop.Services.Implementations
 
             var salt = GenerateSalt();
 
-            GetSecret(IterationsKeySecret, out string Iterations);
-            var iterations = int.Parse(Iterations);
+            GetEnvironmentVariable(IterationsKeySecret, out string iterations);
 
-            var hashedPassword = Convert.ToBase64String(HashPassword(password, salt, iterations, KeySize));
+            var parsedIterations = int.Parse(iterations);
 
-            GetSecret(PepperAesKeySecret, out string aesPepperKey);
+            var hashedPassword = Convert.ToBase64String(HashPassword(PepperPassword(password), salt, parsedIterations, KeySize));
 
-            var encryptedKey = Encrypt(aesPepperKey, hashedPassword);
-            return $"{Convert.ToBase64String(salt)}.{encryptedKey}";
+            return $"{Convert.ToBase64String(salt)}.{hashedPassword}";
         }
 
         public bool Check(string hash, SecureString password)
@@ -65,13 +63,10 @@ namespace PawnShop.Services.Implementations
             var salt = Convert.FromBase64String(parts[0]);
             var originalHash = Convert.FromBase64String(parts[1]);
 
-            GetSecret(PepperAesKeySecret, out string aesPepperKey);
+            GetEnvironmentVariable(IterationsKeySecret, out string iterations);
 
-            var decryptedHash = Decrypt(aesPepperKey, Convert.ToBase64String(originalHash));
-            originalHash = Convert.FromBase64String(decryptedHash);
-            GetSecret(IterationsKeySecret, out string Iterations);
-            var iterations = int.Parse(Iterations);
-            var hashedPassword = HashPassword(password, salt, iterations, KeySize);
+            var parsedIterations = int.Parse(iterations);
+            var hashedPassword = HashPassword(PepperPassword(password), salt, parsedIterations, KeySize);
 
             var verified = hashedPassword.SequenceEqual(originalHash);
 
@@ -139,15 +134,27 @@ namespace PawnShop.Services.Implementations
             if (string.IsNullOrWhiteSpace(key))
                 throw new ArgumentException($"'{nameof(key)}' cannot be null or whitespace", nameof(key));
 
-            if (!_secretManagerService.GetValue<HashService>(key, out value))
+            if (!_secretManagerService.TryToGetValue<HashService>(key, out value))
                 throw new Exception($"Couldn't find {key} secret key.");
         }
 
-        private string Encrypt(string key, string valueToEncrypt) => _aesService.EncryptString(key, valueToEncrypt);
+        private void GetEnvironmentVariable(string name, out string value)
+        {
+            if (!_environmentVariableService.TryToGetValue(name, out value))
+                throw new Exception($"Couldn't find {name} environment variable.");
+        }
 
-        private string Decrypt(string key, string valueToDecrypt) => _aesService.DecryptString(key, valueToDecrypt);
+        private SecureString PepperPassword(SecureString password)
+        {
+            GetEnvironmentVariable(IterationsKeySecret, out var pepper);
 
+            foreach (var c in pepper.ToCharArray())
+            {
+                password.AppendChar(c);
+            }
 
+            return password;
+        }
 
         #endregion private methods
     }

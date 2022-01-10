@@ -1,4 +1,4 @@
-﻿using PawnShop.Business.Models;
+﻿using PawnShop.Business.Dtos;
 using PawnShop.Core;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Extensions;
@@ -57,7 +57,7 @@ namespace PawnShop.Services.Implementations
 
         #region public methods
 
-        public async Task<(bool success, WorkerBoss loggedUser)> LoginAsync(string login, SecureString password)
+        public async Task<(bool success, WorkerBossLoginDto loggedUser)> LoginAsync(string login, SecureString password)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace PawnShop.Services.Implementations
             }
         }
 
-        public async Task LoadStartupData(WorkerBoss loggedUser)
+        public async Task LoadStartupData(WorkerBossLoginDto loggedUser)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace PawnShop.Services.Implementations
 
         #region private method
 
-        private async Task<(bool success, WorkerBoss loggedUser)> TryLoginAsync(string login, SecureString password)
+        private async Task<(bool success, WorkerBossLoginDto loggedUser)> TryLoginAsync(string login, SecureString password)
         {
             if (string.IsNullOrWhiteSpace(login))
                 throw new ArgumentException($"'{nameof(login)}' cannot be null or whitespace", nameof(login));
@@ -149,16 +149,15 @@ namespace PawnShop.Services.Implementations
             return !success ? (false, null) : (_hashService.Check(workerBoss.Hash, password), workerBoss);
         }
 
-        private async Task<(bool success, WorkerBoss workerBoss)> TryGetWorkerBossAsync(string login)
+        private async Task<(bool success, WorkerBossLoginDto workerBoss)> TryGetWorkerBossAsync(string login)
         {
-            var workerBoss = (await _unitOfWork.WorkerBossRepository.GetAsync(filter: p => p.Login.Equals(login), null,
-                "WorkerBossNavigation,Privilege")).FirstOrDefault();
+            var workerBoss = await _unitOfWork.WorkerBossRepository.GetWorkerBossLogin(login);
 
 
             return workerBoss == null ? (false, null) : (true, workerBoss);
         }
 
-        private async Task TryLoadStartupData(WorkerBoss loggedUser)
+        private async Task TryLoadStartupData(WorkerBossLoginDto loggedUser)
         {
             await _unitOfWork.MoneyBalanceRepository.CreateTodayMoneyBalance();
             var todayMoneyBalance = await _unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();

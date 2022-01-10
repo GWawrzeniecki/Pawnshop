@@ -6,7 +6,6 @@ using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Mvvm;
-using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,12 +112,6 @@ namespace PawnShop.Modules.Home.ViewModels
 
         private async Task TryToLoadSellChart()
         {
-            var colors = new[]
-            {
-                new SKColor(179, 229, 252),
-                new SKColor(1, 87, 155)
-            };
-
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
             var sales = await unitOfWork.SaleRepository.GetSaleInDays(new DateTime(2021, 11, 27), DateTime.Today);
             for (var index = 1; index < sales.Count + 1; index++)
@@ -149,12 +142,6 @@ namespace PawnShop.Modules.Home.ViewModels
 
         private async Task TryToLoadRenewChart()
         {
-            var colors = new[]
-            {
-                new SKColor(179, 229, 252),
-                new SKColor(1, 87, 155)
-            };
-
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
             var sales = await unitOfWork.DealDocumentRepository.GetRenewSumInDays(new DateTime(2021, 11, 27), DateTime.Today);
             for (var index = 1; index < sales.Count + 1; index++)

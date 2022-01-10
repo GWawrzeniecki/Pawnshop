@@ -7,9 +7,9 @@ namespace PawnShop.Modules.Contract.UnitTests
 {
     public static class ContractDataGenerator
     {
-        public static LendingRate _oneWeekLendingRate = new LendingRate() { Days = 7, Procent = 7 };
-        public static LendingRate _twoWeeksLendingRate = new LendingRate() { Days = 14, Procent = 16 };
-        public static LendingRate _monthLendingRate = new LendingRate() { Days = 30, Procent = 21 };
+        public static readonly LendingRate OneWeekLendingRate = new LendingRate() { Days = 7, Procent = 7 };
+        public static readonly LendingRate TwoWeeksLendingRate = new LendingRate() { Days = 14, Procent = 16 };
+        public static readonly LendingRate MonthLendingRate = new LendingRate() { Days = 30, Procent = 21 };
 
         public static Business.Models.Contract GetContract(DateTime? startDate = null)
         {
@@ -26,7 +26,7 @@ namespace PawnShop.Modules.Contract.UnitTests
             {
                 Type = Core.Constants.Constants.CashPaymentType
             };
-            var lendingRate = _monthLendingRate;
+            var lendingRate = MonthLendingRate;
             var contractItemCategory = new ContractItemCategory()
             {
                 Category = "Test",
@@ -180,9 +180,9 @@ namespace PawnShop.Modules.Contract.UnitTests
             return new List<object[]>
             {
                 new object[] { null,null },
-                new object[] { _monthLendingRate,DateTime.Today.AddDays(30).AddDays(_monthLendingRate.Days) },
-                new object[] { _twoWeeksLendingRate,DateTime.Today.AddDays(30).AddDays(_twoWeeksLendingRate.Days) },
-                new object[] { _oneWeekLendingRate,DateTime.Today.AddDays(30).AddDays(_oneWeekLendingRate.Days) }
+                new object[] { MonthLendingRate,DateTime.Today.AddDays(30).AddDays(MonthLendingRate.Days) },
+                new object[] { TwoWeeksLendingRate,DateTime.Today.AddDays(30).AddDays(TwoWeeksLendingRate.Days) },
+                new object[] { OneWeekLendingRate,DateTime.Today.AddDays(30).AddDays(OneWeekLendingRate.Days) }
             };
         }
 
@@ -190,9 +190,9 @@ namespace PawnShop.Modules.Contract.UnitTests
         {
             return new List<object[]>
             {   new object[] { null,0},
-                new object[] { _monthLendingRate,_monthLendingRate.Days},
-                new object[] { _twoWeeksLendingRate,_twoWeeksLendingRate.Days },
-                new object[] { _oneWeekLendingRate,_oneWeekLendingRate.Days },
+                new object[] { MonthLendingRate,MonthLendingRate.Days},
+                new object[] { TwoWeeksLendingRate,TwoWeeksLendingRate.Days },
+                new object[] { OneWeekLendingRate,OneWeekLendingRate.Days },
                 new object[] { new LendingRate() {Days = 10},10},
 
             };
@@ -207,24 +207,24 @@ namespace PawnShop.Modules.Contract.UnitTests
                 {
                     RenewContractId = 1,
                     StartDate = GetContract().StartDate.AddDays(30),
-                    LendingRate = _twoWeeksLendingRate
+                    LendingRate = TwoWeeksLendingRate
                 }),1197 },
                 new object[] { GetContractWithContractRenews(new ContractRenew()
                 {
                     RenewContractId = 1,
                     StartDate = GetContract().StartDate.AddDays(30),
-                    LendingRate = _oneWeekLendingRate
+                    LendingRate = OneWeekLendingRate
                 }),1086 },
                 new object[] { GetContractWithContractRenews(new ContractRenew()
                 {
                     RenewContractId = 1,
                     StartDate = GetContract().StartDate.AddDays(30),
-                    LendingRate = _twoWeeksLendingRate
+                    LendingRate = TwoWeeksLendingRate
                 }, new ContractRenew()
                 {
                     RenewContractId = 2,
                     StartDate = GetContract().StartDate.AddDays(30).AddDays(14),
-                    LendingRate = _oneWeekLendingRate
+                    LendingRate = OneWeekLendingRate
                 }),1086 }
             };
         }
@@ -316,40 +316,40 @@ namespace PawnShop.Modules.Contract.UnitTests
             return new List<object[]>
             {
                 new object[] { GetContract(), 0 },
-                new object[] { GetContract(new DateTime(2021,11,25)), DateTime.Today.Subtract(new DateTime(2021,11,25).AddDays(_monthLendingRate.Days)).Days },
-                new object[] { GetContract(new DateTime(2021,11,24)), DateTime.Today.Subtract(new DateTime(2021,11,24).AddDays(_monthLendingRate.Days)).Days },
-                new object[] { GetContract(new DateTime(2021,11,14)), DateTime.Today.Subtract(new DateTime(2021,11,14).AddDays(_monthLendingRate.Days)).Days },
-                new object[] { GetContract(new DateTime(2021,10,14)), DateTime.Today.Subtract(new DateTime(2021,10,14).AddDays(_monthLendingRate.Days)).Days },
-                new object[] { GetContract(new DateTime(2021,7,5)), DateTime.Today.Subtract(new DateTime(2021,7,5).AddDays(_monthLendingRate.Days)).Days },
+                new object[] { GetContract(new DateTime(2021,11,25)), DateTime.Today.Subtract(new DateTime(2021,11,25).AddDays(MonthLendingRate.Days)).Days },
+                new object[] { GetContract(new DateTime(2021,11,24)), DateTime.Today.Subtract(new DateTime(2021,11,24).AddDays(MonthLendingRate.Days)).Days },
+                new object[] { GetContract(new DateTime(2021,11,14)), DateTime.Today.Subtract(new DateTime(2021,11,14).AddDays(MonthLendingRate.Days)).Days },
+                new object[] { GetContract(new DateTime(2021,10,14)), DateTime.Today.Subtract(new DateTime(2021,10,14).AddDays(MonthLendingRate.Days)).Days },
+                new object[] { GetContract(new DateTime(2021,7,5)), DateTime.Today.Subtract(new DateTime(2021,7,5).AddDays(MonthLendingRate.Days)).Days },
                 new object[] { GetContractWithContractRenews(new DateTime(2021,11,25), new ContractRenew()
                 {
                     RenewContractId = 1,
-                    LendingRate = _oneWeekLendingRate,
+                    LendingRate = OneWeekLendingRate,
                     StartDate = new DateTime(2021,11,25).AddDays(30)
-                }), 0 },
+                }), DateTime.Today.Subtract(new DateTime(2021,11,25).AddDays(30).AddDays(OneWeekLendingRate.Days)).Days },
                 new object[] { GetContractWithContractRenews(new DateTime(2021,10,25), new ContractRenew()
                 {
                     RenewContractId = 1,
-                    LendingRate = _oneWeekLendingRate,
+                    LendingRate = OneWeekLendingRate,
                     StartDate = new DateTime(2021,10,25).AddDays(30)
-                }), DateTime.Today.Subtract(new DateTime(2021,10,25).AddDays(_monthLendingRate.Days).AddDays(_oneWeekLendingRate.Days)).Days },
+                }), DateTime.Today.Subtract(new DateTime(2021,10,25).AddDays(MonthLendingRate.Days).AddDays(OneWeekLendingRate.Days)).Days },
                 new object[] { GetContractWithContractRenews(new DateTime(2021,10,25), new ContractRenew()
                 {
                     RenewContractId = 1,
-                    LendingRate = _monthLendingRate,
+                    LendingRate = MonthLendingRate,
                     StartDate = new DateTime(2021,10,25).AddDays(30)
-                }), DateTime.Today.Subtract(new DateTime(2021,10,25).AddDays(_monthLendingRate.Days).AddDays(_monthLendingRate.Days)).Days },
+                }), DateTime.Today.Subtract(new DateTime(2021,10,25).AddDays(MonthLendingRate.Days).AddDays(MonthLendingRate.Days)).Days },
                 new object[] { GetContractWithContractRenews(new DateTime(2021,10,25), new ContractRenew()
                 {
                     RenewContractId = 1,
-                    LendingRate = _oneWeekLendingRate,
+                    LendingRate = OneWeekLendingRate,
                     StartDate = new DateTime(2021,10,25).AddDays(30)
                 }, new ContractRenew()
                 {
                     RenewContractId = 2,
-                    LendingRate = _oneWeekLendingRate,
+                    LendingRate = OneWeekLendingRate,
                     StartDate = new DateTime(2021,10,25).AddDays(37)
-                }), DateTime.Today.Subtract(new DateTime(2021,10,25).AddDays(_monthLendingRate.Days).AddDays(_oneWeekLendingRate.Days).AddDays(_oneWeekLendingRate.Days)).Days }
+                }), DateTime.Today.Subtract(new DateTime(2021,10,25).AddDays(MonthLendingRate.Days).AddDays(OneWeekLendingRate.Days).AddDays(OneWeekLendingRate.Days)).Days }
             };
         }
     }

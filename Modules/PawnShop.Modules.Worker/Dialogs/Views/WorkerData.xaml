@@ -111,7 +111,7 @@
                 Grid.Row="3"
                 Grid.Column="1"
                 Margin="0,5,5,5"
-                Text="{Binding Salary, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Salary, Mode=TwoWay, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" />
 
             <TextBox
                 Grid.Row="4"

@@ -11,7 +11,7 @@
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="AutoMapper" Version="10.1.1" />
+		<PackageReference Include="AutoMapper" Version="11.0.0" />
 		<PackageReference Include="FluentValidation" Version="10.3.6" />
 		<PackageReference Include="MaterialMessageBox" Version="4.0.2" />
 		<PackageReference Include="Prism.Wpf" Version="8.1.97" />

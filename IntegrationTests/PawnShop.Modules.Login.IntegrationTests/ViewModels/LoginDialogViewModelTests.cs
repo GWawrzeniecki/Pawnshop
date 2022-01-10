@@ -28,6 +28,10 @@ namespace PawnShop.Modules.Login.IntegrationTests.ViewModels
             {
                 Pesel = "11111111111",
                 Login = login,
+                WorkerBossType = new WorkerBossType()
+                {
+                    Type = "Pracownik"
+                },
                 Hash = ContainerProvider.Resolve<HashService>().Hash(password.ToSecureString()),
                 Privilege = new Business.Models.Privilege { PawnShopTabs = true },
                 WorkerBossNavigation = new Business.Models.Person
@@ -71,6 +75,10 @@ namespace PawnShop.Modules.Login.IntegrationTests.ViewModels
             {
                 Pesel = "11111111111",
                 Login = login,
+                WorkerBossType = new WorkerBossType()
+                {
+                    Type = "Pracownik"
+                },
                 Hash = ContainerProvider.Resolve<HashService>().Hash(password.ToSecureString()),
                 Privilege = new Business.Models.Privilege { PawnShopTabs = true },
                 WorkerBossNavigation = new Business.Models.Person
@@ -117,12 +125,16 @@ namespace PawnShop.Modules.Login.IntegrationTests.ViewModels
             //Arrange         
             using var pawnshopContext = PawnshopContext;
             var country = new Business.Models.Country() { Country1 = "Test" };
-            pawnshopContext.ContractStates.Add(new ContractState() { State = "Niewykupiona" });
-            pawnshopContext.ContractStates.Add(new ContractState() { State = "Przedłużona" });
+            pawnshopContext.ContractStates.Add(new ContractState() { State = Core.Constants.Constants.NotBoughtBackContractState });
+            pawnshopContext.ContractStates.Add(new ContractState() { State = Core.Constants.Constants.RenewedContractState });
             var workerBoss = pawnshopContext.WorkerBosses.Add(new Business.Models.WorkerBoss
             {
                 Pesel = "11111111111",
                 Login = login,
+                WorkerBossType = new WorkerBossType()
+                {
+                    Type = "Pracownik"
+                },
                 Hash = ContainerProvider.Resolve<HashService>().Hash(password.ToSecureString()),
                 Privilege = new Business.Models.Privilege { PawnShopTabs = true },
                 WorkerBossNavigation = new Business.Models.Person
@@ -171,7 +183,7 @@ namespace PawnShop.Modules.Login.IntegrationTests.ViewModels
                 },
                 ContractState = new ContractState()
                 {
-                    State = "Założona"
+                    State = Core.Constants.Constants.CreatedContractState
                 },
                 LendingRate = new LendingRate()
                 {
@@ -209,7 +221,7 @@ namespace PawnShop.Modules.Login.IntegrationTests.ViewModels
                 .First(c => c.ContractNumberId.Equals(contract.Entity.ContractNumberId));
 
             //Assert
-            Assert.NotEqual("Założona", contractAfter.ContractState.State);
+            Assert.NotEqual(Core.Constants.Constants.CreatedContractState, contractAfter.ContractState.State);
         }
 
     }

@@ -56,7 +56,9 @@ namespace PawnShop.Modules.Sale.Dialogs.ViewModels
             Sale = parameters.GetValue<Business.Models.Sale>("sale");
         }
 
+#pragma warning disable CS0067 // The event 'PreviewSaleDialogViewModel.RequestClose' is never used
         public event Action<IDialogResult> RequestClose;
+#pragma warning restore CS0067 // The event 'PreviewSaleDialogViewModel.RequestClose' is never used
 
         #endregion IDialogAware
     }

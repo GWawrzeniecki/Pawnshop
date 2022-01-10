@@ -127,11 +127,11 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var vm = new RenewContractDataViewModel(calculateServiceMock.Object, contractServiceMock.Object,
                 containerProviderMock.Object, messageBoxServiceMock.Object);
             calculateServiceMock
-                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator._oneWeekLendingRate)).Returns(1086);
+                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator.OneWeekLendingRate)).Returns(1086);
             calculateServiceMock
-                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator._twoWeeksLendingRate)).Returns(1197);
+                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator.TwoWeeksLendingRate)).Returns(1197);
             calculateServiceMock
-                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator._monthLendingRate)).Returns(1258);
+                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator.MonthLendingRate)).Returns(1258);
 
 
             //Act
@@ -197,7 +197,9 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var wasNewRePurchasePrice = false;
             var wasIsNextButtonEnabled = false;
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             vm.PropertyChanged += delegate (object? sender, PropertyChangedEventArgs args)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             {
                 switch (args.PropertyName)
                 {
@@ -272,7 +274,9 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var wasRenewPriceRaised = false;
 
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             vm.PropertyChanged += delegate (object? sender, PropertyChangedEventArgs args)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             {
                 wasRenewPriceRaised = args.PropertyName switch
                 {
@@ -350,9 +354,9 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
                 {"contract", ContractDataGenerator.GetContract()}
             }));
             await vm.LendingRates.Task;
-            calculateServiceMock.Setup(s => s.CalculateRenewCost(1000, ContractDataGenerator._monthLendingRate, 0, vm.LendingRates.Result))
+            calculateServiceMock.Setup(s => s.CalculateRenewCost(1000, ContractDataGenerator.MonthLendingRate, 0, vm.LendingRates.Result))
                 .Returns(258);
-            calculateServiceMock.Setup(s => s.CalculateRenewCost(1000, ContractDataGenerator._monthLendingRate, delay.Days, vm.LendingRates.Result))
+            calculateServiceMock.Setup(s => s.CalculateRenewCost(1000, ContractDataGenerator.MonthLendingRate, delay.Days, vm.LendingRates.Result))
                 .Returns(expectedRenewPrice);
 
             //Act
@@ -415,11 +419,11 @@ namespace PawnShop.Modules.Contract.UnitTests.ViewModels
             var vm = new RenewContractDataViewModel(calculateServiceMock.Object, contractServiceMock.Object,
                 containerProviderMock.Object, messageBoxServiceMock.Object);
             calculateServiceMock
-                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator._oneWeekLendingRate)).Returns(1086);
+                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator.OneWeekLendingRate)).Returns(1086);
             calculateServiceMock
-                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator._twoWeeksLendingRate)).Returns(1197);
+                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator.TwoWeeksLendingRate)).Returns(1197);
             calculateServiceMock
-                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator._monthLendingRate)).Returns(1258);
+                .Setup(s => s.CalculateContractAmount(1000, ContractDataGenerator.MonthLendingRate)).Returns(1258);
 
             //Act
 

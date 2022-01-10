@@ -18,7 +18,9 @@ namespace PawnShop.Modules.Sale.Base
             viewRegionContext.PropertyChanged += ViewRegionContext_OnPropertyChangedEvent;
         }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         private void ViewRegionContext_OnPropertyChangedEvent(object? sender, PropertyChangedEventArgs e)
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         {
             var context = (ObservableObject<object>)sender;
             if (context is null)

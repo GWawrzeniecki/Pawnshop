@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PawnShop.DataAccess.Data;
 using System;
 using System.Collections.Generic;
@@ -125,18 +124,5 @@ namespace PawnShop.Services.DataService
         {
             context.Attach(entity);
         }
-
-        public PropertyEntry GetModifiedPropertyEntry<T, TProperty>(Expression<Func<T, TProperty>> propertyExpression, TProperty value, string nameOfProperty) where T : class
-        {
-            return context
-                 .ChangeTracker
-                 .Entries<T>()
-                 .Where(e => e.State == EntityState.Modified)
-                 .FirstOrDefault(e => e.Property(propertyExpression).CurrentValue.Equals(value))
-                 ?.Properties
-                 .FirstOrDefault(prop => prop.IsModified && prop.Metadata.Name.Equals(nameOfProperty));
-        }
-
-
     }
 }

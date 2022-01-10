@@ -1,5 +1,5 @@
 ﻿using Moq;
-using PawnShop.Business.Models;
+using PawnShop.Business.Dtos;
 using PawnShop.Core.Events;
 using PawnShop.Core.Extensions;
 using PawnShop.Core.Interfaces;
@@ -67,7 +67,7 @@ namespace PawnShop.Modules.Login.UnitTests.ViewModels
             var userChangedEventMock = new Mock<UserChangedEvent>();
             var loginServiceMoc = new Mock<ILoginService>();
             loginServiceMoc.Setup(l => l.LoginAsync(It.IsAny<string>(), It.IsAny<SecureString>()))
-                .Returns(Task.FromResult((true, new WorkerBoss())));
+                .Returns(Task.FromResult((true, new WorkerBossLoginDto())));
             var uiServiceMock = new Mock<IUIService>();
             var havePasswordMock = new Mock<IHavePassword>();
             havePasswordMock.SetupGet(c => c.Password).Returns("test".ToSecureString);
@@ -92,7 +92,7 @@ namespace PawnShop.Modules.Login.UnitTests.ViewModels
             var eventAggregatorMock = new Mock<IEventAggregator>();
             var userChangedEventMock = new Mock<UserChangedEvent>();
             var loginServiceMoc = new Mock<ILoginService>();
-            var workerBoss = new WorkerBoss();
+            var workerBoss = new WorkerBossLoginDto();
             loginServiceMoc.Setup(l => l.LoginAsync(It.IsAny<string>(), It.IsAny<SecureString>()))
                 .Returns(Task.FromResult((true, workerBoss)));
             var uiServiceMock = new Mock<IUIService>();

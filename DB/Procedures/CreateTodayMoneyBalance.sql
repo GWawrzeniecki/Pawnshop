@@ -5,7 +5,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER PROCEDURE [Pawnshop].[CreateTodayMoneyBalance]
+ALTER PROCEDURE [PawnshopApp].[CreateTodayMoneyBalance]
 AS
 
 
@@ -14,23 +14,23 @@ BEGIN
 
 	IF NOT EXISTS (
 			SELECT 1
-			FROM Pawnshop.MoneyBalance m
+			FROM Worker.MoneyBalance m
 			WHERE m.TodayDate = CAST( GETDATE() AS Date )
 			)
 	BEGIN
 		IF EXISTS (
 				SELECT 1
-				FROM Pawnshop.MoneyBalance
+				FROM Worker.MoneyBalance
 				)
 		BEGIN
 			SELECT @moneyBalance = MoneyBalance
-			FROM Pawnshop.MoneyBalance m
+			FROM Worker.MoneyBalance m
 			WHERE m.TodayDate = (
 					SELECT max(TodayDate)
-					FROM Pawnshop.MoneyBalance
+					FROM Worker.MoneyBalance
 					)
 
-			INSERT INTO Pawnshop.MoneyBalance
+			INSERT INTO Worker.MoneyBalance
 			VALUES (
 				GETDATE()
 				,@moneyBalance
@@ -38,7 +38,7 @@ BEGIN
 		END
 		ELSE
 		BEGIN
-			INSERT INTO Pawnshop.MoneyBalance
+			INSERT INTO Worker.MoneyBalance
 			VALUES (
 				Getdate()
 				,0

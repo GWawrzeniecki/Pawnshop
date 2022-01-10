@@ -9,7 +9,6 @@ namespace PawnShop.Business.Models
         public ContractItem()
         {
             Sales = new HashSet<Sale>();
-            WorkerBossContractItems = new HashSet<WorkerBossContractItem>();
         }
 
         public int ContractItemId { get; set; }
@@ -29,6 +28,5 @@ namespace PawnShop.Business.Models
         public virtual Laptop Laptop { get; set; }
         public virtual Telephone Telephone { get; set; }
         public virtual ICollection<Sale> Sales { get; set; }
-        public virtual ICollection<WorkerBossContractItem> WorkerBossContractItems { get; set; }
     }
 }

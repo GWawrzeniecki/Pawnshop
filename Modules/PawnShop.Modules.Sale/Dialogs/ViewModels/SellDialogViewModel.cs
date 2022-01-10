@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using PawnShop.Business.Models;
+using PawnShop.Core.Events;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
 using PawnShop.Modules.Sale.Validators;
 using PawnShop.Services.DataService;
 using PawnShop.Services.Interfaces;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
 using System;
@@ -25,6 +27,7 @@ namespace PawnShop.Modules.Sale.Dialogs.ViewModels
         private readonly IContractService _contractService;
         private readonly IContainerProvider _containerProvider;
         private readonly IMessageBoxService _messageBoxService;
+        private readonly IEventAggregator _eventAggregator;
         private string _itemName;
         private IList<UnitMeasure> _contractItemUnitMeasures;
         private UnitMeasure _selectedContractItemUnitMeasure;
@@ -48,12 +51,13 @@ namespace PawnShop.Modules.Sale.Dialogs.ViewModels
 
         #region Constructor
 
-        public SellDialogViewModel(IMapper mapper, IContractService contractService, IContainerProvider containerProvider, SellDialogValidator sellDialogValidator, IMessageBoxService messageBoxService) : base(sellDialogValidator)
+        public SellDialogViewModel(IMapper mapper, IContractService contractService, IContainerProvider containerProvider, SellDialogValidator sellDialogValidator, IMessageBoxService messageBoxService, IEventAggregator eventAggregator) : base(sellDialogValidator)
         {
             _mapper = mapper;
             _contractService = contractService;
             _containerProvider = containerProvider;
             _messageBoxService = messageBoxService;
+            _eventAggregator = eventAggregator;
             LoadStartupData();
         }
 
@@ -206,6 +210,7 @@ namespace PawnShop.Modules.Sale.Dialogs.ViewModels
             {
                 await TryToSellAsync();
                 _messageBoxService.Show("Produkt sprzedany pomyślnie", "Sukces");
+                _eventAggregator.GetEvent<MoneyBalanceChangedEvent>().Publish();
                 RequestClose.Invoke(new DialogResult(ButtonResult.OK));
             }
             catch (SellItemException sellItemException)

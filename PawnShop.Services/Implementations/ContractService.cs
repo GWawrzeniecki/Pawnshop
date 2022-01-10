@@ -1,4 +1,5 @@
 ﻿using PawnShop.Business.Models;
+using PawnShop.Core.Extensions;
 using PawnShop.Core.Models.QueryDataModels;
 using PawnShop.Core.SharedVariables;
 using PawnShop.Exceptions;
@@ -288,7 +289,7 @@ namespace PawnShop.Services.Implementations
             {
                 ("TodayDate", contract.StartDate.ToShortDateString()),
                 ("ContractNumber", contract.ContractNumberId),
-                ("FirstNameLastName", contract.DealMaker.ClientNavigation.FullName),
+                ("FirstNameLastName", contract.DealMaker.ClientNavigation.GetFullName()),
                 ("Street", contract.DealMaker.ClientNavigation.Address.Street),
                 ("City", contract.DealMaker.ClientNavigation.Address.City.City1),
                 ("HouseNumber", contract.DealMaker.ClientNavigation.Address.HouseNumber),

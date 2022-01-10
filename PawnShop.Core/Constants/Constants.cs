@@ -3,9 +3,11 @@
     public static class Constants
     {
         //
-        public const string PepperAesKeySecret = "PepperAesKey";
+        public const string PepperKeySecret = "Pepper";
         public const string IterationsKeySecret = "Iterations";
-        public const string DbSchemaName = "Pawnshop";
+
+        //Schemas names
+        public const string ProceduresSchemaName = "PawnshopApp";
 
         //Contract Item Categories
         public const string Laptop = "Laptop";
@@ -16,8 +18,9 @@
 
         //ContractStates
         public const string CreatedContractState = "Założona";
-        public const string RenewContractState = "Przedłużona";
-        public const string BuyBackContractState = "Wykupiona";
+        public const string RenewedContractState = "Przedłużona";
+        public const string BoughtBackContractState = "Wykupiona";
+        public const string NotBoughtBackContractState = "Niewykupiona";
 
         //UserSettings.json names
         //public const string ThemeNameSection = "UserSettings:ThemeName";

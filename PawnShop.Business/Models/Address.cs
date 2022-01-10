@@ -1,16 +1,9 @@
-﻿using System.Collections.Generic;
-
-#nullable disable
+﻿#nullable disable
 
 namespace PawnShop.Business.Models
 {
     public partial class Address
     {
-        public Address()
-        {
-            WorkPlaces = new HashSet<WorkPlace>();
-        }
-
         public int AddressId { get; set; }
         public string Street { get; set; }
         public string HouseNumber { get; set; }
@@ -22,6 +15,5 @@ namespace PawnShop.Business.Models
         public virtual City City { get; set; }
         public virtual Country Country { get; set; }
         public virtual Person Person { get; set; }
-        public virtual ICollection<WorkPlace> WorkPlaces { get; set; }
     }
 }

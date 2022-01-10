@@ -1,4 +1,5 @@
-﻿using PawnShop.Business.Models;
+﻿using PawnShop.Business.Dtos;
+using PawnShop.Business.Models;
 using Prism.Mvvm;
 
 namespace PawnShop.Core.SharedVariables
@@ -7,14 +8,14 @@ namespace PawnShop.Core.SharedVariables
     {
         #region private members
 
-        private WorkerBoss _loggedPerson;
+        private WorkerBossLoginDto _loggedPerson;
         private MoneyBalance _moneyBalance;
 
         #endregion private members
 
         #region public properties
 
-        public WorkerBoss LoggedPerson
+        public WorkerBossLoginDto LoggedPerson
         {
             get => _loggedPerson;
             set => SetProperty(ref _loggedPerson, value);

@@ -33,7 +33,7 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
             });
             var renewContractState = pawnShopContext.ContractStates.Add(new ContractState()
             {
-                State = Core.Constants.Constants.RenewContractState
+                State = Core.Constants.Constants.RenewedContractState
             });
             var cashPaymentType = pawnShopContext.PaymentTypes.Add(new PaymentType()
             {
@@ -80,6 +80,10 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
             {
                 Pesel = "11111111111",
                 Login = "test",
+                WorkerBossType = new WorkerBossType()
+                {
+                    Type = "Pracownik"
+                },
                 Hash = ContainerProvider.Resolve<HashService>().Hash("test".ToSecureString()),
                 Privilege = new Business.Models.Privilege { PawnShopTabs = true },
                 WorkerBossNavigation = new Business.Models.Person
@@ -190,7 +194,7 @@ namespace PawnShop.Modules.Contract.IntegrationTests.ViewModels
 
             Assert.NotNull(updatedContract);
             Assert.NotNull(renewedContract);
-            Assert.Equal(Core.Constants.Constants.RenewContractState, updatedContract.ContractState.State);
+            Assert.Equal(Core.Constants.Constants.RenewedContractState, updatedContract.ContractState.State);
             Assert.Equal(contractAmount, updatedContract.AmountContract);
             Assert.Equal(contractStartDate.AddDays(lendingRate.Entity.Days + 1), renewedContract.StartDate);
             Assert.Equal(renewedContract.LendingRateId, lendingRate.Entity.Id);

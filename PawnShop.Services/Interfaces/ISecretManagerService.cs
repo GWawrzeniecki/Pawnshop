@@ -2,6 +2,6 @@
 {
     public interface ISecretManagerService
     {
-        bool GetValue<T>(string key, out string value) where T : class;
+        bool TryToGetValue<T>(string key, out string value) where T : class;
     }
 }

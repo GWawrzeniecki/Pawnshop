@@ -13,6 +13,10 @@ namespace PawnShop.Modules.Worker.Validators
                 .NotEmpty()
                 .WithMessage("Pole nie posiada wartości.");
 
+            RuleFor(view => (view as WorkerDataViewModel).Salary)
+                .NotNull()
+                .WithMessage("Pole nie posiada wartości.");
+
         }
     }
 }

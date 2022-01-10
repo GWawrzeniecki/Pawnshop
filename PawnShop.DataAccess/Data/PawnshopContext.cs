@@ -17,7 +17,6 @@ namespace PawnShop.DataAccess.Data
         {
         }
 
-        public virtual DbSet<Accountant> Accountants { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
@@ -42,14 +41,11 @@ namespace PawnShop.DataAccess.Data
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<PaymentType> PaymentTypes { get; set; }
         public virtual DbSet<Person> People { get; set; }
-        public virtual DbSet<PersonWorkplace> PersonWorkplaces { get; set; }
         public virtual DbSet<Privilege> Privileges { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Telephone> Telephones { get; set; }
         public virtual DbSet<UnitMeasure> UnitMeasures { get; set; }
-        public virtual DbSet<WorkPlace> WorkPlaces { get; set; }
         public virtual DbSet<WorkerBoss> WorkerBosses { get; set; }
-        public virtual DbSet<WorkerBossContractItem> WorkerBossContractItems { get; set; }
         public virtual DbSet<WorkerBossType> WorkerBossTypes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -62,25 +58,11 @@ namespace PawnShop.DataAccess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
-
-            modelBuilder.Entity<Accountant>(entity =>
-            {
-                entity.ToTable("Accountant", "Pawnshop");
-
-                entity.Property(e => e.AccountantId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("AccountantID");
-
-                entity.HasOne(d => d.AccountantNavigation)
-                    .WithOne(p => p.Accountant)
-                    .HasForeignKey<Accountant>(d => d.AccountantId)
-                    .HasConstraintName("Accountant_Person");
-            });
+            modelBuilder.HasAnnotation("Relational:Collation", "Polish_CI_AS");
 
             modelBuilder.Entity<Address>(entity =>
             {
-                entity.ToTable("Address", "Pawnshop");
+                entity.ToTable("Address", "Worker");
 
                 entity.Property(e => e.AddressId).HasColumnName("AddressID");
 
@@ -117,7 +99,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<City>(entity =>
             {
-                entity.ToTable("City", "Pawnshop");
+                entity.ToTable("City", "Worker");
 
                 entity.Property(e => e.CityId).HasColumnName("CityID");
 
@@ -137,7 +119,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<Client>(entity =>
             {
-                entity.ToTable("Client", "Pawnshop");
+                entity.ToTable("Client", "Worker");
 
                 entity.HasIndex(e => e.ClientId, "id_person")
                     .IsUnique();
@@ -162,6 +144,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.ClientNavigation)
                     .WithOne(p => p.Client)
                     .HasForeignKey<Client>(d => d.ClientId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Client_Person");
             });
 
@@ -170,7 +153,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasKey(e => e.ContractNumberId)
                     .HasName("Contract_pk");
 
-                entity.ToTable("Contract", "Pawnshop");
+                entity.ToTable("Contract", "Worker");
 
                 entity.HasIndex(e => e.CreateContractDealDocumentId, "DealDocumentUniqueContract")
                     .IsUnique();
@@ -240,7 +223,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<ContractItem>(entity =>
             {
-                entity.ToTable("ContractItem", "Pawnshop");
+                entity.ToTable("ContractItem", "Worker");
 
                 entity.Property(e => e.ContractItemId).HasColumnName("ContractItemID");
 
@@ -282,12 +265,13 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.ContractNumber)
                     .WithMany(p => p.ContractItems)
                     .HasForeignKey(d => d.ContractNumberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ContractItem_Contract");
             });
 
             modelBuilder.Entity<ContractItemCategory>(entity =>
             {
-                entity.ToTable("ContractItemCategory", "Pawnshop");
+                entity.ToTable("ContractItemCategory", "Worker");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -306,7 +290,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<ContractItemState>(entity =>
             {
-                entity.ToTable("ContractItemState", "Pawnshop");
+                entity.ToTable("ContractItemState", "Worker");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -320,7 +304,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasKey(e => new { e.RenewContractId, e.DealDocumentId })
                     .HasName("ContractRenew_pk");
 
-                entity.ToTable("ContractRenew", "Pawnshop");
+                entity.ToTable("ContractRenew", "Worker");
 
                 entity.HasIndex(e => e.DealDocumentId, "DealDocumentUniqueRenew")
                     .IsUnique();
@@ -350,6 +334,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.ContractNumber)
                     .WithMany(p => p.ContractRenews)
                     .HasForeignKey(d => d.ContractNumberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ContractClientRenew_Contract");
 
                 entity.HasOne(d => d.DealDocument)
@@ -367,7 +352,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<ContractState>(entity =>
             {
-                entity.ToTable("ContractState", "Pawnshop");
+                entity.ToTable("ContractState", "Worker");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -378,7 +363,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<Country>(entity =>
             {
-                entity.ToTable("Country", "Pawnshop");
+                entity.ToTable("Country", "Worker");
 
                 entity.Property(e => e.CountryId).HasColumnName("CountryID");
 
@@ -390,7 +375,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<DealDocument>(entity =>
             {
-                entity.ToTable("DealDocument", "Pawnshop");
+                entity.ToTable("DealDocument", "Worker");
 
                 entity.HasIndex(e => e.PaymentId, "PaymentIDUnique")
                     .IsUnique();
@@ -426,7 +411,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<Gemstone>(entity =>
             {
-                entity.ToTable("Gemstone", "Pawnshop");
+                entity.ToTable("Gemstone", "Worker");
 
                 entity.Property(e => e.GemstoneId).HasColumnName("GemstoneID");
 
@@ -440,7 +425,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasKey(e => e.ContractitemId)
                     .HasName("GoldProduct_pk");
 
-                entity.ToTable("GoldProduct", "Pawnshop");
+                entity.ToTable("GoldProduct", "Worker");
 
                 entity.Property(e => e.ContractitemId)
                     .ValueGeneratedNever()
@@ -455,6 +440,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.Contractitem)
                     .WithOne(p => p.GoldProduct)
                     .HasForeignKey<GoldProduct>(d => d.ContractitemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("GoldProduct_ContractItem");
 
                 entity.HasOne(d => d.GoldTest)
@@ -475,7 +461,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasKey(e => new { e.GoldProductId, e.GemstoneId })
                     .HasName("GoldProductGemstone_pk");
 
-                entity.ToTable("GoldProductGemstone", "Pawnshop");
+                entity.ToTable("GoldProductGemstone", "Worker");
 
                 entity.Property(e => e.GoldProductId).HasColumnName("GoldProductID");
 
@@ -484,6 +470,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.Gemstone)
                     .WithMany(p => p.GoldProductGemstones)
                     .HasForeignKey(d => d.GemstoneId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("GoldProductGemstone_Gemstone");
 
                 entity.HasOne(d => d.GoldProduct)
@@ -494,7 +481,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<GoldProductType>(entity =>
             {
-                entity.ToTable("GoldProductType", "Pawnshop");
+                entity.ToTable("GoldProductType", "Worker");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -505,7 +492,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<GoldTest>(entity =>
             {
-                entity.ToTable("GoldTest", "Pawnshop");
+                entity.ToTable("GoldTest", "Worker");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -520,7 +507,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasKey(e => e.ContractItemId)
                     .HasName("Laptop_pk");
 
-                entity.ToTable("Laptop", "Pawnshop");
+                entity.ToTable("Laptop", "Worker");
 
                 entity.Property(e => e.ContractItemId)
                     .ValueGeneratedNever()
@@ -554,19 +541,20 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.ContractItem)
                     .WithOne(p => p.Laptop)
                     .HasForeignKey<Laptop>(d => d.ContractItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Laptop_ContractItem");
             });
 
             modelBuilder.Entity<LendingRate>(entity =>
             {
-                entity.ToTable("LendingRate", "Pawnshop");
+                entity.ToTable("LendingRate", "Worker");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
             });
 
             modelBuilder.Entity<Link>(entity =>
             {
-                entity.ToTable("Link", "Pawnshop");
+                entity.ToTable("Link", "Worker");
 
                 entity.Property(e => e.LinkId).HasColumnName("LinkID");
 
@@ -589,7 +577,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasKey(e => e.SaleId)
                     .HasName("LocalSale_pk");
 
-                entity.ToTable("LocalSale", "Pawnshop");
+                entity.ToTable("LocalSale", "Worker");
 
                 entity.Property(e => e.SaleId)
                     .ValueGeneratedNever()
@@ -602,6 +590,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.Sale)
                     .WithOne(p => p.LocalSale)
                     .HasForeignKey<LocalSale>(d => d.SaleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("LocalInternetSale_Sale");
             });
 
@@ -610,7 +599,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasKey(e => e.TodayDate)
                     .HasName("MoneyBalance_pk");
 
-                entity.ToTable("MoneyBalance", "Pawnshop");
+                entity.ToTable("MoneyBalance", "Worker");
 
                 entity.Property(e => e.TodayDate).HasColumnType("date");
 
@@ -621,7 +610,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<Payment>(entity =>
             {
-                entity.ToTable("Payment", "Pawnshop");
+                entity.ToTable("Payment", "Worker");
 
                 entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
 
@@ -647,7 +636,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<PaymentType>(entity =>
             {
-                entity.ToTable("PaymentType", "Pawnshop");
+                entity.ToTable("PaymentType", "Worker");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -658,7 +647,7 @@ namespace PawnShop.DataAccess.Data
 
             modelBuilder.Entity<Person>(entity =>
             {
-                entity.ToTable("Person", "Pawnshop");
+                entity.ToTable("Person", "Worker");
 
                 entity.HasIndex(e => e.AddressId, "Person_ak_1")
                     .IsUnique();
@@ -683,38 +672,16 @@ namespace PawnShop.DataAccess.Data
                     .HasConstraintName("Person_Address");
             });
 
-            modelBuilder.Entity<PersonWorkplace>(entity =>
-            {
-                entity.HasKey(e => new { e.WorkplaceId, e.PersonId })
-                    .HasName("Person_Workplace_pk");
-
-                entity.ToTable("Person_Workplace", "Pawnshop");
-
-                entity.Property(e => e.WorkplaceId).HasColumnName("WorkplaceID");
-
-                entity.Property(e => e.PersonId).HasColumnName("PersonID");
-
-                entity.HasOne(d => d.Person)
-                    .WithMany(p => p.PersonWorkplaces)
-                    .HasForeignKey(d => d.PersonId)
-                    .HasConstraintName("Person_Workplace_Person");
-
-                entity.HasOne(d => d.Workplace)
-                    .WithMany(p => p.PersonWorkplaces)
-                    .HasForeignKey(d => d.WorkplaceId)
-                    .HasConstraintName("Person_Workplace_WorkPlace");
-            });
-
             modelBuilder.Entity<Privilege>(entity =>
             {
-                entity.ToTable("Privilege", "Pawnshop");
+                entity.ToTable("Privilege", "Boss");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
             });
 
             modelBuilder.Entity<Sale>(entity =>
             {
-                entity.ToTable("Sale", "Pawnshop");
+                entity.ToTable("Sale", "Worker");
 
                 entity.Property(e => e.SaleId).HasColumnName("SaleID");
 
@@ -731,6 +698,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.ContractItem)
                     .WithMany(p => p.Sales)
                     .HasForeignKey(d => d.ContractItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Sale_ContractItem");
             });
 
@@ -739,7 +707,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasKey(e => e.ContractitemId)
                     .HasName("Telephone_pk");
 
-                entity.ToTable("Telephone", "Pawnshop");
+                entity.ToTable("Telephone", "Worker");
 
                 entity.Property(e => e.ContractitemId)
                     .ValueGeneratedNever()
@@ -771,12 +739,13 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.Contractitem)
                     .WithOne(p => p.Telephone)
                     .HasForeignKey<Telephone>(d => d.ContractitemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Telephone_ContractItem");
             });
 
             modelBuilder.Entity<UnitMeasure>(entity =>
             {
-                entity.ToTable("UnitMeasure", "Pawnshop");
+                entity.ToTable("UnitMeasure", "Worker");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -785,24 +754,9 @@ namespace PawnShop.DataAccess.Data
                     .HasMaxLength(5);
             });
 
-            modelBuilder.Entity<WorkPlace>(entity =>
-            {
-                entity.ToTable("WorkPlace", "Pawnshop");
-
-                entity.Property(e => e.WorkplaceId).HasColumnName("WorkplaceID");
-
-                entity.Property(e => e.AddressId).HasColumnName("AddressID");
-
-                entity.HasOne(d => d.Address)
-                    .WithMany(p => p.WorkPlaces)
-                    .HasForeignKey(d => d.AddressId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("WorkPlace_Address");
-            });
-
             modelBuilder.Entity<WorkerBoss>(entity =>
             {
-                entity.ToTable("WorkerBoss", "Pawnshop");
+                entity.ToTable("WorkerBoss", "Boss");
 
                 entity.Property(e => e.WorkerBossId)
                     .ValueGeneratedNever()
@@ -837,6 +791,7 @@ namespace PawnShop.DataAccess.Data
                 entity.HasOne(d => d.WorkerBossNavigation)
                     .WithOne(p => p.WorkerBoss)
                     .HasForeignKey<WorkerBoss>(d => d.WorkerBossId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("WorkerBoss_Person");
 
                 entity.HasOne(d => d.WorkerBossType)
@@ -845,35 +800,9 @@ namespace PawnShop.DataAccess.Data
                     .HasConstraintName("WorkerBoss_WorkerBossType");
             });
 
-            modelBuilder.Entity<WorkerBossContractItem>(entity =>
-            {
-                entity.HasKey(e => new { e.WorkerBossId, e.ContractItemId })
-                    .HasName("WorkerBossContractItem_pk");
-
-                entity.ToTable("WorkerBossContractItem", "Pawnshop");
-
-                entity.Property(e => e.WorkerBossId).HasColumnName("WorkerBossID");
-
-                entity.Property(e => e.ContractItemId).HasColumnName("ContractItemID");
-
-                entity.Property(e => e.DateOfIssue).HasColumnType("date");
-
-                entity.Property(e => e.ProposedPrice).HasColumnType("decimal(10, 2)");
-
-                entity.HasOne(d => d.ContractItem)
-                    .WithMany(p => p.WorkerBossContractItems)
-                    .HasForeignKey(d => d.ContractItemId)
-                    .HasConstraintName("WorkerBossContractItem_ContractItem");
-
-                entity.HasOne(d => d.WorkerBoss)
-                    .WithMany(p => p.WorkerBossContractItems)
-                    .HasForeignKey(d => d.WorkerBossId)
-                    .HasConstraintName("WorkerBossContractItem_WorkerBoss");
-            });
-
             modelBuilder.Entity<WorkerBossType>(entity =>
             {
-                entity.ToTable("WorkerBossType", "Pawnshop");
+                entity.ToTable("WorkerBossType", "Boss");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 

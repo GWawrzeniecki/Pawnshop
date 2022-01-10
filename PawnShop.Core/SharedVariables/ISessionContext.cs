@@ -1,10 +1,11 @@
-﻿using PawnShop.Business.Models;
+﻿using PawnShop.Business.Dtos;
+using PawnShop.Business.Models;
 
 namespace PawnShop.Core.SharedVariables
 {
     public interface ISessionContext
     {
-        public WorkerBoss LoggedPerson { get; set; }
+        public WorkerBossLoginDto LoggedPerson { get; set; }
         public MoneyBalance TodayMoneyBalance { get; set; }
 
 

@@ -180,7 +180,7 @@ namespace PawnShop.Modules.Worker.Dialogs.ViewModels
             if (WorkerTabControlRegionContext is null)
                 return false;
 
-            return !WorkerTabControlRegionContext.EditViews.Any(v => (v.DataContext as WorkerDialogBase).HasErrors);
+            return WorkerTabControlRegionContext.EditViews.All(v => (v.DataContext as WorkerDialogBase).IsValidForm);
         }
 
         #endregion

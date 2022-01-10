@@ -54,17 +54,17 @@ namespace PawnShop.Services.DataService.Repositories
         {
             var boughtContractState = await context
                 .ContractStates
-                .FirstOrDefaultAsync(c => c.State.Equals("Wykupiona"));
+                .FirstOrDefaultAsync(c => c.State.Equals(Core.Constants.Constants.BoughtBackContractState));
 
             if (boughtContractState is null)
-                throw new Exception("Nie znaleziono statusu umowy o nazwie: Wykupiona");
+                throw new Exception($"Nie znaleziono statusu umowy o nazwie: {Core.Constants.Constants.BoughtBackContractState}");
 
             var notBoughtContractState = await context
                 .ContractStates
-                .FirstOrDefaultAsync(c => c.State.Equals("Niewykupiona"));
+                .FirstOrDefaultAsync(c => c.State.Equals(Core.Constants.Constants.NotBoughtBackContractState));
 
             if (notBoughtContractState is null)
-                throw new Exception("Nie znaleziono statusu umowy o nazwie: Niewykupiona");
+                throw new Exception($"Nie znaleziono statusu umowy o nazwie: {Core.Constants.Constants.NotBoughtBackContractState}");
 
             return context
                 .ContractItems
@@ -74,7 +74,8 @@ namespace PawnShop.Services.DataService.Repositories
                 .Include(c => c.Laptop)
                 .Include(c => c.Telephone)
                 .Include(c => c.GoldProduct)
-                .Where(c => c.ContractNumber.ContractStateId != boughtContractState.Id && c.ContractNumber.ContractStateId != notBoughtContractState.Id)
+                .Include(c => c.Sales)
+                .Where(c => c.ContractNumber.ContractStateId != boughtContractState.Id && c.ContractNumber.ContractStateId != notBoughtContractState.Id && c.Sales.Sum(s => s.Quantity) < c.Amount)
                 .Take(count)
                 .AsQueryable();
         }
@@ -83,10 +84,10 @@ namespace PawnShop.Services.DataService.Repositories
         {
             var notBoughtContractState = await context
                 .ContractStates
-                .FirstOrDefaultAsync(c => c.State.Equals("Niewykupiona"));
+                .FirstOrDefaultAsync(c => c.State.Equals(Core.Constants.Constants.NotBoughtBackContractState));
 
             if (notBoughtContractState is null)
-                throw new Exception("Nie znaleziono statusu umowy o nazwie: Niewykupiona");
+                throw new Exception($"Nie znaleziono statusu umowy o nazwie: {Core.Constants.Constants.NotBoughtBackContractState}");
 
             return context
                 .ContractItems

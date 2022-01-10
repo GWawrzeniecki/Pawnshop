@@ -1,4 +1,5 @@
-﻿using PawnShop.Business.Models;
+﻿using AutoMapper;
+using PawnShop.Business.Models;
 using PawnShop.Core.Constants;
 using PawnShop.Core.Enums;
 using PawnShop.Core.Models.DropDownButtonModels;
@@ -32,6 +33,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private readonly IContainerProvider _containerProvider;
         private readonly ISessionContext _sessionContext;
         private readonly IMessageBoxService _messageBoxService;
+        private readonly IMapper _mapper;
         private IList<LendingRate> _lendingRates;
         private IList<ContractState> _contractStates;
         private IList<DateSearchOption> _dateSearchOptions;
@@ -57,7 +59,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         #region constructor
 
         public ContractViewModel(IContractService contractService, IDialogService dialogService, IUserSettings userSettings,
-            IShellService shellService, IContainerProvider containerProvider, ContractValidator contractValidator, ISessionContext sessionContext, IMessageBoxService messageBoxService) :
+            IShellService shellService, IContainerProvider containerProvider, ContractValidator contractValidator, ISessionContext sessionContext, IMessageBoxService messageBoxService, IMapper mapper) :
             base(contractValidator)
         {
             Contracts = new List<Business.Models.Contract>();
@@ -68,6 +70,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             _containerProvider = containerProvider;
             _sessionContext = sessionContext;
             _messageBoxService = messageBoxService;
+            _mapper = mapper;
             LoadStartupData();
 
         }
@@ -288,17 +291,8 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             try
             {
-                var queryData = new ContractQueryData // to do mapping
-                {
-                    FromDate = FromDate,
-                    ToDate = ToDate,
-                    Client = Client,
-                    ContractAmount = ContractAmount,
-                    ContractNumber = ContractNumber,
-                    ContractState = ContractState,
-                    LendingRate = LendingRate
-                };
-
+                IsBusy = true;
+                var queryData = _mapper.Map<ContractQueryData>(this);
                 await TryToRefreshDataGrid(queryData);
             }
             catch (LoadingContractsException loadingContractsException)
@@ -313,6 +307,10 @@ namespace PawnShop.Modules.Contract.ViewModels
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private async Task RefreshDataGrid()
@@ -320,16 +318,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             try
             {
                 IsBusy = true;
-                var queryData = new ContractQueryData // to do mapping
-                {
-                    FromDate = FromDate,
-                    ToDate = ToDate,
-                    Client = Client,
-                    ContractAmount = ContractAmount,
-                    ContractNumber = ContractNumber,
-                    ContractState = ContractState,
-                    LendingRate = LendingRate
-                };
+                var queryData = _mapper.Map<ContractQueryData>(this);
 
                 await TryToRefreshDataGrid(queryData);
             }
@@ -382,7 +371,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         private bool CanExecuteRenewBuyBackContract()
         {
             return SelectedContract is not null &&
-                    !SelectedContract.ContractState.State.Equals(Constants.BuyBackContractState);
+                    !SelectedContract.ContractState.State.Equals(Constants.BoughtBackContractState);
         }
 
         private bool CheckIfDealDocumentPathIsSet()
