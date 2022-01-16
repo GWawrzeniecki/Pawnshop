@@ -208,6 +208,7 @@ namespace PawnShop.Modules.Client.ViewModels
         {
             try
             {
+                IsBusy = true;
                 var clientQueryData = _mapper.Map<ClientQueryData>(this);
                 await TryToRefreshDataGrid(clientQueryData);
             }
@@ -223,6 +224,10 @@ namespace PawnShop.Modules.Client.ViewModels
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
             }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         #endregion
@@ -233,6 +238,7 @@ namespace PawnShop.Modules.Client.ViewModels
         {
             try
             {
+                IsBusy = true;
                 await TryToLoadStartupData();
                 LoadRefreshButtonOptions();
             }
@@ -241,6 +247,10 @@ namespace PawnShop.Modules.Client.ViewModels
                 _messageBoxService.ShowError(
                     $"{loadingClientsException.Message}{Environment.NewLine}Błąd: {loadingClientsException.InnerException?.Message}",
                     "Błąd");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

@@ -19,38 +19,42 @@ namespace PawnShop.Services.DataService.Repositories
 
         public async Task<IList<ContractItem>> GetTopContractItemsForSale(ContractItemQueryData queryData, int count)
         {
-            var query = await GetTopContractItemForSaleAsQueryable(count);
+            var query = await GetContractItemForSaleAsQueryable();
 
             query = QueryContractItems(query, queryData);
             return await query
+                .Take(count)
                 .ToListAsync();
         }
 
         public async Task<IList<ContractItem>> GetTopContractItemsForSale(int count)
         {
-            var query = await GetTopContractItemForSaleAsQueryable(count);
+            var query = await GetContractItemForSaleAsQueryable();
             return await query
+                .Take(count)
                 .ToListAsync();
         }
 
         public async Task<IList<ContractItem>> GetTopContractItemsNotForSale(ContractItemQueryData queryData, int count)
         {
-            var query = await GetTopContractItemNotForSaleAsQueryableAsync(count);
+            var query = await GetContractItemNotForSaleAsQueryableAsync();
 
             query = QueryContractItems(query, queryData);
 
             return await query
+                .Take(count)
                 .ToListAsync();
         }
 
         public async Task<IList<ContractItem>> GetTopContractItemsNotForSale(int count)
         {
-            var query = await GetTopContractItemNotForSaleAsQueryableAsync(count);
+            var query = await GetContractItemNotForSaleAsQueryableAsync();
             return await query
-               .ToListAsync();
+                .Take(count)
+                .ToListAsync();
         }
 
-        private async Task<IQueryable<ContractItem>> GetTopContractItemNotForSaleAsQueryableAsync(int count)
+        private async Task<IQueryable<ContractItem>> GetContractItemNotForSaleAsQueryableAsync()
         {
             var boughtContractState = await context
                 .ContractStates
@@ -76,11 +80,10 @@ namespace PawnShop.Services.DataService.Repositories
                 .Include(c => c.GoldProduct)
                 .Include(c => c.Sales)
                 .Where(c => c.ContractNumber.ContractStateId != boughtContractState.Id && c.ContractNumber.ContractStateId != notBoughtContractState.Id && c.Sales.Sum(s => s.Quantity) < c.Amount)
-                .Take(count)
                 .AsQueryable();
         }
 
-        private async Task<IQueryable<ContractItem>> GetTopContractItemForSaleAsQueryable(int count)
+        private async Task<IQueryable<ContractItem>> GetContractItemForSaleAsQueryable()
         {
             var notBoughtContractState = await context
                 .ContractStates
@@ -99,7 +102,6 @@ namespace PawnShop.Services.DataService.Repositories
                 .Include(c => c.GoldProduct)
                 .Include(c => c.Sales)
                 .Where(c => c.ContractNumber.ContractStateId == notBoughtContractState.Id && c.Sales.Sum(s => s.Quantity) < c.Amount)
-                .Take(count)
                 .AsQueryable();
         }
 
@@ -110,12 +112,19 @@ namespace PawnShop.Services.DataService.Repositories
                 .ThenInclude(cn => cn.DealMaker)
                 .ThenInclude(d => d.ClientNavigation);
 
+            if (!string.IsNullOrEmpty(queryData.ItemName))
+            {
+                query = query
+                    .Where(c => EF.Functions.Like(c.Name, $"{queryData.ItemName}%"));
+            }
+
             if (!string.IsNullOrEmpty(queryData.Client))
             {
                 query = query
-                    .Where(s => (s.ContractNumber.DealMaker.ClientNavigation.FirstName + " " +
-                                 s.ContractNumber.DealMaker.ClientNavigation.LastName)
-                        .Contains(queryData.Client));
+                    .Where(s => EF.Functions.Like((s.ContractNumber.DealMaker.ClientNavigation.FirstName + " " +
+                                                   s.ContractNumber.DealMaker.ClientNavigation.LastName),
+                        $"%{queryData.Client}%"));
+
             }
 
             if (!string.IsNullOrEmpty(queryData.ContractNumber))
@@ -139,9 +148,9 @@ namespace PawnShop.Services.DataService.Repositories
                 {
                     query = queryData.PriceOption.PriceOption switch
                     {
-                        PriceOption.Equal => query.Where(s => s.ContractNumber.AmountContract == result),
-                        PriceOption.Lower => query.Where(s => s.ContractNumber.AmountContract <= result),
-                        PriceOption.Higher => query.Where(s => s.ContractNumber.AmountContract >= result),
+                        PriceOption.Equal => query.Where(s => s.EstimatedValue == result),
+                        PriceOption.Lower => query.Where(s => s.EstimatedValue <= result),
+                        PriceOption.Higher => query.Where(s => s.EstimatedValue >= result),
                         _ => throw new ArgumentOutOfRangeException()
                     };
                 }

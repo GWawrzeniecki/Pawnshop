@@ -21,7 +21,7 @@ namespace PawnShop.Services.DataService.Repositories
 
         public async Task<IList<Sale>> GetTopSales(ContractItemQueryData queryData, int count)
         {
-            var query = GetTopSalesAsQueryable(count);
+            var query = GetSalesAsQueryable();
 
             query = query
                 .Include(s => s.ContractItem)
@@ -29,12 +29,20 @@ namespace PawnShop.Services.DataService.Repositories
                 .ThenInclude(cc => cc.DealMaker)
                 .ThenInclude(d => d.ClientNavigation);
 
+            if (!string.IsNullOrEmpty(queryData.ItemName))
+            {
+                query = query
+                    .Where(c => EF.Functions.Like(c.ContractItem.Name, $"{queryData.ItemName}%"));
+            }
+
             if (!string.IsNullOrEmpty(queryData.Client))
             {
                 query = query
-                    .Where(s => (s.ContractItem.ContractNumber.DealMaker.ClientNavigation.FirstName + " " +
-                                 s.ContractItem.ContractNumber.DealMaker.ClientNavigation.LastName)
-                        .Contains(queryData.Client));
+                    .Where(s => EF.Functions.Like(s.ContractItem.ContractNumber.DealMaker.ClientNavigation.FirstName +
+                                                  " " +
+                                                  s.ContractItem.ContractNumber.DealMaker.ClientNavigation.LastName,
+                        $"%{queryData.Client}%"));
+
             }
 
             if (!string.IsNullOrEmpty(queryData.ContractNumber))
@@ -77,38 +85,15 @@ namespace PawnShop.Services.DataService.Repositories
             }
 
             return await query
+                .Take(count)
                 .ToListAsync();
         }
 
         public async Task<IList<Sale>> GetTopSales(int count)
         {
-            return await GetTopSalesAsQueryable(count)
-                .ToListAsync();
-        }
-
-        private IQueryable<Sale> GetTopSalesAsQueryable(int count)
-        {
-            return context
-                .Sales
-                .Include(s => s.ContractItem)
-                .ThenInclude(s => s.Sales)
-                .Include(s => s.ContractItem)
-                .ThenInclude(c => c.Category)
-                .Include(s => s.ContractItem)
-                .ThenInclude(c => c.ContractItemState)
-                .Include(s => s.ContractItem)
-                .ThenInclude(c => c.Category)
-                .ThenInclude(cc => cc.Measure)
-                .Include(s => s.LocalSale)
-                .Include(s => s.Links)
-                .Include(s => s.ContractItem)
-                .ThenInclude(s => s.Laptop)
-                .Include(s => s.ContractItem)
-                .ThenInclude(s => s.Telephone)
-                .Include(s => s.ContractItem)
-                .ThenInclude(s => s.GoldProduct)
+            return await GetSalesAsQueryable()
                 .Take(count)
-                .AsQueryable();
+                .ToListAsync();
         }
 
         public async Task Sell(Sale sale, decimal soldPrice, PaymentType paymentType, IContainerProvider containerProvider, decimal profit)
@@ -138,5 +123,28 @@ namespace PawnShop.Services.DataService.Repositories
                 }).ToListAsync();
         }
 
+        private IQueryable<Sale> GetSalesAsQueryable()
+        {
+            return context
+                .Sales
+                .Include(s => s.ContractItem)
+                .ThenInclude(s => s.Sales)
+                .Include(s => s.ContractItem)
+                .ThenInclude(c => c.Category)
+                .Include(s => s.ContractItem)
+                .ThenInclude(c => c.ContractItemState)
+                .Include(s => s.ContractItem)
+                .ThenInclude(c => c.Category)
+                .ThenInclude(cc => cc.Measure)
+                .Include(s => s.LocalSale)
+                .Include(s => s.Links)
+                .Include(s => s.ContractItem)
+                .ThenInclude(s => s.Laptop)
+                .Include(s => s.ContractItem)
+                .ThenInclude(s => s.Telephone)
+                .Include(s => s.ContractItem)
+                .ThenInclude(s => s.GoldProduct)
+                .AsQueryable();
+        }
     }
 }

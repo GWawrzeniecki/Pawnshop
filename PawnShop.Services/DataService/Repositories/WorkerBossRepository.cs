@@ -42,7 +42,12 @@ namespace PawnShop.Services.DataService.Repositories
                 .Include(w => w.WorkerBossNavigation)
                 .Select(w => new WorkerBossLoginDto()
                 {
-                    WorkerBossNavigation = w.WorkerBossNavigation,
+                    WorkerBossNavigation = new Person()
+                    {
+                        FirstName = w.WorkerBossNavigation.FirstName,
+                        LastName = w.WorkerBossNavigation.LastName,
+                        PersonId = w.WorkerBossNavigation.PersonId
+                    },
                     WorkerBossId = w.WorkerBossId,
                     WorkerBossTypeId = w.WorkerBossTypeId,
                     Login = w.Login,

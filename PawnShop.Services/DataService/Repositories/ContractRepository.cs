@@ -35,6 +35,7 @@ namespace PawnShop.Services.DataService.Repositories
         {
             var actualContractNumber = await _context
                 .Contracts
+                .Where(c => c.StartDate == _context.Contracts.Max(c2 => c2.StartDate))
                 .Select(c => new
                 {
                     ContractNumberID = c.ContractNumberId,
@@ -61,19 +62,21 @@ namespace PawnShop.Services.DataService.Repositories
 
         public async Task<IList<Contract>> GetTopContractsAsync(int count)
         {
-            return await GetTopContractsQueryable(count).ToListAsync();
+            return await GetTopContractsQueryable(count)
+                .ToListAsync();
 
         }
 
         public async Task<IList<Contract>> GetContracts(ContractQueryData queryData, int count)
         {
-            var contractQuery = GetTopContractsQueryable(count);
+            var contractQuery = GetContractsQueryable();
 
             if (!string.IsNullOrEmpty(queryData.Client))
             {
-                contractQuery = contractQuery.Where(p =>
-                     (p.DealMaker.ClientNavigation.FirstName + " " + p.DealMaker.ClientNavigation.LastName).Contains(
-                         queryData.Client));
+                contractQuery = contractQuery
+                    .Where(p => EF.Functions.Like(
+                        p.DealMaker.ClientNavigation.FirstName + " " + p.DealMaker.ClientNavigation.LastName,
+                        $"%{queryData.Client}%"));
             }
 
             if (!string.IsNullOrEmpty(queryData.ContractAmount))
@@ -108,6 +111,12 @@ namespace PawnShop.Services.DataService.Repositories
             {
                 contractQuery = contractQuery.Where(p => p.LendingRateId == queryData.LendingRate.Id);
             }
+
+            //if (!string.IsNullOrEmpty(queryData.ContractNumber))
+            //{
+            //    return await contractQuery
+            //        .ToListAsync();
+            //}
 
             return await contractQuery
                 .Take(count)
@@ -170,6 +179,12 @@ namespace PawnShop.Services.DataService.Repositories
 
         private IQueryable<Contract> GetTopContractsQueryable(int count)
         {
+            return GetContractsQueryable()
+                .Take(count);
+        }
+
+        private IQueryable<Contract> GetContractsQueryable()
+        {
             return _context.Contracts
                 .Include(p => p.ContractState)
                 .Include(p => p.LendingRate)
@@ -186,7 +201,6 @@ namespace PawnShop.Services.DataService.Repositories
                 .ThenInclude(c => c.City)
                 .Include(p => p.ContractRenews)
                 .ThenInclude(c => c.LendingRate)
-                .Take(count)
                 .AsQueryable();
         }
     }

@@ -206,6 +206,7 @@ namespace PawnShop.Modules.Sale.ViewModels
         {
             try
             {
+                IsBusy = true;
                 var salesQueryData = _mapper.Map<ContractItemQueryData>(this);
                 await TryToLoadSales(salesQueryData);
             }
@@ -220,6 +221,10 @@ namespace PawnShop.Modules.Sale.ViewModels
                 _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
@@ -227,6 +232,7 @@ namespace PawnShop.Modules.Sale.ViewModels
         {
             try
             {
+                IsBusy = true;
                 var salesQueryData = _mapper.Map<ContractItemQueryData>(this);
                 await TryToLoadSales(salesQueryData);
             }
@@ -241,6 +247,10 @@ namespace PawnShop.Modules.Sale.ViewModels
                 _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
@@ -264,9 +274,8 @@ namespace PawnShop.Modules.Sale.ViewModels
             }), "Sprzedaż towaru", SelectedSale);
 
             if (dialogResult != ButtonResult.OK) return;
-            IsBusy = true;
             await RefreshDataGrid();
-            IsBusy = false;
+
         }
 
         #endregion
@@ -277,6 +286,7 @@ namespace PawnShop.Modules.Sale.ViewModels
         {
             try
             {
+                IsBusy = true;
                 await TryToLoadSales();
                 await TryToLoadContractItemCategories();
                 LoadDateSearchOptions();
@@ -300,6 +310,10 @@ namespace PawnShop.Modules.Sale.ViewModels
                 _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
