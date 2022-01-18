@@ -23,6 +23,13 @@ WPF .NET application for pawnshop as part of an engineering thesis
 11. Login to the app with ID:admin and PW:admin, change the Pepper and Iterations environment variable according to your preferences and go to the Worker tab in application and set the new password.
 12. App is ready to use.
 
+# Screenshots
+[![image.png](https://i.postimg.cc/4yfZgy9L/image.png)](https://postimg.cc/mz5K3bVC)
+[![image.png](https://i.postimg.cc/mrSB67cz/image.png)](https://postimg.cc/GB9W48xd)
+[![image.png](https://i.postimg.cc/GpYtqBR6/image.png)](https://postimg.cc/sBj32gvJ)
+[![image.png](https://i.postimg.cc/MHhK7x4z/image.png)](https://postimg.cc/ZvxSZk4Q)
+[![image.png](https://i.postimg.cc/Cxnrr0QW/image.png)](https://postimg.cc/RW9Tqk9R)
+
 <p>
 <br>
 Very short description for now.
