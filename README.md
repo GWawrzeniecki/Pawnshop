@@ -11,6 +11,7 @@ WPF .NET application for pawnshop as part of an engineering thesis
 <li>Currency,Gold,Sell,Renew Charts</li>
 <li>Login/Logout system</li>
 
+
 Very short description for now.
 Readme to be contuined..
 
