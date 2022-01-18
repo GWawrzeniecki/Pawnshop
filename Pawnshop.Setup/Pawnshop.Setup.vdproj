@@ -107,6 +107,11 @@
                     "Name" = "8:.NET Runtime 5.0.13 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.5.0.x64"
                     }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.5.0.x64"
+                    {
+                    "Name" = "8:.NET Desktop Runtime 5.0.13 (x64)"
+                    "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.5.0.x64"
+                    }
                 }
             }
         }
@@ -285,7 +290,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Pawnshop"
         "ProductCode" = "8:{922870D9-6DAE-461E-902E-EDE58A7E214C}"
-        "PackageCode" = "8:{5E617BDA-416B-4BE0-877C-C25E972D6BB3}"
+        "PackageCode" = "8:{75C48077-233C-4E74-AEA4-3A45CB486770}"
         "UpgradeCode" = "8:{0B6ED795-C609-4DD6-8A52-0F55F22A255C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
