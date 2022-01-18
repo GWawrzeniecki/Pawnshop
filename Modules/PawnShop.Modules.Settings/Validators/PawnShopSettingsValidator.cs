@@ -8,9 +8,9 @@ namespace PawnShop.Modules.Settings.Validators
     {
         public PawnShopSettingsValidator()
         {
-            RuleFor(view => view.AutomaticSearchingEndedContractsDay)
+            RuleFor(view => view.VatPercent)
                 .Must(d => d > 0)
-                .WithMessage("Ilość dni musi być większa niz 0");
+                .WithMessage("Stawka vatu musi być większa niż 0");
         }
     }
 

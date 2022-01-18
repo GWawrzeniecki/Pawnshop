@@ -1,6 +1,5 @@
 ﻿using PawnShop.Business.Dtos;
 using PawnShop.Core.Events;
-using PawnShop.Core.Extensions;
 using PawnShop.Core.Interfaces;
 using PawnShop.Core.ViewModel.Base;
 using PawnShop.Exceptions.DBExceptions;
@@ -123,7 +122,6 @@ namespace PawnShop.Modules.Login.ViewModels
                 LoginButtonIsBusy = true;
                 var iHavePassword = view as IHavePassword;
                 using var password = iHavePassword.Password.Copy();
-                //password = AutoLoginAdmin(); // for testing purpose
                 _uiService.SetMouseBusyCursor();
                 var (success, loggedUser) = await TryToLoginAsync(UserName, password);
                 if (success)
@@ -166,6 +164,7 @@ namespace PawnShop.Modules.Login.ViewModels
                 _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
+
             }
             finally
             {
@@ -186,7 +185,6 @@ namespace PawnShop.Modules.Login.ViewModels
         private bool CanLogin(object view)
         {
             return UserNameHasText && PasswordBoxHasText && !LoginButtonIsBusy;
-            //return true && !LoginButtonIsBusy; // For fast login while developing
         }
 
         private async Task<(bool, WorkerBossLoginDto)> TryToLoginAsync(string userName, SecureString password)
@@ -198,13 +196,6 @@ namespace PawnShop.Modules.Login.ViewModels
         }
 
         private void CloseDialog(ButtonResult buttonResult) => RequestClose?.Invoke(new DialogResult(buttonResult));
-
-        private SecureString AutoLoginAdmin()
-        {
-            UserName = "grzegorz.wawrzeniecki";
-            const string password = "testtesttest";
-            return password.ToSecureString();
-        }
 
         private void CloseDialogWithSuccess()
         {

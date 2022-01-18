@@ -19,7 +19,7 @@ namespace PawnShop.Modules.Settings.ViewModels
 
         #region PrivateMembers
 
-        private DelegateCommand _saveSearchContractsDayCommand;
+        private DelegateCommand _saveVatPercentCommand;
         private IUserSettings _userSettings;
         private readonly ISettingsService<UserSettings> _settingsService;
         private readonly IPdfService _pdfService;
@@ -27,7 +27,7 @@ namespace PawnShop.Modules.Settings.ViewModels
         private readonly IContainerProvider _containerProvider;
         private readonly IMessageBoxService _messageBoxService;
         private DelegateCommand _chooseDealDocumentFilePathCommand;
-        private int _automaticSearchingEndedContractsDay;
+        private int _vatPercent;
         private string _dealDocumentPath;
         private DelegateCommand _setLendingRatesCommand;
         private bool _isActive;
@@ -59,9 +59,9 @@ namespace PawnShop.Modules.Settings.ViewModels
             {
                 _userSettings = value;
                 DealDocumentPath = value.DealDocumentPath;
-                AutomaticSearchingEndedContractsDay = value.AutomaticSearchingEndedContractsDay;
+                VatPercent = value.VatPercent;
                 RaisePropertyChanged(nameof(DealDocumentPath));
-                RaisePropertyChanged(nameof(AutomaticSearchingEndedContractsDay));
+                RaisePropertyChanged(nameof(VatPercent));
             }
         }
 
@@ -69,10 +69,10 @@ namespace PawnShop.Modules.Settings.ViewModels
 
         //public string LendingRate => "";
 
-        public int AutomaticSearchingEndedContractsDay
+        public int VatPercent
         {
-            get => _automaticSearchingEndedContractsDay;
-            set => SetProperty(ref _automaticSearchingEndedContractsDay, value);
+            get => _vatPercent;
+            set => SetProperty(ref _vatPercent, value);
         }
 
         public string DealDocumentPath
@@ -89,9 +89,9 @@ namespace PawnShop.Modules.Settings.ViewModels
 
         #region Commands
 
-        public DelegateCommand SaveSearchContractsDayCommand =>
-            _saveSearchContractsDayCommand ??=
-                new DelegateCommand(SaveSearchContractsDay, CanExecuteSaveSearchContractDays)
+        public DelegateCommand SaveVatPercentCommand =>
+            _saveVatPercentCommand ??=
+                new DelegateCommand(SaveVatPercent, CanExecuteSaveVatPercentCommand)
                     .ObservesProperty(() => HasErrors);
 
         public DelegateCommand ChooseDealDocumentFilePathCommand =>
@@ -104,9 +104,9 @@ namespace PawnShop.Modules.Settings.ViewModels
 
         #region CommandMethods
 
-        private void SaveSearchContractsDay()
+        private void SaveVatPercent()
         {
-            UserSettings.AutomaticSearchingEndedContractsDay = AutomaticSearchingEndedContractsDay;
+            UserSettings.VatPercent = VatPercent;
             SaveUserSettings();
         }
 
@@ -122,7 +122,7 @@ namespace PawnShop.Modules.Settings.ViewModels
             _dialogService.ShowLendingRateSettingsDialog(null);
         }
 
-        private bool CanExecuteSaveSearchContractDays()
+        private bool CanExecuteSaveVatPercentCommand()
         {
             return !HasErrors;
         }

@@ -1,5 +1,6 @@
 ﻿using PawnShop.Business.Dtos;
 using PawnShop.Core;
+using PawnShop.Core.Constants;
 using PawnShop.Core.Dialogs;
 using PawnShop.Core.Extensions;
 using PawnShop.Core.HamburgerMenu.Interfaces;
@@ -117,7 +118,7 @@ namespace PawnShop.Services.Implementations
         public void ShowLogoutDialog()
         {
             Application.Current.MainWindow.Hide();
-            NavigateToContractScreen();
+            NavigateToHomeScreen();
 
             _dialogService.ShowLoginDialog(c =>
             {
@@ -192,9 +193,9 @@ namespace PawnShop.Services.Implementations
                 }
             }
         }
-        private void NavigateToContractScreen()
+        private void NavigateToHomeScreen()
         {
-            _applicationCommands.SetMenuItemCommand.Execute("Home");
+            _applicationCommands.SetMenuItemCommand.Execute(Constants.HomeModuleHomeViewName);
         }
 
         #endregion private method

@@ -43,7 +43,7 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 LegendPosition="Right"
-                Series="{Binding Sales}" />
+                Series="{Binding Sales, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="0">
@@ -65,41 +65,7 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 LegendPosition="Right"
-                Series="{Binding Renews}">
-                <!--<wpf:PieChart.LegendTemplate>
-                    <DataTemplate>
-                        <ItemsControl ItemsSource="{Binding Series, RelativeSource={RelativeSource AncestorType=wpf:DefaultLegend}}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Orientation="{Binding Orientation, RelativeSource={RelativeSource AncestorType=wpf:DefaultLegend}}" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Padding="15,4" Background="#F5F5DC">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock VerticalAlignment="Center">
-                                                <Run Text="{Binding Name}" />
-                                                <Run Text="{Binding Value}" />
-
-                                            </TextBlock>
-                                            <wpf:MotionCanvas
-                                                Width="{Binding CanvasSchedule.Width}"
-                                                Height="{Binding CanvasSchedule.Height}"
-                                                Margin="8,0,0,0"
-                                                VerticalAlignment="Center"
-                                                PaintTasks="{Binding CanvasSchedule.PaintSchedules}" />
-                                        </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </DataTemplate>
-                </wpf:PieChart.LegendTemplate>-->
-            </wpf:PieChart>
+                Series="{Binding Renews, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
         <Grid Grid.Row="0" Grid.Column="1">
@@ -119,8 +85,8 @@
 
             <wpf:CartesianChart
                 Grid.Row="1"
-                Series="{Binding ExchangeRates}"
-                XAxes="{Binding DateChartsXAxes}" />
+                Series="{Binding ExchangeRates, UpdateSourceTrigger=PropertyChanged}"
+                XAxes="{Binding DateChartsXAxes, UpdateSourceTrigger=PropertyChanged}" />
 
         </Grid>
 
@@ -141,8 +107,8 @@
 
             <wpf:CartesianChart
                 Grid.Row="1"
-                Series="{Binding GoldRates}"
-                XAxes="{Binding DateChartsXAxes}" />
+                Series="{Binding GoldRates, UpdateSourceTrigger=PropertyChanged}"
+                XAxes="{Binding DateChartsXAxes, UpdateSourceTrigger=PropertyChanged}" />
 
         </Grid>
 

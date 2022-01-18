@@ -197,6 +197,7 @@ namespace PawnShop.Modules.Contract.ViewModels
         {
             try
             {
+                IsBusy = true;
                 await TryToLoadContractStates();
                 await TryToLoadLendingRate();
                 await TryToLoadContracts();
@@ -226,6 +227,10 @@ namespace PawnShop.Modules.Contract.ViewModels
                 _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
@@ -347,7 +352,7 @@ namespace PawnShop.Modules.Contract.ViewModels
 
         private void CreateContract()
         {
-            if (CheckIfDealDocumentPathIsSet())
+            if (CheckIfApplicationIsConfigured())
                 _shellService.ShowShell<CreateContractWindow>(nameof(CreateContractClientData), new NavigationParameters { { "CallBack", RefreshDataGridCallBack() } });
             else
                 _messageBoxService.ShowError($"Ścieżka do szablonu umowy nie jest ustawiona.{Environment.NewLine}Ustaw ją w ustawieniach.", "Uwaga!");
@@ -374,9 +379,11 @@ namespace PawnShop.Modules.Contract.ViewModels
                     !SelectedContract.ContractState.State.Equals(Constants.BoughtBackContractState);
         }
 
-        private bool CheckIfDealDocumentPathIsSet()
+        private bool CheckIfApplicationIsConfigured()
         {
-            return !string.IsNullOrEmpty(_userSettings.DealDocumentPath);
+            return !string.IsNullOrEmpty(_userSettings.DealDocumentPath) &&
+                   !string.IsNullOrEmpty(_userSettings.DealDocumentsFolderPath) &&
+                   _userSettings.VatPercent != 0;
 
         }
 

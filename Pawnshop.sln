@@ -51,7 +51,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests.Base", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Modules.Contract.IntegrationTests", "IntegrationTests\PawnShop.Modules.Contract.IntegrationTests\PawnShop.Modules.Contract.IntegrationTests.csproj", "{D3B37631-6D85-451E-9BD9-788A492A0A1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnShop.Services.UnitTests", "UnitTests\PawnShop.Services.UnitTests\PawnShop.Services.UnitTests.csproj", "{4AE416C9-1EFD-492F-A631-3E5462B98F2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PawnShop.Services.UnitTests", "UnitTests\PawnShop.Services.UnitTests\PawnShop.Services.UnitTests.csproj", "{4AE416C9-1EFD-492F-A631-3E5462B98F2F}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Pawnshop.Setup", "Pawnshop.Setup\Pawnshop.Setup.vdproj", "{62E78BA1-A67A-4961-B568-CBAEFD60555E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pawnshop.Setup.Scripts", "Pawnshop.Setup.Scripts\Pawnshop.Setup.Scripts.csproj", "{ADCDFEAC-A28F-4715-8B28-5F0B76D7D487}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +151,12 @@ Global
 		{4AE416C9-1EFD-492F-A631-3E5462B98F2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AE416C9-1EFD-492F-A631-3E5462B98F2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AE416C9-1EFD-492F-A631-3E5462B98F2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62E78BA1-A67A-4961-B568-CBAEFD60555E}.Debug|Any CPU.ActiveCfg = Debug
+		{62E78BA1-A67A-4961-B568-CBAEFD60555E}.Release|Any CPU.ActiveCfg = Release
+		{ADCDFEAC-A28F-4715-8B28-5F0B76D7D487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADCDFEAC-A28F-4715-8B28-5F0B76D7D487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADCDFEAC-A28F-4715-8B28-5F0B76D7D487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADCDFEAC-A28F-4715-8B28-5F0B76D7D487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

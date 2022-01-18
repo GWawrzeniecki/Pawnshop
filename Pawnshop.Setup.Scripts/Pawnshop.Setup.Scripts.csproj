@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Core.System.Configuration.Install" Version="1.1.0" />
+    <PackageReference Include="NLog" Version="4.7.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PawnShop.Services\PawnShop.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Configuration.Install">
+      <HintPath>..\..\..\..\..\.nuget\packages\core.system.configuration.install\1.1.0\lib\netstandard2.0\System.Configuration.Install.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

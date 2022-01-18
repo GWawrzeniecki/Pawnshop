@@ -10,7 +10,7 @@
     MinHeight="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
     WindowStartupLocation="CenterScreen"
-    WindowState="Maximized">
+    WindowState="Maximized" Icon="/Icons/PawnshopIcon.ico">
 
     <Window.Resources>
         <Style BasedOn="{StaticResource MahApps.Styles.TextBlock}" TargetType="TextBlock">

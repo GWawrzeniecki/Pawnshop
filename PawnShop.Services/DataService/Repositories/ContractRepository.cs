@@ -157,6 +157,7 @@ namespace PawnShop.Services.DataService.Repositories
             contractToRenew.ContractStateId = contractState.Id;
             contractToRenew.ContractRenews.Add(renewContract);
             await _context.SaveChangesAsync();
+            await _context.Entry(renewContract).Reference(r => r.LendingRate).LoadAsync();
             return contractToRenew;
         }
 

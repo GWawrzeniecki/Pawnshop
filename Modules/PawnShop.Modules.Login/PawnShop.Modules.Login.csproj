@@ -6,8 +6,7 @@
     <UserSecretsId>ec9b738c-72ae-4a87-bb2f-9a102490bfc8</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Logo\logoLombardVIP.jpg" />
-    <None Remove="Logo\test_logo.jpg" />
+    <None Remove="Logo\PawnshopLogo.jpg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="10.3.6" />
@@ -22,10 +21,7 @@
     <ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Logo\logoLombardVIP.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Logo\test_logo.jpg">
+    <Resource Include="Logo\PawnshopLogo.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

@@ -302,6 +302,4 @@ CREATE NONCLUSTERED INDEX IX_AddressStreetFullTable ON [Worker].[Address] ([Stre
 	,[CityID]
 	)
 
-EXEC sp_msforeachtable 'SET QUOTED_IDENTIFIER ON; ALTER INDEX ALL ON ? REORGANIZE'
-GO
 

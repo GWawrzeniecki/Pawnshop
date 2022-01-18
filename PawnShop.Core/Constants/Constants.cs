@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        //
+        //EnvironmentVariablesNames
         public const string PepperKeySecret = "Pepper";
         public const string IterationsKeySecret = "Iterations";
 
@@ -22,15 +22,15 @@
         public const string BoughtBackContractState = "Wykupiona";
         public const string NotBoughtBackContractState = "Niewykupiona";
 
-        //UserSettings.json names
-        //public const string ThemeNameSection = "UserSettings:ThemeName";
+        //AppConfig Key Names
+        public const string IsFirstLaunchAppConfigKeyName = "IsFirstLaunch";
 
-        //usersettings.json file name
+        //FileNames
         public const string UserSettingsFileName = "usersettings.json";
+        public const string DealDocumentPdfFileName = "UMOWA KUPNA-SPRZEDAZY_V3-Form.pdf";
 
-        //usersettings.json key names
-        //public const string VatPercentKey = "VATPercent";
-        //public const string DealDocumentPathKey = "DealDocumentPath";
-        //public const string DealDocumentsFolderPathKey = "DealDocumentsFolderPath";
+        //Views names
+        public const string HomeModuleHomeViewName = "Home";
+
     }
 }

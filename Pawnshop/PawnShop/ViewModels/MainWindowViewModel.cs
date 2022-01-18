@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using ControlzEx.Theming;
+using Pawnshop.Setup.Scripts;
 using PawnShop.Core;
+using PawnShop.Core.Constants;
 using PawnShop.Core.HamburgerMenu.Implementations;
 using PawnShop.Core.Regions;
 using PawnShop.Core.SharedVariables;
@@ -12,6 +14,8 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 
 namespace PawnShop.ViewModels
@@ -28,6 +32,8 @@ namespace PawnShop.ViewModels
         private readonly IMapper _mapper;
         private readonly IContainerProvider _containerProvider;
         private readonly IMessageBoxService _messageBoxService;
+        private readonly ISetup _setup;
+        private readonly IConfigurationService _configurationService;
         private bool _isPaneOpen;
         private DelegateCommand<string> _setSelectedMenuItemCommand;
         private ModuleHamburgerMenuItemBase _selectedItem;
@@ -67,7 +73,8 @@ namespace PawnShop.ViewModels
         #region constructors
 
         public MainWindowViewModel(IRegionManager regionManager, IApplicationCommands applicationCommands, IUserSettings userSettings
-        , ISettingsService<UserSettings> userSettingsService, IMapper mapper, IContainerProvider containerProvider, IMessageBoxService messageBoxService)
+        , ISettingsService<UserSettings> userSettingsService, IMapper mapper, IContainerProvider containerProvider, IMessageBoxService messageBoxService, ISetup setup
+        , IConfigurationService configurationService)
         {
             applicationCommands.NavigateCommand.RegisterCommand(NavigateCommand);
             applicationCommands.SetMenuItemCommand.RegisterCommand(SetSelectedMenuItemCommand);
@@ -77,6 +84,9 @@ namespace PawnShop.ViewModels
             _mapper = mapper;
             _containerProvider = containerProvider;
             _messageBoxService = messageBoxService;
+            _setup = setup;
+            _configurationService = configurationService;
+            ConfigureApplication(); // Because custom action in installer doesn't work ...
             LoadUserSettings();
             SetTheme();
         }
@@ -106,22 +116,36 @@ namespace PawnShop.ViewModels
 
         #region private methods
 
+        private void ConfigureApplication()
+        {
+            try
+            {
+                if (IsFirstLaunch()) return;
+                _setup.ConfigureApplication(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                SetFirstLaunchToTrue();
+            }
+            catch (Exception e)
+            {
+                _messageBoxService.ShowError($"Wystąpił błąd w konfiguracji aplikacji.{Environment.NewLine}Błąd: {e.Message}{Environment.NewLine}Aplikacja zostanie wyłączona.{Environment.NewLine}Skontaktuj się z administratorem.", "Błąd");
+                Application.Current.Shutdown();
+            }
+        }
+
+        private bool IsFirstLaunch()
+        {
+            return _configurationService.GetValueFromAppConfig<bool>(Constants.IsFirstLaunchAppConfigKeyName);
+        }
+
+        private void SetFirstLaunchToTrue()
+        {
+            _configurationService.SaveValueInAppConfig(Constants.IsFirstLaunchAppConfigKeyName, "True");
+        }
+
+
         private void LoadUserSettings()
         {
             try
             {
-                if (!_userSettingsService.IsSettingsExist()) // until we don't have an installer
-                {
-                    _userSettingsService.SaveSettings(new UserSettings
-                    {
-                        VatPercent = 23,
-                        AutomaticSearchingEndedContractsDay = 14,
-                        ThemeName = "Light.Blue",
-                        DealDocumentsFolderPath = @"C:\Users\Kogut\Documents\PawnShop\DealDocuments"
-                        // DealDocumentPath = @"C:\Users\Kogut\iCloudDrive\Documents\Inżynierka\Umowa\UMOWA KUPNA-SPRZEDAZY_V3-Form.pdf"
-                    });
-                }
-
                 _mapper.Map(_userSettingsService.LoadSettings(), _userSettings);
             }
             catch (Exception e)
@@ -135,9 +159,14 @@ namespace PawnShop.ViewModels
 
         private void SetTheme()
         {
+            if (_userSettings is null)
+                return;
+
             if (!ThemeManager.Current.DetectTheme(Application.Current).Name.Equals(_userSettings.ThemeName))
                 _ = ThemeManager.Current.ChangeTheme(Application.Current, _userSettings.ThemeName);
         }
+
+
 
         #endregion private methods
     }

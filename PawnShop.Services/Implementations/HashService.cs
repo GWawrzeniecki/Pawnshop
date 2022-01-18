@@ -146,7 +146,7 @@ namespace PawnShop.Services.Implementations
 
         private SecureString PepperPassword(SecureString password)
         {
-            GetEnvironmentVariable(IterationsKeySecret, out var pepper);
+            GetEnvironmentVariable(PepperKeySecret, out var pepper);
 
             foreach (var c in pepper.ToCharArray())
             {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MahApps.Metro.Controls;
+using Pawnshop.Setup.Scripts;
 using PawnShop.Controls.BaseTaskbar.Views;
 using PawnShop.Controls.ContractItemViews.ViewModels;
 using PawnShop.Controls.Dialogs.ViewModels;
@@ -33,9 +34,13 @@ using PawnShop.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Markup;
 
 namespace PawnShop
 {
@@ -70,6 +75,7 @@ namespace PawnShop
             containerRegistry.Register<IPrintService, PrintService>();
             containerRegistry.Register<IApiService, ApiService>();
             containerRegistry.Register<IMessageBoxService, MessageBoxService>();
+            containerRegistry.Register<ISetup, Setup>();
             containerRegistry.Register<AddClientValidator>();
             containerRegistry.RegisterInstance<ISettingsService<UserSettings>>(new SettingsService<UserSettings>(Constants.UserSettingsFileName));
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
@@ -153,7 +159,7 @@ namespace PawnShop
 
             if (result != ILoginService.LoginResult.Success) return;
             base.OnInitialized();
-
+            InitializeCulture();
             #region loading modules
 
             LoadModules(moduleManager, sessionContext);
@@ -178,5 +184,31 @@ namespace PawnShop
                 moduleManager.LoadModule(moduleInfo.ModuleName);
             }
         }
+
+        private void InitializeCulture()
+        {
+            try
+            {
+                var polishCulture = new CultureInfo("pl-PL");
+                CultureInfo.DefaultThreadCurrentCulture = polishCulture;
+                CultureInfo.DefaultThreadCurrentUICulture = polishCulture;
+
+                var lang = XmlLanguage.GetLanguage(polishCulture.IetfLanguageTag);
+                FrameworkElement.LanguageProperty.OverrideMetadata(
+                    typeof(FrameworkElement),
+                    new FrameworkPropertyMetadata(lang)
+                );
+                //<run> elements
+                FrameworkContentElement.LanguageProperty.OverrideMetadata(
+                    typeof(TextElement),
+                    new FrameworkPropertyMetadata(lang)
+                );
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
     }
 }

@@ -10,6 +10,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Icons\PawnshopIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
@@ -28,6 +31,12 @@
     <ProjectReference Include="..\..\PawnShop.Core\PawnShop.Core.csproj" />
     <ProjectReference Include="..\..\Modules\PawnShop.Modules.Home\PawnShop.Modules.Home.csproj" />
     <ProjectReference Include="..\..\PawnShop.Services\PawnShop.Services.csproj" />
+    <ProjectReference Include="..\..\Pawnshop.Setup.Scripts\Pawnshop.Setup.Scripts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\PawnshopIcon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <None Update="App.config">

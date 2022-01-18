@@ -14,5 +14,7 @@ namespace PawnShop.Modules.Home.Views
         {
             InitializeComponent();
         }
+
+
     }
 }

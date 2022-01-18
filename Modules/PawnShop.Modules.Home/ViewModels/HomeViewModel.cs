@@ -114,17 +114,19 @@ namespace PawnShop.Modules.Home.ViewModels
         {
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
             var sales = await unitOfWork.SaleRepository.GetSaleInDays(new DateTime(2021, 11, 27), DateTime.Today);
+            var tmp = new List<ISeries>();
             for (var index = 1; index < sales.Count + 1; index++)
             {
                 var saleChartDto = sales[index - 1];
-                Sales.Add(new PieSeries<decimal>()
+                tmp.Add(new PieSeries<decimal>()
                 {
                     Values = new decimal[] { saleChartDto.SoldPriceSum },
                     Name = saleChartDto.SaleDate.ToShortDateString(),
                     InnerRadius = 150
                 });
-
             }
+
+            Sales = tmp;
         }
 
         private async Task LoadRenewChart()
@@ -144,17 +146,19 @@ namespace PawnShop.Modules.Home.ViewModels
         {
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
             var sales = await unitOfWork.DealDocumentRepository.GetRenewSumInDays(new DateTime(2021, 11, 27), DateTime.Today);
+            var tmp = new List<ISeries>();
             for (var index = 1; index < sales.Count + 1; index++)
             {
                 var dealDocumentRenewChartDto = sales[index - 1];
-                Renews.Add(new PieSeries<decimal>()
+                tmp.Add(new PieSeries<decimal>()
                 {
                     Values = new decimal[] { dealDocumentRenewChartDto.IncomeSum },
                     Name = dealDocumentRenewChartDto.RenewDate.ToShortDateString(),
                     InnerRadius = 150
                 });
-
             }
+
+            Renews = tmp;
         }
 
         private async Task LoadExchangeRatesChart()
@@ -198,11 +202,14 @@ namespace PawnShop.Modules.Home.ViewModels
                     exchangeRate.rates.First(r => r.code.Equals(c)).mid)));
             }
 
-            currencies.ForEach(c => ExchangeRates.Add(new ColumnSeries<DateTimePoint>()
+            var tmp = new List<ISeries>();
+            currencies.ForEach(c => tmp.Add(new ColumnSeries<DateTimePoint>()
             {
                 Values = currencyDic[c],
                 Name = c
             }));
+
+            ExchangeRates = tmp;
         }
 
         private void InitializeExchangeRatesXAxes()
@@ -258,11 +265,14 @@ namespace PawnShop.Modules.Home.ViewModels
 
             goldRates.ForEach(gr => goldRatesDateTimePoints.Add(new DateTimePoint(DateTime.Parse(gr.data), gr.cena)));
 
-            GoldRates.Add(new ColumnSeries<DateTimePoint>()
+            GoldRates = new List<ISeries>()
             {
-                Values = goldRatesDateTimePoints,
-                Name = "Złoto próba: 1000"
-            });
+                new ColumnSeries<DateTimePoint>()
+                {
+                    Values = goldRatesDateTimePoints,
+                    Name = "Złoto próba: 1000"
+                }
+            };
         }
 
         private string BuildGoldRateUrl(DateTime dateFrom, DateTime dateTo)

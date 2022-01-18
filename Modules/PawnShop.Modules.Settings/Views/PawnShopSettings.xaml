@@ -36,9 +36,7 @@
 
 
         <TextBlock Grid.Row="0" Grid.Column="0">
-            <Run Text="Automatyczne wyszukiwanie skończonych umow co" />
-            <Run Text="{Binding AutomaticSearchingEndedContractsDay}" />
-            <Run Text=" dni" />
+            <Run Text="Stawka VAT" />
         </TextBlock>
 
         <TextBlock
@@ -55,7 +53,7 @@
             Grid.Row="0"
             Grid.Column="1"
             VerticalContentAlignment="Center"
-            Text="{Binding AutomaticSearchingEndedContractsDay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Delay=400}" />
+            Text="{Binding VatPercent, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Delay=400}" />
 
         <TextBox
             Grid.Row="1"
@@ -74,7 +72,7 @@
         <Button
             Grid.Row="0"
             Grid.Column="2"
-            Command="{Binding SaveSearchContractsDayCommand}"
+            Command="{Binding SaveVatPercentCommand}"
             Content="Zapisz" />
 
         <Button

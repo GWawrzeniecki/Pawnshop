@@ -133,6 +133,7 @@ namespace PawnShop.Modules.Commodity.Base
         {
             try
             {
+                IsBusy = true;
                 ContractItems = await TryToLoadContractItems();
             }
             catch (LoadingContractItemsException loadingContractItemsException)
@@ -146,6 +147,10 @@ namespace PawnShop.Modules.Commodity.Base
                 _messageBoxService.ShowError(
                     $"Ups.. coś poszło nie tak.{Environment.NewLine}Błąd: {e.Message}",
                     "Błąd");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
