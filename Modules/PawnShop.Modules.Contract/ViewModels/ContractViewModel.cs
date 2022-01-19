@@ -355,7 +355,7 @@ namespace PawnShop.Modules.Contract.ViewModels
             if (CheckIfApplicationIsConfigured())
                 _shellService.ShowShell<CreateContractWindow>(nameof(CreateContractClientData), new NavigationParameters { { "CallBack", RefreshDataGridCallBack() } });
             else
-                _messageBoxService.ShowError($"Ścieżka do szablonu umowy nie jest ustawiona.{Environment.NewLine}Ustaw ją w ustawieniach.", "Uwaga!");
+                _messageBoxService.ShowError($"Aplikacja nie jest skonfigurowana.Sprawdź następujące ustawienia:{Environment.NewLine}1. Ścieżka do szablonu z umową.{Environment.NewLine}2. Stawka VAT.{Environment.NewLine}3. Folder na umowy.", "Uwaga!");
         }
 
         private Func<Task> RefreshDataGridCallBack()
