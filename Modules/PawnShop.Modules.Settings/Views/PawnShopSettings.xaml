@@ -47,7 +47,7 @@
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
-            Text="Terminy przedluzania umow i oprocentowanie" />
+            Text="Terminy przedłużania umów i oprocentowanie" />
 
         <TextBox
             Grid.Row="0"
