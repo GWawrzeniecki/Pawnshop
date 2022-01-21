@@ -39,6 +39,7 @@ namespace PawnShop.Services.DataService.Repositories
                 .ThenInclude(person => person.Address)
                 .ThenInclude(address => address.Country)
                 .Where(client => EF.Functions.Like(client.ClientNavigation.LastName, $"{surname}%"))
+                .Take(50)
                 .ToListAsync();
         }
 

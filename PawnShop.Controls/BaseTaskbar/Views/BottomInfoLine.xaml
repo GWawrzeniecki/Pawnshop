@@ -23,7 +23,7 @@
             HorizontalAlignment="Left"
             Orientation="Horizontal">
 
-            <TextBlock Margin="5,0,0,0" Text="{Binding ActualDateTime, StringFormat={}{0:d.M.yyyy dddd hh:mm}}" />
+            <TextBlock Margin="5,0,0,0" Text="{Binding ActualDateTime, StringFormat={}{0:dd/MM/yyyy HH:mm}}" />
         </StackPanel>
 
         <!--  User  -->

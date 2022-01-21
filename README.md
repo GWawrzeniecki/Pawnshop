@@ -17,7 +17,7 @@ WPF .NET application for pawnshop as part of an engineering thesis
 5. In application folder you will find DB backup with tables,schemas, indexes and one Worker.
 6. Restore backup with Managament Studio or another software to the sql server.
 7. Add environmental variable with name Iterations and value 1000. (Iterations for hashing algorithm)
-8. Add environmental variable with name Pepper and value asd$as12.
+8. Add environmental variable with name Pepper and value XXXXX.
 9. Set the correct connection string (PawnShopDatabaseProduction) in App.config file in the application folder.
 10. First launch the application has to be with administrator privileges. (To set a value in app config). At the first lunch app will create user settings file, folder in documents for printed deal documents and will set path to that folder and to the DealDocument Fillable pdf which you will find in the application folder. (I couldn't manage to do this in setup, I was getting dll errors)
 11. Login to the app with ID:admin and PW:admin, change the Pepper and Iterations environment variable according to your preferences and go to the Worker tab in application and set the new password.

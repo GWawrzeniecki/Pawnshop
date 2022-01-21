@@ -77,6 +77,7 @@ namespace PawnShop
             containerRegistry.Register<IMessageBoxService, MessageBoxService>();
             containerRegistry.Register<ISetup, Setup>();
             containerRegistry.Register<AddClientValidator>();
+            containerRegistry.Register<IPdfService, PdfService>();
             containerRegistry.RegisterInstance<ISettingsService<UserSettings>>(new SettingsService<UserSettings>(Constants.UserSettingsFileName));
             containerRegistry.RegisterDialogWindow<MahappsDialogWindow>();
             containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();

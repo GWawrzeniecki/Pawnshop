@@ -92,7 +92,7 @@ namespace PawnShop.Controls.BaseTaskbar.ViewModels
             }
         }
 
-        public async Task TryToUpdateMoneyBalanceAsync()
+        private async Task TryToUpdateMoneyBalanceAsync()
         {
             using var unitOfWork = _containerProvider.Resolve<IUnitOfWork>();
             _sessionContext.TodayMoneyBalance = await unitOfWork.MoneyBalanceRepository.GetTodayMoneyBalanceAsync();

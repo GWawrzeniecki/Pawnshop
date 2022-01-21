@@ -11,7 +11,7 @@ namespace PawnShop.Services.Implementations
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
 
-            value = System.Environment.GetEnvironmentVariable(name);
+            value = System.Environment.GetEnvironmentVariable(name,EnvironmentVariableTarget.User);
 
             return value is not null;
         }

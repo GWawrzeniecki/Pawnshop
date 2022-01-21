@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_1425B73E344045F69BABBC4F9D9D1FC2"
+        "MsmKey" = "8:_0E393E6557B2479CB5A3BE9A57CE915E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -27,7 +27,31 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_30B7C731717D4DB78F90C3E0072BBD4E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3F6833FA894B4E619F11427E2A092678"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_54416E3863C04B5688B286C48B5BFC8F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B9FDF38330A94D2EAE6CDAB0E8C88278"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C527DC883B20402C96072F25B09450B3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -40,6 +64,18 @@
         "Entry"
         {
         "MsmKey" = "8:_D988E111838F4967857798929E77E668"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E42A14D0DEDD4D0CB72084CD97496BA5"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F70063E694084B809758A64F86C5CA3D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -153,12 +189,12 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1425B73E344045F69BABBC4F9D9D1FC2"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0E393E6557B2479CB5A3BE9A57CE915E"
             {
-            "SourcePath" = "8:..\\DB\\SampleDB\\19.01.2022_Pawnshop.bak"
-            "TargetName" = "8:19.01.2022_Pawnshop.bak"
+            "SourcePath" = "8:..\\DB\\Jobs\\RebuildAllIndexesJob.sql"
+            "TargetName" = "8:RebuildAllIndexesJob.sql"
             "Tag" = "8:"
-            "Folder" = "8:_871543F1FD4D4B9BA98BF6EA2BFF99CB"
+            "Folder" = "8:_7F5EB32C7B87456BB6ECC296FDEB0708"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -193,6 +229,46 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_30B7C731717D4DB78F90C3E0072BBD4E"
+            {
+            "SourcePath" = "8:..\\DB\\Jobs\\DifferentialBackupJob.sql"
+            "TargetName" = "8:DifferentialBackupJob.sql"
+            "Tag" = "8:"
+            "Folder" = "8:_7F5EB32C7B87456BB6ECC296FDEB0708"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F6833FA894B4E619F11427E2A092678"
+            {
+            "SourcePath" = "8:..\\DB\\Jobs\\ReorganizeAllIndexesJob.sql"
+            "TargetName" = "8:ReorganizeAllIndexesJob.sql"
+            "Tag" = "8:"
+            "Folder" = "8:_7F5EB32C7B87456BB6ECC296FDEB0708"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_54416E3863C04B5688B286C48B5BFC8F"
             {
             "SourcePath" = "8:..\\Modules\\PawnShop.Modules.Login\\Logo\\PawnshopLogo.jpg"
@@ -213,12 +289,92 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B9FDF38330A94D2EAE6CDAB0E8C88278"
+            {
+            "SourcePath" = "8:..\\DB\\SampleDB\\Pawnshop.bak"
+            "TargetName" = "8:Pawnshop.bak"
+            "Tag" = "8:"
+            "Folder" = "8:_871543F1FD4D4B9BA98BF6EA2BFF99CB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C527DC883B20402C96072F25B09450B3"
+            {
+            "SourcePath" = "8:..\\DB\\Jobs\\FullBackupJob.sql"
+            "TargetName" = "8:FullBackupJob.sql"
+            "Tag" = "8:"
+            "Folder" = "8:_7F5EB32C7B87456BB6ECC296FDEB0708"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D988E111838F4967857798929E77E668"
             {
             "SourcePath" = "8:..\\Pawnshop\\PawnShop\\Icons\\PawnshopIcon.ico"
             "TargetName" = "8:PawnshopIcon.ico"
             "Tag" = "8:"
             "Folder" = "8:_871543F1FD4D4B9BA98BF6EA2BFF99CB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E42A14D0DEDD4D0CB72084CD97496BA5"
+            {
+            "SourcePath" = "8:..\\DB\\Jobs\\TransactionLogBackupJob.sql"
+            "TargetName" = "8:TransactionLogBackupJob.sql"
+            "Tag" = "8:"
+            "Folder" = "8:_7F5EB32C7B87456BB6ECC296FDEB0708"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F70063E694084B809758A64F86C5CA3D"
+            {
+            "SourcePath" = "8:..\\DB\\Jobs\\BackupDevicesSettings.sql"
+            "TargetName" = "8:BackupDevicesSettings.sql"
+            "Tag" = "8:"
+            "Folder" = "8:_7F5EB32C7B87456BB6ECC296FDEB0708"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -271,6 +427,17 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_7F5EB32C7B87456BB6ECC296FDEB0708"
+                    {
+                    "Name" = "8:SQL Jobs"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_4E671219ED4C484284CB1BC6D94B5545"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
         }

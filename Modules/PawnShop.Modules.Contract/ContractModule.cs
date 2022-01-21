@@ -56,7 +56,6 @@ namespace PawnShop.Modules.Contract
             containerRegistry.Register<IContractService, ContractService>();
             containerRegistry.RegisterSingleton<ICalculateService, CalculateService>();
             containerRegistry.RegisterSingleton<IConfigurationService, ConfigurationService>();
-            containerRegistry.RegisterSingleton<IPdfService, PdfService>();
             containerRegistry.RegisterDialog<AddContractItemDialog, AddContractItemDialogViewModel>();
         }
     }
