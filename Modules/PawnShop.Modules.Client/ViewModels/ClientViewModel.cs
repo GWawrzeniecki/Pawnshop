@@ -182,7 +182,7 @@ namespace PawnShop.Modules.Client.ViewModels
             var dialogResult = ButtonResult.Cancel;
             var selectedClient = SelectedClient;
 
-            _dialogService.ShowAddClientDialog("Rejestracja nowego klienta", ClientMode.UpdateClient, result =>
+            _dialogService.ShowAddClientDialog("Edycja klienta", ClientMode.UpdateClient, result =>
             {
                 if (result.Result == ButtonResult.OK)
                 {

@@ -158,7 +158,8 @@ namespace PawnShop.Modules.Contract.ViewModels
                     await TryToPrintDealDocumentAsync();
                 if (IsPrintContractItems)
                     await TryToPrintContractItemsAsync();
-                await _callBack.Invoke();
+                if (_callBack is not null)
+                    await _callBack.Invoke();
 
             }
             catch (RenewContractException renewContractException)

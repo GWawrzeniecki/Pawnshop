@@ -170,6 +170,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
                     SetPutOnSaleButtonVisibility(Visibility.Hidden);
                     break;
                 case DialogMode.Editable:
+                    Title = "Wystawienie towaru na sprzedaż";
                     NavigateToSale();
                     SetSecondGroupBoxHeaderName("Sprzedaż");
                     SetPutOnSaleButtonVisibility(Visibility.Visible);
@@ -220,7 +221,7 @@ namespace PawnShop.Modules.Commodity.Dialogs.ViewModels
             }
             catch (Exception e)
             {
-                throw new InsertSaleException("Wystapil blad podczas wystawiania towaaru na sprzedaz", e);
+                throw new InsertSaleException("Wystąpił błąd podczas wystawiania towaru na sprzedaż", e);
             }
         }
 

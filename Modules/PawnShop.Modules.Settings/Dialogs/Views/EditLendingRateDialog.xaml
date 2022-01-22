@@ -40,7 +40,7 @@
                 mah:TextBoxHelper.HasText="{Binding HasDaysText, Mode=TwoWay}"
                 mah:TextBoxHelper.UseFloatingWatermark="True"
                 mah:TextBoxHelper.Watermark="Ilość dni"
-                Text="{Binding Days, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Days, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBox
                 Grid.Row="0"
@@ -50,7 +50,7 @@
                 mah:TextBoxHelper.HasText="{Binding HasPercentageText, Mode=TwoWay}"
                 mah:TextBoxHelper.UseFloatingWatermark="True"
                 mah:TextBoxHelper.Watermark="Procent"
-                Text="{Binding Percentage, ValidatesOnDataErrors=True, Delay=400, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Percentage, ValidatesOnDataErrors=True, Delay=100, UpdateSourceTrigger=PropertyChanged}" />
 
             <Button
                 Grid.Row="0"

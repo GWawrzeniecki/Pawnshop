@@ -33,7 +33,6 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
 
         #endregion
 
-
         #region PublicProperties
 
         public string Title => "Edycja oprocentowania";
@@ -88,7 +87,7 @@ namespace PawnShop.Modules.Settings.Dialogs.ViewModels
             try
             {
                 LendingRate.Days = Days.Value;
-                LendingRate.Procent = Percentage.Value;
+                LendingRate.Procent = Percentage.Value;             
                 await _lendingRateService.EditLendingRate(LendingRate);
                 _messageBoxService.Show("Pomyślnie zaktualizowano oprocentowanie.", "Sukces");
                 RequestClose.Invoke(new DialogResult(ButtonResult.OK));
