@@ -114,12 +114,7 @@
                             Text="{Binding HowManyDaysLateCalculated.Result, Mode=OneWay}" />
 
                         <TextBlock
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            Text="dni" />
-
-                        <TextBlock
-                            Grid.Row="1"
+                            Grid.Row="2"
                             Grid.Column="2"
                             Text="dni" />
 

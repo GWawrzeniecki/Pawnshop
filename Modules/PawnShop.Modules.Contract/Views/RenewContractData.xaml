@@ -258,7 +258,7 @@
                             Grid.Column="4"
                             Margin="0,0,0,5"
                             IsEditable="True"
-                            ItemsSource="{Binding LendingRates}"
+                            ItemsSource="{Binding LendingRates.Result}"
                             Text="{Binding SelectedDelayLendingRate, Mode=TwoWay, Delay=100, Converter={StaticResource LendingRateConverter}}"
                             TextSearch.TextPath="Days">
                             <ComboBox.ItemTemplate>

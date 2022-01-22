@@ -63,7 +63,7 @@ namespace PawnShop.Services.DataService.Repositories
         public async Task<IList<Contract>> GetTopContractsAsync(int count)
         {
             return await GetTopContractsQueryable(count)
-                .ToListAsync();
+                        .ToListAsync();
 
         }
 
